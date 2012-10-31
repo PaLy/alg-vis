@@ -104,9 +104,9 @@ public class RBNode extends BSTNode {
 			getRight().drawBigNodes(v);
 		}
 		if (isRed() && getParent() != null) {
-			v.drawWideLine(x, y, getParent().x, getParent().y);
+			v.drawWideLine(position.relative, getParent().position.relative);
 		} else {
-			v.drawWideLine(x - 1, y, x + 1, y);
+			v.drawWideLine(position.relative.x - 1, position.relative.y, position.relative.x + 1, position.relative.y);
 		}
 	}
 

@@ -114,7 +114,7 @@ public class DaryHeapNode extends HeapNode {
 			v.setColor(Color.black);
 			// }
 			for (DaryHeapNode node : c) {
-				v.drawLine(x, y, node.x, node.y);
+				v.drawLine(position.relative, node.position.relative);
 			}
 		}
 		for (DaryHeapNode node : c) {

@@ -46,7 +46,7 @@ public class LeftHeapNode extends BSTNode {
 	}
 
 	public LeftHeapNode(LeftHeapNode v) {
-		this(v.D, v.getKey(), v.x, v.y);
+		this(v.D, v.getKey(), v.tox, v.toy);
 	}
 
 	/**
@@ -104,16 +104,16 @@ public class LeftHeapNode extends BSTNode {
 			return;
 		}
 		int x1, y1, x2, y2;
-		if (x < dir.x) {
-			x1 = x;
-			y1 = y;
-			x2 = dir.x;
-			y2 = dir.y;
+		if (position.relative.x < dir.position.relative.x) {
+			x1 = position.relative.x;
+			y1 = position.relative.y;
+			x2 = dir.position.relative.x;
+			y2 = dir.position.relative.y;
 		} else {
-			x2 = x;
-			y2 = y;
-			x1 = dir.x;
-			y1 = dir.y;
+			x2 = position.relative.x;
+			y2 = position.relative.y;
+			x1 = dir.position.relative.x;
+			y1 = dir.position.relative.y;
 		}
 		v.drawDoubleArrow(x1 + 2 * LeftHeapNode.RADIUS, y1, x2 - 2
 				* LeftHeapNode.RADIUS, y2);
@@ -126,10 +126,10 @@ public class LeftHeapNode extends BSTNode {
 		String str = "" + rank;
 		if (rank != -1) {
 			if (this.getParent() != null && this.getParent().getLeft() == this) {
-				v.drawString(str, x - LeftHeapNode.RADIUS, y
+				v.drawString(str, position.relative.x - LeftHeapNode.RADIUS, position.relative.y
 						- LeftHeapNode.RADIUS, Fonts.SMALL);
 			} else {
-				v.drawString(str, x + LeftHeapNode.RADIUS, y
+				v.drawString(str, position.relative.x + LeftHeapNode.RADIUS, position.relative.y
 						- LeftHeapNode.RADIUS, Fonts.SMALL);
 			}
 		}
@@ -189,19 +189,18 @@ public class LeftHeapNode extends BSTNode {
 			 */
 			v.setColor(Color.black);
 			// }
-
 			if ((getLeft() != null) && (getLeft().state != INVISIBLE)) {
 				if (dashedLeftLine) {
-					v.drawDashedLine(x, y, getLeft().x, getLeft().y);
+					v.drawDashedLine(position.relative, getLeft().position.relative);
 				} else {
-					v.drawLine(x, y, getLeft().x, getLeft().y);
+					v.drawLine(position.relative, getLeft().position.relative);
 				}
 			}
 			if ((getRight() != null) && (getRight().state != INVISIBLE)) {
 				if (dashedRightLine) {
-					v.drawDashedLine(x, y, getRight().x, getRight().y);
+					v.drawDashedLine(position.relative, getRight().position.relative);
 				} else {
-					v.drawLine(x, y, getRight().x, getRight().y);
+					v.drawLine(position.relative, getRight().position.relative);
 				}
 			}
 		}

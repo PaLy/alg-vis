@@ -17,6 +17,7 @@
 package algvis.core;
 
 import algvis.ds.intervaltree.IntervalTrees;
+import algvis.ds.persistent.PersistentDS;
 import algvis.ds.priorityqueues.MeldablePQ;
 import algvis.ds.priorityqueues.PriorityQueue;
 import algvis.ds.trie.Trie;
@@ -38,8 +39,9 @@ public class ADTs {
 			MeldablePQ.class, // insert, decrease-key, delete-min, meld
 			UnionFind.class, // make-set, union, find
 			Trie.class, // insert, find, delete
-			IntervalTrees.class // insert, find sum/min/max of interval,
+			IntervalTrees.class, // insert, find sum/min/max of interval,
 								// decrease-key
+			PersistentDS.class
 	};
 	public static final int N = ADT.length;
 

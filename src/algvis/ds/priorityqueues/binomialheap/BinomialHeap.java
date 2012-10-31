@@ -156,16 +156,16 @@ public class BinomialHeap extends MeldablePQ implements ClickListener {
 				if (i > 0) {
 					V.setColor(Color.black);
 					V.drawStringLeft(Languages.getString("heap") + " #" + i
-							+ ":", root[i].x - Node.RADIUS - 5, root[i].y,
+							+ ":", root[i].position.relative.x - Node.RADIUS - 5, root[i].position.relative.y,
 							Fonts.NORMAL);
 				}
 				if (min[i] != null) {
 					if (minHeap) {
-						V.drawStringTop(Languages.getString("min"), min[i].x,
-								min[i].y - Node.RADIUS - 2, Fonts.NORMAL);
+						V.drawStringTop(Languages.getString("min"), min[i].position.relative.x,
+								min[i].position.relative.y - Node.RADIUS - 2, Fonts.NORMAL);
 					} else {
-						V.drawStringTop(Languages.getString("max"), min[i].x,
-								min[i].y - Node.RADIUS - 2, Fonts.NORMAL);
+						V.drawStringTop(Languages.getString("max"), min[i].position.relative.x,
+								min[i].position.relative.y - Node.RADIUS - 2, Fonts.NORMAL);
 					}
 				}
 			}

@@ -236,6 +236,10 @@ public class View implements MouseListener, MouseMotionListener,
 				* (d - c) / d);
 	}
 
+	public Point2D cut(Point2D p1, double x2, double y2, double c) {
+		return cut(p1.getX(), p1.getY(), x2, y2, c);
+	}
+
 	public void fillRect(double x, double y, double a, double b) {
 		g.fillRect((int) (x - a), (int) (y - b), (int) (2 * a), (int) (2 * b));
 	}
@@ -247,9 +251,17 @@ public class View implements MouseListener, MouseMotionListener,
 	public void fillSqr(double x, double y, double a) {
 		fillRect(x, y, a, a);
 	}
+	
+	public void fillSqr(Point2D p, double a) {
+		fillSqr(p.getX(), p.getY(), a);
+	}
 
 	public void drawSqr(double x, double y, double a) {
 		drawRect(x, y, a, a);
+	}
+
+	public void drawSqr(Point2D p, double a) {
+		drawRect(p.getX(), p.getY(), a, a);
 	}
 
 	public void fillOval(double x, double y, double a, double b) {
@@ -263,13 +275,29 @@ public class View implements MouseListener, MouseMotionListener,
 	public void fillCircle(double x, double y, double r) {
 		g.fillOval((int) (x - r), (int) (y - r), 2 * (int) r, 2 * (int) r);
 	}
+	
+	public void fillCircle(Point2D p, double r) {
+		fillCircle(p.getX(), p.getY(), r);
+	}
 
 	public void drawCircle(double x, double y, double r) {
 		g.drawOval((int) (x - r), (int) (y - r), 2 * (int) r, 2 * (int) r);
 	}
 
+	public void drawCircle(Point2D p, double r) {
+		drawCircle(p.getX(), p.getY(), r);
+	}
+
 	public void drawLine(double x1, double y1, double x2, double y2) {
 		g.drawLine((int) x1, (int) y1, (int) x2, (int) y2);
+	}
+
+	public void drawLine(Point2D p1, Point2D p2) {
+		drawLine(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+	}
+
+	public void drawLine(Point2D p1, double x1, double x2) {
+		drawLine(p1.getX(), p1.getY(), x1, x2);
 	}
 
 	void drawWideLine(double x1, double y1, double x2, double y2, float width,
@@ -289,8 +317,16 @@ public class View implements MouseListener, MouseMotionListener,
 		drawWideLine(x1, y1, x2, y2, width, new Color(230, 230, 230));
 	}
 
+	public void drawWideLine(Point2D p1, Point2D p2, float width) {
+		drawWideLine(p1.getX(), p1.getY(), p2.getX(), p2.getY(), width, new Color(230, 230, 230));
+	}
+	
 	public void drawWideLine(double x1, double y1, double x2, double y2) {
 		drawWideLine(x1, y1, x2, y2, 27.0f, new Color(230, 230, 230));
+	}
+
+	public void drawWideLine(Point2D p1, Point2D p2) {
+		drawWideLine(p1.getX(), p1.getY(), p2.getX(), p2.getY());
 	}
 
 	public void drawDashedLine(double x1, double y1, double x2, double y2) {
@@ -301,6 +337,10 @@ public class View implements MouseListener, MouseMotionListener,
 		g.setStroke(dashed);
 		g.drawLine((int) x1, (int) y1, (int) x2, (int) y2);
 		g.setStroke(old);
+	}
+	
+	public void drawDashedLine(Point2D p1, Point2D p2) {
+		drawDashedLine(p1.getX(), p1.getY(), p2.getX(), p2.getY());
 	}
 
 	// square; x, y is the center
@@ -320,6 +360,10 @@ public class View implements MouseListener, MouseMotionListener,
 		y -= f.fm.getHeight() / 2 - f.fm.getAscent();
 		g.setFont(f.font);
 		g.drawString(str, (int) x, (int) y);
+	}
+
+	public void drawString(String str, Point2D p, Fonts f) {
+		drawString(str, p.getX(), p.getY(), f);
 	}
 
 	/**
@@ -373,10 +417,20 @@ public class View implements MouseListener, MouseMotionListener,
 				arch));
 	}
 
+	public void drawRoundRectangle(Point2D p, double w, double h,
+								   double arcw, double arch) {
+		drawRoundRectangle(p.getX(), p.getY(), w, h, arcw, arch);
+	}
+
 	public void fillRoundRectangle(double x, double y, double w, double h,
 			double arcw, double arch) {
 		g.fill(new RoundRectangle2D.Double(x - w, y - h, 2 * w, 2 * h, arcw,
 				arch));
+	}
+
+	public void fillRoundRectangle(Point2D p, double w, double h,
+								   double arcw, double arch) {
+		fillRoundRectangle(p.getX(), p.getY(), w, h, arcw, arch);
 	}
 
 	private void arrowHead(double x, double y, double xx, double yy) {
@@ -412,6 +466,14 @@ public class View implements MouseListener, MouseMotionListener,
 	public void drawArrow(double x1, double y1, double x2, double y2) {
 		g.drawLine((int) x1, (int) y1, (int) x2, (int) y2);
 		arrowHead((int) x1, (int) y1, (int) x2, (int) y2);
+	}
+	
+	public void drawArrow(Point2D p1, Point2D p2) {
+		drawArrow(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+	}
+
+	public void drawArrow(Point2D p1, double x2, double y2) {
+		drawArrow(p1.getX(), p1.getY(), x2, y2);
 	}
 
 	public void drawDoubleArrow(double x1, double y1, double x2, double y2) {
@@ -460,6 +522,10 @@ public class View implements MouseListener, MouseMotionListener,
 
 	public void drawFancyArc(double x1, double y1, double x3, double y3) {
 		g.draw(new CubicCurve2D.Double(x1, y1, x1, y1 + 10, x3, y3 - 40, x3, y3));
+	}
+
+	public void drawFancyArc(Point2D p1, Point2D p2) {
+		drawFancyArc(p1.getX(), p1.getY(), p2.getX(), p2.getY());
 	}
 
 	public void drawArcArrow(double x, double y, double w, double h, double a1,

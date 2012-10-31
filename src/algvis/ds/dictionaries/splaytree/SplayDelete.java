@@ -80,7 +80,7 @@ public class SplayDelete extends SplayAlg {
 		} else {
 			addStep("splaydelete");
 			T.setRoot2(w.getLeft());
-			T.getRoot2().shiftTree(-75, 0);
+			T.getRoot2().translateTree(-75, 0);
 			T.getRoot2().setParent(null);
 			T.setRoot(w.getRight());
 			T.getRoot().setParent(null);

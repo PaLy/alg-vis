@@ -35,7 +35,7 @@ public class AAInsert extends Algorithm {
 	@Override
 	public void runAlgorithm() throws InterruptedException {
 		BSTInsert insert = new BSTInsert(T,
-				new AANode(T, K, ZDepth.ACTIONNODE), this);
+				new AANode(T, K, ZDepth.ACTIONNODE), curAlgorithm);
 		insert.runAlgorithm();
 		HashMap<String, Object> insertResult = insert.getResult();
 		boolean inserted = (Boolean) insertResult.get("inserted");

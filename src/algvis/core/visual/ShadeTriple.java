@@ -21,19 +21,19 @@ public class ShadeTriple extends VisualElement {
 		if (u != null) {
 			z = u.getParent();
 			if (z == v || z == w) {
-				V.drawWideLine(u.x, u.y, z.x, z.y);
+				V.drawWideLine(u.position.relative, z.position.relative);
 			}
 		}
 		if (v != null) {
 			z = v.getParent();
 			if (z == u || z == w) {
-				V.drawWideLine(v.x, v.y, z.x, z.y);
+				V.drawWideLine(v.position.relative, z.position.relative);
 			}
 		}
 		if (w != null) {
 			z = w.getParent();
 			if (z == u || z == v) {
-				V.drawWideLine(w.x, w.y, z.x, z.y);
+				V.drawWideLine(w.position.relative, z.position.relative);
 			}
 		}
 	}

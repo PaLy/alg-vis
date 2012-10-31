@@ -111,14 +111,14 @@ public class TreeNode extends Node {
 			if (thread) {
 				v.setColor(Color.red);
 				if (getChild() != null) {
-					v.drawLine(x, y, getChild().x, getChild().y);
+					v.drawLine(position.relative, getChild().position.relative);
 				}
 				v.setColor(Color.black);
 			} else {
 				TreeNode w = getChild();
 				while (w != null) {
 					v.setColor(Color.black);
-					v.drawLine(x, y, w.x, w.y);
+					v.drawLine(position.relative, w.position.relative);
 					w.drawEdges(v);
 					w = w.getRight();
 				}

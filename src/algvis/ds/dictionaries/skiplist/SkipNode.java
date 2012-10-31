@@ -67,23 +67,24 @@ public class SkipNode extends Node {
 	@Override
 	public void drawBg(View v) {
 		v.setColor(getBgColor());
-		v.fillSqr(x, y, Node.RADIUS);
+		v.fillSqr(position.relative, Node.RADIUS);
 		v.setColor(Color.BLACK); // fgcolor);
-		v.drawSqr(x, y, Node.RADIUS);
+		v.drawSqr(position.relative, Node.RADIUS);
 		if (marked) {
-			v.drawSqr(x, y, Node.RADIUS + 2);
+			v.drawSqr(position.relative, Node.RADIUS + 2);
 		}
 	}
 
 	public void drawSkipList(View V) {
 		if (getLeft() == null && getDown() != null) {
 			V.setColor(Color.black);
-			V.drawLine(x, y, getDown().x, getDown().y);
+			V.drawLine(position.relative, getDown().position.relative);
 			getDown().drawSkipList(V);
 		}
 		if (getRight() != null) {
 			V.setColor(Color.black);
-			V.drawArrow(x, y, getRight().x - Node.RADIUS, getRight().y);
+			V.drawArrow(position.relative, getRight().position.relative.x - Node.RADIUS, 
+					getRight().position.relative.y);
 			getRight().drawSkipList(V);
 		}
 		draw(V);

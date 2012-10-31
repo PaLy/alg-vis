@@ -184,7 +184,7 @@ public class BDelete extends Algorithm {
 						v = new BNode(T.getRoot());
 						addToScene(v);
 						T.getRoot().keys[0] = Node.NOKEY;
-						v.goTo((d.tox + s.tox) / 2, d.y);
+						v.goTo((d.tox + s.tox) / 2, d.position.y);
 						pause();
 						if (lefts) {
 							T.setRoot(new BNode(s, v, d));
@@ -195,7 +195,7 @@ public class BDelete extends Algorithm {
 					} else {
 						v = p.del(p.keys[k]);
 						addToScene(v);
-						v.goTo((d.tox + s.tox) / 2, d.y);
+						v.goTo((d.tox + s.tox) / 2, d.position.y);
 						pause();
 						if (lefts) {
 							p.c[k] = new BNode(s, v, d);

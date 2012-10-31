@@ -42,7 +42,7 @@ public class BSTDelete extends Algorithm {
 	public void runAlgorithm() throws InterruptedException {
 		setHeader("delete", K);
 		addNote("bstdeletestart");
-		BSTFind find = new BSTFind(T, K, this);
+		BSTFind find = new BSTFind(T, K, curAlgorithm);
 		find.runAlgorithm();
 		BSTNode toDelete = (BSTNode) find.getResult().get("node");
 

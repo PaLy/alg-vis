@@ -98,7 +98,7 @@ public class SuffixTreeNode extends TrieNode {
 			super.drawBg(v);
 			if (isPacked()) {
 				v.setColor(Color.WHITE);
-				v.fillCircle(x, y, radius - 1);
+				v.fillCircle(position.relative, radius - 1);
 			}
 		} else {
 			if (!isPacked()) {
@@ -171,12 +171,12 @@ public class SuffixTreeNode extends TrieNode {
 		drawArc(v);
 		if (isLeaf() && !isRoot()) {
 			v.setColor(Color.WHITE);
-			v.fillCircle(x, y + 11, 7);
+			v.fillCircle(position.relative.x, position.relative.y + 11, 7);
 			v.setColor(Color.BLACK);
 			if (marked) {
-				v.drawCircle(x, y + 11, 7);
+				v.drawCircle(position.relative.x, position.relative.y + 11, 7);
 			}
-			v.drawString(String.valueOf(getKey()), x, y + 10, Fonts.TYPEWRITER);
+			v.drawString(String.valueOf(getKey()), position.relative.x, position.relative.y + 10, Fonts.TYPEWRITER);
 		}
 	}
 
@@ -194,8 +194,8 @@ public class SuffixTreeNode extends TrieNode {
 				v.setColor(new Color(0xcccccc));
 			}
 			SuffixTreeNode w = getSuffixLink();
-			Point2D p = v.cut(x, y, w.x, w.y + 1, 10);
-			v.drawArrow(x, y, (int) p.getX(), (int) p.getY());
+			Point2D p = v.cut(position.relative, w.position.relative.x, w.position.relative.y + 1, 10);
+			v.drawArrow(position.relative, p);
 			v.setColor(Color.BLACK);
 		}
 	}
@@ -229,18 +229,18 @@ public class SuffixTreeNode extends TrieNode {
 					col.add(u.getBgColor());
 				}
 				if (u == null) {
-					System.out.println("Something went wrong at [" + x + ","
-							+ y + "]");
+					System.out.println("Something went wrong at [" + position.relative.x + ","
+							+ position.relative.y + "]");
 					return;
 				}
-				int py = u.y;
+				int py = u.position.relative.y;
 				if (u.getParent() == null) {
 					py += 30;
 				}
 				s.reverse();
 				int fonth = Fonts.TYPEWRITER.fm.getHeight(), len = s.length();
-				int midy = (py + y) / 2, w = 6, h = len * fonth / 2;
-				int xx = x, yy = midy - fonth * len / 2 - 4;
+				int midy = (py + position.relative.y) / 2, w = 6, h = len * fonth / 2;
+				int xx = position.relative.x, yy = midy - fonth * len / 2 - 4;
 				Color cc = col.pop();
 				v.setColor(cc);
 				if (col.empty()) {
@@ -264,10 +264,10 @@ public class SuffixTreeNode extends TrieNode {
 				}
 
 				v.setColor(Color.BLACK);
-				v.drawRoundRectangle(x, midy - 12, w, h, 6, 10);
+				v.drawRoundRectangle(position.relative.x, midy - 12, w, h, 6, 10);
 
 				v.setColor(getFgColor());
-				v.drawVerticalString(s.toString(), x - 3, midy - 1,
+				v.drawVerticalString(s.toString(), position.relative.x - 3, midy - 1,
 						Fonts.TYPEWRITER);
 				// System.out.println(u.y + " " + py + " " + midy + " " + y);
 			}

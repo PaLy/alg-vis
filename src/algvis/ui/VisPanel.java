@@ -31,6 +31,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 import javax.swing.undo.StateEditable;
 
+import algvis.core.Algorithm;
 import algvis.core.DataStructure;
 import algvis.core.Settings;
 import algvis.core.history.HistoryManager;
@@ -48,6 +49,7 @@ public abstract class VisPanel extends JPanel implements LanguageListener,
 	public Buttons buttons; // gombikov (dolu)
 	public Commentary commentary; // komentara (vpravo)
 	public DataStructure D; // datovej struktury
+	public Algorithm A;
 	public Screen screen; // obrazovky v strede
 	public final Scene scene = new Scene();
 	public ILabel statusBar; // a status baru

@@ -123,6 +123,12 @@ public class BST extends Dictionary implements LayoutListener, ClickListener {
 		if (getRoot() != null)
 			getRoot().moveTree();
 	}
+	
+	public void translate(int dx, int dy) {
+		if (root != null) {
+			getRoot().translateTree(dx, dy);
+		}
+	}
 
 	protected void leftrot(BSTNode v) {
 		BSTNode u = v.getParent();
@@ -212,5 +218,12 @@ public class BST extends Dictionary implements LayoutListener, ClickListener {
 	@Override
 	public Layout getLayout() {
 		return Layout.SIMPLE;
+	}
+
+	@Override
+	public BST clone() {
+		BST clone = new BST(panel);
+		clone.setRoot(getRoot().clone());
+		return clone;
 	}
 }

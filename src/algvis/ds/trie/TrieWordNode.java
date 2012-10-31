@@ -20,9 +20,7 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.util.Hashtable;
 
-import algvis.core.DataStructure;
-import algvis.core.Node;
-import algvis.core.NodeColor;
+import algvis.core.*;
 import algvis.core.history.HashtableStoreSupport;
 import algvis.ui.Fonts;
 import algvis.ui.view.View;
@@ -33,8 +31,7 @@ public class TrieWordNode extends Node {
 	public TrieWordNode(DataStructure D, String s, int x, int y, NodeColor c) {
 		super(D);
 		setS(s);
-		this.x = x;
-		this.y = y;
+		position = new ARPosition(x, y);
 		setColor(c);
 		this.D = D;
 	}
@@ -86,11 +83,11 @@ public class TrieWordNode extends Node {
 		int width = (fm.stringWidth(s) + 4) / 2;
 		int height = (fm.getHeight() + 4) / 2;
 		v.setColor(getColor().bgColor);
-		v.fillRoundRectangle(x + width, y - height / 2, width, height, 3, 3);
+		v.fillRoundRectangle(position.relative.x + width, position.relative.y - height / 2, width, height, 3, 3);
 		v.setColor(Color.BLACK);
-		v.drawRoundRectangle(x + width, y - height / 2, width, height, 3, 3);
+		v.drawRoundRectangle(position.relative.x + width, position.relative.y - height / 2, width, height, 3, 3);
 		v.setColor(getColor().fgColor);
-		v.drawString(s, x + width, y - height / 2, Fonts.TYPEWRITER);
+		v.drawString(s, position.relative.x + width, position.relative.y - height / 2, Fonts.TYPEWRITER);
 	}
 
 	@Override

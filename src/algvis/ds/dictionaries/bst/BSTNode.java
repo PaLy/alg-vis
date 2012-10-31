@@ -20,10 +20,7 @@ import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.util.Hashtable;
 
-import algvis.core.DataStructure;
-import algvis.core.Node;
-import algvis.core.NodeColor;
-import algvis.core.NodePair;
+import algvis.core.*;
 import algvis.core.history.HashtableStoreSupport;
 import algvis.ui.Fonts;
 import algvis.ui.view.Layout;
@@ -51,6 +48,10 @@ public class BSTNode extends Node {
 
 	public BSTNode(DataStructure d, int key, int x, int y, int zDepth) {
 		super(d, key, x, y, zDepth);
+	}
+
+	public BSTNode(DataStructure D, int key) {
+		super(D, key);
 	}
 
 	public BSTNode getLeft() {
@@ -233,7 +234,7 @@ public class BSTNode extends Node {
 	private void drawTree2(View v) {
 		if (state != INVISIBLE && parent != null) {
 			v.setColor(Color.black);
-			v.drawLine(x, y, parent.x, parent.y);
+			v.drawLine(position.relative, parent.position.relative);
 		}
 		if (getLeft() != null) {
 			// System.out.println("kreslim lavy " + getLeft().key + " " +
@@ -245,16 +246,16 @@ public class BSTNode extends Node {
 			v.setColor(Color.LIGHT_GRAY);
 			++i;
 			if (i % 10 == 0) {
-				v.drawLine(x, y, x, -22);
+				v.drawLine(position.relative, position.relative.x, -22);
 			} else {
-				v.drawLine(x, y, x, -20);
+				v.drawLine(position.relative, position.relative.x, -20);
 			}
 			if (i % 10 == 0) {
-				v.drawString("" + i, x, -29, Fonts.NORMAL);
+				v.drawString("" + i, position.relative.x, -29, Fonts.NORMAL);
 			} else if (i % 10 == 5) {
-				v.drawString("5", x, -27, Fonts.NORMAL);
+				v.drawString("5", position.relative.x, -27, Fonts.NORMAL);
 			} else {
-				v.drawString("" + i % 10, x, -27, Fonts.SMALL);
+				v.drawString("" + i % 10, position.relative.x, -27, Fonts.SMALL);
 			}
 		}
 		if (getRight() != null) {
@@ -273,14 +274,20 @@ public class BSTNode extends Node {
 		move();
 	}
 
-	public void shiftTree(int dx, int dy) {
+	public void translateTree(int dx, int dy) {
 		if (getLeft() != null) {
-			getLeft().shiftTree(dx, dy);
+			getLeft().translateTree(dx, dy);
 		}
 		if (getRight() != null) {
-			getRight().shiftTree(dx, dy);
+			getRight().translateTree(dx, dy);
 		}
 		goTo(tox + dx, toy + dy);
+	}
+	
+	public void setTreeColor(NodeColor color) {
+		setColor(color);
+		if (left != null) left.setTreeColor(color);
+		if (right != null) right.setTreeColor(color);
 	}
 
 	@Override
@@ -580,7 +587,7 @@ public class BSTNode extends Node {
 	/**
 	 * Calculate the absolute coordinates from the relative ones and dispose the
 	 * threads.
-	 * 
+	 *
 	 * @param x
 	 *            real x coordinate of parent node
 	 */
@@ -671,5 +678,34 @@ public class BSTNode extends Node {
 			this.left.restoreState(state);
 		if (this.right != null)
 			this.right.restoreState(state);
+	}
+
+	@Override
+	protected BSTNode clone() {
+		BSTNode clone = new BSTNode(D, key, tox, toy, zDepth);
+		clone.state = state;
+		clone.color = color;
+		clone.marked = marked;
+		// clone.dir = dir;
+		clone.arrow = arrow;
+		clone.arc = arc;
+		
+		if (left != null) {
+			clone.left = left.clone();
+			if (left.parent != null) clone.left.parent = clone;
+		} else clone.left = null;
+		if (right != null) {
+			clone.right = right.clone();
+			if (right.parent != null) clone.right.parent = clone;
+		} else clone.right = null;
+		clone.leftw = leftw;
+		clone.rightw = rightw;
+		clone.offset = offset;
+		clone.level = level;
+		clone.thread = thread;
+		clone.size = size;
+		clone.height = height;
+		clone.sumh = sumh;
+		return clone;
 	}
 }

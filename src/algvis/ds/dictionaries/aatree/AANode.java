@@ -57,7 +57,7 @@ public class AANode extends BSTNode {
 		drawArrow(v);
 		drawArc(v);
 		String str = "" + getLevel();
-		v.drawString(str, x + Node.RADIUS, y - Node.RADIUS, Fonts.SMALL);
+		v.drawString(str, position.relative.x + Node.RADIUS, position.relative.y - Node.RADIUS, Fonts.SMALL);
 	}
 
 	void drawBigNodes(View v) {
@@ -68,9 +68,9 @@ public class AANode extends BSTNode {
 			getRight().drawBigNodes(v);
 		}
 		if (getParent() != null && getParent().getLevel() == getLevel()) {
-			v.drawWideLine(x, y, getParent().x, getParent().y);
+			v.drawWideLine(position.relative, getParent().position.relative);
 		} else {
-			v.drawWideLine(x - 1, y, x + 1, y);
+			v.drawWideLine(position.relative.x - 1, position.relative.y, position.relative.x + 1, position.relative.y);
 		}
 	}
 

@@ -76,7 +76,7 @@ public class UnionFindNode extends TreeNode {
 			w = w.getRight();
 		}
 		if (isGrey() && getParent() != null) {
-			v.drawWideLine(x, y, getParent().x, getParent().y, 10.0f);
+			v.drawWideLine(position.relative, getParent().position.relative, 10.0f);
 		}
 	}
 

@@ -75,7 +75,7 @@ public class SuffixTreeInsert extends Algorithm {
 			Vector<SuffixTreeNode> newRuleOneBuffer = new Vector<SuffixTreeNode>();
 			for (SuffixTreeNode u : ruleOneBuffer) {
 				u.setColor(NodeColor.NORMAL);
-				SuffixTreeNode w = new SuffixTreeNode(T, ch, u.x, u.y, true);
+				SuffixTreeNode w = new SuffixTreeNode(T, ch, u.position.x, u.position.y, true);
 				u.addChild(w);
 				w.setColor(NodeColor.CACHED);
 				newRuleOneBuffer.add(w);
@@ -137,7 +137,7 @@ public class SuffixTreeInsert extends Algorithm {
 					addStep("sxbdownwalk", "" + ch);
 				else
 					addStep("sxbdownwalk", "\\$");
-				hw = new TrieWordNode(T, cachedUpWalk, current.x, current.y,
+				hw = new TrieWordNode(T, cachedUpWalk, current.position.x, current.position.y,
 						NodeColor.INSERT);
 				addToScene(hw);
 				hw.goNextTo(current);
@@ -203,8 +203,8 @@ public class SuffixTreeInsert extends Algorithm {
 						pathEnded = true;
 					}
 					current.setPacked(false);
-					SuffixTreeNode u = new SuffixTreeNode(T, ch, current.x,
-							current.y, true);
+					SuffixTreeNode u = new SuffixTreeNode(T, ch, current.position.x,
+							current.position.y, true);
 					current.addChild(u);
 					u.setParent(current);
 					ruleOneBuffer.add(u);

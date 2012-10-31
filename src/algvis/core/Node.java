@@ -39,19 +39,18 @@ public class Node extends VisualElement {
 	 * x, y - node position tox, toy - the position, where the node is heading
 	 * steps - the number of steps to reach the destination
 	 */
-	public volatile int x;
-	public volatile int y;
+	public ARPosition position;
 	public int tox;
 	public int toy;
 	protected int steps;
 	/** the state of a node - either ALIVE, DOWN, LEFT, or RIGHT. */
 	public int state = ALIVE;
-	private NodeColor color = NodeColor.NORMAL;
+	protected NodeColor color = NodeColor.NORMAL;
 	public boolean marked = false;
 	protected Node dir = null;
-	private int arrow = Node.NOARROW; // NOARROW or angle (0=E, 45=SE, 90=S,
+	protected int arrow = Node.NOARROW; // NOARROW or angle (0=E, 45=SE, 90=S,
 										// 135=SW, 180=W)
-	private boolean arc = false;
+	protected boolean arc = false;
 
 	public static final int STEPS = 10;
 	public static final int RADIUS = 10;
@@ -88,8 +87,9 @@ public class Node extends VisualElement {
 		super(zDepth);
 		this.D = D;
 		this.setKey(key);
-		this.x = tox = x;
-		this.y = toy = y;
+		position = new ARPosition(x, y);
+		tox = x;
+		toy = y;
 		steps = 0;
 	}
 
@@ -98,7 +98,11 @@ public class Node extends VisualElement {
 	}
 
 	public Node(Node v) {
-		this(v.D, v.getKey(), v.x, v.y);
+		this(v.D, v.getKey(), v.tox, v.toy);
+	}
+
+	public Node(DataStructure D, int key) {
+		this(D, key, 0, UPY);
 	}
 
 	public Node(DataStructure D) {
@@ -219,11 +223,11 @@ public class Node extends VisualElement {
 	 */
 	protected void drawBg(View v) {
 		v.setColor(getBgColor());
-		v.fillCircle(x, y, Node.RADIUS);
+		v.fillCircle(position.relative, Node.RADIUS);
 		v.setColor(Color.BLACK); // fgcolor);
-		v.drawCircle(x, y, Node.RADIUS);
+		v.drawCircle(position.relative, Node.RADIUS);
 		if (marked) {
-			v.drawCircle(x, y, Node.RADIUS + 2);
+			v.drawCircle(position.relative, Node.RADIUS + 2);
 		}
 	}
 
@@ -244,7 +248,7 @@ public class Node extends VisualElement {
 	protected void drawKey(View v) {
 		v.setColor(getFgColor());
 		if (getKey() != NOKEY) {
-			v.drawString(toString(), x, y, Fonts.NORMAL);
+			v.drawString(toString(), position.relative.x, position.relative.y, Fonts.NORMAL);
 		}
 	}
 
@@ -254,11 +258,11 @@ public class Node extends VisualElement {
 		}
 		double dx, dy;
 		if (arrow < 0) {
-			dx = dir.x - x;
+			dx = dir.position.relative.x - position.relative.x;
 			if (arrow == DIRARROW) {
-				dy = dir.y - DataStructure.minsepy - y;
+				dy = dir.position.relative.y - DataStructure.minsepy - position.relative.y;
 			} else if (arrow == TOARROW) {
-				dy = dir.y - y;
+				dy = dir.position.relative.y - position.relative.y;
 			} else {
 				// vypindaj
 				return;
@@ -271,11 +275,11 @@ public class Node extends VisualElement {
 			dy = Math.sin(arrow * Math.PI / 180);
 		}
 		double x1, y1, x2, y2;
-		x1 = x + 1.5 * Node.RADIUS * dx;
-		y1 = y + 1.5 * Node.RADIUS * dy;
+		x1 = position.relative.x + 1.5 * Node.RADIUS * dx;
+		y1 = position.relative.y + 1.5 * Node.RADIUS * dy;
 		if (arrow == TOARROW) {
-			x2 = dir.x - 1.5 * Node.RADIUS * dx;
-			y2 = dir.y - 1.5 * Node.RADIUS * dy;
+			x2 = dir.position.relative.x - 1.5 * Node.RADIUS * dx;
+			y2 = dir.position.relative.y - 1.5 * Node.RADIUS * dy;
 		} else {
 			x2 = x1 + 2 * Node.RADIUS * dx;
 			y2 = y1 + 2 * Node.RADIUS * dy;
@@ -289,10 +293,10 @@ public class Node extends VisualElement {
 		if (!arc || dir == null) {
 			return;
 		}
-		int x = dir.x, y = this.y - DataStructure.minsepy + Node.RADIUS, a = Math
-				.abs(this.x - dir.x), b = Math.abs(this.y - dir.y);
+		int x = dir.position.relative.x, y = position.relative.y - DataStructure.minsepy + Node.RADIUS, a = Math
+				.abs(position.relative.x - dir.position.relative.x), b = Math.abs(position.relative.y - dir.position.relative.y);
 		v.setColor(Color.BLACK);
-		if (this.x > dir.x) {
+		if (position.relative.x > dir.position.relative.x) {
 			v.drawArcArrow(x - a, y - b, 2 * a, 2 * b, 0, 90);
 		} else {
 			v.drawArcArrow(x - a, y - b, 2 * a, 2 * b, 180, 90);
@@ -314,8 +318,8 @@ public class Node extends VisualElement {
 	 * clicked at the node.)
 	 */
 	protected boolean inside(int x, int y) {
-		return (this.x - x) * (this.x - x) + (this.y - y) * (this.y - y) <= Node.RADIUS
-				* Node.RADIUS;
+		return (position.relative.x - x) * (position.relative.x - x) + (position.relative.y - y) * (position.relative
+				.y - y) <= Node.RADIUS * Node.RADIUS;
 	}
 
 	/**
@@ -397,21 +401,20 @@ public class Node extends VisualElement {
 		case Node.ALIVE:
 		case Node.INVISIBLE:
 			if (steps > 0) {
-				x += (tox - x) / steps;
-				y += (toy - y) / steps;
+				position.translate((tox - position.x) / steps, (toy - position.y) / steps);
 				--steps;
 			}
 			break;
 		case Node.DOWN:
 		case Node.LEFT:
 		case Node.RIGHT:
-			y += 20;
+			position.translate(0, 20);
 			if (state == Node.LEFT)
-				x -= 20;
+				position.translate(-20, 0);
 			else if (state == Node.RIGHT)
-				x += 20;
+				position.translate(20, 0);
 			// robi problem, ked rychlo dozadu a potom rychlo dopredu
-			if (!D.panel.screen.V.inside(x, y - Node.RADIUS)) {
+			if (!D.panel.screen.V.inside(position.x, position.y - Node.RADIUS)) {
 				state = OUT;
 			}
 			break;
@@ -421,22 +424,21 @@ public class Node extends VisualElement {
 	@Override
 	public Rectangle2D getBoundingBox() {
 		int r = RADIUS + 1;
-		return new Rectangle2D.Double(x - r, y - r, 2 * r, 2 * r);
+		return new Rectangle2D.Double(tox - r, toy - r, 2 * r, 2 * r);
 	}
 
 	@Override
 	public void endAnimation() {
 		if (state == ALIVE || state == INVISIBLE) {
 			steps = 0;
-			x = tox;
-			y = toy;
+			position.move(tox, toy);
 		} else if (state == DOWN || state == LEFT || state == RIGHT) {
-			while (D.panel.screen.V.inside(x, y - Node.RADIUS)) {
-				y += 20;
+			while (D.panel.screen.V.inside(position.x, position.y - Node.RADIUS)) {
+				position.translate(0, 20);
 				if (state == Node.LEFT)
-					x -= 20;
+					position.translate(-20, 0);
 				else if (state == Node.RIGHT)
-					x += 20;
+					position.translate(20, 0);
 			}
 			state = OUT;
 		}

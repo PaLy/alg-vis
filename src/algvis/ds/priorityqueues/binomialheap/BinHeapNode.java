@@ -169,10 +169,10 @@ public class BinHeapNode extends Node {
 		}
 		if (parent != null) { // edge to parent
 			v.setColor(Color.black);
-			v.drawLine(x, y, parent.x, parent.y);
+			v.drawLine(position.relative, parent.position.relative);
 		} else if (this != first) { // edge to left
 			v.setColor(Color.black);
-			v.drawLine(x, y, left.x, left.y);
+			v.drawLine(position.relative, left.position.relative);
 		}
 		draw(v);
 	}
@@ -252,7 +252,7 @@ public class BinHeapNode extends Node {
 		drawKey(v);
 		if (parent == null) {
 			v.setColor(Color.black);
-			v.drawString("" + rank, x + Node.RADIUS, y - Node.RADIUS,
+			v.drawString("" + rank, position.relative.x + Node.RADIUS, position.relative.y - Node.RADIUS,
 					Fonts.SMALL);
 		}
 	}

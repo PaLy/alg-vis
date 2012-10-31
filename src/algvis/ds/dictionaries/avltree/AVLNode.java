@@ -75,7 +75,8 @@ public class AVLNode extends BSTNode {
 		drawArrow(V);
 		drawArc(V);
 
-		int xx = x - Node.RADIUS, yy = y - Node.RADIUS, dx = 2 * Node.RADIUS, dy = 2 * Node.RADIUS;
+		int xx = position.relative.x - Node.RADIUS, yy = position.relative.y - Node.RADIUS, dx = 2 * Node.RADIUS, 
+				dy = 2 * Node.RADIUS;
 		String b = "";
 		if (getBgColor() == NodeColor.NORMAL.bgColor) {
 			V.setColor(Color.ORANGE);
@@ -102,16 +103,16 @@ public class AVLNode extends BSTNode {
 				break;
 			}
 			V.setColor(getFgColor());
-			V.drawOval(x - Node.RADIUS, y - Node.RADIUS, 2 * Node.RADIUS,
+			V.drawOval(position.relative.x - Node.RADIUS, position.relative.y - Node.RADIUS, 2 * Node.RADIUS,
 					2 * Node.RADIUS);
 		}
 
 		drawKey(V);
 		if (getParent() != null && getParent().getLeft() == this) {
-			V.drawString(b, x - Node.RADIUS - 1, y - Node.RADIUS - 1,
+			V.drawString(b, position.relative.x - Node.RADIUS - 1, position.relative.y - Node.RADIUS - 1,
 					Fonts.NORMAL);
 		} else {
-			V.drawString(b, x + Node.RADIUS + 1, y - Node.RADIUS - 1,
+			V.drawString(b, position.relative.x + Node.RADIUS + 1, position.relative.y - Node.RADIUS - 1,
 					Fonts.NORMAL);
 		}
 	}

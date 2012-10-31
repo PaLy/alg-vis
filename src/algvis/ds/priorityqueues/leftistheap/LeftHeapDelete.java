@@ -49,7 +49,7 @@ public class LeftHeapDelete extends LeftHeapAlg {
 			H.root[0] = null;
 			if (H.root[i] != null) {
 				H.root[i].highlightTree();
-				H.root[i].repos(H.root[i].x, H.root[i].y - (LeftHeap.minsepy));// +
+				H.root[i].repos(H.root[i].position.x, H.root[i].position.y - (LeftHeap.minsepy));// +
 																				// 2
 																				// *
 																				// LeftHeapNode.RADIUS));
@@ -60,7 +60,7 @@ public class LeftHeapDelete extends LeftHeapAlg {
 		H.root[i].setParent(null);
 
 		if (H.root[0] == null) {
-			H.root[i].repos(H.root[i].x, H.root[i].y - (LeftHeap.minsepy));// +
+			H.root[i].repos(H.root[i].position.x, H.root[i].position.y - (LeftHeap.minsepy));// +
 																			// 2
 																			// *
 																			// LeftHeapNode.RADIUS));
@@ -69,9 +69,9 @@ public class LeftHeapDelete extends LeftHeapAlg {
 		}
 		H.root[0].setParent(null);
 
-		H.root[i].repos(H.root[i].x, H.root[i].y - (LeftHeap.minsepy));// + 2 *
+		H.root[i].repos(H.root[i].position.x, H.root[i].position.y - (LeftHeap.minsepy));// + 2 *
 																		// LeftHeapNode.RADIUS));
-		H.root[0].repos(H.root[0].x, H.root[0].y - (LeftHeap.minsepy));// + 2 *
+		H.root[0].repos(H.root[0].position.x, H.root[0].position.y - (LeftHeap.minsepy));// + 2 *
 																		// H.RADIUS));
 
 		pause();

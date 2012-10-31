@@ -19,10 +19,7 @@ package algvis.ds.trie;
 import java.awt.Color;
 import java.util.Hashtable;
 
-import algvis.core.DataStructure;
-import algvis.core.Node;
-import algvis.core.NodeColor;
-import algvis.core.TreeNode;
+import algvis.core.*;
 import algvis.core.history.HashtableStoreSupport;
 import algvis.core.visual.ZDepth;
 import algvis.ui.Fonts;
@@ -93,7 +90,7 @@ public class TrieNode extends TreeNode {
 			w = (TrieNode) w.getRight();
 		}
 		if (greyPair && getParent() != null) {
-			v.drawWideLine(x, y, getParent().x, getParent().y, 10.0f);
+			v.drawWideLine(position.relative, getParent().position.relative, 10.0f);
 		}
 	}
 
@@ -103,14 +100,14 @@ public class TrieNode extends TreeNode {
 			if (thread) {
 				v.setColor(Color.red);
 				if (getChild() != null) {
-					v.drawFancyArc(x, y, getChild().x, getChild().y);
+					v.drawFancyArc(position.relative, getChild().position.relative);
 				}
 				v.setColor(Color.black);
 			} else {
 				TreeNode w = getChild();
 				while (w != null) {
 					v.setColor(Color.DARK_GRAY);
-					v.drawFancyArc(x, y, w.x, w.y);
+					v.drawFancyArc(position.relative, w.position.relative);
 					w.drawEdges(v);
 					w = w.getRight();
 					v.setColor(Color.black);
@@ -122,10 +119,10 @@ public class TrieNode extends TreeNode {
 	@Override
 	protected void drawBg(View v) {
 		v.setColor(Color.DARK_GRAY);
-		v.fillCircle(x, y, radius);
+		v.fillCircle(position.relative, radius);
 		if (marked) {
 			v.setColor(Color.BLACK);
-			v.fillCircle(x, y, radius + 1);
+			v.fillCircle(position.relative, radius + 1);
 		}
 	}
 
@@ -147,8 +144,8 @@ public class TrieNode extends TreeNode {
 		if (u != null) {
 			int midx, midy, w, h;
 			if (ch == '$') {
-				midx = x - ((x - u.x) / 15);
-				midy = y - ((y - u.y) / 5 * 2) - 1;
+				midx = position.relative.x - ((position.relative.x - u.position.relative.x) / 15);
+				midy = position.relative.y - ((position.relative.y - u.position.relative.y) / 5 * 2) - 1;
 				w = 4;
 				h = 5;
 
@@ -163,8 +160,8 @@ public class TrieNode extends TreeNode {
 				v.setColor(Color.BLACK);
 				v.drawString("" + ch, midx, midy - 1, Fonts.TYPEWRITER);
 			} else {
-				midx = x - ((x - u.x) / 15);
-				midy = y - ((y - u.y) / 5 * 2) - 1;
+				midx = position.relative.x - ((position.relative.x - u.position.relative.x) / 15);
+				midy = position.relative.y - ((position.relative.y - u.position.relative.y) / 5 * 2) - 1;
 				w = 6;
 				h = 7;
 

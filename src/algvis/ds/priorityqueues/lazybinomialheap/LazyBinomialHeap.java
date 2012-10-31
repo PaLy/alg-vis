@@ -66,7 +66,7 @@ public class LazyBinomialHeap extends BinomialHeap {
 	public void draw(View V) {
 		super.draw(V);
 		if (cleanup != null && root[active] != null) {
-			int x = root[active].x, y = -arrayheight;
+			int x = root[active].position.relative.x, y = -arrayheight;
 			for (int i = 0; i < cleanup.length; ++i) {
 				V.drawSquare(x, y, Node.RADIUS);
 				V.drawStringTop("" + i, x, y - Node.RADIUS + 1, Fonts.NORMAL);
@@ -74,7 +74,7 @@ public class LazyBinomialHeap extends BinomialHeap {
 					V.drawLine(x - Node.RADIUS, y + Node.RADIUS, x
 							+ Node.RADIUS, y - Node.RADIUS);
 				} else {
-					V.drawArrow(x, y, cleanup[i].x, cleanup[i].y - minsepy
+					V.drawArrow(x, y, cleanup[i].position.relative.x, cleanup[i].position.relative.y - minsepy
 							+ Node.RADIUS);
 				}
 				x += 2 * Node.RADIUS;

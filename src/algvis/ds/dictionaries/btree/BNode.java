@@ -203,8 +203,8 @@ public class BNode extends Node {
 		v.c[1] = w;
 		u.width = u._width();
 		w.width = w._width();
-		u.x = u.tox = tox - u.width / 2 - Node.RADIUS;
-		w.x = w.tox = tox + w.width / 2 + Node.RADIUS;
+		u.position.x = u.tox = tox - u.width / 2 - Node.RADIUS;
+		w.position.x = w.tox = tox + w.width / 2 + Node.RADIUS;
 		return v;
 	}
 
@@ -337,10 +337,10 @@ public class BNode extends Node {
 	@Override
 	public void drawBg(View V) {
 		V.setColor(getBgColor());
-		V.fillRoundRectangle(x, y, width / 2, Node.RADIUS, 2 * Node.RADIUS,
+		V.fillRoundRectangle(position.relative, width / 2, Node.RADIUS, 2 * Node.RADIUS,
 				2 * Node.RADIUS);
 		V.setColor(getFgColor());
-		V.drawRoundRectangle(x, y, width / 2, Node.RADIUS, 2 * Node.RADIUS,
+		V.drawRoundRectangle(position.relative, width / 2, Node.RADIUS, 2 * Node.RADIUS,
 				2 * Node.RADIUS);
 		// g.drawLine (x-leftw, y+2, x+rightw, y-2);
 	}
@@ -348,7 +348,7 @@ public class BNode extends Node {
 	@Override
 	public void drawKey(View V) {
 		if (keys[0] != Node.NOKEY && numKeys > 0) {
-			V.drawString(toString(), x, y, Fonts.NORMAL);
+			V.drawString(toString(), position.relative, Fonts.NORMAL);
 		}
 	}
 
@@ -359,7 +359,7 @@ public class BNode extends Node {
 			 * int xx, yy; if (i==0 || i==numChildren-1) { xx = x; yy = y; }
 			 * else { xx = (pos(i-1)+pos(i))/2; yy = y+D.RADIUS; }
 			 */
-			v.drawLine(x, y, c[i].x, c[i].y - Node.RADIUS);
+			v.drawLine(position.relative, c[i].position.relative.x, c[i].position.relative.y - Node.RADIUS);
 			c[i].drawTree(v);
 		}
 		draw(v);

@@ -37,7 +37,7 @@ public class RBDelete extends Algorithm {
 	public void runAlgorithm() throws InterruptedException {
 		setHeader("delete", K);
 		addNote("bstdeletestart");
-		BSTFind find = new BSTFind(T, K, this);
+		BSTFind find = new BSTFind(T, K, curAlgorithm);
 		find.runAlgorithm();
 		RBNode d = (RBNode) find.getResult().get("node");
 

@@ -39,10 +39,11 @@ abstract public class Algorithm implements Runnable {
 	private volatile boolean done = false;
 	private UpdatableStateEdit panelState;
 	private boolean wrapped = false;
-	private Algorithm wrapperAlg;
+	protected Algorithm curAlgorithm;
 
 	protected Algorithm(VisPanel panel) {
 		this.panel = panel;
+		curAlgorithm = this;
 		try {
 			gate.acquire();
 		} catch (InterruptedException e) {
@@ -54,13 +55,13 @@ abstract public class Algorithm implements Runnable {
 		this(panel);
 		if (a != null) {
 			wrapped = true;
-			wrapperAlg = a;
+			curAlgorithm = a;
 		}
 	}
 
 	@Override
 	public void run() {
-		panel.D.A = this;
+		panel.A = this;
 		begin();
 		try {
 			runAlgorithm();
@@ -83,7 +84,7 @@ abstract public class Algorithm implements Runnable {
 
 	protected void pause() throws InterruptedException {
 		if (wrapped) {
-			wrapperAlg.pause();
+			curAlgorithm.pause();
 		} else {
 			panelState.end();
 			if (panel.pauses) {
@@ -102,7 +103,7 @@ abstract public class Algorithm implements Runnable {
 
 	public void resume() {
 		if (wrapped) {
-			wrapperAlg.resume();
+			curAlgorithm.resume();
 		} else {
 			gate.release();
 		}
@@ -146,9 +147,17 @@ abstract public class Algorithm implements Runnable {
 
 	protected void addToScene(VisualElement element) {
 		if (wrapped) {
-			wrapperAlg.addToScene(element);
+			curAlgorithm.addToScene(element);
 		} else {
 			panel.scene.add(element);
+			panelState.addToPreState(element);
+		}
+	}
+	
+	protected void addToPreState(VisualElement element) {
+		if (wrapped) {
+			curAlgorithm.addToPreState(element);
+		} else {
 			panelState.addToPreState(element);
 		}
 	}

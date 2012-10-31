@@ -185,8 +185,8 @@ public class LeftHeap extends MeldablePQ implements ClickListener {
 					root[0].reposition();
 					root[0].reboxTree();
 					sumx += root[0].leftw;
-					if (root[0].y >= 0) { // nie je na zaciatku vkladania
-						root[0].repos(sumx, root[0].y);
+					if (root[0].position.y >= 0) { // nie je na zaciatku vkladania
+						root[0].repos(sumx, root[0].position.y);
 					} else {
 						root[0].repos(sumx, root[0].toy);
 					}

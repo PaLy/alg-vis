@@ -23,15 +23,15 @@ public class ShadeSubtree extends VisualElement {
 		// TODO to sa mozno zbytocne pocita kazdych 50ms, stacilo by to prepocitat len ked sa zmenia premenne, 
 		// od ktorych zavisi polygon. (takisto aj v inych metodach move/draw)
 		Polygon p = new Polygon();
-		p.addPoint(u.x - 1, u.y - 1);
+		p.addPoint(u.position.relative.x - 1, u.position.relative.y - 1);
 		if (u.D.getLayout() == Layout.SIMPLE) {
 			if (u.height == 1) {
-				p.addPoint(u.x - 7, u.y + 10);
-				p.addPoint(u.x + 7, u.y + 10);
+				p.addPoint(u.position.relative.x - 7, u.position.relative.y + 10);
+				p.addPoint(u.position.relative.x + 7, u.position.relative.y + 10);
 			} else {
-				int x1 = u.x - u.leftw + DataStructure.minsepx / 2, x2 = u.x
-						+ u.rightw - DataStructure.minsepx / 2, y1 = u.y
-						+ DataStructure.minsepy, y2 = u.y + (u.height - 1)
+				int x1 = u.position.relative.x - u.leftw + DataStructure.minsepx / 2, x2 = u.position.relative.x
+						+ u.rightw - DataStructure.minsepx / 2, y1 = u.position.relative.y
+						+ DataStructure.minsepy, y2 = u.position.relative.y + (u.height - 1)
 						* DataStructure.minsepy;
 				p.addPoint(x1, y1);
 				p.addPoint(x1, y2);
@@ -42,17 +42,17 @@ public class ShadeSubtree extends VisualElement {
 			BSTNode u = this.u, w = this.u;
 			Stack<BSTNode> tmp = new Stack<BSTNode>();
 			while (u != null && w != null) {
-				p.addPoint(u.x - 1, u.y);
+				p.addPoint(u.position.relative.x - 1, u.position.relative.y);
 				tmp.add(w);
 				u = (u.getLeft() != null) ? u.getLeft() : u.getRight();
 				w = (w.getRight() != null) ? w.getRight() : w.getLeft();
 			}
 			while (!tmp.isEmpty()) {
 				w = tmp.pop();
-				p.addPoint(w.x + 1, w.y);
+				p.addPoint(w.position.relative.x + 1, w.position.relative.y);
 			}
 		}
-		p.addPoint(u.x + 1, u.y - 1);
+		p.addPoint(u.position.relative.x + 1, u.position.relative.y - 1);
 		v.fillPolygon(p);
 	}
 

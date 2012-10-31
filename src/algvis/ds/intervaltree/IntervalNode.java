@@ -38,23 +38,23 @@ public class IntervalNode extends BSTNode {
 	}
 
 	public IntervalNode(IntervalNode v) {
-		this(v.D, v.getKey(), v.x, v.y);
+		this(v.D, v.getKey(), v.tox, v.toy);
 	}
 
 	@Override
 	public void drawKey(View v) {
 		v.setColor(getFgColor());
 		if (getKey() != NOKEY) {
-			v.drawString(toString(), x, y, Fonts.NORMAL);
+			v.drawString(toString(), position.relative, Fonts.NORMAL);
 		}
 
 		if (!isLeaf()) {
-			v.drawStringLeft(Integer.toString(b), x - Node.RADIUS, y
+			v.drawStringLeft(Integer.toString(b), position.relative.x - Node.RADIUS, position.relative.y
 					- Node.RADIUS, Fonts.SMALL);
-			v.drawStringRight(Integer.toString(e), x + Node.RADIUS, y
+			v.drawStringRight(Integer.toString(e), position.relative.x + Node.RADIUS, position.relative.y
 					- Node.RADIUS, Fonts.SMALL);
 		} else {
-			v.drawString(Integer.toString(e), x, y + Node.RADIUS + 5,
+			v.drawString(Integer.toString(e), position.relative.x, position.relative.y + Node.RADIUS + 5,
 					Fonts.SMALL);
 		}
 	}
@@ -76,11 +76,11 @@ public class IntervalNode extends BSTNode {
 
 		if (!isLeaf()) {
 			v.setColor(this.getBgColor());
-			v.fillCircle(x, y, Node.RADIUS);
+			v.fillCircle(position.relative, Node.RADIUS);
 			v.setColor(this.getFgColor());
-			v.drawCircle(x, y, Node.RADIUS);
+			v.drawCircle(position.relative, Node.RADIUS);
 			if (marked) {
-				v.drawCircle(x, y, Node.RADIUS + 2);
+				v.drawCircle(position.relative, Node.RADIUS + 2);
 			}
 		} else {
 			if (getKey() != NOKEY) {
@@ -93,12 +93,12 @@ public class IntervalNode extends BSTNode {
 				this.setColor(EMPTY);
 			}
 			v.setColor(getBgColor());
-			v.fillSqr(x, y, Node.RADIUS + 1);// + IntervalTree.minsepx);
+			v.fillSqr(position.relative, Node.RADIUS + 1);// + IntervalTree.minsepx);
 			v.setColor(Color.BLACK); // fgcolor);
-			v.drawSqr(x, y, Node.RADIUS + 1);// + IntervalTree.minsepx);
+			v.drawSqr(position.relative, Node.RADIUS + 1);// + IntervalTree.minsepx);
 			// DOROBIT!!!
 			if (marked) {
-				v.drawSqr(x, y, Node.RADIUS - 1);
+				v.drawSqr(position.relative, Node.RADIUS - 1);
 			}
 		}
 	}
@@ -143,17 +143,17 @@ public class IntervalNode extends BSTNode {
 			// + IntervalTree.minsepy);
 			int width = (c) * IntervalTree.minsepx;
 			int height = (d) * IntervalTree.minsepy + 4 + 2 * Node.RADIUS;
-			v.drawRoundRectangle(x, y + height / 2 - Node.RADIUS - 3,
+			v.drawRoundRectangle(position.relative.x, position.relative.y + height / 2 - Node.RADIUS - 3,
 					width / 2, height / 2, 8, 8);
 			v.setColor(this.getBgColor());
-			v.fillRoundRectangle(x, y + height / 2 - Node.RADIUS - 3,
+			v.fillRoundRectangle(position.relative.x, position.relative.y + height / 2 - Node.RADIUS - 3,
 					width / 2, height / 2, 8, 8);
 		default:
 			break;
 		}
 		if (state != INVISIBLE && getParent() != null) {
 			v.setColor(Color.black);
-			v.drawLine(x, y, getParent().x, getParent().y);
+			v.drawLine(position.relative, getParent().position.relative);
 		}
 		if (getLeft() != null) {
 			// System.out.println("kreslim lavy " + getLeft().key + " " +
@@ -165,16 +165,16 @@ public class IntervalNode extends BSTNode {
 			v.setColor(Color.LIGHT_GRAY);
 			++i;
 			if (i % 10 == 0) {
-				v.drawLine(x, y, x, -22);
+				v.drawLine(position.relative, position.relative.x, -22);
 			} else {
-				v.drawLine(x, y, x, -20);
+				v.drawLine(position.relative, position.relative.x, -20);
 			}
 			if (i % 10 == 0) {
-				v.drawString("" + i, x, -29, Fonts.NORMAL);
+				v.drawString("" + i, position.relative.x, -29, Fonts.NORMAL);
 			} else if (i % 10 == 5) {
-				v.drawString("5", x, -27, Fonts.NORMAL);
+				v.drawString("5", position.relative.x, -27, Fonts.NORMAL);
 			} else {
-				v.drawString("" + i % 10, x, -27, Fonts.SMALL);
+				v.drawString("" + i % 10, position.relative.x, -27, Fonts.SMALL);
 			}
 		}
 		if (getRight() != null) {

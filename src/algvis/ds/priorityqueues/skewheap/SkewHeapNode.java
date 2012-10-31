@@ -44,7 +44,7 @@ public class SkewHeapNode extends BSTNode {
 	}
 
 	public SkewHeapNode(SkewHeapNode v) {
-		this(v.D, v.getKey(), v.x, v.y);
+		this(v.D, v.getKey(), v.tox, v.toy);
 	}
 
 	public boolean prec(Node v) {
@@ -93,16 +93,16 @@ public class SkewHeapNode extends BSTNode {
 			return;
 		}
 		int x1, y1, x2, y2;
-		if (x < dir.x) {
-			x1 = x;
-			y1 = y;
-			x2 = dir.x;
-			y2 = dir.y;
+		if (position.relative.x < dir.position.relative.x) {
+			x1 = position.relative.x;
+			y1 = position.relative.y;
+			x2 = dir.position.relative.x;
+			y2 = dir.position.relative.y;
 		} else {
-			x2 = x;
-			y2 = y;
-			x1 = dir.x;
-			y1 = dir.y;
+			x2 = position.relative.x;
+			y2 = position.relative.y;
+			x1 = dir.position.relative.x;
+			y1 = dir.position.relative.y;
 		}
 		v.drawDoubleArrow(x1 + 2 * SkewHeapNode.RADIUS, y1, x2 - 2
 				* SkewHeapNode.RADIUS, y2);
@@ -169,16 +169,16 @@ public class SkewHeapNode extends BSTNode {
 
 			if ((getLeft() != null) && (getLeft().state != INVISIBLE)) {
 				if (dashedLeftLine) {
-					v.drawDashedLine(x, y, getLeft().x, getLeft().y);
+					v.drawDashedLine(position.relative, getLeft().position.relative);
 				} else {
-					v.drawLine(x, y, getLeft().x, getLeft().y);
+					v.drawLine(position.relative, getLeft().position.relative);
 				}
 			}
 			if ((getRight() != null) && (getRight().state != INVISIBLE)) {
 				if (dashedRightLine) {
-					v.drawDashedLine(x, y, getRight().x, getRight().y);
+					v.drawDashedLine(position.relative, getRight().position.relative);
 				} else {
-					v.drawLine(x, y, getRight().x, getRight().y);
+					v.drawLine(position.relative, getRight().position.relative);
 				}
 			}
 		}

@@ -16,7 +16,7 @@ public class ShadePair extends VisualElement {
 
 	@Override
 	protected void draw(View V) {
-		V.drawWideLine(u.x, u.y, v.x, v.y);
+		V.drawWideLine(u.position.relative, v.position.relative);
 	}
 
 	@Override

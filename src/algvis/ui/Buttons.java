@@ -215,7 +215,7 @@ abstract public class Buttons extends JPanel implements ActionListener,
 				panel.refresh();
 			}
 		} else if (evt.getSource() == next) {
-			Algorithm a = panel.D.getA();
+			Algorithm a = panel.A;
 			if (a != null && !a.isDone() && !panel.history.canRedo()) {
 				a.resume();
 			} else if (panel.history.canRedo()) {
@@ -261,7 +261,7 @@ abstract public class Buttons extends JPanel implements ActionListener,
 	public void refresh() {
 		previous.setEnabled(panel.history.canUndo());
 		next.setEnabled(panel.history.canRedo()
-				|| (panel.D.getA() != null && !panel.D.getA().isDone()));
+				|| (panel.A != null && !panel.A.isDone()));
 		setOtherEnabled(panel.history.isBetweenAlgorithms());
 		refreshStats();
 	}

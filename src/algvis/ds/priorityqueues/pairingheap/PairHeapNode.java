@@ -37,7 +37,7 @@ public class PairHeapNode extends TreeNode {
 	}
 
 	public PairHeapNode(PairHeapNode v) {
-		this(v.D, v.getKey(), v.x, v.y);
+		this(v.D, v.getKey(), v.tox, v.toy);
 		this.setColor(v.getColor());
 	}
 
@@ -148,7 +148,7 @@ public class PairHeapNode extends TreeNode {
 			v.setColor(Color.red);
 			if (getChild() != null) {
 				if ((state != INVISIBLE) && (getChild().state != INVISIBLE)) {
-					v.drawLine(x, y, getChild().x, getChild().y);
+					v.drawLine(position.relative, getChild().position.relative);
 				}
 			} else
 				System.out.println("child: " + getChild());
@@ -158,7 +158,7 @@ public class PairHeapNode extends TreeNode {
 			while (w != null) {
 				if ((state != INVISIBLE) && (w.state != INVISIBLE)) {
 					v.setColor(Color.black);
-					v.drawLine(x, y, w.x, w.y);
+					v.drawLine(position.relative, w.position.relative);
 				}
 				w.drawEdges(v);
 				w = w.getRight();

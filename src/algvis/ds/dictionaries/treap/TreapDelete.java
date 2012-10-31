@@ -34,7 +34,7 @@ public class TreapDelete extends Algorithm {
 	public void runAlgorithm() throws InterruptedException {
 		setHeader("delete", K);
 		addNote("bstdeletestart");
-		BSTFind find = new BSTFind(T, K, this);
+		BSTFind find = new BSTFind(T, K, curAlgorithm);
 		find.runAlgorithm();
 		TreapNode d = (TreapNode) find.getResult().get("node");
 

@@ -36,7 +36,7 @@ public class AVLDelete extends Algorithm {
 	public void runAlgorithm() throws InterruptedException {
 		setHeader("delete", K);
 		addNote("bstdeletestart");
-		BSTFind find = new BSTFind(T, K, this);
+		BSTFind find = new BSTFind(T, K, curAlgorithm);
 		find.runAlgorithm();
 		AVLNode d = (AVLNode) find.getResult().get("node");
 
