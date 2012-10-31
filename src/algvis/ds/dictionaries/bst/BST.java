@@ -37,7 +37,6 @@ public class BST extends Dictionary implements LayoutListener, ClickListener {
 
 	public BST(VisPanel M) {
 		super(M);
-		M.screen.V.setDS(this);
 	}
 
 	public BSTNode getRoot() {

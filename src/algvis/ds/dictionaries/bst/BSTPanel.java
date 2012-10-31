@@ -41,5 +41,6 @@ public class BSTPanel extends VisPanel {
 	public void start() {
 		super.start();
 		D.random(20);
+		screen.V.setDS((BST) D);
 	}
 }

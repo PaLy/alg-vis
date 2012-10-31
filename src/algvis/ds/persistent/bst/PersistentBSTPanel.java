@@ -40,6 +40,7 @@ public class PersistentBSTPanel extends VisPanel {
 	@Override
 	public void start() {
 		super.start();
+		screen.V.setDS((NaivePersistentBST) D);
 		// D.random(20);
 	}
 }

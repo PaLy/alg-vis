@@ -54,6 +54,13 @@ public class BSTNode extends Node {
 		super(D, key);
 	}
 
+	@Override
+	public void relativeTranslate(int dx, int dy) {
+		super.relativeTranslate(dx, dy);
+		if (left != null) left.relativeTranslate(dx, dy);
+		if (right != null) right.relativeTranslate(dx, dy);
+	}
+
 	public BSTNode getLeft() {
 		if (thread)
 			return null;
@@ -298,6 +305,23 @@ public class BSTNode extends Node {
 		if (right != null)
 			retVal = retVal.createUnion(right.getBoundingBox());
 		return retVal;
+	}
+
+	@Override
+	public Rectangle2D getRelativeBoundingBox() {
+		Rectangle2D retVal = super.getRelativeBoundingBox();
+		if (left != null)
+			retVal = retVal.createUnion(left.getRelativeBoundingBox());
+		if (right != null)
+			retVal = retVal.createUnion(right.getRelativeBoundingBox());
+		return retVal;
+	}
+
+	@Override
+	public void resetRelativePosition() {
+		super.resetRelativePosition();
+		if (left != null) left.resetRelativePosition();
+		if (right != null) right.resetRelativePosition();
 	}
 
 	@Override

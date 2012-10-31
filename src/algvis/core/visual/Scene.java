@@ -223,7 +223,7 @@ public class Scene extends VisualElement {
 									.iterator();
 							while (iterator.hasNext()) {
 								VisualElement element = iterator.next();
-								if (element.isAnimationDone()) {
+								if (element != null && element.isAnimationDone()) {
 									iterator.remove();
 									if (element instanceof Node) {
 										// System.out.println("removed: " +

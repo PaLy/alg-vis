@@ -39,7 +39,6 @@ public class Node extends VisualElement {
 	 * x, y - node position tox, toy - the position, where the node is heading
 	 * steps - the number of steps to reach the destination
 	 */
-	public ARPosition position;
 	public int tox;
 	public int toy;
 	protected int steps;
@@ -422,9 +421,25 @@ public class Node extends VisualElement {
 	}
 
 	@Override
+	public void relativeTranslate(int dx, int dy) {
+		position.relative.translate(dx, dy);
+	}
+
+	@Override
 	public Rectangle2D getBoundingBox() {
 		int r = RADIUS + 1;
 		return new Rectangle2D.Double(tox - r, toy - r, 2 * r, 2 * r);
+	}
+	
+	@Override
+	public Rectangle2D getRelativeBoundingBox() {
+		int r = RADIUS + 1;
+		return new Rectangle2D.Double(position.relative.x - r, position.relative.y - r, 2 * r, 2 * r);
+	}
+
+	@Override
+	public void resetRelativePosition() {
+		position.relative.move(position.x, position.y);
 	}
 
 	@Override

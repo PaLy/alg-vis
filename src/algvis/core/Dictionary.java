@@ -47,8 +47,23 @@ abstract public class Dictionary extends DataStructure {
 	}
 
 	@Override
+	public void relativeTranslate(int dx, int dy) {
+		if (root != null) root.relativeTranslate(dx, dy);
+	}
+
+	@Override
 	public Rectangle2D getBoundingBox() {
 		return root == null ? null : root.getBoundingBox();
+	}
+
+	@Override
+	protected Rectangle2D getRelativeBoundingBox() {
+		return root == null ? null : root.getRelativeBoundingBox();
+	}
+
+	@Override
+	public void resetRelativePosition() {
+		if (root != null) root.resetRelativePosition();
 	}
 
 	@Override

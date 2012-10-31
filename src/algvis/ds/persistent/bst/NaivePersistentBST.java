@@ -21,13 +21,14 @@ import algvis.core.Algorithm;
 import algvis.core.NodeColor;
 import algvis.core.history.HashtableStoreSupport;
 import algvis.core.visual.ArrayOfPointers;
-import algvis.core.visual.Scene;
+import algvis.core.visual.ZDepth;
 import algvis.ds.dictionaries.bst.BST;
 import algvis.ds.dictionaries.bst.BSTDelete;
 import algvis.ds.dictionaries.bst.BSTInsert;
 import algvis.ds.dictionaries.bst.BSTNode;
 import algvis.ds.persistent.PersistentDS;
 import algvis.ui.VisPanel;
+import algvis.ui.view.ClickListener;
 import algvis.ui.view.View;
 
 import java.awt.geom.Rectangle2D;
@@ -35,7 +36,7 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Hashtable;
 
-public class NaivePersistentBST extends PersistentDS {
+public class NaivePersistentBST extends PersistentDS implements ClickListener {
 	public static String dsName = "npbst";
 	private ArrayList<BST> array = new ArrayList<BST>();
 	private ArrayOfPointers arrayOfPointers;
@@ -98,6 +99,13 @@ public class NaivePersistentBST extends PersistentDS {
 	}
 
 	@Override
+	public void resetRelativePosition() {
+		for (BST bst : array) {
+			bst.resetRelativePosition();
+		}
+	}
+
+	@Override
 	public void storeState(Hashtable<Object, Object> state) {
 		super.storeState(state);
 		HashtableStoreSupport.store(state, hash + "array", array.clone());
@@ -120,6 +128,13 @@ public class NaivePersistentBST extends PersistentDS {
 		}
 	}
 
+	@Override
+	public void mouseClicked(int x, int y) {
+		if (panel.history.isBetweenAlgorithms()) {
+			arrayOfPointers.mouseClicked(x, y);
+		}
+	}
+
 	private abstract class Update extends Algorithm {
 		protected Update(VisPanel panel) {
 			super(panel);
@@ -127,6 +142,7 @@ public class NaivePersistentBST extends PersistentDS {
 		
 		protected BST addBST() {
 			if (array.size() > 0) {
+				arrayOfPointers.resetShade();
 				addStep("npbst-copy-bst");
 				BST newBST = array.get(array.size() - 1).clone();
 				addToPreState(newBST);
@@ -142,7 +158,7 @@ public class NaivePersistentBST extends PersistentDS {
 				BST newBST = new BST(NaivePersistentBST.this.panel); 
 				array.add(newBST);
 				addToPreState(newBST);
-				arrayOfPointers = new ArrayOfPointers(0, -50, 20, Scene.MAXZ - 1);
+				arrayOfPointers = new ArrayOfPointers(panel.scene, 0, -50, 20, ZDepth.DS);
 				addToScene(arrayOfPointers);
 				return newBST;
 			}
@@ -162,6 +178,7 @@ public class NaivePersistentBST extends PersistentDS {
 					}
 				}
 			}
+			newBST.getRoot().calcTree();
 		}
 	}
 	

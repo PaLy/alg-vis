@@ -23,11 +23,13 @@ import java.util.Hashtable;
 
 import javax.swing.undo.StateEditable;
 
+import algvis.core.ARPosition;
 import algvis.ui.view.View;
 
 public abstract class VisualElement implements StateEditable {
-	protected int zDepth;
 	protected final String hash = Integer.toString(hashCode());
+	protected int zDepth;
+	public ARPosition position;
 
 	protected VisualElement(int zDepth) {
 		this.zDepth = zDepth;
@@ -47,8 +49,18 @@ public abstract class VisualElement implements StateEditable {
 	protected abstract void draw(View v) throws ConcurrentModificationException;
 
 	protected abstract void move() throws ConcurrentModificationException;
+	
+	public void relativeTranslate(int dx, int dy){
+	}
 
 	protected abstract Rectangle2D getBoundingBox();
+	
+	protected Rectangle2D getRelativeBoundingBox() {
+		return null;
+	}
+	
+	public void resetRelativePosition() {
+	}
 
 	protected void endAnimation() {
 	}
@@ -67,5 +79,9 @@ public abstract class VisualElement implements StateEditable {
 		// Object zDepth = state.get(hash + "zDepth");
 		// if (zDepth != null) setZDepth((Integer)
 		// HashtableStoreSupport.restore(zDepth));
+	}
+
+	public ARPosition getPosition() {
+		return position;
 	}
 }

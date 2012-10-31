@@ -20,7 +20,9 @@ package algvis.core.visual;
 import algvis.core.ARPosition;
 import algvis.core.Node;
 import algvis.core.history.HashtableStoreSupport;
+import algvis.ds.dictionaries.bst.BSTNode;
 import algvis.ui.Fonts;
+import algvis.ui.view.ClickListener;
 import algvis.ui.view.View;
 
 import java.awt.*;
@@ -29,23 +31,33 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Hashtable;
 
-public class ArrayOfPointers extends VisualElement {
+// TODO something more general i.e. T extends VisualElement (instead of BSTNode)
+public class ArrayOfPointers<T extends BSTNode> extends VisualElement implements ClickListener {
 	private int width;
-	private ARPosition position;
 	private int length = 0;
 	private final ArrayList<String> arrayS = new ArrayList<String>();
-	private final ArrayList<Node> arrayN = new ArrayList<Node>();
+	private final ArrayList<T> arrayT = new ArrayList<T>();
+	private ShadeSubtree shade;
+	private final Scene scene;
 	
-	public ArrayOfPointers(int x, int y, int width, int zDepth) {
+	public ArrayOfPointers(Scene scene, int x, int y, int width, int zDepth) {
 		super(zDepth);
 		position = new ARPosition(x, y);
 		this.width = width;
+		this.scene = scene;
+	}
+	
+	public void resetShade() {
+		if (shade != null) scene.remove(shade);
+		scene.add(shade = new ShadeSubtree(arrayT.get(arrayT.size() - 1)));
 	}
 
-	public void add(String s, Node n) {
+	public void add(String s, T n) {
 		arrayS.add(s);
-		arrayN.add(n);
+		arrayT.add(n);
 		length++;
+		if (shade != null) scene.remove(shade);
+		scene.add(shade = new ShadeSubtree(n));
 	}
 	
 	@Override
@@ -57,7 +69,8 @@ public class ArrayOfPointers extends VisualElement {
 		for (int i = 0; i < length; i++) {
 			v.drawRectangle(new Rectangle.Double(recX, recY, width, width));
 			v.drawString(arrayS.get(i), recX + width / 2, recY + width / 2, Fonts.NORMAL);
-			v.drawArrow(recX + width / 2, recY + width, arrayN.get(i).position.relative.x, arrayN.get(i).position.relative.y 
+			v.drawArrow(recX + width / 2, recY + width, arrayT.get(i).getPosition().relative.x, 
+					arrayT.get(i).getPosition().relative.y 
 					- Node.RADIUS);
 			recX += width;
 		}
@@ -84,5 +97,23 @@ public class ArrayOfPointers extends VisualElement {
 		super.restoreState(state);
 		Object length = state.get(hash + "length");
 		if (length != null) this.length = (Integer) HashtableStoreSupport.restore(length);
+	}
+
+	@Override
+	public void mouseClicked(int x, int y) {
+		int sx = position.relative.x - length * width / 2;
+		int ex = position.relative.x + length * width /2;
+		if (y > position.relative.y && y < position.relative.y + width && x > sx && x < ex) {
+			x -= sx;
+			int version = x / width;
+			
+			double dx = 0 - arrayT.get(version).getRelativeBoundingBox().getCenterX();
+			if (shade != null) scene.remove(shade);
+			scene.add(shade = new ShadeSubtree(arrayT.get(version)));
+			
+			for (T n : arrayT) {
+				n.relativeTranslate((int) dx, 0);
+			}
+		}
 	}
 }

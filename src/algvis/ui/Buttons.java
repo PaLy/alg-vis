@@ -204,6 +204,7 @@ abstract public class Buttons extends JPanel implements ActionListener,
 
 	@Override
 	public void actionPerformed(ActionEvent evt) {
+		D.resetRelativePosition();
 		I.sb.setText(" ");
 		if (evt.getSource() == previous) {
 			if (panel.history.canUndo()) {
