@@ -2,6 +2,7 @@
 
 <?import java.lang.*?>
 <?import java.util.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
@@ -24,20 +25,30 @@
   -->
 
 <BorderPane id="BorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns:fx="http://javafx.com/fxml" fx:controller="algvis2.ui.AlgVisFXMLController">
+  <bottom>
+    <AnchorPane prefHeight="-1.0" prefWidth="-1.0">
+      <children>
+        <Label alignment="CENTER" text="Stats" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      </children>
+      <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+      </padding>
+    </AnchorPane>
+  </bottom>
   <center>
     <StackPane maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
       <children>
         <AnchorPane prefHeight="-1.0" prefWidth="-1.0" />
         <AnchorPane prefHeight="200.0" prefWidth="200.0">
           <children>
-            <TitledPane fx:id="operationsTitledPane" alignment="TOP_LEFT" animated="true" collapsible="true" contentDisplay="LEFT" expanded="false" maxHeight="-1.0" maxWidth="-1.0" onMouseEntered="#handleTitledPaneMouseEntered" onMouseExited="#handleTitlePaneMouseExited" prefHeight="-1.0" prefWidth="-1.0" text="%operations" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+            <TitledPane fx:id="operationsTitledPane" alignment="TOP_LEFT" animated="true" collapsible="true" contentDisplay="LEFT" disable="false" expanded="false" maxHeight="-1.0" maxWidth="-1.0" onMouseEntered="#handleTitledPaneMouseEntered" onMouseExited="#handleTitlePaneMouseExited" prefHeight="-1.0" prefWidth="-1.0" text="%operations" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
               <content>
-                <AnchorPane id="Content" maxHeight="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="150.0" prefWidth="500.0" />
+                <fx:include source="/algvis2/ui/Buttons.fxml" />
               </content>
             </TitledPane>
-            <TitledPane alignment="TOP_LEFT" animated="true" ellipsisString="..." expanded="false" onMouseEntered="#handleTitledPaneMouseEntered" prefHeight="-1.0" prefWidth="-1.0" text="%steps" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <TitledPane alignment="TOP_LEFT" animated="true" ellipsisString="..." expanded="false" onMouseEntered="#handleTitledPaneMouseEntered" prefHeight="-1.0" prefWidth="-1.0" text="%steps" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <content>
-                <ScrollPane fitToHeight="true" prefHeight="600.0" prefViewportHeight="0.0" prefWidth="300.0">
+                <ScrollPane fitToHeight="false" prefHeight="-1.0" prefViewportHeight="0.0" prefWidth="300.0">
                   <content>
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
                   </content>

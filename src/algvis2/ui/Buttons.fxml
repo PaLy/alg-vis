@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?scenebuilder-preview-i18n-resource ../../Messages_en.properties?>
+<!--
+  ~ Copyright (c) 2012 Jakub Kováč, Katarína Kotrlová, Pavol Lukča, Viktor Tomkovič, Tatiana Tóthová
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="-1.0" prefWidth="-1.0" xmlns:fx="http://javafx.com/fxml">
+  <children>
+    <VBox layoutX="0.0" layoutY="0.0" prefHeight="-1.0" prefWidth="-1.0">
+      <children>
+        <HBox alignment="CENTER" prefHeight="-1.0" prefWidth="-1.0" spacing="10.0">
+          <children>
+            <TextField prefHeight="-1.0" prefWidth="100.0" />
+            <Button mnemonicParsing="false" text="%button-insert" />
+            <Separator orientation="VERTICAL" prefHeight="-1.0" />
+            <Button mnemonicParsing="false" text="%previous" />
+            <Button mnemonicParsing="false" text="%next" />
+          </children>
+          <padding>
+            <Insets bottom="20.0" fx:id="x1" />
+          </padding>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="-1.0" prefWidth="-1.0" spacing="10.0">
+          <children>
+            <CheckBox mnemonicParsing="false" selected="true" text="%button-pause" />
+            <Button mnemonicParsing="false" text="%button-clear" />
+            <Button mnemonicParsing="false" text="%button-random" />
+          </children>
+          <padding>
+            <Insets />
+          </padding>
+        </HBox>
+      </children>
+      <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+      </padding>
+    </VBox>
+  </children>
+</AnchorPane>
