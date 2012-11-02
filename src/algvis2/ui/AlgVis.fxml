@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?scenebuilder-preview-i18n-resource ../../Messages_en.properties?>
+<!--
+  ~ Copyright (c) 2012 Jakub Kováč, Katarína Kotrlová, Pavol Lukča, Viktor Tomkovič, Tatiana Tóthová
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<BorderPane id="BorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns:fx="http://javafx.com/fxml" fx:controller="algvis2.ui.AlgVisFXMLController">
+  <center>
+    <StackPane maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
+      <children>
+        <AnchorPane prefHeight="-1.0" prefWidth="-1.0" />
+        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+          <children>
+            <TitledPane fx:id="operationsTitledPane" alignment="TOP_LEFT" animated="true" collapsible="true" contentDisplay="LEFT" expanded="false" maxHeight="-1.0" maxWidth="-1.0" onMouseEntered="#handleTitledPaneMouseEntered" onMouseExited="#handleTitlePaneMouseExited" prefHeight="-1.0" prefWidth="-1.0" text="%operations" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+              <content>
+                <AnchorPane id="Content" maxHeight="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="150.0" prefWidth="500.0" />
+              </content>
+            </TitledPane>
+            <TitledPane alignment="TOP_LEFT" animated="true" ellipsisString="..." expanded="false" onMouseEntered="#handleTitledPaneMouseEntered" prefHeight="-1.0" prefWidth="-1.0" text="%steps" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <content>
+                <ScrollPane fitToHeight="true" prefHeight="600.0" prefViewportHeight="0.0" prefWidth="300.0">
+                  <content>
+                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+                  </content>
+                </ScrollPane>
+              </content>
+            </TitledPane>
+          </children>
+        </AnchorPane>
+      </children>
+    </StackPane>
+  </center>
+  <top>
+    <MenuBar>
+      <menus>
+        <Menu mnemonicParsing="false" text="%dictionary">
+          <items>
+            <MenuItem mnemonicParsing="false" text="%bst" />
+            <MenuItem mnemonicParsing="false" text="%rotations" />
+            <MenuItem mnemonicParsing="false" text="%avltree" />
+            <MenuItem mnemonicParsing="false" text="%23tree" />
+            <MenuItem mnemonicParsing="false" text="%234tree" />
+            <MenuItem mnemonicParsing="false" text="%btree" />
+            <MenuItem mnemonicParsing="false" text="%redblack" />
+            <MenuItem mnemonicParsing="false" text="%aatree" />
+            <MenuItem mnemonicParsing="false" text="%treap" />
+            <MenuItem mnemonicParsing="false" text="%skiplist" />
+            <MenuItem mnemonicParsing="false" text="%scapegoat" />
+            <MenuItem mnemonicParsing="false" text="%splaytree" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="%pq">
+          <items>
+            <MenuItem mnemonicParsing="false" text="%heap" />
+            <MenuItem mnemonicParsing="false" text="%daryheap" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="%meldable-pq">
+          <items>
+            <MenuItem mnemonicParsing="false" text="%leftheap" />
+            <MenuItem mnemonicParsing="false" text="%skewheap" />
+            <MenuItem mnemonicParsing="false" text="%pairingheap" />
+            <MenuItem mnemonicParsing="false" text="%binheap" />
+            <MenuItem mnemonicParsing="false" text="%lazybinheap" />
+            <MenuItem mnemonicParsing="false" text="%fibheap" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="%stringology">
+          <items>
+            <MenuItem mnemonicParsing="false" text="%trie" />
+            <MenuItem mnemonicParsing="false" text="%suffixtree" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="%intervaltree">
+          <items>
+            <MenuItem mnemonicParsing="false" text="%intervaltree" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="%ufa">
+          <items>
+            <MenuItem mnemonicParsing="false" text="%ufi" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="%language">
+          <items>
+            <MenuItem mnemonicParsing="false" onAction="#selectLanguageEN" text="English" />
+            <MenuItem mnemonicParsing="false" onAction="#selectLanguageSK" text="Slovensky" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+  </top>
+</BorderPane>
