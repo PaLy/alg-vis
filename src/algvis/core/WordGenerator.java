@@ -73,7 +73,7 @@ public class WordGenerator {
 		return s.toString();
 	}
 
-	public static String getWord(Settings s) {
+	public static String getWord() {
 		int current_language = Languages.getCurrentLanguage();
 		switch (current_language) {
 		case 0:

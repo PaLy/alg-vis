@@ -107,7 +107,7 @@ public class Trie extends DataStructure {
 			if (panel.S == null) {
 				insert(WordGenerator.getSkWord());
 			} else {
-				insert(WordGenerator.getWord(panel.S));
+				insert(WordGenerator.getWord());
 			}
 		}
 		start(new Runnable() {

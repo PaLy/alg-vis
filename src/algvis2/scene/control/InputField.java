@@ -1,46 +1,34 @@
 /*******************************************************************************
  * Copyright (c) 2012 Jakub Kováč, Katarína Kotrlová, Pavol Lukča, Viktor Tomkovič, Tatiana Tóthová
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package algvis.ui;
+
+package algvis2.scene.control;
+
+import algvis.core.MyRandom;
+import algvis.core.WordGenerator;
+import javafx.scene.control.TextField;
 
 import java.util.Vector;
 
-import javax.swing.JTextField;
+public class InputField {
+	public final static int MAX_VALUE = 999;
+	private final TextField textField;
 
-import algvis.core.MyRandom;
-import algvis.core.Settings;
-import algvis.core.WordGenerator;
-import algvis.internationalization.ILabel;
-
-/**
- * The Class InputField. This is a smart version of JTextField with methods that
- * parse the input. The input field may be asked for an integer, a vector of
- * integers, or a non-empty vector of integers (if no input is given a random
- * value is generated).
- */
-public class InputField extends JTextField {
-	private static final long serialVersionUID = -1263697952255226926L;
-	public final static int MAX = 999;
-	final ILabel sb; // status bar
-	private final Settings s;
-
-	public InputField(int cols, ILabel sb, Settings s) {
-		super(cols);
-		this.sb = sb;
-		this.s = s;
+	public InputField(TextField textField) {
+		this.textField = textField;
 	}
 
 	/**
@@ -48,7 +36,7 @@ public class InputField extends JTextField {
 	 * value def is returned.
 	 */
 	public int getInt(int def) {
-		return getInt(def, 1, MAX);
+		return getInt(def, 1, MAX_VALUE);
 	}
 
 	/**
@@ -57,25 +45,27 @@ public class InputField extends JTextField {
 	 */
 	public int getInt(int def, int min, int max) {
 		int n = def;
-		String firstWord = this.getText().split("(\\s|,)")[0];
+		String firstWord = textField.getText().split("(\\s|,)")[0];
 		try {
 			n = Integer.parseInt(firstWord);
 			if (n < min) {
 				n = min;
-				sb.setText("value too small; using the minimum value " + min
-						+ " instead");
+				// TODO vyskoci cervena bublina (mozno oranzova)
+//				sb.setText("value too small; using the minimum value " + min
+//					+ " instead");
 			}
 			if (n > max) {
 				n = max;
-				sb.setText("value too high; using the maximum value " + max
-						+ " instead");
+				// TODO
+//				sb.setText("value too high; using the maximum value " + max
+//					+ " instead");
 			}
-			sb.setText(" ");
 		} catch (NumberFormatException e) {
-			sb.setText("couldn't parse an integer; using the default value "
-					+ def);
+			// TODO
+//			sb.setText("couldn't parse an integer; using the default value "
+//				+ def);
 		}
-		setText("");
+		textField.setText("");
 		return n;
 	}
 
@@ -84,7 +74,7 @@ public class InputField extends JTextField {
 	 * may be delimited by whitespaces and/or commas.
 	 */
 	public Vector<Integer> getVI() {
-		return getVI(1, MAX);
+		return getVI(1, MAX_VALUE);
 	}
 
 	/**
@@ -94,8 +84,8 @@ public class InputField extends JTextField {
 	public Vector<Integer> getVI(int min, int max) {
 		boolean range = false;
 		Vector<Integer> args = new Vector<Integer>();
-		String[] tokens = this.getText().replaceAll("\\.{2,}", " .. ")
-				.split("(\\s|,)+");
+		String[] tokens = textField.getText().replaceAll("\\.{2,}", " .. ")
+			.split("(\\s|,)+");
 		for (String t : tokens) {
 			if ("..".equals(t)) {
 				range = true;
@@ -105,11 +95,13 @@ public class InputField extends JTextField {
 					x = Integer.parseInt(t);
 					if (x < min) {
 						x = min;
-						sb.setText("value too small; using the minimum value instead");
+						// TODO
+//						sb.setText("value too small; using the minimum value instead");
 					}
 					if (x > max) {
 						x = max;
-						sb.setText("value too high; using the maximum value instead");
+						// TODO
+//						sb.setText("value too high; using the maximum value instead");
 					}
 					if (range) {
 						int a = args.lastElement();
@@ -123,11 +115,12 @@ public class InputField extends JTextField {
 					}
 					args.add(x);
 				} catch (NumberFormatException e) {
-					sb.setText("couldn't parse an integer");
+					// TODO
+//					sb.setText("couldn't parse an integer");
 				}
 			}
 		}
-		setText("");
+		textField.setText("");
 		return args;
 	}
 
@@ -137,7 +130,7 @@ public class InputField extends JTextField {
 	 * given, a vector with 1 random value in the range 1..MAX is returned.
 	 */
 	public Vector<Integer> getNonEmptyVI() {
-		return getNonEmptyVI(1, MAX);
+		return getNonEmptyVI(1, MAX_VALUE);
 	}
 
 	/**
@@ -149,7 +142,8 @@ public class InputField extends JTextField {
 		Vector<Integer> args = getVI();
 		if (args.size() == 0) {
 			args.add(MyRandom.Int(min, max));
-			sb.setText("no input; using random value");
+			// TODO
+//			sb.setText("no input; using random value");
 		}
 		return args;
 	}
@@ -159,26 +153,26 @@ public class InputField extends JTextField {
 	 * [a-z] -> [A-Z], All chars except [A-Z] are lost.
 	 */
 	public Vector<String> getVS() {
-		String ss = getText();
+		String ss = textField.getText();
 		Vector<String> result = new Vector<String>();
 		if (ss.compareTo("") == 0) {
 			result.add(WordGenerator.getWord());
 		} else {
 			result = WordGenerator.parseString(ss);
 		}
-		setText("");
+		textField.setText("");
 		return result;
 	}
 
 	public Vector<String> getVABS() {
-		String ss = getText();
+		String ss = textField.getText();
 		Vector<String> result = new Vector<String>();
 		if (ss.compareTo("") == 0) {
 			result.add(WordGenerator.getABWord(20));
 		} else {
 			result = WordGenerator.parseString(ss);
 		}
-		setText("");
+		textField.setText("");
 		return result;
 	}
 }

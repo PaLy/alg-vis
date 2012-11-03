@@ -36,9 +36,13 @@
     </AnchorPane>
   </bottom>
   <center>
-    <StackPane maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
+    <StackPane fx:id="visualizationParent" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
       <children>
-        <AnchorPane prefHeight="-1.0" prefWidth="-1.0" />
+        <StackPane prefHeight="150.0" prefWidth="200.0">
+          <children>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+          </children>
+        </StackPane>
         <AnchorPane prefHeight="200.0" prefWidth="200.0">
           <children>
             <TitledPane fx:id="operationsTitledPane" alignment="TOP_LEFT" animated="true" collapsible="true" contentDisplay="LEFT" disable="false" expanded="false" maxHeight="-1.0" maxWidth="-1.0" onMouseEntered="#handleTitledPaneMouseEntered" onMouseExited="#handleTitlePaneMouseExited" prefHeight="-1.0" prefWidth="-1.0" text="%operations" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
@@ -65,9 +69,9 @@
       <menus>
         <Menu mnemonicParsing="false" text="%dictionary">
           <items>
-            <MenuItem mnemonicParsing="false" text="%bst" />
+            <MenuItem mnemonicParsing="false" onAction="#selectVisualization" text="%bst" fx:id="menu_bst" />
             <MenuItem mnemonicParsing="false" text="%rotations" />
-            <MenuItem mnemonicParsing="false" text="%avltree" />
+            <MenuItem mnemonicParsing="false" onAction="#selectVisualization" text="%avltree" fx:id="menu_avl" />
             <MenuItem mnemonicParsing="false" text="%23tree" />
             <MenuItem mnemonicParsing="false" text="%234tree" />
             <MenuItem mnemonicParsing="false" text="%btree" />

@@ -24,14 +24,14 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="-1.0" prefWidth="-1.0" xmlns:fx="http://javafx.com/fxml">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="-1.0" prefWidth="-1.0" xmlns:fx="http://javafx.com/fxml" fx:controller="algvis2.ui.AlgVisFXMLController">
   <children>
     <VBox layoutX="0.0" layoutY="0.0" prefHeight="-1.0" prefWidth="-1.0">
       <children>
         <HBox alignment="CENTER" prefHeight="-1.0" prefWidth="-1.0" spacing="10.0">
           <children>
-            <TextField prefHeight="-1.0" prefWidth="100.0" />
-            <Button mnemonicParsing="false" text="%button-insert" />
+            <TextField fx:id="inputField" prefHeight="-1.0" prefWidth="100.0" />
+            <Button mnemonicParsing="false" onAction="#insertPressed" text="%button-insert" />
             <Separator orientation="VERTICAL" prefHeight="-1.0" />
             <Button mnemonicParsing="false" text="%previous" />
             <Button mnemonicParsing="false" text="%next" />
@@ -43,8 +43,8 @@
         <HBox alignment="CENTER" prefHeight="-1.0" prefWidth="-1.0" spacing="10.0">
           <children>
             <CheckBox mnemonicParsing="false" selected="true" text="%button-pause" />
-            <Button mnemonicParsing="false" text="%button-clear" />
-            <Button mnemonicParsing="false" text="%button-random" />
+            <Button mnemonicParsing="false" onAction="#clearPressed" text="%button-clear" />
+            <Button mnemonicParsing="false" onAction="#randomPressed" text="%button-random" />
           </children>
           <padding>
             <Insets />
