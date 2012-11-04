@@ -18,14 +18,17 @@
 package algvis2.ds.dictionary.bst;
 
 import algvis2.core.Dictionary;
+import algvis2.scene.layout.Layouts;
 import algvis2.scene.layout.VisPane;
 import algvis2.scene.layout.ZDepth;
 
 public class BST extends Dictionary {
+	public static final Layouts DEF_LAYOUT = Layouts.BINTREELAYOUT;
 	private BSTNode root = null;
 	
 	public BST(VisPane visPane) {
 		super(visPane);
+		layout = DEF_LAYOUT;
 	}
 
 	@Override
@@ -45,7 +48,8 @@ public class BST extends Dictionary {
 
 	@Override
 	public void insert(int x) {
-		BSTNode newNode = new BSTNode(x);
+		BSTNode newNode = new BSTNode(x, layout);
+		
 		if (root == null) {
 			setRoot(newNode);
 		} else {
@@ -71,13 +75,23 @@ public class BST extends Dictionary {
 	}
 
 	private void setRoot(BSTNode root) {
+		if (this.root != null) visPane.remove(this.root.getLayout());
 		this.root = root;
-		visPaneLayers[ZDepth.NODES].getChildren().clear();
-		if (root != null) visPaneLayers[ZDepth.NODES].getChildren().add(root.getLayout());
+		if (this.root != null) visPane.add(this.root.getLayout(), ZDepth.NODES);
 	}
 
 	@Override
 	public void clear() {
 		setRoot(null);
+	}
+
+	@Override
+	public void setLayout(Layouts layout) {
+		super.setLayout(layout);
+		if (root != null) {
+			visPane.remove(root.getLayout());
+			root.setLayoutRec(layout);
+			visPane.add(root.getLayout(), ZDepth.NODES);
+		} 
 	}
 }

@@ -19,21 +19,16 @@ package algvis2.core;
 
 import algvis.core.MyRandom;
 import algvis2.scene.control.InputField;
+import algvis2.scene.layout.Layouts;
 import algvis2.scene.layout.VisPane;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
-import javafx.scene.layout.FlowPane;
 
 public abstract class DataStructure {
 	protected final VisPane visPane;
-	protected final FlowPane[] visPaneLayers;
+	protected Layouts layout;
 
 	protected DataStructure(VisPane visPane) {
 		this.visPane = visPane;
-		ObservableList<Node> ch = visPane.getChildren();
-		visPaneLayers = visPane.getChildren().toArray(new FlowPane[ch.size()]);
 	}
-
 
 	abstract public String getStats();
 
@@ -44,5 +39,9 @@ public abstract class DataStructure {
 	public void random(int n) {
 		for (int i = 0; i < n; i++)
 			insert(MyRandom.Int(InputField.MAX_VALUE + 1));
+	}
+	
+	public void setLayout(Layouts layout) {
+		this.layout = layout;
 	}
 }

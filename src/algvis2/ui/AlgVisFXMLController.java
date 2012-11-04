@@ -17,21 +17,52 @@
 
 package algvis2.ui;
 
+import algvis2.ds.dictionary.bst.BST;
 import algvis2.scene.control.InputField;
+import algvis2.scene.layout.Layouts;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
-public class AlgVisFXMLController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class AlgVisFXMLController implements Initializable {
 	@FXML private TitledPane operationsTitledPane;
 	@FXML private Pane visualizationParent;
 	@FXML private MenuItem menu_bst;
 	@FXML private MenuItem menu_avl;
 	@FXML private TextField inputField;
+	@FXML private ChoiceBox<String> button_layout;
+
+	@Override
+	public void initialize(URL url, ResourceBundle resourceBundle) {
+		// TODO preco sa tato funkcia na zaciatku zavola 3 krat?
+		// pri 1. volani button_layout = false
+		// pri 2. volani button_layout = true
+		// pri 3. volani button_layout = false
+		if (button_layout != null) {
+			button_layout.setValue(BST.DEF_LAYOUT.getName());
+			button_layout.valueProperty().addListener(new ChangeListener<String>() {
+				@Override
+				public void changed(ObservableValue<? extends String> observableValue, String s, String s1) {
+					if (s1.equals(Layouts.BINTREELAYOUT.getName())) {
+						AlgVis.getCurrentVis().getDataStructure().setLayout(Layouts.BINTREELAYOUT);
+					} else if (s1.equals(Layouts.ANOTHERBINTREELAYOUT.getName())) {
+						AlgVis.getCurrentVis().getDataStructure().setLayout(Layouts.ANOTHERBINTREELAYOUT);
+					}
+				}
+			});
+		}
+	}
 	
 	@FXML protected void handleTitledPaneMouseEntered(MouseEvent event) {
 		((TitledPane) event.getSource()).setExpanded(true);

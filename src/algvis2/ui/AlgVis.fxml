@@ -45,12 +45,12 @@
         </StackPane>
         <AnchorPane prefHeight="200.0" prefWidth="200.0">
           <children>
-            <TitledPane fx:id="operationsTitledPane" alignment="TOP_LEFT" animated="true" collapsible="true" contentDisplay="LEFT" disable="false" expanded="false" maxHeight="-1.0" maxWidth="-1.0" onMouseEntered="#handleTitledPaneMouseEntered" onMouseExited="#handleTitlePaneMouseExited" prefHeight="-1.0" prefWidth="-1.0" text="%operations" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+            <TitledPane fx:id="operationsTitledPane" alignment="TOP_LEFT" animated="true" collapsible="true" contentDisplay="LEFT" disable="false" expanded="true" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" text="%operations" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
               <content>
                 <fx:include source="/algvis2/ui/Buttons.fxml" />
               </content>
             </TitledPane>
-            <TitledPane alignment="TOP_LEFT" animated="true" ellipsisString="..." expanded="false" onMouseEntered="#handleTitledPaneMouseEntered" prefHeight="-1.0" prefWidth="-1.0" text="%steps" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <TitledPane alignment="TOP_LEFT" animated="true" ellipsisString="..." expanded="false" prefHeight="-1.0" prefWidth="-1.0" text="%steps" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <content>
                 <ScrollPane fitToHeight="false" prefHeight="-1.0" prefViewportHeight="0.0" prefWidth="300.0">
                   <content>

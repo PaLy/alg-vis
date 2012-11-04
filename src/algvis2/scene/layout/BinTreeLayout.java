@@ -17,36 +17,26 @@
 
 package algvis2.scene.layout;
 
-import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.GridPane;
 
-import java.util.Map;
-import java.util.WeakHashMap;
+/**
+ * -----------------------
+ * |      | root |       |
+ * -----------------------
+ * | left |      | right |
+ * -----------------------
+ */
+public class BinTreeLayout extends GridPane {
 
-public class VisPane extends StackPane {
-	private final Map<Node, Pane> elementParentPane = new WeakHashMap<Node, Pane>();
-	
-	public VisPane() {
+	public BinTreeLayout() {
 		super();
-		ObservableList<Node> children =  getChildren();
-		for (int i = 0; i <= ZDepth.TOP; i++) {
-			FlowPane layer = new FlowPane();
-			layer.setAlignment(Pos.TOP_CENTER);
-			children.add(layer);
-		}
-	}
-	
-	public void add(Node node, int zDepth) {
-		Pane layer = (Pane) getChildren().get(zDepth); 
-		layer.getChildren().add(node);
-		elementParentPane.put(node, layer);
 	}
 
-	public void remove(Node node) {
-		elementParentPane.get(node).getChildren().remove(node);
+	public void rebuild(Node root, Node left, Node right) {
+		getChildren().clear();
+		add(root, 1, 0);
+		if (left != null) add(left, 0, 1);
+		if (right != null) add(right, 2, 1);
 	}
 }

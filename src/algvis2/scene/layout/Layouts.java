@@ -17,36 +17,17 @@
 
 package algvis2.scene.layout;
 
-import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-
-import java.util.Map;
-import java.util.WeakHashMap;
-
-public class VisPane extends StackPane {
-	private final Map<Node, Pane> elementParentPane = new WeakHashMap<Node, Pane>();
+public enum Layouts {
+	BINTREELAYOUT ("BinTreeLayout"),
+	ANOTHERBINTREELAYOUT ("AnotherBinTreeLayout");
 	
-	public VisPane() {
-		super();
-		ObservableList<Node> children =  getChildren();
-		for (int i = 0; i <= ZDepth.TOP; i++) {
-			FlowPane layer = new FlowPane();
-			layer.setAlignment(Pos.TOP_CENTER);
-			children.add(layer);
-		}
+	private final String name;
+	
+	private Layouts(String name) {
+		this.name = name;
 	}
 	
-	public void add(Node node, int zDepth) {
-		Pane layer = (Pane) getChildren().get(zDepth); 
-		layer.getChildren().add(node);
-		elementParentPane.put(node, layer);
-	}
-
-	public void remove(Node node) {
-		elementParentPane.get(node).getChildren().remove(node);
+	public String getName() {
+		return name;
 	}
 }

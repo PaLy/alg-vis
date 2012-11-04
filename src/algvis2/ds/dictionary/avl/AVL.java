@@ -81,6 +81,6 @@ public class AVL extends BST {
 			.build();
 //		translateTransition2.play();
 
-		visPaneLayers[ZDepth.TOP].getChildren().add(hBox);
+		visPane.add(hBox, ZDepth.TOP);
 	}
 }

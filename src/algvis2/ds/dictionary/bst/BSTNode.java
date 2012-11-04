@@ -17,34 +17,29 @@
 
 package algvis2.ds.dictionary.bst;
 
+import algvis2.scene.layout.AnotherBinTreeLayout;
+import algvis2.scene.layout.BinTreeLayout;
+import algvis2.scene.layout.Layouts;
 import algvis2.scene.shape.Node;
-import javafx.scene.layout.GridPane;
 
 public class BSTNode extends Node {
-	/**
-	 * Contains this layout:
-	 * -----------------------
-	 * |      | this |       |
-	 * -----------------------
-	 * | left |      | right |
-	 * -----------------------
-	 */
-	private GridPane layout = new GridPane();
+	private BinTreeLayout layout;
 	private BSTNode left, right;
 	
-	public BSTNode(int key) {
+	public BSTNode(int key, Layouts layout) {
 		super(key);
-		layout.add(this, 1, 0);
+		this.layout = createLayout(layout);
+		this.layout.rebuild(this, null, null);
 	}
 	
 	public void setLeft(BSTNode left) {
 		this.left = left;
-		rebuildLayout();
+		layout.rebuild(this, left.getLayout(), right == null ? null : right.getLayout());
 	}
 	
 	public void setRight(BSTNode right) {
 		this.right = right;
-		rebuildLayout();
+		layout.rebuild(this, left == null ? null : left.getLayout(), right.getLayout());
 	}
 
 	public BSTNode getLeft() {
@@ -55,14 +50,26 @@ public class BSTNode extends Node {
 		return right;
 	}
 	
-	public GridPane getLayout() {
+	public BinTreeLayout getLayout() {
 		return layout;
 	}
+
+	public void setLayoutRec(Layouts layout) {
+		this.layout = createLayout(layout);
+		if (left != null) left.setLayoutRec(layout);
+		if (right != null) right.setLayoutRec(layout);
+		this.layout.rebuild(
+			this,
+			left == null ? null : left.getLayout(),
+			right == null ? null : right.getLayout()
+		);
+	}
 	
-	private void rebuildLayout() {
-		layout.getChildren().clear();
-		layout.add(this, 1, 0);
-		if (left != null) layout.add(left.layout, 0, 1);
-		if (right != null) layout.add(right.layout, 2, 1);
+	private BinTreeLayout createLayout(Layouts layout) {
+		switch (layout) {
+			case BINTREELAYOUT: return new BinTreeLayout();
+			case ANOTHERBINTREELAYOUT: return new AnotherBinTreeLayout();
+			default: return null;
+		}
 	}
 }
