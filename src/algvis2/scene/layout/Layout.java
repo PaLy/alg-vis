@@ -17,8 +17,23 @@
 
 package algvis2.scene.layout;
 
-public class Layouts {
-	public static final String BIN_TREE_LAYOUT =  "BinTreeLayout";
+import javafx.scene.Node;
+import javafx.scene.layout.Pane;
+
+public interface Layout {
+	public static final String BIN_TREE_LAYOUT = "BinTreeLayout";
 	public static final String LEFT_BIN_TREE_LAYOUT = "LeftBinTreeLayout";
 	public static final String RIGHT_BIN_TREE_LAYOUT = "RightBinTreeLayout";
+	
+	public void rebuild(Node... nodes);	
+	public Pane getPane();
+	
+	public static class Creator {
+		public static Layout get(String layoutName) {
+			if (layoutName.equals(BIN_TREE_LAYOUT)) return new BinTreeLayout();
+			else if (layoutName.equals(LEFT_BIN_TREE_LAYOUT)) return new LeftBinTreeLayout();
+			else if (layoutName.equals(RIGHT_BIN_TREE_LAYOUT)) return new RightBinTreeLayout();
+			else return null;
+		}
+	}
 }

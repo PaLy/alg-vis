@@ -19,7 +19,7 @@ package algvis2.ds.dictionary.bst;
 
 import algvis.core.MyRandom;
 import algvis2.core.Dictionary;
-import algvis2.scene.layout.Layouts;
+import algvis2.scene.layout.Layout;
 import algvis2.scene.layout.VisPane;
 import algvis2.scene.layout.ZDepth;
 import javafx.animation.*;
@@ -27,7 +27,7 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 public class BST extends Dictionary {
-	public static final String DEF_LAYOUT = Layouts.BIN_TREE_LAYOUT;
+	public static final String DEF_LAYOUT = Layout.BIN_TREE_LAYOUT;
 	private BSTNode root = null;
 	
 	public BST(VisPane visPane) {
@@ -52,7 +52,7 @@ public class BST extends Dictionary {
 
 	@Override
 	public void insert(int x) {
-		BSTNode newNode = new BSTNode(x, layoutName);
+		BSTNode newNode = new BSTNode(x);
 		
 		if (root == null) {
 			setRoot(newNode);
@@ -109,9 +109,9 @@ public class BST extends Dictionary {
 	}
 
 	private void setRoot(BSTNode root) {
-		if (this.root != null) visPane.remove(this.root.getLayout());
+		if (this.root != null) visPane.remove(this.root.getLayout().getPane());
 		this.root = root;
-		if (this.root != null) visPane.add(this.root.getLayout(), ZDepth.NODES);
+		if (this.root != null) visPane.add(this.root.getLayout().getPane(), ZDepth.NODES);
 	}
 
 	@Override
@@ -123,9 +123,9 @@ public class BST extends Dictionary {
 	public void setLayout(String layoutName) {
 		super.setLayout(layoutName);
 		if (root != null) {
-			visPane.remove(root.getLayout());
+			visPane.remove(root.getLayout().getPane());
 			root.setLayoutRec(layoutName);
-			visPane.add(root.getLayout(), ZDepth.NODES);
+			visPane.add(root.getLayout().getPane(), ZDepth.NODES);
 		} 
 	}
 }

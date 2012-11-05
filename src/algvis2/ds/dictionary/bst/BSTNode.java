@@ -17,30 +17,31 @@
 
 package algvis2.ds.dictionary.bst;
 
-import algvis2.scene.layout.BinTreeLayout;
-import algvis2.scene.layout.Layouts;
-import algvis2.scene.layout.LeftBinTreeLayout;
-import algvis2.scene.layout.RightBinTreeLayout;
+import algvis2.scene.layout.Layout;
 import algvis2.scene.shape.Node;
 
 public class BSTNode extends Node {
-	private BinTreeLayout layout;
+	private Layout layout;
 	private BSTNode left, right;
+
+	public BSTNode(int key) {
+		this(key, BST.DEF_LAYOUT);
+	}
 	
 	public BSTNode(int key, String layoutName) {
 		super(key);
-		layout = createLayout(layoutName);
-		layout.rebuild(this, null, null);
+		layout = Layout.Creator.get(layoutName);
+		rebuildLayout();
 	}
 	
 	public void setLeft(BSTNode left) {
 		this.left = left;
-		layout.rebuild(this, left.getLayout(), right == null ? null : right.getLayout());
+		rebuildLayout();
 	}
 	
 	public void setRight(BSTNode right) {
 		this.right = right;
-		layout.rebuild(this, left == null ? null : left.getLayout(), right.getLayout());
+		rebuildLayout();
 	}
 
 	public BSTNode getLeft() {
@@ -51,25 +52,22 @@ public class BSTNode extends Node {
 		return right;
 	}
 	
-	public BinTreeLayout getLayout() {
+	public Layout getLayout() {
 		return layout;
 	}
 
 	public void setLayoutRec(String layoutName) {
-		layout = createLayout(layoutName);
+		layout = Layout.Creator.get(layoutName);
 		if (left != null) left.setLayoutRec(layoutName);
 		if (right != null) right.setLayoutRec(layoutName);
-		layout.rebuild(
-			this,
-			left == null ? null : left.getLayout(),
-			right == null ? null : right.getLayout()
-		);
+		rebuildLayout();
 	}
 	
-	private BinTreeLayout createLayout(String layoutName) {
-		if (layoutName.equals(Layouts.BIN_TREE_LAYOUT)) return new BinTreeLayout();
-		else if (layoutName.equals(Layouts.LEFT_BIN_TREE_LAYOUT)) return new LeftBinTreeLayout();
-		else if (layoutName.equals(Layouts.RIGHT_BIN_TREE_LAYOUT)) return new RightBinTreeLayout();
-		else return null;
+	private void rebuildLayout() {
+		layout.rebuild(
+			this,
+			left == null ? null : left.getLayout().getPane(),
+			right == null ? null : right.getLayout().getPane()
+		);
 	}
 }

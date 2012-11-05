@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import algvis2.scene.layout.Layouts?>				
+<?import algvis2.scene.layout.Layout?>				
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.collections.*?>
@@ -50,9 +50,9 @@
             <ChoiceBox id="button" fx:id="button_layout">
               <items>
                 <FXCollections fx:factory="observableArrayList">
-				  				<Layouts fx:constant="BIN_TREE_LAYOUT" />
-				  				<Layouts fx:constant="LEFT_BIN_TREE_LAYOUT" />
-				  				<Layouts fx:constant="RIGHT_BIN_TREE_LAYOUT" />
+				  				<Layout fx:constant="BIN_TREE_LAYOUT" />
+				  				<Layout fx:constant="LEFT_BIN_TREE_LAYOUT" />
+				  				<Layout fx:constant="RIGHT_BIN_TREE_LAYOUT" />
                 </FXCollections>
               </items>
             </ChoiceBox>
