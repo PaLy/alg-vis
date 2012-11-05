@@ -35,35 +35,25 @@
       </padding>
     </AnchorPane>
   </bottom>
-  <center>
-    <StackPane fx:id="visualizationParent" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
-      <children>
-        <StackPane prefHeight="150.0" prefWidth="200.0">
-          <children>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" />
-          </children>
-        </StackPane>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0">
-          <children>
-            <TitledPane fx:id="operationsTitledPane" alignment="TOP_LEFT" animated="true" collapsible="true" contentDisplay="LEFT" disable="false" expanded="true" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" text="%operations" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
-              <content>
-                <fx:include source="/algvis2/ui/Buttons.fxml" />
-              </content>
-            </TitledPane>
-            <TitledPane alignment="TOP_LEFT" animated="true" ellipsisString="..." expanded="false" prefHeight="-1.0" prefWidth="-1.0" text="%steps" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-              <content>
-                <ScrollPane fitToHeight="false" prefHeight="-1.0" prefViewportHeight="0.0" prefWidth="300.0">
-                  <content>
-                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
-                  </content>
-                </ScrollPane>
-              </content>
-            </TitledPane>
-          </children>
-        </AnchorPane>
-      </children>
-    </StackPane>
-  </center>
+  <left>
+    <TitledPane fx:id="operationsTitledPane" alignment="TOP_LEFT" animated="true" collapsible="true" contentDisplay="LEFT" disable="false" expanded="true" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" text="%operations" BorderPane.alignment="BOTTOM_LEFT">
+      <content>
+        <fx:include source="/algvis2/ui/Buttons.fxml" />
+        <!--<fx:include source="Buttons.fxml" />-->
+      </content>
+    </TitledPane>
+  </left>
+  <right>
+    <TitledPane alignment="TOP_LEFT" animated="true" ellipsisString="..." expanded="false" prefHeight="-1.0" prefWidth="-1.0" text="%steps" BorderPane.alignment="TOP_RIGHT">
+      <content>
+        <ScrollPane fitToHeight="true" maxHeight="-1.0" prefHeight="-1.0" prefViewportHeight="0.0" prefWidth="300.0">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+          </content>
+        </ScrollPane>
+      </content>
+    </TitledPane>
+  </right>
   <top>
     <MenuBar>
       <menus>

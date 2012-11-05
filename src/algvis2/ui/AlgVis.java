@@ -22,8 +22,11 @@ import algvis2.ds.dictionary.avl.AVLVisualization;
 import algvis2.ds.dictionary.bst.BSTVisualization;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TitledPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -58,8 +61,22 @@ public class AlgVis extends Application {
 		if (x != currentVisualization) {
 			if (VISUALIZATIONS[x] == null)
 				VISUALIZATIONS[x] = createVisualization(x);
-			controller.getVisualizationParent().getChildren().set(0, VISUALIZATIONS[x].getRootPane());
-			controller.getOperationsPane().setContent(VISUALIZATIONS[x].getButtonsPane(language));
+			BorderPane root = ((BorderPane) scene.getRoot());
+			Node top = root.getTop();
+			Node bottom = root.getBottom();
+			TitledPane left = (TitledPane) root.getLeft();
+			Node right = root.getRight();
+			root.setTop(null);
+			root.setBottom(null);
+			root.setLeft(null);
+			root.setRight(null);
+			root.setCenter(VISUALIZATIONS[x].getRootPane());
+			root.setTop(top);
+			root.setBottom(bottom);
+			root.setLeft(left);
+			root.setRight(right);
+			
+			left.setContent(VISUALIZATIONS[x].getButtonsPane(language));
 			currentVisualization = x;
 		}
 	}

@@ -19,7 +19,6 @@ package algvis2.ui;
 
 import algvis2.ds.dictionary.bst.BST;
 import algvis2.scene.control.InputField;
-import algvis2.scene.layout.Layouts;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -30,14 +29,11 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class AlgVisFXMLController implements Initializable {
-	@FXML private TitledPane operationsTitledPane;
-	@FXML private Pane visualizationParent;
 	@FXML private MenuItem menu_bst;
 	@FXML private MenuItem menu_avl;
 	@FXML private TextField inputField;
@@ -96,13 +92,5 @@ public class AlgVisFXMLController implements Initializable {
 
 	@FXML protected void clearPressed(ActionEvent event) {
 		AlgVis.getCurrentVis().getDataStructure().clear();
-	}
-	
-	public TitledPane getOperationsPane() {
-		return operationsTitledPane;
-	}
-	
-	public Pane getVisualizationParent() {
-		return visualizationParent;
 	}
 }

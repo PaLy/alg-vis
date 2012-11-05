@@ -17,9 +17,9 @@
 
 package algvis2.ds.dictionary.bst;
 
-import algvis2.scene.layout.LeftBinTreeLayout;
 import algvis2.scene.layout.BinTreeLayout;
 import algvis2.scene.layout.Layouts;
+import algvis2.scene.layout.LeftBinTreeLayout;
 import algvis2.scene.layout.RightBinTreeLayout;
 import algvis2.scene.shape.Node;
 
