@@ -22,6 +22,7 @@ import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBuilder;
@@ -47,5 +48,9 @@ public class Node extends Group {
 		text.setX(text.getX() - text.getBoundsInLocal().getWidth() / 2);
 		
 		getChildren().addAll(circle, text);
+	}
+	
+	public Shape getShape() {
+		return (Shape) getChildren().get(0);
 	}
 }

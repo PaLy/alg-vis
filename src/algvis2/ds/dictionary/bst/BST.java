@@ -17,10 +17,14 @@
 
 package algvis2.ds.dictionary.bst;
 
+import algvis.core.MyRandom;
 import algvis2.core.Dictionary;
 import algvis2.scene.layout.Layouts;
 import algvis2.scene.layout.VisPane;
 import algvis2.scene.layout.ZDepth;
+import javafx.animation.*;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 public class BST extends Dictionary {
 	public static final String DEF_LAYOUT = Layouts.BIN_TREE_LAYOUT;
@@ -72,6 +76,36 @@ public class BST extends Dictionary {
 				}
 			}
 		}
+
+		ScaleTransition st = ScaleTransitionBuilder.create()
+			.node(newNode)
+			.byX(0.5)
+			.byY(0.5)
+			.duration(Duration.millis(500))
+			.cycleCount(2)
+			.autoReverse(true)
+			.build();
+
+		FadeTransition ft = FadeTransitionBuilder.create()
+			.node(newNode)
+			.toValue(0.1)
+			.duration(Duration.millis(500))
+			.autoReverse(true)
+			.cycleCount(Timeline.INDEFINITE)
+			.build();
+		
+		Color color = Color.rgb(MyRandom.Int(256), MyRandom.Int(256), MyRandom.Int(256));
+		
+		FillTransition fillT = FillTransitionBuilder.create()
+			.shape(newNode.getShape())
+			.toValue(color)
+			.duration(Duration.seconds(1.5))
+			.autoReverse(true)
+			.cycleCount(Timeline.INDEFINITE)
+			.build();
+		
+//		new SequentialTransition(st, new ParallelTransition(fillT, ft)).play();
+		new SequentialTransition(st, fillT).play();
 	}
 
 	private void setRoot(BSTNode root) {
