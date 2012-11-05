@@ -26,9 +26,9 @@ import javafx.scene.Node;
  * | left | right |
  * ----------------
  */
-public class AnotherBinTreeLayout extends BinTreeLayout {
+public class LeftBinTreeLayout extends BinTreeLayout {
 	
-	public AnotherBinTreeLayout() {
+	public LeftBinTreeLayout() {
 		super();
 		setVgap(5);
 		setHgap(5);

@@ -17,19 +17,20 @@
 
 package algvis2.ds.dictionary.bst;
 
-import algvis2.scene.layout.AnotherBinTreeLayout;
+import algvis2.scene.layout.LeftBinTreeLayout;
 import algvis2.scene.layout.BinTreeLayout;
 import algvis2.scene.layout.Layouts;
+import algvis2.scene.layout.RightBinTreeLayout;
 import algvis2.scene.shape.Node;
 
 public class BSTNode extends Node {
 	private BinTreeLayout layout;
 	private BSTNode left, right;
 	
-	public BSTNode(int key, Layouts layout) {
+	public BSTNode(int key, String layoutName) {
 		super(key);
-		this.layout = createLayout(layout);
-		this.layout.rebuild(this, null, null);
+		layout = createLayout(layoutName);
+		layout.rebuild(this, null, null);
 	}
 	
 	public void setLeft(BSTNode left) {
@@ -54,22 +55,21 @@ public class BSTNode extends Node {
 		return layout;
 	}
 
-	public void setLayoutRec(Layouts layout) {
-		this.layout = createLayout(layout);
-		if (left != null) left.setLayoutRec(layout);
-		if (right != null) right.setLayoutRec(layout);
-		this.layout.rebuild(
+	public void setLayoutRec(String layoutName) {
+		layout = createLayout(layoutName);
+		if (left != null) left.setLayoutRec(layoutName);
+		if (right != null) right.setLayoutRec(layoutName);
+		layout.rebuild(
 			this,
 			left == null ? null : left.getLayout(),
 			right == null ? null : right.getLayout()
 		);
 	}
 	
-	private BinTreeLayout createLayout(Layouts layout) {
-		switch (layout) {
-			case BINTREELAYOUT: return new BinTreeLayout();
-			case ANOTHERBINTREELAYOUT: return new AnotherBinTreeLayout();
-			default: return null;
-		}
+	private BinTreeLayout createLayout(String layoutName) {
+		if (layoutName.equals(Layouts.BIN_TREE_LAYOUT)) return new BinTreeLayout();
+		else if (layoutName.equals(Layouts.LEFT_BIN_TREE_LAYOUT)) return new LeftBinTreeLayout();
+		else if (layoutName.equals(Layouts.RIGHT_BIN_TREE_LAYOUT)) return new RightBinTreeLayout();
+		else return null;
 	}
 }

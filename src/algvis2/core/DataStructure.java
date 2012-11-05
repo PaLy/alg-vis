@@ -19,12 +19,11 @@ package algvis2.core;
 
 import algvis.core.MyRandom;
 import algvis2.scene.control.InputField;
-import algvis2.scene.layout.Layouts;
 import algvis2.scene.layout.VisPane;
 
 public abstract class DataStructure {
 	protected final VisPane visPane;
-	protected Layouts layout;
+	protected String layoutName;
 
 	protected DataStructure(VisPane visPane) {
 		this.visPane = visPane;
@@ -41,7 +40,7 @@ public abstract class DataStructure {
 			insert(MyRandom.Int(InputField.MAX_VALUE + 1));
 	}
 	
-	public void setLayout(Layouts layout) {
-		this.layout = layout;
+	public void setLayout(String layoutName) {
+		this.layoutName = layoutName;
 	}
 }

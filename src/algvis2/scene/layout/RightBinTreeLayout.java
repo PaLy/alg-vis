@@ -17,8 +17,32 @@
 
 package algvis2.scene.layout;
 
-public class Layouts {
-	public static final String BIN_TREE_LAYOUT =  "BinTreeLayout";
-	public static final String LEFT_BIN_TREE_LAYOUT = "LeftBinTreeLayout";
-	public static final String RIGHT_BIN_TREE_LAYOUT = "RightBinTreeLayout";
+import javafx.geometry.HPos;
+import javafx.scene.Node;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.ColumnConstraintsBuilder;
+
+/**
+ * ----------------
+ * |      | root  |
+ * ----------------
+ * | left | right |
+ * ----------------
+ */
+public class RightBinTreeLayout extends BinTreeLayout {
+	
+	public RightBinTreeLayout() {
+		super();
+		setVgap(5);
+		setHgap(5);
+		ColumnConstraints cc = ColumnConstraintsBuilder.create().halignment(HPos.RIGHT).build(); 
+		getColumnConstraints().addAll(cc, cc);
+	}
+
+	public void rebuild(Node root, Node left, Node right) {
+		getChildren().clear();
+		add(root, 1, 0);
+		if (left != null) add(left, 0, 1);
+		if (right != null) add(right, 1, 1);
+	}
 }

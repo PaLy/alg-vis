@@ -23,12 +23,12 @@ import algvis2.scene.layout.VisPane;
 import algvis2.scene.layout.ZDepth;
 
 public class BST extends Dictionary {
-	public static final Layouts DEF_LAYOUT = Layouts.BINTREELAYOUT;
+	public static final String DEF_LAYOUT = Layouts.BIN_TREE_LAYOUT;
 	private BSTNode root = null;
 	
 	public BST(VisPane visPane) {
 		super(visPane);
-		layout = DEF_LAYOUT;
+		layoutName = DEF_LAYOUT;
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class BST extends Dictionary {
 
 	@Override
 	public void insert(int x) {
-		BSTNode newNode = new BSTNode(x, layout);
+		BSTNode newNode = new BSTNode(x, layoutName);
 		
 		if (root == null) {
 			setRoot(newNode);
@@ -86,11 +86,11 @@ public class BST extends Dictionary {
 	}
 
 	@Override
-	public void setLayout(Layouts layout) {
-		super.setLayout(layout);
+	public void setLayout(String layoutName) {
+		super.setLayout(layoutName);
 		if (root != null) {
 			visPane.remove(root.getLayout());
-			root.setLayoutRec(layout);
+			root.setLayoutRec(layoutName);
 			visPane.add(root.getLayout(), ZDepth.NODES);
 		} 
 	}

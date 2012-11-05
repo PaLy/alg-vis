@@ -50,15 +50,11 @@ public class AlgVisFXMLController implements Initializable {
 		// pri 2. volani button_layout = true
 		// pri 3. volani button_layout = false
 		if (button_layout != null) {
-			button_layout.setValue(BST.DEF_LAYOUT.getName());
+			button_layout.setValue(BST.DEF_LAYOUT);
 			button_layout.valueProperty().addListener(new ChangeListener<String>() {
 				@Override
 				public void changed(ObservableValue<? extends String> observableValue, String s, String s1) {
-					if (s1.equals(Layouts.BINTREELAYOUT.getName())) {
-						AlgVis.getCurrentVis().getDataStructure().setLayout(Layouts.BINTREELAYOUT);
-					} else if (s1.equals(Layouts.ANOTHERBINTREELAYOUT.getName())) {
-						AlgVis.getCurrentVis().getDataStructure().setLayout(Layouts.ANOTHERBINTREELAYOUT);
-					}
+					AlgVis.getCurrentVis().getDataStructure().setLayout(s1);
 				}
 			});
 		}
