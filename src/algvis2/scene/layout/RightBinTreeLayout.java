@@ -33,16 +33,16 @@ public class RightBinTreeLayout extends BinTreeLayout {
 	
 	public RightBinTreeLayout() {
 		super();
-		setVgap(5);
-		setHgap(5);
+		getPane().setVgap(5);
+		getPane().setHgap(5);
 		ColumnConstraints cc = ColumnConstraintsBuilder.create().halignment(HPos.RIGHT).build(); 
-		getColumnConstraints().addAll(cc, cc);
+		getPane().getColumnConstraints().addAll(cc, cc);
 	}
 
-	public void rebuild(Node root, Node left, Node right) {
-		getChildren().clear();
-		add(root, 1, 0);
-		if (left != null) add(left, 0, 1);
-		if (right != null) add(right, 1, 1);
+	@Override
+	protected void rebuildNodes(Node root, Node left, Node right) {
+		getPane().add(root, 1, 0);
+		if (left != null) getPane().add(left, 0, 1);
+		if (right != null) getPane().add(right, 1, 1);
 	}
 }

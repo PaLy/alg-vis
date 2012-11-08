@@ -30,7 +30,7 @@ public class BSTNode extends Node {
 	
 	public BSTNode(int key, String layoutName) {
 		super(key);
-		layout = Layout.Creator.get(layoutName);
+		layout = Layout.createLayout(layoutName);
 		rebuildLayout();
 	}
 	
@@ -56,10 +56,10 @@ public class BSTNode extends Node {
 		return layout;
 	}
 
-	public void setLayoutRec(String layoutName) {
-		layout = Layout.Creator.get(layoutName);
-		if (left != null) left.setLayoutRec(layoutName);
-		if (right != null) right.setLayoutRec(layoutName);
+	public void setLayoutR(String layoutName) {
+		layout = Layout.createLayout(layoutName);
+		if (left != null) left.setLayoutR(layoutName);
+		if (right != null) right.setLayoutR(layoutName);
 		rebuildLayout();
 	}
 	
@@ -67,7 +67,9 @@ public class BSTNode extends Node {
 		layout.rebuild(
 			this,
 			left == null ? null : left.getLayout().getPane(),
-			right == null ? null : right.getLayout().getPane()
+			right == null ? null : right.getLayout().getPane(),
+			left == null ? null : left,
+			right == null ? null : right
 		);
 	}
 }

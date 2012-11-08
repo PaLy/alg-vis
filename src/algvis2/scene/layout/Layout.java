@@ -17,23 +17,47 @@
 
 package algvis2.scene.layout;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 
-public interface Layout {
+public abstract class Layout implements AbsPosition {
 	public static final String BIN_TREE_LAYOUT = "BinTreeLayout";
 	public static final String LEFT_BIN_TREE_LAYOUT = "LeftBinTreeLayout";
 	public static final String RIGHT_BIN_TREE_LAYOUT = "RightBinTreeLayout";
 	
-	public void rebuild(Node... nodes);	
-	public Pane getPane();
+	Pane pane;
+
+	protected Layout(Pane pane) {
+		this.pane = pane;
+		pane.parentProperty().addListener(new ChangeListener<Parent>() {
+			@Override
+			public void changed(ObservableValue<? extends Parent> observableValue, Parent oldParent, 
+			                    Parent newParent) {
+				if (newParent != null) recalcAbsPosition();
+			}
+		});
+	}
 	
-	public static class Creator {
-		public static Layout get(String layoutName) {
-			if (layoutName.equals(BIN_TREE_LAYOUT)) return new BinTreeLayout();
-			else if (layoutName.equals(LEFT_BIN_TREE_LAYOUT)) return new LeftBinTreeLayout();
-			else if (layoutName.equals(RIGHT_BIN_TREE_LAYOUT)) return new RightBinTreeLayout();
-			else return null;
+	public abstract void rebuild(Node... nodes);
+	
+	public Pane getPane() {
+		return pane;
+	}
+	
+	@Override
+	public void recalcAbsPosition() {
+		for (Node node : pane.getChildren()) {
+			if (node instanceof AbsPosition) ((AbsPosition) node).recalcAbsPosition();
 		}
+	}
+	
+	public static Layout createLayout(String layoutName) {
+		if (layoutName.equals(BIN_TREE_LAYOUT)) return new BinTreeLayout();
+		else if (layoutName.equals(LEFT_BIN_TREE_LAYOUT)) return new LeftBinTreeLayout();
+		else if (layoutName.equals(RIGHT_BIN_TREE_LAYOUT)) return new RightBinTreeLayout();
+		else return null;
 	}
 }

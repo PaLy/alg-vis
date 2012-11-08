@@ -15,29 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.scene.layout;
+package algvis2.scene.shape;
 
-import javafx.scene.Node;
+import javafx.scene.shape.Line;
 
-/**
- * ----------------
- * | root |       |
- * ----------------
- * | left | right |
- * ----------------
- */
-public class LeftBinTreeLayout extends BinTreeLayout {
+public class Edge extends Line {
 	
-	public LeftBinTreeLayout() {
-		super();
-		getPane().setVgap(5);
-		getPane().setHgap(5);
-	}
-
-	@Override
-	protected void rebuildNodes(Node root, Node left, Node right) {
-		getPane().add(root, 0, 0);
-		if (left != null) getPane().add(left, 0, 1);
-		if (right != null) getPane().add(right, 1, 1);
+	public Edge() {
+		setManaged(false);
 	}
 }

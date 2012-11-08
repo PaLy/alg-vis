@@ -24,7 +24,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<BorderPane id="BorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns:fx="http://javafx.com/fxml" fx:controller="algvis2.ui.AlgVisFXMLController">
+<BorderPane fx:id="rootBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+						minWidth="-Infinity"
+						prefHeight="576.0" prefWidth="1024.0" xmlns:fx="http://javafx.com/fxml" fx:controller="algvis2.ui.AlgVisFXMLController">
   <bottom>
     <AnchorPane prefHeight="-1.0" prefWidth="-1.0">
       <children>
@@ -36,7 +38,8 @@
     </AnchorPane>
   </bottom>
   <left>
-    <TitledPane fx:id="operationsTitledPane" alignment="TOP_LEFT" animated="true" collapsible="true" contentDisplay="LEFT" disable="false" expanded="true" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" text="%operations" BorderPane.alignment="BOTTOM_LEFT">
+    <TitledPane fx:id="buttonsTitledPane" alignment="TOP_LEFT" animated="true" collapsible="true" contentDisplay="LEFT"
+								disable="false" expanded="true" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" text="%operations" BorderPane.alignment="BOTTOM_LEFT">
       <content>
         <fx:include source="/algvis2/ui/Buttons.fxml" />
         <!--<fx:include source="Buttons.fxml" />-->

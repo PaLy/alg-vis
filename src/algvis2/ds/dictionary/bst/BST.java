@@ -105,7 +105,8 @@ public class BST extends Dictionary {
 			.build();
 		
 //		new SequentialTransition(st, new ParallelTransition(fillT, ft)).play();
-		new SequentialTransition(st, fillT).play();
+//		new SequentialTransition(st, fillT).play();
+		new SequentialTransition(st).play();
 	}
 
 	private void setRoot(BSTNode root) {
@@ -124,7 +125,7 @@ public class BST extends Dictionary {
 		super.setLayout(layoutName);
 		if (root != null) {
 			visPane.remove(root.getLayout().getPane());
-			root.setLayoutRec(layoutName);
+			root.setLayoutR(layoutName);
 			visPane.add(root.getLayout().getPane(), ZDepth.NODES);
 		} 
 	}
