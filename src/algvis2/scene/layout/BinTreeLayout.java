@@ -20,6 +20,7 @@ package algvis2.scene.layout;
 import algvis2.scene.shape.Edge;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 
 /**
  * -----------------------
@@ -29,9 +30,10 @@ import javafx.scene.layout.GridPane;
  * -----------------------
  */
 public class BinTreeLayout extends Layout {
-
-	public BinTreeLayout() {
-		super(new GridPane());
+	
+	@Override
+	protected Pane initPane() {
+		return new GridPane();
 	}
 	
 	public void rebuild(Node root, Node leftPane, Node rightPane, Node left, Node right) {
@@ -41,9 +43,9 @@ public class BinTreeLayout extends Layout {
 	}
 	
 	protected void rebuildNodes(Node root, Node left, Node right) {
-		getPane().add(root, 1, 0);
-		if (left != null) getPane().add(left, 0, 1);
-		if (right != null) getPane().add(right, 2, 1);
+		((GridPane) pane).add(root, 1, 0);
+		if (left != null) ((GridPane) pane).add(left, 0, 1);
+		if (right != null) ((GridPane) pane).add(right, 2, 1);
 	}
 	
 	private void rebuildEdges(Node root, Node leftPane, Node rightPane, Node left, Node right) {
@@ -51,13 +53,15 @@ public class BinTreeLayout extends Layout {
 			Edge leftEdge = new Edge();
 			bindEdgeStart(leftEdge, root);
 			bindEdgeEnd(leftEdge, leftPane, left);
-			getPane().add(leftEdge, 0, 0);
+			GridPane.setConstraints(leftEdge, 0, 0);
+			pane.getChildren().add(leftEdge);
 		}
 		if (right != null) {
 			Edge rightEdge = new Edge();
 			bindEdgeStart(rightEdge, root);
 			bindEdgeEnd(rightEdge, rightPane, right);
-			getPane().add(rightEdge, 0, 0);
+			GridPane.setConstraints(rightEdge, 0, 0);
+			pane.getChildren().add(rightEdge);
 		}
 	}
 
@@ -84,8 +88,8 @@ public class BinTreeLayout extends Layout {
 	}
 
 	@Override
-	public GridPane getPane() {
-		return (GridPane) pane;
+	public Pane getPane() {
+		return pane;
 	}
 	
 	private void bindEdgeStart(Edge edge, Node root) {

@@ -21,6 +21,7 @@ import javafx.geometry.HPos;
 import javafx.scene.Node;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.ColumnConstraintsBuilder;
+import javafx.scene.layout.GridPane;
 
 /**
  * ----------------
@@ -33,16 +34,16 @@ public class RightBinTreeLayout extends BinTreeLayout {
 	
 	public RightBinTreeLayout() {
 		super();
-		getPane().setVgap(5);
-		getPane().setHgap(5);
-		ColumnConstraints cc = ColumnConstraintsBuilder.create().halignment(HPos.RIGHT).build(); 
-		getPane().getColumnConstraints().addAll(cc, cc);
+		((GridPane) pane).setVgap(5);
+		((GridPane) pane).setHgap(5);
+		ColumnConstraints cc = ColumnConstraintsBuilder.create().halignment(HPos.RIGHT).build();
+		((GridPane) pane).getColumnConstraints().addAll(cc, cc);
 	}
 
 	@Override
 	protected void rebuildNodes(Node root, Node left, Node right) {
-		getPane().add(root, 1, 0);
-		if (left != null) getPane().add(left, 0, 1);
-		if (right != null) getPane().add(right, 1, 1);
+		((GridPane) pane).add(root, 1, 0);
+		if (left != null) ((GridPane) pane).add(left, 0, 1);
+		if (right != null) ((GridPane) pane).add(right, 1, 1);
 	}
 }

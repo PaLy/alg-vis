@@ -18,6 +18,7 @@
 package algvis2.scene.layout;
 
 import javafx.scene.Node;
+import javafx.scene.layout.GridPane;
 
 /**
  * ----------------
@@ -30,14 +31,14 @@ public class LeftBinTreeLayout extends BinTreeLayout {
 	
 	public LeftBinTreeLayout() {
 		super();
-		getPane().setVgap(5);
-		getPane().setHgap(5);
+		((GridPane) pane).setVgap(5);
+		((GridPane) pane).setHgap(5);
 	}
 
 	@Override
 	protected void rebuildNodes(Node root, Node left, Node right) {
-		getPane().add(root, 0, 0);
-		if (left != null) getPane().add(left, 0, 1);
-		if (right != null) getPane().add(right, 1, 1);
+		((GridPane) pane).add(root, 0, 0);
+		if (left != null) ((GridPane) pane).add(left, 0, 1);
+		if (right != null) ((GridPane) pane).add(right, 1, 1);
 	}
 }

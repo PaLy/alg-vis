@@ -23,10 +23,6 @@ import algvis2.scene.shape.Node;
 public class BSTNode extends Node {
 	private Layout layout;
 	private BSTNode left, right;
-
-	public BSTNode(int key) {
-		this(key, BST.DEF_LAYOUT);
-	}
 	
 	public BSTNode(int key, String layoutName) {
 		super(key);

@@ -32,8 +32,8 @@ public abstract class Layout implements AbsPosition {
 	
 	final Pane pane;
 
-	protected Layout(final Pane pane) {
-		this.pane = pane;
+	protected Layout() {
+		pane = initPane();
 		pane.parentProperty().addListener(new ChangeListener<Parent>() {
 			@Override
 			public void changed(ObservableValue<? extends Parent> observableValue, Parent oldParent, 
@@ -45,6 +45,8 @@ public abstract class Layout implements AbsPosition {
 		pane.layoutXProperty().addListener(new ParallelTranslateTransition(pane, Axis.X));
 		pane.layoutYProperty().addListener(new ParallelTranslateTransition(pane, Axis.Y));
 	}
+	
+	protected abstract Pane initPane();
 	
 	public abstract void rebuild(Node... nodes);
 	

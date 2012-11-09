@@ -52,7 +52,7 @@ public class BST extends Dictionary {
 
 	@Override
 	public void insert(int x) {
-		BSTNode newNode = new BSTNode(x);
+		BSTNode newNode = new BSTNode(x, layoutName);
 		
 		if (root == null) {
 			setRoot(newNode);
