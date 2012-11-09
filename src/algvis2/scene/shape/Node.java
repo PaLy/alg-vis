@@ -18,6 +18,8 @@
 package algvis2.scene.shape;
 
 
+import algvis2.animation.ParallelTranslateTransition;
+import algvis2.scene.Axis;
 import algvis2.scene.layout.AbsPosition;
 import algvis2.scene.layout.VisPane;
 import algvis2.scene.paint.NodePaint;
@@ -55,7 +57,6 @@ public class Node extends Group implements AbsPosition {
 		
 		Circle circle = new Circle(RADIUS, paint.circlePaint);
 		circle.setStroke(Color.BLACK);
-		
 		Text text = TextBuilder.create()
 						.text(Integer.toString(key))
 						.font(new Font(RADIUS - 3))
@@ -63,7 +64,6 @@ public class Node extends Group implements AbsPosition {
 						.textOrigin(VPos.CENTER)
 						.build();
 		text.setX(text.getX() - text.getBoundsInLocal().getWidth() / 2);
-		
 		getChildren().addAll(circle, text);
 		
 		parentProperty().addListener(new ChangeListener<Parent>() {
@@ -73,6 +73,9 @@ public class Node extends Group implements AbsPosition {
 				if (newParent != null) recalcAbsPosition();
 			}
 		});
+		
+		layoutXProperty().addListener(new ParallelTranslateTransition(this, Axis.X));
+		layoutYProperty().addListener(new ParallelTranslateTransition(this, Axis.Y));
 	}
 
 	public Shape getShape() {

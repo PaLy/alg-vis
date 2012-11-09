@@ -17,6 +17,8 @@
 
 package algvis2.scene.layout;
 
+import algvis2.animation.ParallelTranslateTransition;
+import algvis2.scene.Axis;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -42,6 +44,9 @@ public class VisPane extends StackPane {
 				children.add(new Pane());
 			}
 		}
+		
+		layoutXProperty().addListener(new ParallelTranslateTransition(this, Axis.X));
+		layoutYProperty().addListener(new ParallelTranslateTransition(this, Axis.Y));
 	}
 	
 	public void add(Node node, int zDepth) {

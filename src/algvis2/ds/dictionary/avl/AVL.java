@@ -20,9 +20,12 @@ package algvis2.ds.dictionary.avl;
 import algvis2.ds.dictionary.bst.BST;
 import algvis2.scene.layout.VisPane;
 import algvis2.scene.layout.ZDepth;
-import algvis2.scene.shape.Node;
-import javafx.animation.*;
-import javafx.scene.layout.HBox;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class AVL extends BST {
@@ -32,55 +35,68 @@ public class AVL extends BST {
 	}
 	
 	protected void test() {
-		System.out.println("teraz");
-		HBox hBox = new HBox();
-		hBox.setSpacing(20);
-		Node n1 = new Node(82);
-		Node n2 = new Node(2);
-		Node n3 = new Node(67);
-		Node n4 = new Node(699);
-		hBox.getChildren().addAll(n1, n2, n3, n4);
+//		System.out.println("teraz");
+//		HBox hBox = new HBox();
+//		hBox.setSpacing(20);
+//		Node n1 = new Node(82);
+//		Node n2 = new Node(2);
+//		Node n3 = new Node(67);
+//		Node n4 = new Node(699);
+//		hBox.getChildren().addAll(n1, n2, n3, n4);
+//
+//		FadeTransition fadeTransition = FadeTransitionBuilder.create()
+//			.duration(Duration.seconds(2))
+//			.node(n1)
+//			.fromValue(1)
+//			.toValue(0.1)
+//			.cycleCount(Timeline.INDEFINITE)
+//			.autoReverse(true)
+//			.build();
+////				fadeTransition.play();
+//
+//		TranslateTransition translateTransition = TranslateTransitionBuilder.create()
+//			.duration(Duration.seconds(2))
+//			.node(n2)
+//			.byY(200)
+////			.cycleCount(Timeline.INDEFINITE)
+////			.autoReverse(true)
+//			.build();
+////		translateTransition.play();
+//
+//		ScaleTransition scaleTransition = ScaleTransitionBuilder.create()
+//			.node(n3)
+//			.duration(Duration.seconds(4))
+//				//			.toX(3)
+//			.toY(3)
+//			.cycleCount(Timeline.INDEFINITE)
+//			.autoReverse(true)
+//			.build();
+//		//		scaleTransition.play();
+//
+//		TranslateTransition translateTransition2 = TranslateTransitionBuilder.create()
+//			.duration(Duration.seconds(2))
+//			.node(n2)
+//			.byY(100)
+////			.cycleCount(Timeline.INDEFINITE)
+////			.autoReverse(true)
+//			.build();
+////		translateTransition2.play();
+//
+//		visPane.add(hBox, ZDepth.TOP);
+////		new ParallelTransition(translateTransition, translateTransition2).play();
+//		new SequentialTransition(translateTransition, translateTransition2).play();
 
-		FadeTransition fadeTransition = FadeTransitionBuilder.create()
-			.duration(Duration.seconds(2))
-			.node(n1)
-			.fromValue(1)
-			.toValue(0.1)
-			.cycleCount(Timeline.INDEFINITE)
-			.autoReverse(true)
-			.build();
-				fadeTransition.play();
-
-		TranslateTransition translateTransition = TranslateTransitionBuilder.create()
-			.duration(Duration.seconds(4))
-			.node(n2)
-			.fromY(-100)
-			.toY(100)
-			.cycleCount(Timeline.INDEFINITE)
-			.autoReverse(true)
-			.build();
-		//		translateTransition.play();
-
-		ScaleTransition scaleTransition = ScaleTransitionBuilder.create()
-			.node(n3)
-			.duration(Duration.seconds(4))
-				//			.toX(3)
-			.toY(3)
-			.cycleCount(Timeline.INDEFINITE)
-			.autoReverse(true)
-			.build();
-		//		scaleTransition.play();
-
-		TranslateTransition translateTransition2 = TranslateTransitionBuilder.create()
-			.duration(Duration.seconds(4))
-			.node(n2)
-			.fromY(-100)
-			.toY(100)
-			.cycleCount(Timeline.INDEFINITE)
-			.autoReverse(true)
-			.build();
-//		translateTransition2.play();
-
-		visPane.add(hBox, ZDepth.TOP);
+		final Rectangle rectBasicTimeline = new Rectangle(100, 50, 100, 50);
+		rectBasicTimeline.setFill(Color.BROWN);
+		visPane.add(rectBasicTimeline, ZDepth.TOP);
+		
+		final Timeline timeline = new Timeline();
+		timeline.setCycleCount(Timeline.INDEFINITE);
+		timeline.setAutoReverse(true);
+		final KeyValue kv = new KeyValue(rectBasicTimeline.xProperty(), 300,
+			Interpolator.EASE_BOTH);
+		final KeyFrame kf = new KeyFrame(Duration.millis(500), kv);
+		timeline.getKeyFrames().add(kf);
+		timeline.play();
 	}
 }
