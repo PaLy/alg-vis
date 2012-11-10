@@ -18,11 +18,15 @@
 package algvis2.ds.dictionary.bst;
 
 import algvis.core.MyRandom;
+import algvis2.animation.Animations;
 import algvis2.core.Dictionary;
 import algvis2.scene.layout.Layout;
 import algvis2.scene.layout.VisPane;
 import algvis2.scene.layout.ZDepth;
+import algvis2.scene.paint.NodePaint;
 import javafx.animation.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
@@ -36,13 +40,42 @@ public class BST extends Dictionary {
 	}
 
 	@Override
-	public void find(int x) {
-		// TODO
+	public Animation find(int x) {
+		SequentialTransition st = new SequentialTransition();
+		BSTNode cur = root;
+		while (cur != null) {
+			st.getChildren().add(Animations.backlight(cur, Color.ORANGE, visPane));
+			if (cur.key == x) {
+				final BSTNode finalCur = cur;
+				st.getChildren().add(new Timeline(
+					new KeyFrame(Duration.millis(1), new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(ActionEvent event) {
+							finalCur.setPaint(NodePaint.GREEN);
+						}
+					})));
+				break;
+			} else {
+				final BSTNode finalCur = cur;
+				st.getChildren().add(new Timeline(
+					new KeyFrame(Duration.millis(1), new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(ActionEvent event) {
+							finalCur.setPaint(NodePaint.FIND);
+						}
+					}))
+				);
+				if (cur.key < x) cur = cur.getRight();
+				else cur = cur.getLeft();
+			}
+		}
+		return st;
 	}
 
 	@Override
-	public void delete(int x) {
+	public Animation delete(int x) {
 		// TODO
+		return null;
 	}
 
 	@Override
@@ -51,7 +84,7 @@ public class BST extends Dictionary {
 	}
 
 	@Override
-	public void insert(int x) {
+	public Animation insert(int x) {
 		BSTNode newNode = new BSTNode(x, layoutName);
 		
 		if (root == null) {
@@ -106,7 +139,7 @@ public class BST extends Dictionary {
 		
 //		new SequentialTransition(st, new ParallelTransition(fillT, ft)).play();
 //		new SequentialTransition(st, fillT).play();
-		new SequentialTransition(st).play();
+		return new SequentialTransition(st);
 	}
 
 	private void setRoot(BSTNode root) {

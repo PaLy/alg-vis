@@ -20,10 +20,11 @@ package algvis2.scene.layout;
 public class ZDepth {	
 	public static final int SHADES = 0;
 	public static final int EDGES = 1;
-	public static final int NODES = 2;
-	public static final int ARROWS = 3;
+	public static final int BACKLIGHT = 2;
+	public static final int NODES = 3;
+	public static final int ARROWS = 4;
 	/**
 	 * i.e. algorithm elements, which are not in deeper depths
 	 */
-	public static final int TOP = 4;
+	public static final int TOP = 5;
 }

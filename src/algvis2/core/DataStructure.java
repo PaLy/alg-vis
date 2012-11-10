@@ -20,6 +20,8 @@ package algvis2.core;
 import algvis.core.MyRandom;
 import algvis2.scene.control.InputField;
 import algvis2.scene.layout.VisPane;
+import javafx.animation.Animation;
+import javafx.animation.ParallelTransition;
 
 public abstract class DataStructure {
 	protected final VisPane visPane;
@@ -31,13 +33,15 @@ public abstract class DataStructure {
 
 	abstract public String getStats();
 
-	abstract public void insert(int x);
+	abstract public Animation insert(int x);
 
 	abstract public void clear();
 
-	public void random(int n) {
+	public Animation random(int n) {
+		ParallelTransition pt = new ParallelTransition();
 		for (int i = 0; i < n; i++)
-			insert(MyRandom.Int(InputField.MAX_VALUE + 1));
+			pt.getChildren().add(insert(MyRandom.Int(InputField.MAX_VALUE + 1)));
+		return pt;
 	}
 	
 	public void setLayout(String layoutName) {

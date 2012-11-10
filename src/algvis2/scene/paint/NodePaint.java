@@ -25,7 +25,7 @@ public class NodePaint {
 		Color.BLACK);
 	public static final NodePaint BLUE = new NodePaint(Color.WHITE, Color.BLUE);
 	public static final NodePaint GREEN = new NodePaint(Color.BLACK,
-		Color.GREEN);
+		Color.LIMEGREEN);
 	public static final NodePaint RED = new NodePaint(Color.BLACK, Color.RED);
 
 	public static final NodePaint NORMAL = new NodePaint(Color.BLACK,

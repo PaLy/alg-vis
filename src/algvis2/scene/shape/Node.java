@@ -109,4 +109,9 @@ public class Node extends Group implements AbsPosition {
 		visPaneTranslateX.bind(vptX);
 		visPaneTranslateY.bind(vptY);
 	}
+
+	public void setPaint(NodePaint paint) {
+		((Circle) getChildren().get(0)).setFill(paint.circlePaint);
+		((Text) getChildren().get(1)).setFill(paint.textPaint);
+	}
 }

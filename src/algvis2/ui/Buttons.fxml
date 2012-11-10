@@ -34,6 +34,7 @@
           <children>
             <TextField fx:id="inputField" prefHeight="-1.0" prefWidth="100.0" />
             <Button mnemonicParsing="false" onAction="#insertPressed" text="%button-insert" />
+						<Button mnemonicParsing="false" onAction="#findPressed" text="%button-find" />
             <Separator orientation="VERTICAL" prefHeight="-1.0" />
             <Button disable="true" mnemonicParsing="false" text="%previous" />
             <Button disable="true" mnemonicParsing="false" text="%next" />

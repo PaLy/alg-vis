@@ -17,8 +17,10 @@
 
 package algvis2.ui;
 
+import algvis2.core.Dictionary;
 import algvis2.ds.dictionary.bst.BST;
 import algvis2.scene.control.InputField;
+import javafx.animation.SequentialTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -83,11 +85,18 @@ public class AlgVisFXMLController implements Initializable {
 	
 	@FXML protected void insertPressed(ActionEvent event) {
 		for (int x : new InputField(inputField).getNonEmptyVI())
-			AlgVis.getCurrentVis().getDataStructure().insert(x);
+			AlgVis.getCurrentVis().getDataStructure().insert(x).play();
+	}
+
+	@FXML protected void findPressed(ActionEvent event) {
+		SequentialTransition st = new SequentialTransition();
+		for (int x : new InputField(inputField).getNonEmptyVI())
+			st.getChildren().add(((Dictionary) AlgVis.getCurrentVis().getDataStructure()).find(x));
+		st.play();
 	}
 
 	@FXML protected void randomPressed(ActionEvent event) {
-		AlgVis.getCurrentVis().getDataStructure().random(new InputField(inputField).getInt(10));
+		AlgVis.getCurrentVis().getDataStructure().random(new InputField(inputField).getInt(10)).play();
 	}
 
 	@FXML protected void clearPressed(ActionEvent event) {

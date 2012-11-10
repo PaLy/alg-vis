@@ -22,10 +22,12 @@ import algvis2.ds.dictionary.avl.AVLVisualization;
 import algvis2.ds.dictionary.bst.BSTVisualization;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -51,6 +53,13 @@ public class AlgVis extends Application {
 		scene = new Scene(getRoot());
 		showVisualization(0);
 		stage.setScene(scene);
+
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+		stage.setX(primaryScreenBounds.getMinX());
+		stage.setY(primaryScreenBounds.getMinY());
+		stage.setWidth(primaryScreenBounds.getWidth());
+		stage.setHeight(primaryScreenBounds.getHeight());
+		
 		stage.show();
 
 		that = this;

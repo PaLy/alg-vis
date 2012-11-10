@@ -18,6 +18,7 @@
 package algvis2.core;
 
 import algvis2.scene.layout.VisPane;
+import javafx.animation.Animation;
 
 public abstract class Dictionary extends DataStructure {
 
@@ -25,7 +26,7 @@ public abstract class Dictionary extends DataStructure {
 		super(visPane);
 	}
 
-	abstract public void find(int x);
+	abstract public Animation find(int x);
 
-	abstract public void delete(int x);
+	abstract public Animation delete(int x);
 }
