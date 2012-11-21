@@ -17,13 +17,20 @@
 
 package algvis2.core;
 
+import algvis2.ds.DataStructure;
 import algvis2.scene.layout.VisPane;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.layout.Pane;
 
-public abstract class Visualization {
-	protected final VisPane visPane;
+import java.util.HashMap;
+
+public abstract class Visualization implements PropertyStateEditable {
+	public final VisPane visPane;
 	protected Buttons buttons;
 	protected DataStructure dataStructure;
+	
+	protected BooleanProperty pauses = new SimpleBooleanProperty();
 
 	public Visualization() {
 		visPane = new VisPane();
@@ -45,5 +52,10 @@ public abstract class Visualization {
 	
 	public DataStructure getDataStructure() {
 		return dataStructure;
+	}
+
+	@Override
+	public void storeState(HashMap<Object, Object> state) {
+		visPane.storeState(state);
 	}
 }

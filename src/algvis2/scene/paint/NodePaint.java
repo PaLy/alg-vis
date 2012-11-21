@@ -17,6 +17,8 @@
 
 package algvis2.scene.paint;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -45,16 +47,16 @@ public class NodePaint {
 	public static final NodePaint DELETED = new NodePaint(Color.BLACK,
 		Color.DARKGRAY);
 
-	public final Paint circlePaint, textPaint;
+	public final ObjectProperty<Paint> background, text;
 
-	public NodePaint(Paint textPaint, Paint circlePaint) {
-		this.textPaint = textPaint;
-		this.circlePaint = circlePaint;
+	public NodePaint(Paint text, Paint background) {
+		this.text = new SimpleObjectProperty<Paint>(text);
+		this.background = new SimpleObjectProperty<Paint>(background);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		return obj instanceof NodePaint && circlePaint.equals(((NodePaint) obj).circlePaint)
-			&& textPaint.equals(((NodePaint) obj).textPaint);
+		return obj instanceof NodePaint && background.get().equals(((NodePaint) obj).background.get())
+			&& text.get().equals(((NodePaint) obj).text.get());
 	}
 }

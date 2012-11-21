@@ -39,7 +39,7 @@ public class AlgVis extends Application {
 	private static Scene scene;
 	private static AlgVisFXMLController controller;
 	private static String language = "en"; 
-	private static final int NUMBER_OF_VISUALIZATIONS = 3;
+	private static final int NUMBER_OF_VISUALIZATIONS = 7;
 	private static final Visualization[] VISUALIZATIONS = new Visualization[NUMBER_OF_VISUALIZATIONS];
 	private static int currentVisualization = -1;
 	
@@ -53,6 +53,7 @@ public class AlgVis extends Application {
 		scene = new Scene(getRoot());
 		showVisualization(0);
 		stage.setScene(scene);
+//		stage.setFullScreen(true);
 
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		stage.setX(primaryScreenBounds.getMinX());

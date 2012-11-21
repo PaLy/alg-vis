@@ -15,15 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.ds.dictionary.bst;
+package algvis2.core;
 
-import algvis2.core.Buttons;
-import algvis2.core.Visualization;
+import java.util.HashMap;
 
-public class BSTVisualization extends Visualization {
-	@Override
-	protected void init() {
-		dataStructure = new BST(this);
-		buttons = new Buttons(getClass().getResource("/algvis2/ui/Buttons.fxml"));
-	}
+public interface PropertyStateEditable {
+    public void storeState(HashMap<Object, Object> state);
 }

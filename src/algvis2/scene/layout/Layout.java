@@ -17,8 +17,9 @@
 
 package algvis2.scene.layout;
 
-import algvis2.animation.ParallelTranslateTransition;
-import algvis2.scene.Axis;
+import algvis2.ds.dictionary.bst.BinTreeLayout;
+import algvis2.ds.dictionary.bst.LeftBinTreeLayout;
+import algvis2.ds.dictionary.bst.RightBinTreeLayout;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
@@ -30,7 +31,7 @@ public abstract class Layout implements AbsPosition {
 	public static final String LEFT_BIN_TREE_LAYOUT = "LeftBinTreeLayout";
 	public static final String RIGHT_BIN_TREE_LAYOUT = "RightBinTreeLayout";
 	
-	final Pane pane;
+	protected final Pane pane;
 
 	protected Layout() {
 		pane = initPane();
@@ -41,9 +42,6 @@ public abstract class Layout implements AbsPosition {
 				if (newParent != null) recalcAbsPosition();
 			}
 		});
-		
-		pane.layoutXProperty().addListener(new ParallelTranslateTransition(pane, Axis.X));
-		pane.layoutYProperty().addListener(new ParallelTranslateTransition(pane, Axis.Y));
 	}
 	
 	protected abstract Pane initPane();

@@ -15,36 +15,52 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.core;
+package algvis2.ds;
 
 import algvis.core.MyRandom;
+import algvis2.core.PropertyStateEditable;
+import algvis2.core.Visualization;
 import algvis2.scene.control.InputField;
 import algvis2.scene.layout.VisPane;
+import algvis2.scene.layout.ZDepth;
 import javafx.animation.Animation;
-import javafx.animation.ParallelTransition;
+import javafx.animation.SequentialTransition;
+import javafx.scene.layout.Pane;
 
-public abstract class DataStructure {
+public abstract class DataStructure implements PropertyStateEditable {
 	protected final VisPane visPane;
+	public final Visualization visualization;
+	protected final Pane wrappingPane = new Pane(); // should be instance of layout
 	protected String layoutName;
 
-	protected DataStructure(VisPane visPane) {
-		this.visPane = visPane;
+	protected DataStructure(Visualization visualization) {
+		this.visPane = visualization.visPane;
+		this.visualization = visualization;
+		visPane.add(wrappingPane, ZDepth.NODES);
 	}
 
 	abstract public String getStats();
 
-	abstract public Animation insert(int x);
+	abstract public Animation[] insert(int x);
 
 	abstract public void clear();
 
-	public Animation random(int n) {
-		ParallelTransition pt = new ParallelTransition();
-		for (int i = 0; i < n; i++)
-			pt.getChildren().add(insert(MyRandom.Int(InputField.MAX_VALUE + 1)));
-		return pt;
+	public Animation[] random(int n) {
+		SequentialTransition pt = new SequentialTransition();
+        SequentialTransition back = new SequentialTransition();
+		for (int i = 0; i < n; i++) {
+            Animation[] animations = insert(MyRandom.Int(InputField.MAX_VALUE + 1));
+			pt.getChildren().add(animations[0]);
+            back.getChildren().add(animations[1]);
+        }
+		return new Animation[]{pt, back};
 	}
 	
 	public void setLayout(String layoutName) {
 		this.layoutName = layoutName;
+	}
+	
+	public String getLayout() {
+		return layoutName;
 	}
 }

@@ -15,30 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.scene.layout;
+package algvis2.ds.dictionary;
 
-import javafx.scene.Node;
-import javafx.scene.layout.GridPane;
+import algvis2.core.Visualization;
+import algvis2.ds.DataStructure;
+import javafx.animation.Animation;
 
-/**
- * ----------------
- * | root |       |
- * ----------------
- * | left | right |
- * ----------------
- */
-public class LeftBinTreeLayout extends BinTreeLayout {
-	
-	public LeftBinTreeLayout() {
-		super();
-		((GridPane) pane).setVgap(5);
-		((GridPane) pane).setHgap(5);
+public abstract class Dictionary extends DataStructure {
+
+	protected Dictionary(Visualization visualization) {
+		super(visualization);
 	}
 
-	@Override
-	protected void rebuildNodes(Node root, Node left, Node right) {
-		((GridPane) pane).add(root, 0, 0);
-		if (left != null) ((GridPane) pane).add(left, 0, 1);
-		if (right != null) ((GridPane) pane).add(right, 1, 1);
-	}
+	abstract public Animation find(int x);
+
+	abstract public Animation delete(int x);
 }

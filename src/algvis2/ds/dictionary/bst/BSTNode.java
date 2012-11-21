@@ -19,33 +19,41 @@ package algvis2.ds.dictionary.bst;
 
 import algvis2.scene.layout.Layout;
 import algvis2.scene.shape.Node;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+
+import java.util.HashMap;
 
 public class BSTNode extends Node {
-	private Layout layout;
-	private BSTNode left, right;
-	
+	private BinTreeLayout layout;
+	public final ObjectProperty<BSTNode> leftProperty = new SimpleObjectProperty<BSTNode>();
+    public final ObjectProperty<BSTNode> rightProperty = new SimpleObjectProperty<BSTNode>();
+    
 	public BSTNode(int key, String layoutName) {
 		super(key);
-		layout = Layout.createLayout(layoutName);
+		layout = (BinTreeLayout) Layout.createLayout(layoutName);
+        SonChangeListener sonChangeListener = new SonChangeListener();
+        leftProperty.addListener(sonChangeListener);
+        rightProperty.addListener(sonChangeListener);
 		rebuildLayout();
 	}
 	
 	public void setLeft(BSTNode left) {
-		this.left = left;
-		rebuildLayout();
+		leftProperty.set(left);
 	}
 	
 	public void setRight(BSTNode right) {
-		this.right = right;
-		rebuildLayout();
+		rightProperty.set(right);
 	}
 
 	public BSTNode getLeft() {
-		return left;
+		return leftProperty.get();
 	}
 
 	public BSTNode getRight() {
-		return right;
+		return rightProperty.get();
 	}
 	
 	public Layout getLayout() {
@@ -53,19 +61,49 @@ public class BSTNode extends Node {
 	}
 
 	public void setLayoutR(String layoutName) {
-		layout = Layout.createLayout(layoutName);
-		if (left != null) left.setLayoutR(layoutName);
-		if (right != null) right.setLayoutR(layoutName);
+		layout = (BinTreeLayout) Layout.createLayout(layoutName);
+		if (leftProperty.get() != null) leftProperty.get().setLayoutR(layoutName);
+		if (rightProperty.get() != null) rightProperty.get().setLayoutR(layoutName);
 		rebuildLayout();
+	}
+
+	public void setLayout(String layoutName) {
+		layout = (BinTreeLayout) Layout.createLayout(layoutName);
+		rebuildLayout();
+		recalcAbsPositionR();
 	}
 	
 	private void rebuildLayout() {
 		layout.rebuild(
 			this,
-			left == null ? null : left.getLayout().getPane(),
-			right == null ? null : right.getLayout().getPane(),
-			left == null ? null : left,
-			right == null ? null : right
+			leftProperty.get() == null ? null : leftProperty.get(),
+			rightProperty.get() == null ? null : rightProperty.get()
 		);
 	}
+	
+	public void recalcAbsPositionR() {
+		recalcAbsPosition();
+		if (leftProperty.get() != null) leftProperty.get().recalcAbsPositionR();
+		if (rightProperty.get() != null) rightProperty.get().recalcAbsPositionR();
+	}
+
+    @Override
+    public void storeState(HashMap<Object, Object> state) {
+        super.storeState(state);
+//        System.out.println("YEAH " + leftProperty.hashCode() + " " + leftProperty.get());
+        state.put(leftProperty, leftProperty.get());
+        state.put(rightProperty, rightProperty.get());
+        if (leftProperty.get() != null)
+            leftProperty.get().storeState(state); // TODO potom vymazat duplikaty
+        if (rightProperty.get() != null)
+            rightProperty.get().storeState(state);
+    }
+
+    private class SonChangeListener implements ChangeListener<BSTNode> {
+        @Override
+        public void changed(ObservableValue<? extends BSTNode> observableValue, BSTNode bstNode, BSTNode bstNode1) {
+            System.out.println(observableValue + " " + bstNode + " " + bstNode1);
+            rebuildLayout();
+        }
+    }
 }

@@ -17,13 +17,15 @@
 
 package algvis2.ui;
 
-import algvis2.core.Dictionary;
+import algvis2.ds.dictionary.Dictionary;
 import algvis2.ds.dictionary.bst.BST;
 import algvis2.scene.control.InputField;
+import javafx.animation.Animation;
 import javafx.animation.SequentialTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
@@ -84,8 +86,22 @@ public class AlgVisFXMLController implements Initializable {
 	}
 	
 	@FXML protected void insertPressed(ActionEvent event) {
-		for (int x : new InputField(inputField).getNonEmptyVI())
-			AlgVis.getCurrentVis().getDataStructure().insert(x).play();
+        final SequentialTransition animation = new SequentialTransition();
+        SequentialTransition back = new SequentialTransition();
+		for (int x : new InputField(inputField).getNonEmptyVI()) {
+            Animation[] animations = AlgVis.getCurrentVis().getDataStructure().insert(x);
+			animation.getChildren().add(animations[0]);
+            back.getChildren().add(animations[1]);
+        }
+        back.setRate(-back.getRate());
+        back.jumpTo(back.getTotalDuration());
+        back.setOnFinished(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                animation.play();
+            }
+        });
+        back.play();
 	}
 
 	@FXML protected void findPressed(ActionEvent event) {
@@ -96,7 +112,16 @@ public class AlgVisFXMLController implements Initializable {
 	}
 
 	@FXML protected void randomPressed(ActionEvent event) {
-		AlgVis.getCurrentVis().getDataStructure().random(new InputField(inputField).getInt(10)).play();
+		final Animation[] animations = AlgVis.getCurrentVis().getDataStructure().random(new InputField(inputField).getInt(10));
+        animations[1].setRate(-animations[1].getRate());
+        animations[1].jumpTo(animations[1].getTotalDuration());
+        animations[1].setOnFinished(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                animations[0].play();
+            }
+        });
+        animations[1].play();
 	}
 
 	@FXML protected void clearPressed(ActionEvent event) {

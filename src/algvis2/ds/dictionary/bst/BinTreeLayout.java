@@ -15,8 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.scene.layout;
+package algvis2.ds.dictionary.bst;
 
+import algvis2.scene.layout.Layout;
 import algvis2.scene.shape.Edge;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
@@ -36,30 +37,30 @@ public class BinTreeLayout extends Layout {
 		return new GridPane();
 	}
 	
-	public void rebuild(Node root, Node leftPane, Node rightPane, Node left, Node right) {
+	public void rebuild(BSTNode root, BSTNode left, BSTNode right) {
 		pane.getChildren().clear();
-		rebuildEdges(root, leftPane, rightPane, left, right);
-		rebuildNodes(root, leftPane, rightPane);
+		rebuildEdges(root, left, right);
+		rebuildNodes(root, left, right);
 	}
 	
-	protected void rebuildNodes(Node root, Node left, Node right) {
+	protected void rebuildNodes(BSTNode root, BSTNode left, BSTNode right) {	
 		((GridPane) pane).add(root, 1, 0);
-		if (left != null) ((GridPane) pane).add(left, 0, 1);
-		if (right != null) ((GridPane) pane).add(right, 2, 1);
+		if (left != null) ((GridPane) pane).add(left.getLayout().getPane(), 0, 1);
+		if (right != null) ((GridPane) pane).add(right.getLayout().getPane(), 2, 1);
 	}
 	
-	private void rebuildEdges(Node root, Node leftPane, Node rightPane, Node left, Node right) {
+	private void rebuildEdges(BSTNode root, BSTNode left, BSTNode right) {
 		if (left != null) {
 			Edge leftEdge = new Edge();
 			bindEdgeStart(leftEdge, root);
-			bindEdgeEnd(leftEdge, leftPane, left);
+			bindEdgeEnd(leftEdge, left);
 			GridPane.setConstraints(leftEdge, 0, 0);
 			pane.getChildren().add(leftEdge);
 		}
 		if (right != null) {
 			Edge rightEdge = new Edge();
 			bindEdgeStart(rightEdge, root);
-			bindEdgeEnd(rightEdge, rightPane, right);
+			bindEdgeEnd(rightEdge, right);
 			GridPane.setConstraints(rightEdge, 0, 0);
 			pane.getChildren().add(rightEdge);
 		}
@@ -71,19 +72,13 @@ public class BinTreeLayout extends Layout {
 			case 0:
 				break;
 			case 1:
-				rebuild(nodes[0], null, null, null, null);
+				rebuild(nodes[0], null, null);
 				break;
 			case 2:
-				rebuild(nodes[0], nodes[1], null, null, null);
-				break;
-			case 3:
-				rebuild(nodes[0], nodes[1], nodes[2], null, null);
-				break;
-			case 4:
-				rebuild(nodes[0], nodes[1], nodes[2], nodes[3], null);
+				rebuild(nodes[0], nodes[1], null);
 				break;
 			default:
-				rebuild(nodes[0], nodes[1], nodes[2], nodes[3], nodes[4]);
+				rebuild(nodes[0], nodes[1], nodes[2]);
 		}
 	}
 
@@ -92,14 +87,15 @@ public class BinTreeLayout extends Layout {
 		return pane;
 	}
 	
-	private void bindEdgeStart(Edge edge, Node root) {
+	private void bindEdgeStart(Edge edge, BSTNode root) {
 		edge.startXProperty().bind(root.layoutXProperty()
 			.add(root.translateXProperty()));
 		edge.startYProperty().bind(root.layoutYProperty()
 			.add(root.translateYProperty()));
 	}
 
-	private void bindEdgeEnd(Edge edge, Node nodePane, Node node) {
+	private void bindEdgeEnd(Edge edge, BSTNode node) {
+		Pane nodePane = node.getLayout().getPane();
 		edge.endXProperty().bind(nodePane.layoutXProperty()
 			.add(nodePane.translateXProperty())
 			.add(node.layoutXProperty())
@@ -108,5 +104,12 @@ public class BinTreeLayout extends Layout {
 			.add(nodePane.translateYProperty())
 			.add(node.layoutYProperty())
 			.add(node.translateYProperty()));
+	}
+
+	@Override
+	public void recalcAbsPosition() {
+		for (Node node : pane.getChildren()) {
+			if (node instanceof BSTNode) ((BSTNode) node).recalcAbsPositionR();
+		}
 	}
 }

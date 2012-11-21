@@ -15,35 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.scene.layout;
+package algvis2.ds.dictionary.bst;
 
-import javafx.geometry.HPos;
-import javafx.scene.Node;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.ColumnConstraintsBuilder;
 import javafx.scene.layout.GridPane;
 
 /**
  * ----------------
- * |      | root  |
+ * | root |       |
  * ----------------
  * | left | right |
  * ----------------
  */
-public class RightBinTreeLayout extends BinTreeLayout {
+public class LeftBinTreeLayout extends BinTreeLayout {
 	
-	public RightBinTreeLayout() {
+	public LeftBinTreeLayout() {
 		super();
 		((GridPane) pane).setVgap(5);
 		((GridPane) pane).setHgap(5);
-		ColumnConstraints cc = ColumnConstraintsBuilder.create().halignment(HPos.RIGHT).build();
-		((GridPane) pane).getColumnConstraints().addAll(cc, cc);
 	}
 
 	@Override
-	protected void rebuildNodes(Node root, Node left, Node right) {
-		((GridPane) pane).add(root, 1, 0);
-		if (left != null) ((GridPane) pane).add(left, 0, 1);
-		if (right != null) ((GridPane) pane).add(right, 1, 1);
+	protected void rebuildNodes(BSTNode root, BSTNode left, BSTNode right) {
+		((GridPane) pane).add(root, 0, 0);
+		if (left != null) ((GridPane) pane).add(left.getLayout().getPane(), 0, 1);
+		if (right != null) ((GridPane) pane).add(right.getLayout().getPane(), 1, 1);
 	}
 }

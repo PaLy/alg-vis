@@ -23,6 +23,8 @@ import javafx.animation.TranslateTransition;
 import javafx.animation.TranslateTransitionBuilder;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.util.Duration;
 
@@ -41,6 +43,25 @@ public class ParallelTranslateTransition implements ChangeListener<Number> {
 		this.currentTransition = currentTransition;
 		currentTransition.play();
 	}
+	
+	public void setTransition(TranslateTransition tt) {
+		if (currentTransition != null) {
+			if (currentTransition.getStatus().equals(Animation.Status.RUNNING)) currentTransition.pause();
+			
+			if (axis.equals(Axis.X)) tt.setFromX(node.getTranslateX());
+			else if (axis.equals(Axis.Y)) tt.setFromY(node.getTranslateY());
+		}
+		
+		currentTransition = tt;
+        currentTransition.setOnFinished(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Hura: " + node + " " + node.getTranslateX() + " " + node.getTranslateY());
+            }
+        });
+		tt.play();
+		
+	}
 
 	/**
 	 * TODO should this method be synchronized? (it seems not) 
@@ -49,27 +70,46 @@ public class ParallelTranslateTransition implements ChangeListener<Number> {
 	 * @param newValue
 	 */
 	@Override
-	public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+	public synchronized void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
 		double d = (Double) newValue - (Double) oldValue;
 
 		TranslateTransition tt = TranslateTransitionBuilder.create()
 			.node(node)
 			.duration(Duration.seconds(1))
 			.build();
-		if (axis.equals(Axis.X)) node.translateXProperty().setValue(node.translateXProperty().getValue() - d);
-		else if (axis.equals(Axis.Y)) node.translateYProperty().setValue(node.translateYProperty().getValue() - d);
-		
-		if (currentTransition != null) {
-			if (currentTransition.getStatus().equals(Animation.Status.RUNNING)) currentTransition.pause();
-			
-			if (axis.equals(Axis.X)) tt.setToX(currentTransition.getToX());
-			else if (axis.equals(Axis.Y)) tt.setToY(currentTransition.getToY());
-		} else {
-			if (axis.equals(Axis.X)) tt.setToX(node.translateXProperty().getValue() + d);
-			else if (axis.equals(Axis.Y)) tt.setToY(node.translateYProperty().getValue() + d);
-		}
-		
-		currentTransition = tt;
-		tt.play();
+        
+        synchronized (this) {
+            if (axis.equals(Axis.X)) node.translateXProperty().setValue(node.getTranslateX() - d);
+            else if (axis.equals(Axis.Y)) node.translateYProperty().setValue(node.getTranslateY() - d);
+
+//            System.out.println(node + " " + oldValue + " " + newValue);
+            if (currentTransition != null) {
+                if (currentTransition.getStatus().equals(Animation.Status.RUNNING)) currentTransition.pause();
+//                System.out.println(currentTransition.getToX() + " " + currentTransition.getToY());
+                                
+                if (axis.equals(Axis.X)) {
+//                    tt.setFromX(currentTransition.getFromX() - d);
+                    tt.setToX(currentTransition.getToX());
+                } else if (axis.equals(Axis.Y)) {
+//                    tt.setFromY(currentTransition.getFromY() - d);
+                    tt.setToY(currentTransition.getToY());
+                }
+//                tt.jumpTo(currentTransition.getCurrentTime());
+                currentTransition = null;
+            } else {
+                if (axis.equals(Axis.X)) {
+//                    tt.setFromX(node.getTranslateX() - d);
+                    tt.setToX(node.getTranslateX() + d);
+                } else if (axis.equals(Axis.Y)) {
+//                    tt.setFromX(node.getTranslateY() - d);
+                    tt.setToY(node.getTranslateY() + d);
+                }
+            }
+
+//            System.out.println(node.getTranslateX() + " B " + node.getTranslateY());
+//            System.out.println("******");
+            
+            setTransition(tt);
+        }
 	}
 }

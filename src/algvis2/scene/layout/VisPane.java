@@ -18,19 +18,23 @@
 package algvis2.scene.layout;
 
 import algvis2.animation.ParallelTranslateTransition;
+import algvis2.core.PropertyStateEditable;
 import algvis2.scene.Axis;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.layout.FlowPaneBuilder;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-public class VisPane extends StackPane {
-	private final Map<Node, Pane> elementParent = new WeakHashMap<Node, Pane>();
+public class VisPane extends StackPane implements PropertyStateEditable {
+	private Map<Node, Pane> elementParent = new WeakHashMap<Node, Pane>();
 	public static final String ID = "visPane";
 	
 	public VisPane() {
@@ -57,5 +61,23 @@ public class VisPane extends StackPane {
 
 	public void remove(Node node) {
 		elementParent.get(node).getChildren().remove(node);
+	}
+
+	@Override
+	public void storeState(HashMap<Object, Object> state) {
+        state.put(this, new ArrayList<Node>(getChildren()));
+        for (Node child : getChildren()) {
+            if (child instanceof PropertyStateEditable) ((PropertyStateEditable) child).storeState(state);
+            else if (child instanceof Parent) storeStateR(state, (Parent) child);
+        }
+	}
+	
+	private void storeStateR(HashMap<Object, Object> state, Parent parent) {
+//        System.out.println("aaa " + parent);
+		for (Node child : parent.getChildrenUnmodifiable()) {
+//            if (parent instanceof GridPane) System.out.println("GGG " + child);
+			if (child instanceof PropertyStateEditable) ((PropertyStateEditable) child).storeState(state);
+			else if (child instanceof Parent) storeStateR(state, (Parent) child);
+		}
 	}
 }

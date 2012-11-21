@@ -29,6 +29,7 @@ import javafx.util.Duration;
 
 public class Animations {
 	
+    // TODO to sa musi hodit do nodu a tam sa to nejak scalene, iba tie oranzove veci nepobehovali len tak hocijako
 	public static Animation backlight(final Node node, Paint paint, final VisPane visPane) {
 		Circle nodeCircle = (Circle) node.getShape();
 		final Circle newCircle = new Circle(
@@ -36,6 +37,8 @@ public class Animations {
 			paint);
 		newCircle.centerXProperty().bind(node.visPaneX);
 		newCircle.centerYProperty().bind(node.visPaneY);
+        newCircle.translateXProperty().bind(node.visPaneTranslateX);
+        newCircle.translateYProperty().bind(node.visPaneTranslateY);
 
 		SequentialTransition st = new SequentialTransition();
 		st.getChildren().add(new Timeline(new KeyFrame(Duration.millis(1), new EventHandler<ActionEvent>() {
@@ -47,10 +50,10 @@ public class Animations {
 		
 		FadeTransition ft = FadeTransitionBuilder.create()
 			.node(newCircle)
-			.duration(Duration.millis(500))
+			.duration(Duration.millis(300))
 			.fromValue(1)
 			.toValue(0)
-			.cycleCount(4)
+			.cycleCount(3)
 			.autoReverse(true)
 			.onFinished(new EventHandler<ActionEvent>() {
 				@Override

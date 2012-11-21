@@ -23,7 +23,7 @@ import algvis2.core.Visualization;
 public class AVLVisualization extends Visualization {
 	@Override
 	protected void init() {
-		dataStructure = new AVL(visPane);
+		dataStructure = new AVL(this);
 		buttons = new Buttons(getClass().getResource("/algvis2/ui/Buttons.fxml"));
 	}
 }

@@ -19,15 +19,20 @@ package algvis2.scene.shape;
 
 
 import algvis2.animation.ParallelTranslateTransition;
+import algvis2.core.PropertyStateEditable;
 import algvis2.scene.Axis;
 import algvis2.scene.layout.AbsPosition;
 import algvis2.scene.layout.VisPane;
 import algvis2.scene.paint.NodePaint;
+import javafx.animation.Animation;
+import javafx.animation.ParallelTransition;
+import javafx.animation.TranslateTransition;
+import javafx.animation.TranslateTransitionBuilder;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -37,8 +42,11 @@ import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBuilder;
+import javafx.util.Duration;
 
-public class Node extends Group implements AbsPosition {
+import java.util.HashMap;
+
+public class Node extends Group implements AbsPosition, PropertyStateEditable {
 	/**
 	 * absolute position (relative to visPane)
 	 */
@@ -46,36 +54,45 @@ public class Node extends Group implements AbsPosition {
 	public final DoubleProperty visPaneY = new SimpleDoubleProperty();
 	public final DoubleProperty visPaneTranslateX = new SimpleDoubleProperty();
 	public final DoubleProperty visPaneTranslateY = new SimpleDoubleProperty();
+	public final ParallelTranslateTransition translateXtransition = new ParallelTranslateTransition(this, Axis.X);
+	public final ParallelTranslateTransition translateYtransition = new ParallelTranslateTransition(this, Axis.Y);
 	
 	public static final int RADIUS = 20;
-	private NodePaint paint = NodePaint.NORMAL;
-	public int key;
+	public final ObjectProperty<NodePaint> paintProperty = new SimpleObjectProperty<NodePaint>(NodePaint.NORMAL);
+	public final ObjectProperty<Integer> keyProperty;
 	
 	public Node(int key) {
 		super();
-		this.key = key;
+		this.keyProperty = new SimpleObjectProperty<Integer>(key);
 		
-		Circle circle = new Circle(RADIUS, paint.circlePaint);
+		Circle circle = new Circle(RADIUS);
 		circle.setStroke(Color.BLACK);
+		circle.fillProperty().bind(paintProperty.get().background);
 		Text text = TextBuilder.create()
 						.text(Integer.toString(key))
 						.font(new Font(RADIUS - 3))
-						.fill(paint.textPaint)
 						.textOrigin(VPos.CENTER)
 						.build();
+		text.fillProperty().bind(paintProperty.get().text);
 		text.setX(text.getX() - text.getBoundsInLocal().getWidth() / 2);
 		getChildren().addAll(circle, text);
 		
-		parentProperty().addListener(new ChangeListener<Parent>() {
-			@Override
-			public void changed(ObservableValue<? extends Parent> observableValue, Parent oldParent, 
-			                    Parent newParent) {
-				if (newParent != null) recalcAbsPosition();
-			}
-		});
-		
-		layoutXProperty().addListener(new ParallelTranslateTransition(this, Axis.X));
-		layoutYProperty().addListener(new ParallelTranslateTransition(this, Axis.Y));
+		visPaneX.addListener(translateXtransition);
+		visPaneY.addListener(translateYtransition);
+	}
+	
+	public Animation goAbove(Node node) {
+		TranslateTransition ttx = TranslateTransitionBuilder.create()
+			.node(this)
+			.toX(node.getLayoutX())
+			.duration(Duration.seconds(1))
+			.build();
+		TranslateTransition tty = TranslateTransitionBuilder.create()
+			.node(this)
+			.toY(node.getLayoutY() - 1.5 * Node.RADIUS)
+			.duration(Duration.seconds(1))
+			.build();
+		return new ParallelTransition(ttx, tty);
 	}
 
 	public Shape getShape() {
@@ -106,12 +123,23 @@ public class Node extends Group implements AbsPosition {
 		}
 		visPaneX.bind(vpX);
 		visPaneY.bind(vpY);
+        vptX.add(translateXProperty());
+        vptY.add(translateYProperty());
 		visPaneTranslateX.bind(vptX);
 		visPaneTranslateY.bind(vptY);
 	}
+	
+	public int getKey() {
+		return keyProperty.getValue();
+	}
 
 	public void setPaint(NodePaint paint) {
-		((Circle) getChildren().get(0)).setFill(paint.circlePaint);
-		((Text) getChildren().get(1)).setFill(paint.textPaint);
+		paintProperty.setValue(paint);
 	}
+
+    @Override
+    public void storeState(HashMap<Object, Object> state) {
+        state.put(paintProperty, paintProperty.get());
+        state.put(keyProperty, keyProperty.get());
+    }
 }

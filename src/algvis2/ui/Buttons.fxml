@@ -36,8 +36,8 @@
             <Button mnemonicParsing="false" onAction="#insertPressed" text="%button-insert" />
 						<Button mnemonicParsing="false" onAction="#findPressed" text="%button-find" />
             <Separator orientation="VERTICAL" prefHeight="-1.0" />
-            <Button disable="true" mnemonicParsing="false" text="%previous" />
-            <Button disable="true" mnemonicParsing="false" text="%next" />
+            <Button mnemonicParsing="false" text="%previous" />
+            <Button mnemonicParsing="false" text="%next" />
           </children>
           <padding>
             <Insets bottom="20.0" fx:id="x1" />
@@ -45,9 +45,9 @@
         </HBox>
         <HBox alignment="CENTER" prefHeight="-1.0" prefWidth="-1.0" spacing="10.0">
           <children>
-            <CheckBox disable="true" mnemonicParsing="false" selected="true" text="%button-pause" />
+            <CheckBox mnemonicParsing="false" selected="true" text="%button-pause" />
             <Button mnemonicParsing="false" onAction="#clearPressed" text="%button-clear" />
-            <Button disable="false" mnemonicParsing="false" onAction="#randomPressed" text="%button-random" />
+            <Button mnemonicParsing="false" onAction="#randomPressed" text="%button-random" />
             <ChoiceBox id="button" fx:id="button_layout">
               <items>
                 <FXCollections fx:factory="observableArrayList">

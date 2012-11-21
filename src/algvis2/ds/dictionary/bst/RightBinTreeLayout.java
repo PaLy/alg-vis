@@ -15,18 +15,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.core;
+package algvis2.ds.dictionary.bst;
 
-import algvis2.scene.layout.VisPane;
-import javafx.animation.Animation;
+import javafx.geometry.HPos;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.ColumnConstraintsBuilder;
+import javafx.scene.layout.GridPane;
 
-public abstract class Dictionary extends DataStructure {
-
-	protected Dictionary(VisPane visPane) {
-		super(visPane);
+/**
+ * ----------------
+ * |      | root  |
+ * ----------------
+ * | left | right |
+ * ----------------
+ */
+public class RightBinTreeLayout extends BinTreeLayout {
+	
+	public RightBinTreeLayout() {
+		super();
+		((GridPane) pane).setVgap(5);
+		((GridPane) pane).setHgap(5);
+		ColumnConstraints cc = ColumnConstraintsBuilder.create().halignment(HPos.RIGHT).build();
+		((GridPane) pane).getColumnConstraints().addAll(cc, cc);
 	}
 
-	abstract public Animation find(int x);
-
-	abstract public Animation delete(int x);
+	@Override
+	protected void rebuildNodes(BSTNode root, BSTNode left, BSTNode right) {
+		((GridPane) pane).add(root, 1, 0);
+		if (left != null) ((GridPane) pane).add(left.getLayout().getPane(), 0, 1);
+		if (right != null) ((GridPane) pane).add(right.getLayout().getPane(), 1, 1);
+	}
 }
