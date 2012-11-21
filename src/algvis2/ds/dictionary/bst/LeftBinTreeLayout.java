@@ -37,7 +37,7 @@ public class LeftBinTreeLayout extends BinTreeLayout {
 	@Override
 	protected void rebuildNodes(BSTNode root, BSTNode left, BSTNode right) {
 		((GridPane) pane).add(root, 0, 0);
-		if (left != null) ((GridPane) pane).add(left.getLayout().getPane(), 0, 1);
-		if (right != null) ((GridPane) pane).add(right.getLayout().getPane(), 1, 1);
+		if (left != null) ((GridPane) pane).add(left.getLayoutPane(), 0, 1);
+		if (right != null) ((GridPane) pane).add(right.getLayoutPane(), 1, 1);
 	}
 }

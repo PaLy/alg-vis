@@ -31,7 +31,7 @@ public class NodePaint {
 	public static final NodePaint RED = new NodePaint(Color.BLACK, Color.RED);
 
 	public static final NodePaint NORMAL = new NodePaint(Color.BLACK,
-		Color.YELLOW);
+		Color.web("0xfecb65"));
 	public static final NodePaint DARKER = new NodePaint(Color.BLACK,
 		Color.web("0xCDCD00"));
 

@@ -15,34 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.ds.dictionary.bst;
+package algvis2.scene.text;
 
-import javafx.geometry.HPos;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.ColumnConstraintsBuilder;
-import javafx.scene.layout.GridPane;
+import algvis2.scene.shape.Node;
+import javafx.scene.text.Font;
 
-/**
- * ----------------
- * |      | root  |
- * ----------------
- * | left | right |
- * ----------------
- */
-public class RightBinTreeLayout extends BinTreeLayout {
-	
-	public RightBinTreeLayout() {
-		super();
-		((GridPane) pane).setVgap(5);
-		((GridPane) pane).setHgap(5);
-		ColumnConstraints cc = ColumnConstraintsBuilder.create().halignment(HPos.RIGHT).build();
-		((GridPane) pane).getColumnConstraints().addAll(cc, cc);
-	}
-
-	@Override
-	protected void rebuildNodes(BSTNode root, BSTNode left, BSTNode right) {
-		((GridPane) pane).add(root, 1, 0);
-		if (left != null) ((GridPane) pane).add(left.getLayoutPane(), 0, 1);
-		if (right != null) ((GridPane) pane).add(right.getLayoutPane(), 1, 1);
-	}
+public class Fonts {
+    public static final Font NODE_FONT = new Font(Node.RADIUS - 3);
 }

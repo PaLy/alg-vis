@@ -50,7 +50,7 @@ public class BST extends Dictionary {
             @Override
             public void changed(ObservableValue<? extends BSTNode> observableValue, BSTNode bstNode, BSTNode bstNode1) {
                 wrappingPane.getChildren().clear(); // TODO nejak by mal vediet vymazat len seba
-                if (bstNode1 != null) wrappingPane.getChildren().add(bstNode1.getLayout().getPane());
+                if (bstNode1 != null) wrappingPane.getChildren().add(bstNode1.getLayoutPane());
                 // zmenit na getLayoutPane()?
             }
         });
@@ -125,7 +125,7 @@ public class BST extends Dictionary {
 		if (rootProperty.get() != null) {
 			wrappingPane.getChildren().clear();
 			rootProperty.get().setLayoutR(layoutName);
-			wrappingPane.getChildren().add(rootProperty.get().getLayout().getPane());
+			wrappingPane.getChildren().add(rootProperty.get().getLayoutPane());
 		} 
 	}
 

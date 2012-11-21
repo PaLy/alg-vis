@@ -21,9 +21,11 @@ package algvis2.scene.shape;
 import algvis2.animation.ParallelTranslateTransition;
 import algvis2.core.PropertyStateEditable;
 import algvis2.scene.Axis;
+import algvis2.scene.effect.Effects;
 import algvis2.scene.layout.AbsPosition;
 import algvis2.scene.layout.VisPane;
 import algvis2.scene.paint.NodePaint;
+import algvis2.scene.text.Fonts;
 import javafx.animation.Animation;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
@@ -36,8 +38,10 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
+import javafx.scene.effect.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.CircleBuilder;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -65,16 +69,21 @@ public class Node extends Group implements AbsPosition, PropertyStateEditable {
 		super();
 		this.keyProperty = new SimpleObjectProperty<Integer>(key);
 		
-		Circle circle = new Circle(RADIUS);
-		circle.setStroke(Color.BLACK);
+		Circle circle = CircleBuilder.create()
+                .radius(RADIUS)
+                .stroke(Color.BLACK)
+                .effect(Effects.NODE_SHADOW)
+                .build();
 		circle.fillProperty().bind(paintProperty.get().background);
+        
 		Text text = TextBuilder.create()
 						.text(Integer.toString(key))
-						.font(new Font(RADIUS - 3))
+						.font(Fonts.NODE_FONT)
 						.textOrigin(VPos.CENTER)
 						.build();
 		text.fillProperty().bind(paintProperty.get().text);
 		text.setX(text.getX() - text.getBoundsInLocal().getWidth() / 2);
+        
 		getChildren().addAll(circle, text);
 		
 		visPaneX.addListener(translateXtransition);

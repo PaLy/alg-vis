@@ -15,34 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.ds.dictionary.bst;
+package algvis2.scene.effect;
 
-import javafx.geometry.HPos;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.ColumnConstraintsBuilder;
-import javafx.scene.layout.GridPane;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.DropShadowBuilder;
+import javafx.scene.paint.Color;
 
-/**
- * ----------------
- * |      | root  |
- * ----------------
- * | left | right |
- * ----------------
- */
-public class RightBinTreeLayout extends BinTreeLayout {
-	
-	public RightBinTreeLayout() {
-		super();
-		((GridPane) pane).setVgap(5);
-		((GridPane) pane).setHgap(5);
-		ColumnConstraints cc = ColumnConstraintsBuilder.create().halignment(HPos.RIGHT).build();
-		((GridPane) pane).getColumnConstraints().addAll(cc, cc);
-	}
-
-	@Override
-	protected void rebuildNodes(BSTNode root, BSTNode left, BSTNode right) {
-		((GridPane) pane).add(root, 1, 0);
-		if (left != null) ((GridPane) pane).add(left.getLayoutPane(), 0, 1);
-		if (right != null) ((GridPane) pane).add(right.getLayoutPane(), 1, 1);
-	}
+public class Effects {
+    public static final DropShadow NODE_SHADOW = DropShadowBuilder.create()
+            .offsetY(3)
+            .radius(5)
+            .color(Color.GRAY)
+            .build();
 }

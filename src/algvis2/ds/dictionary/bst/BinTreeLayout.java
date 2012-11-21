@@ -45,8 +45,8 @@ public class BinTreeLayout extends Layout {
 	
 	protected void rebuildNodes(BSTNode root, BSTNode left, BSTNode right) {	
 		((GridPane) pane).add(root, 1, 0);
-		if (left != null) ((GridPane) pane).add(left.getLayout().getPane(), 0, 1);
-		if (right != null) ((GridPane) pane).add(right.getLayout().getPane(), 2, 1);
+		if (left != null) ((GridPane) pane).add(left.getLayoutPane(), 0, 1);
+		if (right != null) ((GridPane) pane).add(right.getLayoutPane(), 2, 1);
 	}
 	
 	private void rebuildEdges(BSTNode root, BSTNode left, BSTNode right) {
@@ -95,7 +95,7 @@ public class BinTreeLayout extends Layout {
 	}
 
 	private void bindEdgeEnd(Edge edge, BSTNode node) {
-		Pane nodePane = node.getLayout().getPane();
+		Pane nodePane = node.getLayoutPane();
 		edge.endXProperty().bind(nodePane.layoutXProperty()
 			.add(nodePane.translateXProperty())
 			.add(node.layoutXProperty())

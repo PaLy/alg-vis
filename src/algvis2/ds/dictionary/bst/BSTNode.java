@@ -23,6 +23,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.layout.Pane;
 
 import java.util.HashMap;
 
@@ -56,8 +57,8 @@ public class BSTNode extends Node {
 		return rightProperty.get();
 	}
 	
-	public Layout getLayout() {
-		return layout;
+	public Pane getLayoutPane() {
+		return layout.getPane();
 	}
 
 	public void setLayoutR(String layoutName) {
