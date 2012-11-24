@@ -17,13 +17,15 @@
 
 package algvis2.scene.layout;
 
-import algvis2.animation.ParallelTranslateTransition;
+import algvis2.animation.AutoTranslateTransition;
 import algvis2.core.PropertyStateEditable;
 import algvis2.scene.Axis;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPaneBuilder;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -36,6 +38,8 @@ import java.util.WeakHashMap;
 public class VisPane extends StackPane implements PropertyStateEditable {
 	private Map<Node, Pane> elementParent = new WeakHashMap<Node, Pane>();
 	public static final String ID = "visPane";
+    
+    private double mouseX, mouseY;
 	
 	public VisPane() {
 		super();
@@ -49,8 +53,26 @@ public class VisPane extends StackPane implements PropertyStateEditable {
 			}
 		}
 		
-		layoutXProperty().addListener(new ParallelTranslateTransition(this, Axis.X));
-		layoutYProperty().addListener(new ParallelTranslateTransition(this, Axis.Y));
+		layoutXProperty().addListener(new AutoTranslateTransition(this, Axis.X));
+		layoutYProperty().addListener(new AutoTranslateTransition(this, Axis.Y));
+        
+        setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                mouseX = mouseEvent.getSceneX();
+                mouseY = mouseEvent.getSceneY();
+            }
+        });
+        
+        setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                setTranslateX(getTranslateX() + mouseEvent.getSceneX() - mouseX);
+                mouseX = mouseEvent.getSceneX();
+                setTranslateY(getTranslateY() + mouseEvent.getSceneY() - mouseY);
+                mouseY = mouseEvent.getSceneY();
+            }
+        });
 	}
 	
 	public void add(Node node, int zDepth) {
@@ -67,15 +89,15 @@ public class VisPane extends StackPane implements PropertyStateEditable {
 	public void storeState(HashMap<Object, Object> state) {
         state.put(this, new ArrayList<Node>(getChildren()));
         for (Node child : getChildren()) {
-            if (child instanceof PropertyStateEditable) ((PropertyStateEditable) child).storeState(state);
-            else if (child instanceof Parent) storeStateR(state, (Parent) child);
+            state.put(child, new ArrayList<Node>(((Parent) child).getChildrenUnmodifiable()));
+            storeStateR(state, (Parent) child);
         }
 	}
 	
+    // TODO nie je to tak celkom rekurzivne (neuklada sa zoznam deti parenta, ale iba jednodtlive nody)
+    // a potom ich znovu ukladam vo datastructure.storeState
 	private void storeStateR(HashMap<Object, Object> state, Parent parent) {
-//        System.out.println("aaa " + parent);
 		for (Node child : parent.getChildrenUnmodifiable()) {
-//            if (parent instanceof GridPane) System.out.println("GGG " + child);
 			if (child instanceof PropertyStateEditable) ((PropertyStateEditable) child).storeState(state);
 			else if (child instanceof Parent) storeStateR(state, (Parent) child);
 		}

@@ -17,17 +17,16 @@
 
 package algvis2.ui;
 
+import algvis2.animation.AutoAnimsManager;
 import algvis2.core.Visualization;
 import algvis2.ds.dictionary.avl.AVLVisualization;
 import algvis2.ds.dictionary.bst.BSTVisualization;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -42,6 +41,8 @@ public class AlgVis extends Application {
 	private static final int NUMBER_OF_VISUALIZATIONS = 7;
 	private static final Visualization[] VISUALIZATIONS = new Visualization[NUMBER_OF_VISUALIZATIONS];
 	private static int currentVisualization = -1;
+    
+    public static final AutoAnimsManager autoAnimsManager = new AutoAnimsManager();
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -53,13 +54,13 @@ public class AlgVis extends Application {
 		scene = new Scene(getRoot());
 		showVisualization(0);
 		stage.setScene(scene);
-//		stage.setFullScreen(true);
+		stage.setFullScreen(true);
 
-		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-		stage.setX(primaryScreenBounds.getMinX());
-		stage.setY(primaryScreenBounds.getMinY());
-		stage.setWidth(primaryScreenBounds.getWidth());
-		stage.setHeight(primaryScreenBounds.getHeight());
+//		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+//		stage.setX(primaryScreenBounds.getMinX());
+//		stage.setY(primaryScreenBounds.getMinY());
+//		stage.setWidth(primaryScreenBounds.getWidth());
+//		stage.setHeight(primaryScreenBounds.getHeight());
 		
 		stage.show();
 

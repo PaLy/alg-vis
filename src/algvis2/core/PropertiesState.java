@@ -55,18 +55,12 @@ public class PropertiesState {
                         || (preValue == null && wvKey.getValue() != null)
                         || (preValue != null && wvKey.getValue() == null)
                         ) {
-//                    System.out.println(wvKey + " " + preValue);
-//                    System.out.println(wvKey + " " + wvKey.getValue());
-//                    System.out.println("*******");
                     firstKeyFrameValues.add(new KeyValue(wvKey, preValue));
                     secondKeyFrameValues.add(new KeyValue(wvKey, wvKey.getValue()));
                 }
             } else if (key instanceof Parent) {
-//                System.out.println("ano");
                 Parent pKey = (Parent) key;
                 List<Node> preValue = (List<Node>) preState.get(pKey);
-//                System.out.println(key);
-//                System.out.println(preValue);
                 if (!preValue.equals(pKey.getChildrenUnmodifiable())) {
                     preChildren.put(pKey, preValue);
                     postChildren.put(pKey, new ArrayList<Node>(pKey.getChildrenUnmodifiable()));
@@ -78,7 +72,6 @@ public class PropertiesState {
         KeyFrame secondKeyFrame = new KeyFrame(Duration.millis(1), null, null, secondKeyFrameValues);
         final Timeline timeline = new Timeline(firstKeyFrame, secondKeyFrame);
         
-//        System.out.println(preChildren.size());
         if (preChildren.size() > 0) {
             timeline.setOnFinished(new EventHandler<ActionEvent>() {
                 @Override
@@ -98,21 +91,16 @@ public class PropertiesState {
                         for (Node child : newChildren) {
                             children.add(child);
                         }
-                        System.out.println(parent);
-                        System.out.println(parent.getChildrenUnmodifiable());
-                        System.out.println("***********");
                     }
                 }
             });
         }
-
-        // TODO mozno netreba
-//        for (ObjectProperty<Object> property : postState.keySet()) {
-//            if (preState.get(property) == null) {
-//                secondKeyFrame.getValues().add(new KeyValue(property, property.getValue()));
-//            }
-//        }
-        
         return timeline;
+    }
+    
+    public void addNewStates(HashMap<Object, Object> newStates) {
+        for (Object key : newStates.keySet()) {
+            if (!preState.containsKey(key)) preState.put(key, newStates.get(key));
+        }
     }
 }

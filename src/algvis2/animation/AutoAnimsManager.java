@@ -15,19 +15,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.ds.dictionary;
+package algvis2.animation;
 
-import algvis2.core.Visualization;
-import algvis2.ds.DataStructure;
-import javafx.animation.Animation;
+import java.util.HashSet;
 
-public abstract class Dictionary extends DataStructure {
+public class AutoAnimsManager {
+    private final HashSet<AutoAnimation> animations = new HashSet<AutoAnimation>(); // TODO pozor na memory leak
+    
+    public void add(AutoAnimation animation) {
+        animations.add(animation);
+    }
 
-	protected Dictionary(Visualization visualization) {
-		super(visualization);
-	}
-
-	abstract public Animation[] find(int x);
-
-	abstract public void delete(int x);
+    public void remove(AutoAnimation animation) {
+        animations.remove(animation);
+    }
+    
+    public void endAll() {
+        for (AutoAnimation animation : animations) {
+            animation.stop();
+        }
+        animations.clear();
+    }
 }

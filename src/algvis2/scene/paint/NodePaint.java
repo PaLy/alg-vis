@@ -35,8 +35,8 @@ public class NodePaint {
 	public static final NodePaint DARKER = new NodePaint(Color.BLACK,
 		Color.web("0xCDCD00"));
 
-	public static final NodePaint INSERT = new NodePaint(Color.WHITE,
-		Color.web("0x3366ff"));
+	public static final NodePaint INSERT = new NodePaint(Color.BLACK,
+		Color.LIGHTBLUE);
 	public static final NodePaint FIND = new NodePaint(Color.BLACK,
 		Color.LIGHTGRAY);
 	public static final NodePaint FOUND = GREEN;
@@ -53,6 +53,11 @@ public class NodePaint {
 		this.text = new SimpleObjectProperty<Paint>(text);
 		this.background = new SimpleObjectProperty<Paint>(background);
 	}
+
+    public NodePaint(NodePaint paint) {
+        this.text = new SimpleObjectProperty<Paint>(paint.text.get());
+        this.background = new SimpleObjectProperty<Paint>(paint.background.get());
+    }
 
 	@Override
 	public boolean equals(Object obj) {

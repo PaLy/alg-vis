@@ -22,6 +22,7 @@ import algvis2.ds.dictionary.bst.BST;
 import algvis2.scene.control.InputField;
 import javafx.animation.Animation;
 import javafx.animation.SequentialTransition;
+import javafx.animation.SequentialTransitionBuilder;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -93,22 +94,52 @@ public class AlgVisFXMLController implements Initializable {
 			animation.getChildren().add(animations[0]);
             back.getChildren().add(animations[1]);
         }
+
+//        final PauseTransition pauseTransition =  new PauseTransition(Duration.seconds(1));
+//        pauseTransition.setOnFinished(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                System.out.println("TERAZ");
+//            }
+//        });
+//        System.out.println("BEFORE BACK");
         back.setRate(-back.getRate());
         back.jumpTo(back.getTotalDuration());
         back.setOnFinished(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                animation.play();
+                AlgVis.autoAnimsManager.endAll();
+                SequentialTransitionBuilder.create()
+//                        .children(pauseTransition, animation)
+                        .children(animation)
+                        .build()
+                        .play();
             }
         });
         back.play();
 	}
 
 	@FXML protected void findPressed(ActionEvent event) {
-		SequentialTransition st = new SequentialTransition();
-		for (int x : new InputField(inputField).getNonEmptyVI())
-			st.getChildren().add(((Dictionary) AlgVis.getCurrentVis().getDataStructure()).find(x));
-		st.play();
+        final SequentialTransition animation = new SequentialTransition();
+        SequentialTransition back = new SequentialTransition();
+        for (int x : new InputField(inputField).getNonEmptyVI()) {
+            Animation[] animations = ((Dictionary) AlgVis.getCurrentVis().getDataStructure()).find(x);
+            animation.getChildren().add(animations[0]);
+            back.getChildren().add(animations[1]);
+        }
+        back.setRate(-back.getRate());
+        back.jumpTo(back.getTotalDuration());
+        back.setOnFinished(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                AlgVis.autoAnimsManager.endAll();
+                SequentialTransitionBuilder.create()
+                        .children(animation)
+                        .build()
+                        .play();
+            }
+        });
+        back.play();
 	}
 
 	@FXML protected void randomPressed(ActionEvent event) {

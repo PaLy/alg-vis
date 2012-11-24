@@ -57,5 +57,7 @@ public abstract class Visualization implements PropertyStateEditable {
 	@Override
 	public void storeState(HashMap<Object, Object> state) {
 		visPane.storeState(state);
+        // TODO neukladala sa datova struktura
+        dataStructure.storeState(state);
 	}
 }

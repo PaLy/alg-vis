@@ -17,30 +17,20 @@
 
 package algvis2.ds.dictionary.bst;
 
-import algvis2.animation.Animations;
 import algvis2.core.Visualization;
 import algvis2.ds.dictionary.Dictionary;
 import algvis2.scene.layout.Layout;
-import algvis2.scene.paint.NodePaint;
 import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.SequentialTransition;
-import javafx.animation.Timeline;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.paint.Color;
-import javafx.util.Duration;
 
 import java.util.HashMap;
 
 public class BST extends Dictionary {
 	public static final String DEF_LAYOUT = Layout.BIN_TREE_LAYOUT;
 	public final ObjectProperty<BSTNode> rootProperty = new SimpleObjectProperty<BSTNode>();
-	// TODO vsade namiesto getValue() dat get()
     // TODO niekedy sa pokazi (asi layout?) pri zmene layout sa to opravi (okrem rootovych synov?)
 	
 	public BST(Visualization visualization) {
@@ -48,51 +38,28 @@ public class BST extends Dictionary {
 		layoutName = DEF_LAYOUT;
         rootProperty.addListener(new ChangeListener<BSTNode>() {
             @Override
-            public void changed(ObservableValue<? extends BSTNode> observableValue, BSTNode bstNode, BSTNode bstNode1) {
-                wrappingPane.getChildren().clear(); // TODO nejak by mal vediet vymazat len seba
-                if (bstNode1 != null) wrappingPane.getChildren().add(bstNode1.getLayoutPane());
-                // zmenit na getLayoutPane()?
+            public void changed(ObservableValue<? extends BSTNode> observableValue, BSTNode oldNode, BSTNode newNode) {
+                if (newNode != null) {
+                    newNode.removeLayoutXYBindings();
+                    dsLayout.rebuild(newNode.getLayoutPane());
+                } else {
+                    dsLayout.rebuild();
+                }
+                visPane.setTranslateX(0);
+                visPane.setTranslateY(0);
             }
         });
 	}
 
 	@Override
-	public Animation find(int x) {
-		SequentialTransition st = new SequentialTransition();
-		BSTNode cur = rootProperty.get();
-		while (cur != null) {
-			st.getChildren().add(Animations.backlight(cur, Color.ORANGE, visPane));
-			if (cur.getKey() == x) {
-				final BSTNode finalCur = cur;
-				st.getChildren().add(new Timeline(
-					new KeyFrame(Duration.millis(1), new EventHandler<ActionEvent>() {
-						@Override
-						public void handle(ActionEvent event) {
-							finalCur.setPaint(NodePaint.GREEN);
-						}
-					})));
-				break;
-			} else {
-				final BSTNode finalCur = cur;
-				st.getChildren().add(new Timeline(
-					new KeyFrame(Duration.millis(1), new EventHandler<ActionEvent>() {
-						@Override
-						public void handle(ActionEvent event) {
-							finalCur.setPaint(NodePaint.FIND);
-						}
-					}))
-				);
-				if (cur.getKey() < x) cur = cur.getRight();
-				else cur = cur.getLeft();
-			}
-		}
-		return st;
+	public Animation[] find(int x) {
+        BSTFind bstFind = new BSTFind(this, x);
+        return new Animation[]{bstFind.runA(), bstFind.getBackToStart()};
 	}
 
 	@Override
-	public Animation delete(int x) {
+	public void delete(int x) {
 		// TODO
-		return null;
 	}
 
 	@Override
@@ -123,9 +90,8 @@ public class BST extends Dictionary {
 	public void setLayout(String layoutName) {
 		super.setLayout(layoutName);
 		if (rootProperty.get() != null) {
-			wrappingPane.getChildren().clear();
 			rootProperty.get().setLayoutR(layoutName);
-			wrappingPane.getChildren().add(rootProperty.get().getLayoutPane());
+            dsLayout.rebuild(getRoot().getLayoutPane());
 		} 
 	}
 
@@ -133,6 +99,5 @@ public class BST extends Dictionary {
 	public void storeState(HashMap<Object, Object> state) {
         state.put(rootProperty, rootProperty.get());
         if (rootProperty.get() != null) rootProperty.get().storeState(state);
-        // TODO mozno nepotrebne? co ak nebude na scene?
 	}
 }

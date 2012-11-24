@@ -15,19 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.ds.dictionary;
+package algvis2.ds;
 
-import algvis2.core.Visualization;
-import algvis2.ds.DataStructure;
-import javafx.animation.Animation;
+import algvis2.scene.layout.Layout;
+import javafx.scene.Node;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 
-public abstract class Dictionary extends DataStructure {
+public class DSDefaultLayout extends Layout {
+    @Override
+    protected Pane initPane() {
+        return new HBox(5);
+    }
 
-	protected Dictionary(Visualization visualization) {
-		super(visualization);
-	}
-
-	abstract public Animation[] find(int x);
-
-	abstract public void delete(int x);
+    @Override
+    public void rebuild(Node... nodes) {
+        getPane().getChildren().clear();
+        getPane().getChildren().addAll(nodes);
+    }
 }

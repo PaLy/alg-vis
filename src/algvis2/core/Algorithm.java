@@ -18,15 +18,20 @@
 package algvis2.core;
 
 import algvis2.ds.DataStructure;
-import javafx.animation.Animation;
-import javafx.animation.SequentialTransition;
-import javafx.animation.Timeline;
+import algvis2.scene.layout.VisPane;
+import algvis2.scene.layout.ZDepth;
+import algvis2.scene.shape.Node;
+import javafx.animation.*;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 
 import java.util.HashMap;
 import java.util.concurrent.Semaphore;
 
 public abstract class Algorithm implements Runnable {
 	protected final Visualization visualization;
+    protected final Animations animations;
 	private final Semaphore gate = new Semaphore(1);
 	private boolean wrapped = false;
 	private Algorithm wrapperAlg;
@@ -37,7 +42,8 @@ public abstract class Algorithm implements Runnable {
     private Timeline backToStart;
 	
 	protected Algorithm(DataStructure D) {
-		this.visualization = D.visualization;
+		visualization = D.visualization;
+        animations = new Animations(visualization.visPane);
         animation = new SequentialTransition();
 		try {
 			gate.acquire();
@@ -77,9 +83,7 @@ public abstract class Algorithm implements Runnable {
 			wrapperAlg.pause();
 		} else {
 			saveChangedProperties();
-            HashMap<Object, Object> preState = new HashMap<Object, Object>();
-            visualization.storeState(preState);
-            state = new PropertiesState(preState);
+            animation.getChildren().add(new PauseTransition(Duration.seconds(2)));
 		}
 	}
 
@@ -113,13 +117,57 @@ public abstract class Algorithm implements Runnable {
     
     public void saveChangedProperties() {
         animation.getChildren().add(state.createTimeline());
+        HashMap<Object, Object> preState = new HashMap<Object, Object>();
+        visualization.storeState(preState);
+        state = new PropertiesState(preState);
+        
+        startState.addNewStates(preState);
     }
     
     protected void addAnimation(Animation anim) {
         saveChangedProperties();
-        HashMap<Object, Object> preState = new HashMap<Object, Object>();
-        visualization.storeState(preState);
-        state = new PropertiesState(preState);
         animation.getChildren().add(anim);
+    }
+    
+    protected void addNode(javafx.scene.Node node, int zDepth) {
+        visualization.visPane.add(node, zDepth);
+        saveChangedProperties();
+    }
+    
+    protected void removeNode(javafx.scene.Node node) {
+        visualization.visPane.remove(node);
+    }
+    
+    protected class Animations {
+        private final VisPane visPane;
+        
+        public Animations(VisPane visPane) {
+            this.visPane = visPane;
+        }
+
+        public void backlight(final Node node, Paint paint) {
+            Circle nodeCircle = (Circle) node.getShape();
+            final Circle newCircle = new Circle(
+                    nodeCircle.getRadius() * 1.3,
+                    paint);
+            newCircle.centerXProperty().bind(node.visPaneX);
+            newCircle.centerYProperty().bind(node.visPaneY);
+            newCircle.translateXProperty().bind(node.visPaneTranslateX);
+            newCircle.translateYProperty().bind(node.visPaneTranslateY);
+
+            visPane.add(newCircle, ZDepth.BACKLIGHT);
+            
+            addAnimation(FadeTransitionBuilder.create()
+                    .node(newCircle)
+                    .duration(Duration.millis(300))
+                    .fromValue(1)
+                    .toValue(0)
+                    .cycleCount(6)
+                    .autoReverse(true)
+                    .build()
+            );
+            
+            visPane.remove(newCircle);
+        }
     }
 }

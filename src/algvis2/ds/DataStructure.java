@@ -21,22 +21,26 @@ import algvis.core.MyRandom;
 import algvis2.core.PropertyStateEditable;
 import algvis2.core.Visualization;
 import algvis2.scene.control.InputField;
+import algvis2.scene.layout.Layout;
 import algvis2.scene.layout.VisPane;
 import algvis2.scene.layout.ZDepth;
+import algvis2.scene.shape.Node;
 import javafx.animation.Animation;
 import javafx.animation.SequentialTransition;
-import javafx.scene.layout.Pane;
+import javafx.geometry.Insets;
+import javafx.scene.layout.FlowPane;
 
 public abstract class DataStructure implements PropertyStateEditable {
 	protected final VisPane visPane;
 	public final Visualization visualization;
-	protected final Pane wrappingPane = new Pane(); // should be instance of layout
+    protected Layout dsLayout = new DSDefaultLayout();
 	protected String layoutName;
 
 	protected DataStructure(Visualization visualization) {
 		this.visPane = visualization.visPane;
 		this.visualization = visualization;
-		visPane.add(wrappingPane, ZDepth.NODES);
+		visPane.add(dsLayout.getPane(), ZDepth.NODES);
+        FlowPane.setMargin(dsLayout.getPane(), new Insets(Node.RADIUS * 2.5));
 	}
 
 	abstract public String getStats();

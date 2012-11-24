@@ -17,12 +17,10 @@
 
 package algvis2.ds.dictionary.bst;
 
-import algvis2.animation.Animations;
 import algvis2.core.Algorithm;
-import javafx.animation.FadeTransitionBuilder;
-import javafx.animation.ScaleTransition;
+import algvis2.scene.layout.ZDepth;
+import algvis2.scene.paint.NodePaint;
 import javafx.animation.ScaleTransitionBuilder;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 public class BSTInsert extends Algorithm {
@@ -37,35 +35,26 @@ public class BSTInsert extends Algorithm {
 
 	@Override
 	public void runAlgorithm() throws InterruptedException {
-		BSTNode newNode = new BSTNode(x, D.getLayout());
+        BSTNode newNode = new BSTNode(x, NodePaint.INSERT, D.getLayout());
+        addNode(newNode, ZDepth.TOP);
 
 		if (D.getRoot() == null) {
-			D.setRoot(newNode);
+            D.setRoot(newNode);
 		} else {
-			newNode.goAbove(D.getRoot()).play();
 			BSTNode cur = D.getRoot();
 			while (true) {
-//                addAnimation(FadeTransitionBuilder.create()
-//                        .node(cur)
-//                        .fromValue(1)
-//                        .toValue(0.1)
-//                        .duration(Duration.millis(250))
-//                        .autoReverse(true)
-//                        .cycleCount(4)
-//                        .build()
-//                );
-//                addAnimation(Animations.backlight(cur, Color.ORANGE, visualization.visPane));
+                newNode.goAbove(cur);
 				pause();
 				if (x > cur.getKey()) {
 					if (cur.getRight() == null) {
-						cur.setRight(newNode);
+                        cur.setRight(newNode);
 						break;
 					} else {
 						cur = cur.getRight();
 					}
 				} else {
 					if (cur.getLeft() == null) {
-						cur.setLeft(newNode);
+                        cur.setLeft(newNode);
 						break;
 					} else {
 						cur = cur.getLeft();
@@ -73,16 +62,18 @@ public class BSTInsert extends Algorithm {
 				}
 			}
 		}
-
-		ScaleTransition st = ScaleTransitionBuilder.create()
-			.node(newNode)
-			.byX(0.5)
-			.byY(0.5)
-			.duration(Duration.millis(500))
-			.cycleCount(2)
-			.autoReverse(true)
-			.build();
+        removeNode(newNode);
         
-		addAnimation(st);
+		addAnimation(ScaleTransitionBuilder.create()
+                .node(newNode)
+                .byX(0.5)
+                .byY(0.5)
+                .duration(Duration.millis(500))
+                .cycleCount(2)
+                .autoReverse(true)
+                .build()
+        );
+
+        newNode.setPaint(NodePaint.NORMAL);
 	}
 }
