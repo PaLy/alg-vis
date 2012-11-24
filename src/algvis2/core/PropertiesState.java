@@ -35,72 +35,84 @@ import java.util.HashMap;
 import java.util.List;
 
 public class PropertiesState {
-    public final HashMap<Object, Object> preState;
+	public final HashMap<Object, Object> preState;
 
-    public PropertiesState(HashMap<Object, Object> preState) {
-        this.preState = preState;
-    }
+	public PropertiesState(HashMap<Object, Object> preState) {
+		this.preState = preState;
+	}
 
-    public Timeline createTimeline() {        
-        final HashMap<Parent, List<Node>> preChildren = new HashMap<Parent, List<Node>>();
-        final HashMap<Parent, List<Node>> postChildren = new HashMap<Parent, List<Node>>();
-        ArrayList<KeyValue> firstKeyFrameValues = new ArrayList<KeyValue>();
-        ArrayList<KeyValue> secondKeyFrameValues = new ArrayList<KeyValue>();
-        
-        for (Object key : preState.keySet()) {
-            if (key instanceof WritableValue) {
-                WritableValue wvKey = (WritableValue) key;
-                Object preValue = preState.get(key);
-                if ((preValue != null && !preValue.equals(wvKey.getValue()))
-                        || (preValue == null && wvKey.getValue() != null)
-                        || (preValue != null && wvKey.getValue() == null)
-                        ) {
-                    firstKeyFrameValues.add(new KeyValue(wvKey, preValue));
-                    secondKeyFrameValues.add(new KeyValue(wvKey, wvKey.getValue()));
-                }
-            } else if (key instanceof Parent) {
-                Parent pKey = (Parent) key;
-                List<Node> preValue = (List<Node>) preState.get(pKey);
-                if (!preValue.equals(pKey.getChildrenUnmodifiable())) {
-                    preChildren.put(pKey, preValue);
-                    postChildren.put(pKey, new ArrayList<Node>(pKey.getChildrenUnmodifiable()));
-                }
-            }
-        }
-        
-        KeyFrame firstKeyFrame = new KeyFrame(Duration.ZERO, null, null, firstKeyFrameValues);
-        KeyFrame secondKeyFrame = new KeyFrame(Duration.millis(1), null, null, secondKeyFrameValues);
-        final Timeline timeline = new Timeline(firstKeyFrame, secondKeyFrame);
-        
-        if (preChildren.size() > 0) {
-            timeline.setOnFinished(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    for (Parent parent : preChildren.keySet()) {
-                        ObservableList<Node> children;
-                        if (parent instanceof Pane) children = ((Pane) parent).getChildren();
-                        else if (parent instanceof Group) children = ((Group) parent).getChildren();
-                        else continue;
+	public Timeline createTimeline() {
+		final HashMap<Parent, List<Node>> preChildren = new HashMap<Parent, List<Node>>();
+		final HashMap<Parent, List<Node>> postChildren = new HashMap<Parent, List<Node>>();
+		ArrayList<KeyValue> firstKeyFrameValues = new ArrayList<KeyValue>();
+		ArrayList<KeyValue> secondKeyFrameValues = new ArrayList<KeyValue>();
 
-                        children.clear();
-                        List<Node> newChildren;
-                        if (timeline.getRate() > 0) newChildren = postChildren.get(parent);
-                        else if (timeline.getRate() < 0) newChildren = preChildren.get(parent);
-                        else return;
-                        
-                        for (Node child : newChildren) {
-                            children.add(child);
-                        }
-                    }
-                }
-            });
-        }
-        return timeline;
-    }
-    
-    public void addNewStates(HashMap<Object, Object> newStates) {
-        for (Object key : newStates.keySet()) {
-            if (!preState.containsKey(key)) preState.put(key, newStates.get(key));
-        }
-    }
+		for (Object key : preState.keySet()) {
+			if (key instanceof WritableValue) {
+				WritableValue wvKey = (WritableValue) key;
+				Object preValue = preState.get(key);
+				if ((preValue != null && !preValue.equals(wvKey.getValue()))
+						|| (preValue == null && wvKey.getValue() != null)
+						|| (preValue != null && wvKey.getValue() == null)) {
+					firstKeyFrameValues.add(new KeyValue(wvKey, preValue));
+					secondKeyFrameValues.add(new KeyValue(wvKey, wvKey
+							.getValue()));
+				}
+			} else if (key instanceof Parent) {
+				Parent pKey = (Parent) key;
+				List<Node> preValue = (List<Node>) preState.get(pKey);
+				if (!preValue.equals(pKey.getChildrenUnmodifiable())) {
+					preChildren.put(pKey, preValue);
+					postChildren
+							.put(pKey,
+									new ArrayList<Node>(pKey
+											.getChildrenUnmodifiable()));
+				}
+			}
+		}
+
+		KeyFrame firstKeyFrame = new KeyFrame(Duration.ZERO, null, null,
+				firstKeyFrameValues);
+		KeyFrame secondKeyFrame = new KeyFrame(Duration.millis(1), null, null,
+				secondKeyFrameValues);
+		final Timeline timeline = new Timeline(firstKeyFrame, secondKeyFrame);
+
+		if (preChildren.size() > 0) {
+			timeline.setOnFinished(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					for (Parent parent : preChildren.keySet()) {
+						ObservableList<Node> children;
+						if (parent instanceof Pane)
+							children = ((Pane) parent).getChildren();
+						else if (parent instanceof Group)
+							children = ((Group) parent).getChildren();
+						else
+							continue;
+
+						children.clear();
+						List<Node> newChildren;
+						if (timeline.getRate() > 0)
+							newChildren = postChildren.get(parent);
+						else if (timeline.getRate() < 0)
+							newChildren = preChildren.get(parent);
+						else
+							return;
+
+						for (Node child : newChildren) {
+							children.add(child);
+						}
+					}
+				}
+			});
+		}
+		return timeline;
+	}
+
+	public void addNewStates(HashMap<Object, Object> newStates) {
+		for (Object key : newStates.keySet()) {
+			if (!preState.containsKey(key))
+				preState.put(key, newStates.get(key));
+		}
+	}
 }

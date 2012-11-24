@@ -31,24 +31,26 @@ import javafx.scene.layout.Pane;
  * -----------------------
  */
 public class BinTreeLayout extends Layout {
-	
+
 	@Override
 	protected Pane initPane() {
 		return new GridPane();
 	}
-	
+
 	public void rebuild(BSTNode root, BSTNode left, BSTNode right) {
 		pane.getChildren().clear();
 		rebuildEdges(root, left, right);
 		rebuildNodes(root, left, right);
 	}
-	
-	protected void rebuildNodes(BSTNode root, BSTNode left, BSTNode right) {	
+
+	protected void rebuildNodes(BSTNode root, BSTNode left, BSTNode right) {
 		((GridPane) pane).add(root, 1, 0);
-		if (left != null) ((GridPane) pane).add(left.getLayoutPane(), 0, 1);
-		if (right != null) ((GridPane) pane).add(right.getLayoutPane(), 2, 1);
+		if (left != null)
+			((GridPane) pane).add(left.getLayoutPane(), 0, 1);
+		if (right != null)
+			((GridPane) pane).add(right.getLayoutPane(), 2, 1);
 	}
-	
+
 	private void rebuildEdges(BSTNode root, BSTNode left, BSTNode right) {
 		if (left != null) {
 			Edge leftEdge = new Edge();
@@ -69,16 +71,16 @@ public class BinTreeLayout extends Layout {
 	@Override
 	public void rebuild(Node... nodes) {
 		switch (nodes.length) {
-			case 0:
-				break;
-			case 1:
-				rebuild(nodes[0], null, null);
-				break;
-			case 2:
-				rebuild(nodes[0], nodes[1], null);
-				break;
-			default:
-				rebuild(nodes[0], nodes[1], nodes[2]);
+		case 0:
+			break;
+		case 1:
+			rebuild(nodes[0], null, null);
+			break;
+		case 2:
+			rebuild(nodes[0], nodes[1], null);
+			break;
+		default:
+			rebuild(nodes[0], nodes[1], nodes[2]);
 		}
 	}
 
@@ -86,30 +88,31 @@ public class BinTreeLayout extends Layout {
 	public Pane getPane() {
 		return pane;
 	}
-	
+
 	private void bindEdgeStart(Edge edge, BSTNode root) {
-		edge.startXProperty().bind(root.layoutXProperty()
-			.add(root.translateXProperty()));
-		edge.startYProperty().bind(root.layoutYProperty()
-			.add(root.translateYProperty()));
+		edge.startXProperty().bind(
+				root.layoutXProperty().add(root.translateXProperty()));
+		edge.startYProperty().bind(
+				root.layoutYProperty().add(root.translateYProperty()));
 	}
 
 	private void bindEdgeEnd(Edge edge, BSTNode node) {
 		Pane nodePane = node.getLayoutPane();
-		edge.endXProperty().bind(nodePane.layoutXProperty()
-			.add(nodePane.translateXProperty())
-			.add(node.layoutXProperty())
-			.add(node.translateXProperty()));
-		edge.endYProperty().bind(nodePane.layoutYProperty()
-			.add(nodePane.translateYProperty())
-			.add(node.layoutYProperty())
-			.add(node.translateYProperty()));
+		edge.endXProperty().bind(
+				nodePane.layoutXProperty().add(nodePane.translateXProperty())
+						.add(node.layoutXProperty())
+						.add(node.translateXProperty()));
+		edge.endYProperty().bind(
+				nodePane.layoutYProperty().add(nodePane.translateYProperty())
+						.add(node.layoutYProperty())
+						.add(node.translateYProperty()));
 	}
 
 	@Override
 	public void recalcAbsPosition() {
 		for (Node node : pane.getChildren()) {
-			if (node instanceof BSTNode) ((BSTNode) node).recalcAbsPositionR();
+			if (node instanceof BSTNode)
+				((BSTNode) node).recalcAbsPositionR();
 		}
 	}
 }

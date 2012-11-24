@@ -30,41 +30,42 @@ import javafx.scene.shape.Shape;
 import javafx.util.Duration;
 
 public class AutoFillTransition implements AutoAnimation, ChangeListener<Paint> {
-    private final Shape shape;
-    private FillTransition currentTransition;
+	private final Shape shape;
+	private FillTransition currentTransition;
 
-    public AutoFillTransition(Shape shape) {
-        this.shape = shape;
-    }
+	public AutoFillTransition(Shape shape) {
+		this.shape = shape;
+	}
 
-    @Override
-    public void stop() {
-        currentTransition.jumpTo("end");
-    }
+	@Override
+	public void stop() {
+		currentTransition.jumpTo("end");
+	}
 
-    @Override
-    public void changed(ObservableValue<? extends Paint> observableValue, Paint oldPaint, Paint newPaint) {
-        if (oldPaint != newPaint && oldPaint instanceof Color && newPaint instanceof Color) {
-            FillTransition fillTransition = FillTransitionBuilder.create()
-                    .toValue((Color) newPaint)
-                    .shape(shape)
-                    .duration(Duration.seconds(1))
-                    .onFinished(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            AlgVis.autoAnimsManager.remove(AutoFillTransition.this);
-                        }
-                    })
-                    .build();
-            if (currentTransition != null) {
-                currentTransition.pause();
-                fillTransition.setFromValue((Color) shape.getFill());
-            } else {
-                fillTransition.setFromValue((Color) oldPaint);
-            }
-            currentTransition = fillTransition;
-            AlgVis.autoAnimsManager.add(this);
-            fillTransition.play();
-        }
-    }
+	@Override
+	public void changed(ObservableValue<? extends Paint> observableValue,
+			Paint oldPaint, Paint newPaint) {
+		if (oldPaint != newPaint && oldPaint instanceof Color
+				&& newPaint instanceof Color) {
+			FillTransition fillTransition = FillTransitionBuilder.create()
+					.toValue((Color) newPaint).shape(shape)
+					.duration(Duration.seconds(1))
+					.onFinished(new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(ActionEvent event) {
+							AlgVis.autoAnimsManager
+									.remove(AutoFillTransition.this);
+						}
+					}).build();
+			if (currentTransition != null) {
+				currentTransition.pause();
+				fillTransition.setFromValue((Color) shape.getFill());
+			} else {
+				fillTransition.setFromValue((Color) oldPaint);
+			}
+			currentTransition = fillTransition;
+			AlgVis.autoAnimsManager.add(this);
+			fillTransition.play();
+		}
+	}
 }

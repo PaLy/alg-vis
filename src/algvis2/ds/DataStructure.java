@@ -33,14 +33,14 @@ import javafx.scene.layout.FlowPane;
 public abstract class DataStructure implements PropertyStateEditable {
 	protected final VisPane visPane;
 	public final Visualization visualization;
-    protected Layout dsLayout = new DSDefaultLayout();
+	protected Layout dsLayout = new DSDefaultLayout();
 	protected String layoutName;
 
 	protected DataStructure(Visualization visualization) {
 		this.visPane = visualization.visPane;
 		this.visualization = visualization;
 		visPane.add(dsLayout.getPane(), ZDepth.NODES);
-        FlowPane.setMargin(dsLayout.getPane(), new Insets(Node.RADIUS * 2.5));
+		FlowPane.setMargin(dsLayout.getPane(), new Insets(Node.RADIUS * 2.5));
 	}
 
 	abstract public String getStats();
@@ -51,19 +51,20 @@ public abstract class DataStructure implements PropertyStateEditable {
 
 	public Animation[] random(int n) {
 		SequentialTransition pt = new SequentialTransition();
-        SequentialTransition back = new SequentialTransition();
+		SequentialTransition back = new SequentialTransition();
 		for (int i = 0; i < n; i++) {
-            Animation[] animations = insert(MyRandom.Int(InputField.MAX_VALUE + 1));
+			Animation[] animations = insert(MyRandom
+					.Int(InputField.MAX_VALUE + 1));
 			pt.getChildren().add(animations[0]);
-            back.getChildren().add(animations[1]);
-        }
-		return new Animation[]{pt, back};
+			back.getChildren().add(animations[1]);
+		}
+		return new Animation[] { pt, back };
 	}
-	
+
 	public void setLayout(String layoutName) {
 		this.layoutName = layoutName;
 	}
-	
+
 	public String getLayout() {
 		return layoutName;
 	}

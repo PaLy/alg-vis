@@ -39,10 +39,14 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class AlgVisFXMLController implements Initializable {
-	@FXML private MenuItem menu_bst;
-	@FXML private MenuItem menu_avl;
-	@FXML private TextField inputField;
-	@FXML private ChoiceBox<String> button_layout;
+	@FXML
+	private MenuItem menu_bst;
+	@FXML
+	private MenuItem menu_avl;
+	@FXML
+	private TextField inputField;
+	@FXML
+	private ChoiceBox<String> button_layout;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -52,32 +56,41 @@ public class AlgVisFXMLController implements Initializable {
 		// pri 3. volani button_layout = false
 		if (button_layout != null) {
 			button_layout.setValue(BST.DEF_LAYOUT);
-			button_layout.valueProperty().addListener(new ChangeListener<String>() {
-				@Override
-				public void changed(ObservableValue<? extends String> observableValue, String s, String s1) {
-					AlgVis.getCurrentVis().getDataStructure().setLayout(s1);
-				}
-			});
+			button_layout.valueProperty().addListener(
+					new ChangeListener<String>() {
+						@Override
+						public void changed(
+								ObservableValue<? extends String> observableValue,
+								String s, String s1) {
+							AlgVis.getCurrentVis().getDataStructure()
+									.setLayout(s1);
+						}
+					});
 		}
 	}
-	
-	@FXML protected void handleTitledPaneMouseEntered(MouseEvent event) {
+
+	@FXML
+	protected void handleTitledPaneMouseEntered(MouseEvent event) {
 		((TitledPane) event.getSource()).setExpanded(true);
 	}
 
-	@FXML protected void handleTitlePaneMouseExited(MouseEvent event) {
+	@FXML
+	protected void handleTitlePaneMouseExited(MouseEvent event) {
 		((TitledPane) event.getSource()).setExpanded(false);
 	}
-	
-	@FXML protected void selectLanguageEN(ActionEvent event) {
+
+	@FXML
+	protected void selectLanguageEN(ActionEvent event) {
 		AlgVis.that.selectLanguage("en");
 	}
 
-	@FXML protected void selectLanguageSK(ActionEvent event) {
+	@FXML
+	protected void selectLanguageSK(ActionEvent event) {
 		AlgVis.that.selectLanguage("sk");
 	}
 
-	@FXML protected void selectVisualization(ActionEvent event) {
+	@FXML
+	protected void selectVisualization(ActionEvent event) {
 		Object source = event.getSource();
 		if (source.equals(menu_bst)) {
 			AlgVis.that.showVisualization(0);
@@ -85,77 +98,81 @@ public class AlgVisFXMLController implements Initializable {
 			AlgVis.that.showVisualization(2);
 		}
 	}
-	
-	@FXML protected void insertPressed(ActionEvent event) {
-        final SequentialTransition animation = new SequentialTransition();
-        SequentialTransition back = new SequentialTransition();
+
+	@FXML
+	protected void insertPressed(ActionEvent event) {
+		final SequentialTransition animation = new SequentialTransition();
+		SequentialTransition back = new SequentialTransition();
 		for (int x : new InputField(inputField).getNonEmptyVI()) {
-            Animation[] animations = AlgVis.getCurrentVis().getDataStructure().insert(x);
+			Animation[] animations = AlgVis.getCurrentVis().getDataStructure()
+					.insert(x);
 			animation.getChildren().add(animations[0]);
-            back.getChildren().add(animations[1]);
-        }
+			back.getChildren().add(animations[1]);
+		}
 
-//        final PauseTransition pauseTransition =  new PauseTransition(Duration.seconds(1));
-//        pauseTransition.setOnFinished(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                System.out.println("TERAZ");
-//            }
-//        });
-//        System.out.println("BEFORE BACK");
-        back.setRate(-back.getRate());
-        back.jumpTo(back.getTotalDuration());
-        back.setOnFinished(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                AlgVis.autoAnimsManager.endAll();
-                SequentialTransitionBuilder.create()
-//                        .children(pauseTransition, animation)
-                        .children(animation)
-                        .build()
-                        .play();
-            }
-        });
-        back.play();
+		//        final PauseTransition pauseTransition =  new PauseTransition(Duration.seconds(1));
+		//        pauseTransition.setOnFinished(new EventHandler<ActionEvent>() {
+		//            @Override
+		//            public void handle(ActionEvent event) {
+		//                System.out.println("TERAZ");
+		//            }
+		//        });
+		//        System.out.println("BEFORE BACK");
+		back.setRate(-back.getRate());
+		back.jumpTo(back.getTotalDuration());
+		back.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				AlgVis.autoAnimsManager.endAll();
+				SequentialTransitionBuilder.create()
+				//                        .children(pauseTransition, animation)
+						.children(animation).build().play();
+			}
+		});
+		back.play();
 	}
 
-	@FXML protected void findPressed(ActionEvent event) {
-        final SequentialTransition animation = new SequentialTransition();
-        SequentialTransition back = new SequentialTransition();
-        for (int x : new InputField(inputField).getNonEmptyVI()) {
-            Animation[] animations = ((Dictionary) AlgVis.getCurrentVis().getDataStructure()).find(x);
-            animation.getChildren().add(animations[0]);
-            back.getChildren().add(animations[1]);
-        }
-        back.setRate(-back.getRate());
-        back.jumpTo(back.getTotalDuration());
-        back.setOnFinished(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                AlgVis.autoAnimsManager.endAll();
-                SequentialTransitionBuilder.create()
-                        .children(animation)
-                        .build()
-                        .play();
-            }
-        });
-        back.play();
+	@FXML
+	protected void findPressed(ActionEvent event) {
+		final SequentialTransition animation = new SequentialTransition();
+		SequentialTransition back = new SequentialTransition();
+		for (int x : new InputField(inputField).getNonEmptyVI()) {
+			Animation[] animations = ((Dictionary) AlgVis.getCurrentVis()
+					.getDataStructure()).find(x);
+			animation.getChildren().add(animations[0]);
+			back.getChildren().add(animations[1]);
+		}
+		back.setRate(-back.getRate());
+		back.jumpTo(back.getTotalDuration());
+		back.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				AlgVis.autoAnimsManager.endAll();
+				SequentialTransitionBuilder.create().children(animation)
+						.build().play();
+			}
+		});
+		back.play();
 	}
 
-	@FXML protected void randomPressed(ActionEvent event) {
-		final Animation[] animations = AlgVis.getCurrentVis().getDataStructure().random(new InputField(inputField).getInt(10));
-        animations[1].setRate(-animations[1].getRate());
-        animations[1].jumpTo(animations[1].getTotalDuration());
-        animations[1].setOnFinished(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                animations[0].play();
-            }
-        });
-        animations[1].play();
+	@FXML
+	protected void randomPressed(ActionEvent event) {
+		final Animation[] animations = AlgVis.getCurrentVis()
+				.getDataStructure()
+				.random(new InputField(inputField).getInt(10));
+		animations[1].setRate(-animations[1].getRate());
+		animations[1].jumpTo(animations[1].getTotalDuration());
+		animations[1].setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				animations[0].play();
+			}
+		});
+		animations[1].play();
 	}
 
-	@FXML protected void clearPressed(ActionEvent event) {
+	@FXML
+	protected void clearPressed(ActionEvent event) {
 		AlgVis.getCurrentVis().getDataStructure().clear();
 	}
 }

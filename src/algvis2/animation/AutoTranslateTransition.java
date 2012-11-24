@@ -29,66 +29,79 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.util.Duration;
 
-public class AutoTranslateTransition implements AutoAnimation, ChangeListener<Number> {
+public class AutoTranslateTransition implements AutoAnimation,
+		ChangeListener<Number> {
 	private final Node node;
 	private final Axis axis;
-    private TranslateTransition currentTransition;
+	private TranslateTransition currentTransition;
 
 	public AutoTranslateTransition(Node node, Axis axis) {
 		this.node = node;
 		this.axis = axis;
 	}
 
-//	public AutoTranslateTransition(Node node, Axis axis, TranslateTransition currentTransition) {
-//		this(node, axis);
-//		this.currentTransition = currentTransition;
-//		currentTransition.play();
-//	}
+	//	public AutoTranslateTransition(Node node, Axis axis, TranslateTransition currentTransition) {
+	//		this(node, axis);
+	//		this.currentTransition = currentTransition;
+	//		currentTransition.play();
+	//	}
 
 	/**
-	 * TODO should this method be synchronized? (it seems not) 
-	 * @param observableValue    
+	 * TODO should this method be synchronized? (it seems not)
+	 * 
+	 * @param observableValue
 	 * @param oldValue
 	 * @param newValue
 	 */
 	@Override
-	public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
-        double d = (Double) newValue - (Double) oldValue;
+	public void changed(ObservableValue<? extends Number> observableValue,
+			Number oldValue, Number newValue) {
+		double d = (Double) newValue - (Double) oldValue;
 
-        TranslateTransition tt = TranslateTransitionBuilder.create()
-            .node(node)
-            .duration(Duration.seconds(1))
-                .onFinished(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        AlgVis.autoAnimsManager.remove(AutoTranslateTransition.this);
-                    }
-                })
-            .build();
+		TranslateTransition tt = TranslateTransitionBuilder.create().node(node)
+				.duration(Duration.seconds(1))
+				.onFinished(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						AlgVis.autoAnimsManager
+								.remove(AutoTranslateTransition.this);
+					}
+				}).build();
 
-        if (currentTransition != null && currentTransition.getStatus().equals(Animation.Status.RUNNING)) currentTransition.pause();
-        
-        if (axis.equals(Axis.X)) node.translateXProperty().setValue(node.getTranslateX() - d);
-        else if (axis.equals(Axis.Y)) node.translateYProperty().setValue(node.getTranslateY() - d);
+		if (currentTransition != null
+				&& currentTransition.getStatus().equals(
+						Animation.Status.RUNNING))
+			currentTransition.pause();
 
-        if (currentTransition != null) {                            
-            if (axis.equals(Axis.X)) tt.setToX(currentTransition.getToX());
-            else if (axis.equals(Axis.Y)) tt.setToY(currentTransition.getToY());
-        } else {
-            if (axis.equals(Axis.X)) tt.setToX(node.getTranslateX() + d);
-            else if (axis.equals(Axis.Y)) tt.setToY(node.getTranslateY() + d);
-        }
+		if (axis.equals(Axis.X))
+			node.translateXProperty().setValue(node.getTranslateX() - d);
+		else if (axis.equals(Axis.Y))
+			node.translateYProperty().setValue(node.getTranslateY() - d);
 
-        if (axis.equals(Axis.X)) tt.setFromX(node.getTranslateX());
-        else if (axis.equals(Axis.Y)) tt.setFromY(node.getTranslateY());
+		if (currentTransition != null) {
+			if (axis.equals(Axis.X))
+				tt.setToX(currentTransition.getToX());
+			else if (axis.equals(Axis.Y))
+				tt.setToY(currentTransition.getToY());
+		} else {
+			if (axis.equals(Axis.X))
+				tt.setToX(node.getTranslateX() + d);
+			else if (axis.equals(Axis.Y))
+				tt.setToY(node.getTranslateY() + d);
+		}
 
-        currentTransition = tt;
-        AlgVis.autoAnimsManager.add(this);
-        tt.play();
+		if (axis.equals(Axis.X))
+			tt.setFromX(node.getTranslateX());
+		else if (axis.equals(Axis.Y))
+			tt.setFromY(node.getTranslateY());
+
+		currentTransition = tt;
+		AlgVis.autoAnimsManager.add(this);
+		tt.play();
 	}
 
-    @Override
-    public void stop() {
-        currentTransition.jumpTo("end");
-    }
+	@Override
+	public void stop() {
+		currentTransition.jumpTo("end");
+	}
 }

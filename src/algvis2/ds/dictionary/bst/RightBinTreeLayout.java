@@ -30,19 +30,22 @@ import javafx.scene.layout.GridPane;
  * ----------------
  */
 public class RightBinTreeLayout extends BinTreeLayout {
-	
+
 	public RightBinTreeLayout() {
 		super();
 		((GridPane) pane).setVgap(5);
 		((GridPane) pane).setHgap(5);
-		ColumnConstraints cc = ColumnConstraintsBuilder.create().halignment(HPos.RIGHT).build();
+		ColumnConstraints cc = ColumnConstraintsBuilder.create()
+				.halignment(HPos.RIGHT).build();
 		((GridPane) pane).getColumnConstraints().addAll(cc, cc);
 	}
 
 	@Override
 	protected void rebuildNodes(BSTNode root, BSTNode left, BSTNode right) {
 		((GridPane) pane).add(root, 1, 0);
-		if (left != null) ((GridPane) pane).add(left.getLayoutPane(), 0, 1);
-		if (right != null) ((GridPane) pane).add(right.getLayoutPane(), 1, 1);
+		if (left != null)
+			((GridPane) pane).add(left.getLayoutPane(), 0, 1);
+		if (right != null)
+			((GridPane) pane).add(right.getLayoutPane(), 1, 1);
 	}
 }

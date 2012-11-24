@@ -24,28 +24,28 @@ import javafx.scene.paint.Paint;
 
 public class NodePaint {
 	public static final NodePaint BLACK = new NodePaint(Color.WHITE,
-		Color.BLACK);
+			Color.BLACK);
 	public static final NodePaint BLUE = new NodePaint(Color.WHITE, Color.BLUE);
 	public static final NodePaint GREEN = new NodePaint(Color.BLACK,
-		Color.LIMEGREEN);
+			Color.LIMEGREEN);
 	public static final NodePaint RED = new NodePaint(Color.BLACK, Color.RED);
 
 	public static final NodePaint NORMAL = new NodePaint(Color.BLACK,
-		Color.web("0xfecb65"));
+			Color.web("0xfecb65"));
 	public static final NodePaint DARKER = new NodePaint(Color.BLACK,
-		Color.web("0xCDCD00"));
+			Color.web("0xCDCD00"));
 
 	public static final NodePaint INSERT = new NodePaint(Color.BLACK,
-		Color.LIGHTBLUE);
+			Color.LIGHTBLUE);
 	public static final NodePaint FIND = new NodePaint(Color.BLACK,
-		Color.LIGHTGRAY);
+			Color.LIGHTGRAY);
 	public static final NodePaint FOUND = GREEN;
 	public static final NodePaint NOTFOUND = RED;
 	public static final NodePaint DELETE = RED;
 	public static final NodePaint CACHED = new NodePaint(Color.BLACK,
-		Color.PINK);
+			Color.PINK);
 	public static final NodePaint DELETED = new NodePaint(Color.BLACK,
-		Color.DARKGRAY);
+			Color.DARKGRAY);
 
 	public final ObjectProperty<Paint> background, text;
 
@@ -54,14 +54,16 @@ public class NodePaint {
 		this.background = new SimpleObjectProperty<Paint>(background);
 	}
 
-    public NodePaint(NodePaint paint) {
-        this.text = new SimpleObjectProperty<Paint>(paint.text.get());
-        this.background = new SimpleObjectProperty<Paint>(paint.background.get());
-    }
+	public NodePaint(NodePaint paint) {
+		this.text = new SimpleObjectProperty<Paint>(paint.text.get());
+		this.background = new SimpleObjectProperty<Paint>(
+				paint.background.get());
+	}
 
 	@Override
 	public boolean equals(Object obj) {
-		return obj instanceof NodePaint && background.get().equals(((NodePaint) obj).background.get())
-			&& text.get().equals(((NodePaint) obj).text.get());
+		return obj instanceof NodePaint
+				&& background.get().equals(((NodePaint) obj).background.get())
+				&& text.get().equals(((NodePaint) obj).text.get());
 	}
 }

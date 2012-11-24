@@ -22,9 +22,6 @@ import javafx.scene.effect.DropShadowBuilder;
 import javafx.scene.paint.Color;
 
 public class Effects {
-    public static final DropShadow NODE_SHADOW = DropShadowBuilder.create()
-            .offsetY(3)
-            .radius(5)
-            .color(Color.GRAY)
-            .build();
+	public static final DropShadow NODE_SHADOW = DropShadowBuilder.create()
+			.offsetY(3).radius(5).color(Color.GRAY).build();
 }

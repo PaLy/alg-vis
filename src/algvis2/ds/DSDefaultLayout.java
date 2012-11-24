@@ -23,14 +23,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
 public class DSDefaultLayout extends Layout {
-    @Override
-    protected Pane initPane() {
-        return new HBox(5);
-    }
+	@Override
+	protected Pane initPane() {
+		return new HBox(5);
+	}
 
-    @Override
-    public void rebuild(Node... nodes) {
-        getPane().getChildren().clear();
-        getPane().getChildren().addAll(nodes);
-    }
+	@Override
+	public void rebuild(Node... nodes) {
+		getPane().getChildren().clear();
+		getPane().getChildren().addAll(nodes);
+	}
 }

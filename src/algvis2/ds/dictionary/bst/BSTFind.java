@@ -22,34 +22,36 @@ import algvis2.scene.layout.ZDepth;
 import algvis2.scene.paint.NodePaint;
 
 public class BSTFind extends Algorithm {
-    private final BST D;
-    private final int x;
-    
-    protected BSTFind(BST D, int x) {
-        super(D);
-        this.D = D;
-        this.x = x;
-    }
+	private final BST D;
+	private final int x;
 
-    @Override
-    public void runAlgorithm() throws InterruptedException {
-        BSTNode newNode = new BSTNode(x, NodePaint.FIND, D.getLayout());
-        addNode(newNode, ZDepth.TOP);
-        
-        BSTNode cur = D.getRoot();
-        while (cur != null) {
-            newNode.goAbove(cur);
-            pause();
-            if (cur.getKey() == x) {
-                newNode.goTo(cur);
-                pause();
-                break;
-            } else {
-                if (cur.getKey() < x) cur = cur.getRight();
-                else cur = cur.getLeft();
-            }
-        }
-        
-        removeNode(newNode);
-    }
+	protected BSTFind(BST D, int x) {
+		super(D);
+		this.D = D;
+		this.x = x;
+	}
+
+	@Override
+	public void runAlgorithm() throws InterruptedException {
+		BSTNode newNode = new BSTNode(x, NodePaint.FIND, D.getLayout());
+		addNode(newNode, ZDepth.TOP);
+
+		BSTNode cur = D.getRoot();
+		while (cur != null) {
+			newNode.goAbove(cur);
+			pause();
+			if (cur.getKey() == x) {
+				newNode.goTo(cur);
+				pause();
+				break;
+			} else {
+				if (cur.getKey() < x)
+					cur = cur.getRight();
+				else
+					cur = cur.getLeft();
+			}
+		}
+
+		removeNode(newNode);
+	}
 }

@@ -31,20 +31,20 @@ import java.util.concurrent.Semaphore;
 
 public abstract class Algorithm implements Runnable {
 	protected final Visualization visualization;
-    protected final Animations animations;
+	protected final Animations animations;
 	private final Semaphore gate = new Semaphore(1);
 	private boolean wrapped = false;
 	private Algorithm wrapperAlg;
-    
-    private PropertiesState state;
-    private PropertiesState startState;
-    private final SequentialTransition animation;
-    private Timeline backToStart;
-	
+
+	private PropertiesState state;
+	private PropertiesState startState;
+	private final SequentialTransition animation;
+	private Timeline backToStart;
+
 	protected Algorithm(DataStructure D) {
 		visualization = D.visualization;
-        animations = new Animations(visualization.visPane);
-        animation = new SequentialTransition();
+		animations = new Animations(visualization.visPane);
+		animation = new SequentialTransition();
 		try {
 			gate.acquire();
 		} catch (InterruptedException e) {
@@ -70,11 +70,11 @@ public abstract class Algorithm implements Runnable {
 		}
 		end();
 	}
-    
-    public Animation runA() {
-        run();
-        return animation;
-    }
+
+	public Animation runA() {
+		run();
+		return animation;
+	}
 
 	public abstract void runAlgorithm() throws InterruptedException;
 
@@ -83,7 +83,8 @@ public abstract class Algorithm implements Runnable {
 			wrapperAlg.pause();
 		} else {
 			saveChangedProperties();
-            animation.getChildren().add(new PauseTransition(Duration.seconds(2)));
+			animation.getChildren().add(
+					new PauseTransition(Duration.seconds(2)));
 		}
 	}
 
@@ -96,78 +97,71 @@ public abstract class Algorithm implements Runnable {
 	}
 
 	void begin() {
-        HashMap<Object, Object> preState = new HashMap<Object, Object>();
-        visualization.storeState(preState);
-        state = new PropertiesState(preState);
-        startState = state;
+		HashMap<Object, Object> preState = new HashMap<Object, Object>();
+		visualization.storeState(preState);
+		state = new PropertiesState(preState);
+		startState = state;
 	}
 
 	void end() {
-        saveChangedProperties();
-        backToStart = startState.createTimeline();
+		saveChangedProperties();
+		backToStart = startState.createTimeline();
 	}
-    
-    public Animation getBackToStart() {
-        return backToStart;
-    }
+
+	public Animation getBackToStart() {
+		return backToStart;
+	}
 
 	public HashMap<String, Object> getResult() {
 		return null;
 	}
-    
-    public void saveChangedProperties() {
-        animation.getChildren().add(state.createTimeline());
-        HashMap<Object, Object> preState = new HashMap<Object, Object>();
-        visualization.storeState(preState);
-        state = new PropertiesState(preState);
-        
-        startState.addNewStates(preState);
-    }
-    
-    protected void addAnimation(Animation anim) {
-        saveChangedProperties();
-        animation.getChildren().add(anim);
-    }
-    
-    protected void addNode(javafx.scene.Node node, int zDepth) {
-        visualization.visPane.add(node, zDepth);
-        saveChangedProperties();
-    }
-    
-    protected void removeNode(javafx.scene.Node node) {
-        visualization.visPane.remove(node);
-    }
-    
-    protected class Animations {
-        private final VisPane visPane;
-        
-        public Animations(VisPane visPane) {
-            this.visPane = visPane;
-        }
 
-        public void backlight(final Node node, Paint paint) {
-            Circle nodeCircle = (Circle) node.getShape();
-            final Circle newCircle = new Circle(
-                    nodeCircle.getRadius() * 1.3,
-                    paint);
-            newCircle.centerXProperty().bind(node.visPaneX);
-            newCircle.centerYProperty().bind(node.visPaneY);
-            newCircle.translateXProperty().bind(node.visPaneTranslateX);
-            newCircle.translateYProperty().bind(node.visPaneTranslateY);
+	public void saveChangedProperties() {
+		animation.getChildren().add(state.createTimeline());
+		HashMap<Object, Object> preState = new HashMap<Object, Object>();
+		visualization.storeState(preState);
+		state = new PropertiesState(preState);
 
-            visPane.add(newCircle, ZDepth.BACKLIGHT);
-            
-            addAnimation(FadeTransitionBuilder.create()
-                    .node(newCircle)
-                    .duration(Duration.millis(300))
-                    .fromValue(1)
-                    .toValue(0)
-                    .cycleCount(6)
-                    .autoReverse(true)
-                    .build()
-            );
-            
-            visPane.remove(newCircle);
-        }
-    }
+		startState.addNewStates(preState);
+	}
+
+	protected void addAnimation(Animation anim) {
+		saveChangedProperties();
+		animation.getChildren().add(anim);
+	}
+
+	protected void addNode(javafx.scene.Node node, int zDepth) {
+		visualization.visPane.add(node, zDepth);
+		saveChangedProperties();
+	}
+
+	protected void removeNode(javafx.scene.Node node) {
+		visualization.visPane.remove(node);
+	}
+
+	protected class Animations {
+		private final VisPane visPane;
+
+		public Animations(VisPane visPane) {
+			this.visPane = visPane;
+		}
+
+		public void backlight(final Node node, Paint paint) {
+			Circle nodeCircle = (Circle) node.getShape();
+			final Circle newCircle = new Circle(nodeCircle.getRadius() * 1.3,
+					paint);
+			newCircle.centerXProperty().bind(node.visPaneX);
+			newCircle.centerYProperty().bind(node.visPaneY);
+			newCircle.translateXProperty().bind(node.visPaneTranslateX);
+			newCircle.translateYProperty().bind(node.visPaneTranslateY);
+
+			visPane.add(newCircle, ZDepth.BACKLIGHT);
+
+			addAnimation(FadeTransitionBuilder.create().node(newCircle)
+					.duration(Duration.millis(300)).fromValue(1).toValue(0)
+					.cycleCount(6).autoReverse(true).build());
+
+			visPane.remove(newCircle);
+		}
+	}
 }

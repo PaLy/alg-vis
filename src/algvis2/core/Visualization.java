@@ -29,7 +29,7 @@ public abstract class Visualization implements PropertyStateEditable {
 	public final VisPane visPane;
 	protected Buttons buttons;
 	protected DataStructure dataStructure;
-	
+
 	protected BooleanProperty pauses = new SimpleBooleanProperty();
 
 	public Visualization() {
@@ -49,7 +49,7 @@ public abstract class Visualization implements PropertyStateEditable {
 	public Pane getButtonsPane(String lang) {
 		return buttons.getPane(lang);
 	}
-	
+
 	public DataStructure getDataStructure() {
 		return dataStructure;
 	}
@@ -57,7 +57,7 @@ public abstract class Visualization implements PropertyStateEditable {
 	@Override
 	public void storeState(HashMap<Object, Object> state) {
 		visPane.storeState(state);
-        // TODO neukladala sa datova struktura
-        dataStructure.storeState(state);
+		// TODO neukladala sa datova struktura
+		dataStructure.storeState(state);
 	}
 }

@@ -37,17 +37,17 @@ public class AlgVis extends Application {
 	public static AlgVis that;
 	private static Scene scene;
 	private static AlgVisFXMLController controller;
-	private static String language = "en"; 
+	private static String language = "en";
 	private static final int NUMBER_OF_VISUALIZATIONS = 7;
 	private static final Visualization[] VISUALIZATIONS = new Visualization[NUMBER_OF_VISUALIZATIONS];
 	private static int currentVisualization = -1;
-    
-    public static final AutoAnimsManager autoAnimsManager = new AutoAnimsManager();
-	
+
+	public static final AutoAnimsManager autoAnimsManager = new AutoAnimsManager();
+
 	public static void main(String[] args) {
 		launch(args);
 	}
-	
+
 	@Override
 	public void start(Stage stage) throws Exception {
 		stage.setTitle("Gnarley Trees");
@@ -56,17 +56,17 @@ public class AlgVis extends Application {
 		stage.setScene(scene);
 		stage.setFullScreen(true);
 
-//		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-//		stage.setX(primaryScreenBounds.getMinX());
-//		stage.setY(primaryScreenBounds.getMinY());
-//		stage.setWidth(primaryScreenBounds.getWidth());
-//		stage.setHeight(primaryScreenBounds.getHeight());
-		
+		//		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+		//		stage.setX(primaryScreenBounds.getMinX());
+		//		stage.setY(primaryScreenBounds.getMinY());
+		//		stage.setWidth(primaryScreenBounds.getWidth());
+		//		stage.setHeight(primaryScreenBounds.getHeight());
+
 		stage.show();
 
 		that = this;
 	}
-	
+
 	public void showVisualization(int x) {
 		if (x != currentVisualization) {
 			if (VISUALIZATIONS[x] == null)
@@ -76,9 +76,10 @@ public class AlgVis extends Application {
 			root.setCenter(VISUALIZATIONS[x].getRootPane());
 			root.getCenter().toBack();
 
-			TitledPane buttons = (TitledPane) scene.lookup("#buttonsTitledPane");
+			TitledPane buttons = (TitledPane) scene
+					.lookup("#buttonsTitledPane");
 			buttons.setContent(VISUALIZATIONS[x].getButtonsPane(language));
-			
+
 			currentVisualization = x;
 		}
 	}
@@ -90,13 +91,15 @@ public class AlgVis extends Application {
 		currentVisualization = -1;
 		showVisualization(curVis);
 	}
-	
+
 	private Parent getRoot() {
 		FXMLLoader fxmlLoader = new FXMLLoader();
-		fxmlLoader.setResources(ResourceBundle.getBundle("Messages", new Locale(language)));
+		fxmlLoader.setResources(ResourceBundle.getBundle("Messages",
+				new Locale(language)));
 		Parent parent = null;
 		try {
-			parent = (Parent) fxmlLoader.load(getClass().getResource("AlgVis.fxml").openStream());
+			parent = (Parent) fxmlLoader.load(getClass().getResource(
+					"AlgVis.fxml").openStream());
 			controller = fxmlLoader.getController();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -106,12 +109,15 @@ public class AlgVis extends Application {
 
 	private Visualization createVisualization(int x) {
 		switch (x) {
-			case 0 : return new BSTVisualization();
-			case 2: return new AVLVisualization();
-			default: return null;
+		case 0:
+			return new BSTVisualization();
+		case 2:
+			return new AVLVisualization();
+		default:
+			return null;
 		}
 	}
-	
+
 	public static Visualization getCurrentVis() {
 		return VISUALIZATIONS[currentVisualization];
 	}

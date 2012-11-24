@@ -26,7 +26,7 @@ import javafx.util.Duration;
 public class BSTInsert extends Algorithm {
 	private final BST D;
 	private final int x;
-	
+
 	protected BSTInsert(BST D, int x) {
 		super(D);
 		this.D = D;
@@ -35,26 +35,26 @@ public class BSTInsert extends Algorithm {
 
 	@Override
 	public void runAlgorithm() throws InterruptedException {
-        BSTNode newNode = new BSTNode(x, NodePaint.INSERT, D.getLayout());
-        addNode(newNode, ZDepth.TOP);
+		BSTNode newNode = new BSTNode(x, NodePaint.INSERT, D.getLayout());
+		addNode(newNode, ZDepth.TOP);
 
 		if (D.getRoot() == null) {
-            D.setRoot(newNode);
+			D.setRoot(newNode);
 		} else {
 			BSTNode cur = D.getRoot();
 			while (true) {
-                newNode.goAbove(cur);
+				newNode.goAbove(cur);
 				pause();
 				if (x > cur.getKey()) {
 					if (cur.getRight() == null) {
-                        cur.setRight(newNode);
+						cur.setRight(newNode);
 						break;
 					} else {
 						cur = cur.getRight();
 					}
 				} else {
 					if (cur.getLeft() == null) {
-                        cur.setLeft(newNode);
+						cur.setLeft(newNode);
 						break;
 					} else {
 						cur = cur.getLeft();
@@ -62,18 +62,12 @@ public class BSTInsert extends Algorithm {
 				}
 			}
 		}
-        removeNode(newNode);
-        
-		addAnimation(ScaleTransitionBuilder.create()
-                .node(newNode)
-                .byX(0.5)
-                .byY(0.5)
-                .duration(Duration.millis(500))
-                .cycleCount(2)
-                .autoReverse(true)
-                .build()
-        );
+		removeNode(newNode);
 
-        newNode.setPaint(NodePaint.NORMAL);
+		addAnimation(ScaleTransitionBuilder.create().node(newNode).byX(0.5)
+				.byY(0.5).duration(Duration.millis(500)).cycleCount(2)
+				.autoReverse(true).build());
+
+		newNode.setPaint(NodePaint.NORMAL);
 	}
 }

@@ -18,5 +18,5 @@
 package algvis2.animation;
 
 public interface AutoAnimation {
-    public void stop();
+	public void stop();
 }

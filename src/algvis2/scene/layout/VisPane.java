@@ -38,45 +38,48 @@ import java.util.WeakHashMap;
 public class VisPane extends StackPane implements PropertyStateEditable {
 	private Map<Node, Pane> elementParent = new WeakHashMap<Node, Pane>();
 	public static final String ID = "visPane";
-    
-    private double mouseX, mouseY;
-	
+
+	private double mouseX, mouseY;
+
 	public VisPane() {
 		super();
 		setId(ID);
-		ObservableList<Node> children =  getChildren();
+		ObservableList<Node> children = getChildren();
 		for (int i = 0; i <= ZDepth.TOP; i++) {
 			if (i == ZDepth.NODES) {
-				children.add(FlowPaneBuilder.create().alignment(Pos.TOP_CENTER).build());
+				children.add(FlowPaneBuilder.create().alignment(Pos.TOP_CENTER)
+						.build());
 			} else {
 				children.add(new Pane());
 			}
 		}
-		
-		layoutXProperty().addListener(new AutoTranslateTransition(this, Axis.X));
-		layoutYProperty().addListener(new AutoTranslateTransition(this, Axis.Y));
-        
-        setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                mouseX = mouseEvent.getSceneX();
-                mouseY = mouseEvent.getSceneY();
-            }
-        });
-        
-        setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                setTranslateX(getTranslateX() + mouseEvent.getSceneX() - mouseX);
-                mouseX = mouseEvent.getSceneX();
-                setTranslateY(getTranslateY() + mouseEvent.getSceneY() - mouseY);
-                mouseY = mouseEvent.getSceneY();
-            }
-        });
+
+		layoutXProperty()
+				.addListener(new AutoTranslateTransition(this, Axis.X));
+		layoutYProperty()
+				.addListener(new AutoTranslateTransition(this, Axis.Y));
+
+		setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent mouseEvent) {
+				mouseX = mouseEvent.getSceneX();
+				mouseY = mouseEvent.getSceneY();
+			}
+		});
+
+		setOnMouseDragged(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent mouseEvent) {
+				setTranslateX(getTranslateX() + mouseEvent.getSceneX() - mouseX);
+				mouseX = mouseEvent.getSceneX();
+				setTranslateY(getTranslateY() + mouseEvent.getSceneY() - mouseY);
+				mouseY = mouseEvent.getSceneY();
+			}
+		});
 	}
-	
+
 	public void add(Node node, int zDepth) {
-		Pane layer = (Pane) getChildren().get(zDepth); 
+		Pane layer = (Pane) getChildren().get(zDepth);
 		layer.getChildren().add(node);
 		elementParent.put(node, layer);
 	}
@@ -87,19 +90,24 @@ public class VisPane extends StackPane implements PropertyStateEditable {
 
 	@Override
 	public void storeState(HashMap<Object, Object> state) {
-        state.put(this, new ArrayList<Node>(getChildren()));
-        for (Node child : getChildren()) {
-            state.put(child, new ArrayList<Node>(((Parent) child).getChildrenUnmodifiable()));
-            storeStateR(state, (Parent) child);
-        }
+		state.put(this, new ArrayList<Node>(getChildren()));
+		for (Node child : getChildren()) {
+			state.put(
+					child,
+					new ArrayList<Node>(((Parent) child)
+							.getChildrenUnmodifiable()));
+			storeStateR(state, (Parent) child);
+		}
 	}
-	
-    // TODO nie je to tak celkom rekurzivne (neuklada sa zoznam deti parenta, ale iba jednodtlive nody)
-    // a potom ich znovu ukladam vo datastructure.storeState
+
+	// TODO nie je to tak celkom rekurzivne (neuklada sa zoznam deti parenta, ale iba jednodtlive nody)
+	// a potom ich znovu ukladam vo datastructure.storeState
 	private void storeStateR(HashMap<Object, Object> state, Parent parent) {
 		for (Node child : parent.getChildrenUnmodifiable()) {
-			if (child instanceof PropertyStateEditable) ((PropertyStateEditable) child).storeState(state);
-			else if (child instanceof Parent) storeStateR(state, (Parent) child);
+			if (child instanceof PropertyStateEditable)
+				((PropertyStateEditable) child).storeState(state);
+			else if (child instanceof Parent)
+				storeStateR(state, (Parent) child);
 		}
 	}
 }

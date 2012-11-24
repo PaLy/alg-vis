@@ -34,7 +34,8 @@ public class Buttons {
 
 	public Pane getPane(String lang) {
 		FXMLLoader fxmlLoader = new FXMLLoader();
-		fxmlLoader.setResources(ResourceBundle.getBundle("Messages", new Locale(lang)));
+		fxmlLoader.setResources(ResourceBundle.getBundle("Messages",
+				new Locale(lang)));
 		Pane parent = null;
 		try {
 			parent = (Pane) fxmlLoader.load(fxmlUrl.openStream());

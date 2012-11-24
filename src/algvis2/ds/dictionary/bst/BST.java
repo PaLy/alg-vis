@@ -31,30 +31,33 @@ import java.util.HashMap;
 public class BST extends Dictionary {
 	public static final String DEF_LAYOUT = Layout.BIN_TREE_LAYOUT;
 	public final ObjectProperty<BSTNode> rootProperty = new SimpleObjectProperty<BSTNode>();
-    // TODO niekedy sa pokazi (asi layout?) pri zmene layout sa to opravi (okrem rootovych synov?)
-	
+
+	// TODO niekedy sa pokazi (asi layout?) pri zmene layout sa to opravi (okrem rootovych synov?)
+
 	public BST(Visualization visualization) {
 		super(visualization);
 		layoutName = DEF_LAYOUT;
-        rootProperty.addListener(new ChangeListener<BSTNode>() {
-            @Override
-            public void changed(ObservableValue<? extends BSTNode> observableValue, BSTNode oldNode, BSTNode newNode) {
-                if (newNode != null) {
-                    newNode.removeLayoutXYBindings();
-                    dsLayout.rebuild(newNode.getLayoutPane());
-                } else {
-                    dsLayout.rebuild();
-                }
-                visPane.setTranslateX(0);
-                visPane.setTranslateY(0);
-            }
-        });
+		rootProperty.addListener(new ChangeListener<BSTNode>() {
+			@Override
+			public void changed(
+					ObservableValue<? extends BSTNode> observableValue,
+					BSTNode oldNode, BSTNode newNode) {
+				if (newNode != null) {
+					newNode.removeLayoutXYBindings();
+					dsLayout.rebuild(newNode.getLayoutPane());
+				} else {
+					dsLayout.rebuild();
+				}
+				visPane.setTranslateX(0);
+				visPane.setTranslateY(0);
+			}
+		});
 	}
 
 	@Override
 	public Animation[] find(int x) {
-        BSTFind bstFind = new BSTFind(this, x);
-        return new Animation[]{bstFind.runA(), bstFind.getBackToStart()};
+		BSTFind bstFind = new BSTFind(this, x);
+		return new Animation[] { bstFind.runA(), bstFind.getBackToStart() };
 	}
 
 	@Override
@@ -69,16 +72,16 @@ public class BST extends Dictionary {
 
 	@Override
 	public Animation[] insert(int x) {
-        BSTInsert bstInsert = new BSTInsert(this, x);
-        return new Animation[]{bstInsert.runA(), bstInsert.getBackToStart()};
+		BSTInsert bstInsert = new BSTInsert(this, x);
+		return new Animation[] { bstInsert.runA(), bstInsert.getBackToStart() };
 	}
-	
+
 	public BSTNode getRoot() {
 		return rootProperty.get();
 	}
 
 	public void setRoot(BSTNode root) {
-        rootProperty.set(root);
+		rootProperty.set(root);
 	}
 
 	@Override
@@ -91,13 +94,14 @@ public class BST extends Dictionary {
 		super.setLayout(layoutName);
 		if (rootProperty.get() != null) {
 			rootProperty.get().setLayoutR(layoutName);
-            dsLayout.rebuild(getRoot().getLayoutPane());
-		} 
+			dsLayout.rebuild(getRoot().getLayoutPane());
+		}
 	}
 
 	@Override
 	public void storeState(HashMap<Object, Object> state) {
-        state.put(rootProperty, rootProperty.get());
-        if (rootProperty.get() != null) rootProperty.get().storeState(state);
+		state.put(rootProperty, rootProperty.get());
+		if (rootProperty.get() != null)
+			rootProperty.get().storeState(state);
 	}
 }

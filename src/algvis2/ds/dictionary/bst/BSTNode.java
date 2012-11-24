@@ -31,37 +31,37 @@ import java.util.HashMap;
 public class BSTNode extends Node {
 	private BinTreeLayout layout;
 	public final ObjectProperty<BSTNode> leftProperty = new SimpleObjectProperty<BSTNode>();
-    public final ObjectProperty<BSTNode> rightProperty = new SimpleObjectProperty<BSTNode>();
-    
+	public final ObjectProperty<BSTNode> rightProperty = new SimpleObjectProperty<BSTNode>();
+
 	public BSTNode(int key, String layoutName) {
 		super(key);
 		layout = (BinTreeLayout) Layout.createLayout(layoutName);
-        init();
+		init();
 	}
 
-    public BSTNode(int key, NodePaint p, String layoutName) {
-        super(key, p);
-        layout = (BinTreeLayout) Layout.createLayout(layoutName);
-        init();
-    }
-    
-    public BSTNode(Node v, String layoutName) {
-        super(v);
-        layout = (BinTreeLayout) Layout.createLayout(layoutName);
-        init();
-    }
-    
-    private void init() {
-        SonChangeListener sonChangeListener = new SonChangeListener();
-        leftProperty.addListener(sonChangeListener);
-        rightProperty.addListener(sonChangeListener);
-        rebuildLayout();
-    }
-	
+	public BSTNode(int key, NodePaint p, String layoutName) {
+		super(key, p);
+		layout = (BinTreeLayout) Layout.createLayout(layoutName);
+		init();
+	}
+
+	public BSTNode(Node v, String layoutName) {
+		super(v);
+		layout = (BinTreeLayout) Layout.createLayout(layoutName);
+		init();
+	}
+
+	private void init() {
+		SonChangeListener sonChangeListener = new SonChangeListener();
+		leftProperty.addListener(sonChangeListener);
+		rightProperty.addListener(sonChangeListener);
+		rebuildLayout();
+	}
+
 	public void setLeft(BSTNode left) {
 		leftProperty.set(left);
 	}
-	
+
 	public void setRight(BSTNode right) {
 		rightProperty.set(right);
 	}
@@ -73,15 +73,17 @@ public class BSTNode extends Node {
 	public BSTNode getRight() {
 		return rightProperty.get();
 	}
-	
+
 	public Pane getLayoutPane() {
 		return layout.getPane();
 	}
 
 	public void setLayoutR(String layoutName) {
 		layout = (BinTreeLayout) Layout.createLayout(layoutName);
-		if (leftProperty.get() != null) leftProperty.get().setLayoutR(layoutName);
-		if (rightProperty.get() != null) rightProperty.get().setLayoutR(layoutName);
+		if (leftProperty.get() != null)
+			leftProperty.get().setLayoutR(layoutName);
+		if (rightProperty.get() != null)
+			rightProperty.get().setLayoutR(layoutName);
 		rebuildLayout();
 	}
 
@@ -90,43 +92,45 @@ public class BSTNode extends Node {
 		rebuildLayout();
 		recalcAbsPositionR();
 	}
-	
+
 	public void rebuildLayout() {
-		layout.rebuild(
-			this,
-			leftProperty.get() == null ? null : leftProperty.get(),
-			rightProperty.get() == null ? null : rightProperty.get()
-		);
+		layout.rebuild(this,
+				leftProperty.get() == null ? null : leftProperty.get(),
+				rightProperty.get() == null ? null : rightProperty.get());
 	}
 
-    @Override
-    public void removeLayoutXYBindings() {
-        super.removeLayoutXYBindings();
-        rebuildLayout();
-    }
+	@Override
+	public void removeLayoutXYBindings() {
+		super.removeLayoutXYBindings();
+		rebuildLayout();
+	}
 
-    public void recalcAbsPositionR() {
+	public void recalcAbsPositionR() {
 		recalcAbsPosition();
-		if (leftProperty.get() != null) leftProperty.get().recalcAbsPositionR();
-		if (rightProperty.get() != null) rightProperty.get().recalcAbsPositionR();
+		if (leftProperty.get() != null)
+			leftProperty.get().recalcAbsPositionR();
+		if (rightProperty.get() != null)
+			rightProperty.get().recalcAbsPositionR();
 	}
 
-    @Override
-    public void storeState(HashMap<Object, Object> state) {
-        super.storeState(state);
-        state.put(leftProperty, leftProperty.get());
-        state.put(rightProperty, rightProperty.get());
-        if (leftProperty.get() != null)
-            leftProperty.get().storeState(state);
-        if (rightProperty.get() != null)
-            rightProperty.get().storeState(state);
-    }
+	@Override
+	public void storeState(HashMap<Object, Object> state) {
+		super.storeState(state);
+		state.put(leftProperty, leftProperty.get());
+		state.put(rightProperty, rightProperty.get());
+		if (leftProperty.get() != null)
+			leftProperty.get().storeState(state);
+		if (rightProperty.get() != null)
+			rightProperty.get().storeState(state);
+	}
 
-    private class SonChangeListener implements ChangeListener<BSTNode> {
-        @Override
-        public void changed(ObservableValue<? extends BSTNode> observableValue, BSTNode oldNode, BSTNode newNode) {
-            if (newNode != null) newNode.removeLayoutXYBindings(); // TODO tieto veci bude asi lepsie hodit do layout.rebuild()
-            rebuildLayout();
-        }
-    }
+	private class SonChangeListener implements ChangeListener<BSTNode> {
+		@Override
+		public void changed(ObservableValue<? extends BSTNode> observableValue,
+				BSTNode oldNode, BSTNode newNode) {
+			if (newNode != null)
+				newNode.removeLayoutXYBindings(); // TODO tieto veci bude asi lepsie hodit do layout.rebuild()
+			rebuildLayout();
+		}
+	}
 }

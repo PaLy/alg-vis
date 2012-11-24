@@ -24,6 +24,7 @@ public class AVLVisualization extends Visualization {
 	@Override
 	protected void init() {
 		dataStructure = new AVL(this);
-		buttons = new Buttons(getClass().getResource("/algvis2/ui/Buttons.fxml"));
+		buttons = new Buttons(getClass()
+				.getResource("/algvis2/ui/Buttons.fxml"));
 	}
 }

@@ -20,20 +20,20 @@ package algvis2.animation;
 import java.util.HashSet;
 
 public class AutoAnimsManager {
-    private final HashSet<AutoAnimation> animations = new HashSet<AutoAnimation>(); // TODO pozor na memory leak
-    
-    public void add(AutoAnimation animation) {
-        animations.add(animation);
-    }
+	private final HashSet<AutoAnimation> animations = new HashSet<AutoAnimation>(); // TODO pozor na memory leak
 
-    public void remove(AutoAnimation animation) {
-        animations.remove(animation);
-    }
-    
-    public void endAll() {
-        for (AutoAnimation animation : animations) {
-            animation.stop();
-        }
-        animations.clear();
-    }
+	public void add(AutoAnimation animation) {
+		animations.add(animation);
+	}
+
+	public void remove(AutoAnimation animation) {
+		animations.remove(animation);
+	}
+
+	public void endAll() {
+		for (AutoAnimation animation : animations) {
+			animation.stop();
+		}
+		animations.clear();
+	}
 }

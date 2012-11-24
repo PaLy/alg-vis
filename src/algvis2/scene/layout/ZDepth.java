@@ -17,7 +17,7 @@
 
 package algvis2.scene.layout;
 
-public class ZDepth {	
+public class ZDepth {
 	public static final int SHADES = 0;
 	public static final int EDGES = 1;
 	public static final int BACKLIGHT = 2;

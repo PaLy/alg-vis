@@ -20,5 +20,5 @@ package algvis2.core;
 import java.util.HashMap;
 
 public interface PropertyStateEditable {
-    public void storeState(HashMap<Object, Object> state);
+	public void storeState(HashMap<Object, Object> state);
 }

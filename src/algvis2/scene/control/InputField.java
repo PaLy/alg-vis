@@ -51,19 +51,19 @@ public class InputField {
 			if (n < min) {
 				n = min;
 				// TODO vyskoci cervena bublina (mozno oranzova)
-//				sb.setText("value too small; using the minimum value " + min
-//					+ " instead");
+				//				sb.setText("value too small; using the minimum value " + min
+				//					+ " instead");
 			}
 			if (n > max) {
 				n = max;
 				// TODO
-//				sb.setText("value too high; using the maximum value " + max
-//					+ " instead");
+				//				sb.setText("value too high; using the maximum value " + max
+				//					+ " instead");
 			}
 		} catch (NumberFormatException e) {
 			// TODO
-//			sb.setText("couldn't parse an integer; using the default value "
-//				+ def);
+			//			sb.setText("couldn't parse an integer; using the default value "
+			//				+ def);
 		}
 		textField.setText("");
 		return n;
@@ -85,7 +85,7 @@ public class InputField {
 		boolean range = false;
 		Vector<Integer> args = new Vector<Integer>();
 		String[] tokens = textField.getText().replaceAll("\\.{2,}", " .. ")
-			.split("(\\s|,)+");
+				.split("(\\s|,)+");
 		for (String t : tokens) {
 			if ("..".equals(t)) {
 				range = true;
@@ -96,12 +96,12 @@ public class InputField {
 					if (x < min) {
 						x = min;
 						// TODO
-//						sb.setText("value too small; using the minimum value instead");
+						//						sb.setText("value too small; using the minimum value instead");
 					}
 					if (x > max) {
 						x = max;
 						// TODO
-//						sb.setText("value too high; using the maximum value instead");
+						//						sb.setText("value too high; using the maximum value instead");
 					}
 					if (range) {
 						int a = args.lastElement();
@@ -116,7 +116,7 @@ public class InputField {
 					args.add(x);
 				} catch (NumberFormatException e) {
 					// TODO
-//					sb.setText("couldn't parse an integer");
+					//					sb.setText("couldn't parse an integer");
 				}
 			}
 		}
@@ -143,7 +143,7 @@ public class InputField {
 		if (args.size() == 0) {
 			args.add(MyRandom.Int(min, max));
 			// TODO
-//			sb.setText("no input; using random value");
+			//			sb.setText("no input; using random value");
 		}
 		return args;
 	}

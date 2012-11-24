@@ -30,39 +30,46 @@ public abstract class Layout implements AbsPosition {
 	public static final String BIN_TREE_LAYOUT = "BinTreeLayout";
 	public static final String LEFT_BIN_TREE_LAYOUT = "LeftBinTreeLayout";
 	public static final String RIGHT_BIN_TREE_LAYOUT = "RightBinTreeLayout";
-	
+
 	protected final Pane pane;
 
 	protected Layout() {
 		pane = initPane();
 		pane.parentProperty().addListener(new ChangeListener<Parent>() {
 			@Override
-			public void changed(ObservableValue<? extends Parent> observableValue, Parent oldParent, 
-			                    Parent newParent) {
-				if (newParent != null) recalcAbsPosition();
+			public void changed(
+					ObservableValue<? extends Parent> observableValue,
+					Parent oldParent, Parent newParent) {
+				if (newParent != null)
+					recalcAbsPosition();
 			}
 		});
 	}
-	
+
 	protected abstract Pane initPane();
-	
+
 	public abstract void rebuild(Node... nodes);
-	
+
 	public Pane getPane() {
 		return pane;
 	}
-	
+
 	@Override
 	public void recalcAbsPosition() {
 		for (Node node : pane.getChildren()) {
-			if (node instanceof AbsPosition) ((AbsPosition) node).recalcAbsPosition();
+			if (node instanceof AbsPosition)
+				((AbsPosition) node).recalcAbsPosition();
 		}
 	}
-	
+
 	public static Layout createLayout(String layoutName) {
-		if (layoutName.equals(BIN_TREE_LAYOUT)) return new BinTreeLayout();
-		else if (layoutName.equals(LEFT_BIN_TREE_LAYOUT)) return new LeftBinTreeLayout();
-		else if (layoutName.equals(RIGHT_BIN_TREE_LAYOUT)) return new RightBinTreeLayout();
-		else return null;
+		if (layoutName.equals(BIN_TREE_LAYOUT))
+			return new BinTreeLayout();
+		else if (layoutName.equals(LEFT_BIN_TREE_LAYOUT))
+			return new LeftBinTreeLayout();
+		else if (layoutName.equals(RIGHT_BIN_TREE_LAYOUT))
+			return new RightBinTreeLayout();
+		else
+			return null;
 	}
 }

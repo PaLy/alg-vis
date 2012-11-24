@@ -20,7 +20,7 @@ package algvis2.scene.shape;
 import javafx.scene.shape.Line;
 
 public class Edge extends Line {
-	
+
 	public Edge() {
 		setManaged(false);
 	}

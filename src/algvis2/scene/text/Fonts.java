@@ -21,5 +21,5 @@ import algvis2.scene.shape.Node;
 import javafx.scene.text.Font;
 
 public class Fonts {
-    public static final Font NODE_FONT = new Font(Node.RADIUS - 3);
+	public static final Font NODE_FONT = new Font(Node.RADIUS - 3);
 }

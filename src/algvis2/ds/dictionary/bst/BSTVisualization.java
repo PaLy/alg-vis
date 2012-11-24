@@ -24,6 +24,7 @@ public class BSTVisualization extends Visualization {
 	@Override
 	protected void init() {
 		dataStructure = new BST(this);
-		buttons = new Buttons(getClass().getResource("/algvis2/ui/Buttons.fxml"));
+		buttons = new Buttons(getClass()
+				.getResource("/algvis2/ui/Buttons.fxml"));
 	}
 }
