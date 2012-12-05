@@ -15,42 +15,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.core;
+package algvis2.ds.dictionary.rb;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.Pane;
+import algvis2.core.Visualization;
+import algvis2.ds.dictionary.bst.BST;
+import algvis2.scene.shape.Node;
+import javafx.animation.Animation;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.Locale;
-import java.util.ResourceBundle;
+public class RB extends BST {
+	public final RBNode NULL = new RBNode(this, Node.NULL, getLayout());
 
-public class Buttons {
-	private Pane pane;
-	private final URL fxmlUrl;
-
-	public Buttons(URL fxmlUrl) {
-		this.fxmlUrl = fxmlUrl;
+	public RB(Visualization visualization) {
+		super(visualization);
+		NULL.setParentNode(NULL);
+		NULL.setRight(NULL);
+		NULL.setLeft(NULL);
+		NULL.setRed(false);
 	}
 
-	public Pane getPane(String lang) {
-		FXMLLoader fxmlLoader = new FXMLLoader();
-		fxmlLoader.setResources(ResourceBundle.getBundle("Messages",
-				new Locale(lang)));
-		Pane parent = null;
-		try {
-			parent = (Pane) fxmlLoader.load(fxmlUrl.openStream());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		pane = parent;
-		return parent;
+	@Override
+	public Animation[] insert(int x) {
+		RBInsert rbInsert = new RBInsert(this, new RBNode(this, x, getLayout()));
+		return new Animation[] { rbInsert.runA(), rbInsert.getBackToStart() };
 	}
 
-	public void setDisabled(boolean disabled) {
-		pane.lookup("#buttonInsert").setDisable(disabled);
-		pane.lookup("#buttonFind").setDisable(disabled);
-		pane.lookup("#buttonClear").setDisable(disabled);
-		pane.lookup("#buttonRandom").setDisable(disabled);
+	@Override
+	public RBNode getRoot() {
+		return (RBNode) super.getRoot();
 	}
 }

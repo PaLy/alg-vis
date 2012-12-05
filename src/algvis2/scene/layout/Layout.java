@@ -20,10 +20,7 @@ package algvis2.scene.layout;
 import algvis2.ds.dictionary.bst.BinTreeLayout;
 import algvis2.ds.dictionary.bst.LeftBinTreeLayout;
 import algvis2.ds.dictionary.bst.RightBinTreeLayout;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 
 public abstract class Layout implements AbsPosition {
@@ -35,20 +32,9 @@ public abstract class Layout implements AbsPosition {
 
 	protected Layout() {
 		pane = initPane();
-		pane.parentProperty().addListener(new ChangeListener<Parent>() {
-			@Override
-			public void changed(
-					ObservableValue<? extends Parent> observableValue,
-					Parent oldParent, Parent newParent) {
-				if (newParent != null)
-					recalcAbsPosition();
-			}
-		});
 	}
 
 	protected abstract Pane initPane();
-
-	public abstract void rebuild(Node... nodes);
 
 	public Pane getPane() {
 		return pane;
@@ -56,9 +42,16 @@ public abstract class Layout implements AbsPosition {
 
 	@Override
 	public void recalcAbsPosition() {
-		for (Node node : pane.getChildren()) {
-			if (node instanceof AbsPosition)
+		recalcAbsPosition(pane);
+	}
+
+	private void recalcAbsPosition(Pane parent) {
+		for (Node node : parent.getChildrenUnmodifiable()) {
+			if (node instanceof Pane) {
+				recalcAbsPosition((Pane) node);
+			} else if (node instanceof AbsPosition) {
 				((AbsPosition) node).recalcAbsPosition();
+			}
 		}
 	}
 

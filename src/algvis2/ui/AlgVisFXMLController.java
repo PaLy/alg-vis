@@ -44,6 +44,8 @@ public class AlgVisFXMLController implements Initializable {
 	@FXML
 	private MenuItem menu_avl;
 	@FXML
+	private MenuItem menu_rb;
+	@FXML
 	private TextField inputField;
 	@FXML
 	private ChoiceBox<String> button_layout;
@@ -96,11 +98,14 @@ public class AlgVisFXMLController implements Initializable {
 			AlgVis.that.showVisualization(0);
 		} else if (source.equals(menu_avl)) {
 			AlgVis.that.showVisualization(2);
+		} else if (source.equals(menu_rb)) {
+			AlgVis.that.showVisualization(6);
 		}
 	}
 
 	@FXML
 	protected void insertPressed(ActionEvent event) {
+		AlgVis.getCurrentVis().getButtons().setDisabled(true);
 		final SequentialTransition animation = new SequentialTransition();
 		SequentialTransition back = new SequentialTransition();
 		for (int x : new InputField(inputField).getNonEmptyVI()) {
@@ -110,23 +115,22 @@ public class AlgVisFXMLController implements Initializable {
 			back.getChildren().add(animations[1]);
 		}
 
-		//        final PauseTransition pauseTransition =  new PauseTransition(Duration.seconds(1));
-		//        pauseTransition.setOnFinished(new EventHandler<ActionEvent>() {
-		//            @Override
-		//            public void handle(ActionEvent event) {
-		//                System.out.println("TERAZ");
-		//            }
-		//        });
-		//        System.out.println("BEFORE BACK");
+		System.out.println("BEFORE BACK");
 		back.setRate(-back.getRate());
-		back.jumpTo(back.getTotalDuration());
+		back.jumpTo("end");
 		back.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				System.out.println("AFTER BACK");
 				AlgVis.autoAnimsManager.endAll();
-				SequentialTransitionBuilder.create()
-				//                        .children(pauseTransition, animation)
-						.children(animation).build().play();
+				SequentialTransitionBuilder.create().children(animation)
+						.onFinished(new EventHandler<ActionEvent>() {
+							@Override
+							public void handle(ActionEvent event) {
+								AlgVis.getCurrentVis().getButtons()
+										.setDisabled(false);
+							}
+						}).build().play();
 			}
 		});
 		back.play();
@@ -134,6 +138,7 @@ public class AlgVisFXMLController implements Initializable {
 
 	@FXML
 	protected void findPressed(ActionEvent event) {
+		AlgVis.getCurrentVis().getButtons().setDisabled(true);
 		final SequentialTransition animation = new SequentialTransition();
 		SequentialTransition back = new SequentialTransition();
 		for (int x : new InputField(inputField).getNonEmptyVI()) {
@@ -143,13 +148,19 @@ public class AlgVisFXMLController implements Initializable {
 			back.getChildren().add(animations[1]);
 		}
 		back.setRate(-back.getRate());
-		back.jumpTo(back.getTotalDuration());
+		back.jumpTo("end");
 		back.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				AlgVis.autoAnimsManager.endAll();
 				SequentialTransitionBuilder.create().children(animation)
-						.build().play();
+						.onFinished(new EventHandler<ActionEvent>() {
+							@Override
+							public void handle(ActionEvent event) {
+								AlgVis.getCurrentVis().getButtons()
+										.setDisabled(false);
+							}
+						}).build().play();
 			}
 		});
 		back.play();
@@ -157,22 +168,14 @@ public class AlgVisFXMLController implements Initializable {
 
 	@FXML
 	protected void randomPressed(ActionEvent event) {
-		final Animation[] animations = AlgVis.getCurrentVis()
-				.getDataStructure()
+		AlgVis.getCurrentVis().getDataStructure()
 				.random(new InputField(inputField).getInt(10));
-		animations[1].setRate(-animations[1].getRate());
-		animations[1].jumpTo(animations[1].getTotalDuration());
-		animations[1].setOnFinished(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				animations[0].play();
-			}
-		});
-		animations[1].play();
+		AlgVis.getCurrentVis().getDataStructure().reLayout();
 	}
 
 	@FXML
 	protected void clearPressed(ActionEvent event) {
 		AlgVis.getCurrentVis().getDataStructure().clear();
+		AlgVis.getCurrentVis().getDataStructure().reLayout();
 	}
 }

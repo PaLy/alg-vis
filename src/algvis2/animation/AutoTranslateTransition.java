@@ -54,8 +54,9 @@ public class AutoTranslateTransition implements AutoAnimation,
 	 * @param newValue
 	 */
 	@Override
-	public void changed(ObservableValue<? extends Number> observableValue,
-			Number oldValue, Number newValue) {
+	public synchronized void changed(
+			ObservableValue<? extends Number> observableValue, Number oldValue,
+			Number newValue) {
 		double d = (Double) newValue - (Double) oldValue;
 
 		TranslateTransition tt = TranslateTransitionBuilder.create().node(node)
@@ -101,7 +102,7 @@ public class AutoTranslateTransition implements AutoAnimation,
 	}
 
 	@Override
-	public void stop() {
+	public synchronized void stop() {
 		currentTransition.jumpTo("end");
 	}
 }

@@ -20,11 +20,10 @@ package algvis2.ds.dictionary.bst;
 import algvis2.core.Visualization;
 import algvis2.ds.dictionary.Dictionary;
 import algvis2.scene.layout.Layout;
+import algvis2.scene.paint.NodePaint;
 import javafx.animation.Animation;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 
 import java.util.HashMap;
 
@@ -32,26 +31,9 @@ public class BST extends Dictionary {
 	public static final String DEF_LAYOUT = Layout.BIN_TREE_LAYOUT;
 	public final ObjectProperty<BSTNode> rootProperty = new SimpleObjectProperty<BSTNode>();
 
-	// TODO niekedy sa pokazi (asi layout?) pri zmene layout sa to opravi (okrem rootovych synov?)
-
 	public BST(Visualization visualization) {
 		super(visualization);
 		layoutName = DEF_LAYOUT;
-		rootProperty.addListener(new ChangeListener<BSTNode>() {
-			@Override
-			public void changed(
-					ObservableValue<? extends BSTNode> observableValue,
-					BSTNode oldNode, BSTNode newNode) {
-				if (newNode != null) {
-					newNode.removeLayoutXYBindings();
-					dsLayout.rebuild(newNode.getLayoutPane());
-				} else {
-					dsLayout.rebuild();
-				}
-				visPane.setTranslateX(0);
-				visPane.setTranslateY(0);
-			}
-		});
 	}
 
 	@Override
@@ -72,7 +54,8 @@ public class BST extends Dictionary {
 
 	@Override
 	public Animation[] insert(int x) {
-		BSTInsert bstInsert = new BSTInsert(this, x);
+		BSTInsert bstInsert = new BSTInsert(this, new BSTNode(x,
+				NodePaint.INSERT, getLayout()));
 		return new Animation[] { bstInsert.runA(), bstInsert.getBackToStart() };
 	}
 
@@ -84,17 +67,77 @@ public class BST extends Dictionary {
 		rootProperty.set(root);
 	}
 
+	protected void leftRot(BSTNode v) {
+		final BSTNode u = v.getParentNode();
+		if (v.getLeft() == null) {
+			u.unlinkRight();
+		} else {
+			u.linkRight(v.getLeft());
+		}
+		if (u.isRoot()) {
+			setRoot(v);
+		} else {
+			if (u.isLeft()) {
+				u.getParentNode().linkLeft(v);
+			} else {
+				u.getParentNode().linkRight(v);
+			}
+		}
+		v.linkLeft(u);
+	}
+
+	protected void rightRot(BSTNode v) {
+		final BSTNode u = v.getParentNode();
+		if (v.getRight() == null) {
+			u.unlinkLeft();
+		} else {
+			u.linkLeft(v.getRight());
+		}
+		if (u.isRoot()) {
+			setRoot(v);
+		} else {
+			if (u.isLeft()) {
+				u.getParentNode().linkLeft(v);
+			} else {
+				u.getParentNode().linkRight(v);
+			}
+		}
+		v.linkRight(u);
+	}
+
+	/**
+	 * Rotation is specified by a single vertex v; if v is a left child of its
+	 * parent, rotate right, if it is a right child, rotate left
+	 */
+	public void rotate(BSTNode v) {
+		if (v.isLeft()) {
+			rightRot(v);
+		} else {
+			leftRot(v);
+		}
+	}
+
 	@Override
 	public void clear() {
 		setRoot(null);
 	}
 
 	@Override
-	public void setLayout(String layoutName) {
+	public final void setLayout(String layoutName) {
 		super.setLayout(layoutName);
-		if (rootProperty.get() != null) {
-			rootProperty.get().setLayoutR(layoutName);
+		if (getRoot() != null) {
+			getRoot().setLayoutR(layoutName);
+		}
+		reLayout();
+	}
+
+	@Override
+	public void reLayout() {
+		if (getRoot() != null) {
+			getRoot().reLayout();
 			dsLayout.rebuild(getRoot().getLayoutPane());
+		} else {
+			dsLayout.rebuild();
 		}
 	}
 

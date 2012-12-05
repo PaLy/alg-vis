@@ -42,12 +42,16 @@ public abstract class Visualization implements PropertyStateEditable {
 	 */
 	protected abstract void init();
 
-	public Pane getRootPane() {
+	public Pane getVisPane() {
 		return visPane;
 	}
 
 	public Pane getButtonsPane(String lang) {
 		return buttons.getPane(lang);
+	}
+
+	public Buttons getButtons() {
+		return buttons;
 	}
 
 	public DataStructure getDataStructure() {

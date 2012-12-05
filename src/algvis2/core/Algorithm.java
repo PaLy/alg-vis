@@ -99,7 +99,7 @@ public abstract class Algorithm implements Runnable {
 	void begin() {
 		HashMap<Object, Object> preState = new HashMap<Object, Object>();
 		visualization.storeState(preState);
-		state = new PropertiesState(preState);
+		state = new PropertiesState(preState, visualization);
 		startState = state;
 	}
 
@@ -120,7 +120,7 @@ public abstract class Algorithm implements Runnable {
 		animation.getChildren().add(state.createTimeline());
 		HashMap<Object, Object> preState = new HashMap<Object, Object>();
 		visualization.storeState(preState);
-		state = new PropertiesState(preState);
+		state = new PropertiesState(preState, visualization);
 
 		startState.addNewStates(preState);
 	}

@@ -68,7 +68,7 @@
             <MenuItem mnemonicParsing="false" text="%23tree" />
             <MenuItem mnemonicParsing="false" text="%234tree" />
             <MenuItem mnemonicParsing="false" text="%btree" />
-            <MenuItem mnemonicParsing="false" text="%redblack" />
+            <MenuItem mnemonicParsing="false" onAction="#selectVisualization" text="%redblack" fx:id="menu_rb" />
             <MenuItem mnemonicParsing="false" text="%aatree" />
             <MenuItem mnemonicParsing="false" text="%treap" />
             <MenuItem mnemonicParsing="false" text="%skiplist" />

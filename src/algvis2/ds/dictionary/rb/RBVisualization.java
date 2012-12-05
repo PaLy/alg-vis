@@ -15,25 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.animation;
+package algvis2.ds.dictionary.rb;
 
-import java.util.HashSet;
+import algvis2.core.Buttons;
+import algvis2.core.Visualization;
 
-public class AutoAnimsManager {
-	private final HashSet<AutoAnimation> animations = new HashSet<AutoAnimation>(); // TODO pozor na memory leak
-
-	public synchronized void add(AutoAnimation animation) {
-		animations.add(animation);
-	}
-
-	public synchronized void remove(AutoAnimation animation) {
-		animations.remove(animation);
-	}
-
-	public synchronized void endAll() {
-		for (AutoAnimation animation : animations) {
-			animation.stop();
-		}
-		animations.clear();
+public class RBVisualization extends Visualization {
+	@Override
+	protected void init() {
+		dataStructure = new RB(this);
+		buttons = new Buttons(getClass()
+				.getResource("/algvis2/ui/Buttons.fxml"));
 	}
 }

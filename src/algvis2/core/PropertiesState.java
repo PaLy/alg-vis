@@ -36,9 +36,12 @@ import java.util.List;
 
 public class PropertiesState {
 	public final HashMap<Object, Object> preState;
+	private final Visualization visualization;
 
-	public PropertiesState(HashMap<Object, Object> preState) {
+	public PropertiesState(HashMap<Object, Object> preState,
+			Visualization visualization) {
 		this.preState = preState;
+		this.visualization = visualization;
 	}
 
 	public Timeline createTimeline() {
@@ -77,35 +80,34 @@ public class PropertiesState {
 				secondKeyFrameValues);
 		final Timeline timeline = new Timeline(firstKeyFrame, secondKeyFrame);
 
-		if (preChildren.size() > 0) {
-			timeline.setOnFinished(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent event) {
-					for (Parent parent : preChildren.keySet()) {
-						ObservableList<Node> children;
-						if (parent instanceof Pane)
-							children = ((Pane) parent).getChildren();
-						else if (parent instanceof Group)
-							children = ((Group) parent).getChildren();
-						else
-							continue;
+		timeline.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				for (Parent parent : preChildren.keySet()) {
+					ObservableList<Node> children;
+					if (parent instanceof Pane)
+						children = ((Pane) parent).getChildren();
+					else if (parent instanceof Group)
+						children = ((Group) parent).getChildren();
+					else
+						continue;
 
-						children.clear();
-						List<Node> newChildren;
-						if (timeline.getRate() > 0)
-							newChildren = postChildren.get(parent);
-						else if (timeline.getRate() < 0)
-							newChildren = preChildren.get(parent);
-						else
-							return;
+					children.clear();
+					List<Node> newChildren;
+					if (timeline.getRate() > 0)
+						newChildren = postChildren.get(parent);
+					else if (timeline.getRate() < 0) { // TODO vykona sa toto niekedy
+						newChildren = preChildren.get(parent);
+					} else
+						return;
 
-						for (Node child : newChildren) {
-							children.add(child);
-						}
+					for (Node child : newChildren) {
+						children.add(child);
 					}
 				}
-			});
-		}
+				visualization.getDataStructure().reLayout();
+			}
+		});
 		return timeline;
 	}
 

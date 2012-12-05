@@ -22,40 +22,29 @@ import algvis2.scene.paint.NodePaint;
 import algvis2.scene.shape.Node;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.Pane;
 
 import java.util.HashMap;
 
 public class BSTNode extends Node {
-	private BinTreeLayout layout;
+	protected BinTreeLayout layout;
 	public final ObjectProperty<BSTNode> leftProperty = new SimpleObjectProperty<BSTNode>();
 	public final ObjectProperty<BSTNode> rightProperty = new SimpleObjectProperty<BSTNode>();
+	public final ObjectProperty<BSTNode> parentNodeProperty = new SimpleObjectProperty<BSTNode>();
 
 	public BSTNode(int key, String layoutName) {
 		super(key);
 		layout = (BinTreeLayout) Layout.createLayout(layoutName);
-		init();
 	}
 
 	public BSTNode(int key, NodePaint p, String layoutName) {
 		super(key, p);
 		layout = (BinTreeLayout) Layout.createLayout(layoutName);
-		init();
 	}
 
 	public BSTNode(Node v, String layoutName) {
 		super(v);
 		layout = (BinTreeLayout) Layout.createLayout(layoutName);
-		init();
-	}
-
-	private void init() {
-		SonChangeListener sonChangeListener = new SonChangeListener();
-		leftProperty.addListener(sonChangeListener);
-		rightProperty.addListener(sonChangeListener);
-		rebuildLayout();
 	}
 
 	public void setLeft(BSTNode left) {
@@ -66,6 +55,10 @@ public class BSTNode extends Node {
 		rightProperty.set(right);
 	}
 
+	public void setParentNode(BSTNode parent) {
+		parentNodeProperty.set(parent);
+	}
+
 	public BSTNode getLeft() {
 		return leftProperty.get();
 	}
@@ -74,43 +67,117 @@ public class BSTNode extends Node {
 		return rightProperty.get();
 	}
 
+	public BSTNode getParentNode() {
+		return parentNodeProperty.get();
+	}
+
+	public boolean isRoot() {
+		return getParentNode() == null;
+	}
+
+	public boolean isLeft() {
+		return getParentNode() != null && getParentNode().getLeft() == this;
+	}
+
+	public boolean isRight() {
+		return getParentNode() != null && getParentNode().getRight() == this;
+	}
+
+	/**
+	 * removes edge between this and left; removes edge between newLeft and its
+	 * parent; creates new edge between this and newLeft
+	 */
+	public void linkLeft(BSTNode newLeft) {
+		if (getLeft() != newLeft) {
+			if (getLeft() != null) {
+				// remove edge between this and left
+				unlinkLeft();
+			}
+			if (newLeft != null) {
+				if (newLeft.getParentNode() != null) {
+					// remove edge between newLeft and its parent
+					newLeft.unlinkParent();
+				}
+				// create new edge between this and newLeft
+				newLeft.setParentNode(this);
+			}
+			setLeft(newLeft);
+		}
+	}
+
+	/**
+	 * removes edge between this and left
+	 */
+	public void unlinkLeft() {
+		getLeft().setParentNode(null);
+		setLeft(null);
+	}
+
+	/**
+	 * removes edge between this and right; removes edge between newRight and
+	 * its parent; creates new edge between this and newRight
+	 */
+	public void linkRight(BSTNode newRight) {
+		if (getRight() != newRight) {
+			if (getRight() != null) {
+				// remove edge between this and right
+				unlinkRight();
+			}
+			if (newRight != null) {
+				if (newRight.getParentNode() != null) {
+					// remove edge between newRight and its parent
+					newRight.unlinkParent();
+				}
+				// create new edge between this and newRight
+				newRight.setParentNode(this);
+			}
+			setRight(newRight);
+		}
+	}
+
+	/**
+	 * removes edge between this and right
+	 */
+	public void unlinkRight() {
+		getRight().setParentNode(null);
+		setRight(null);
+	}
+
+	private void unlinkParent() {
+		if (isLeft()) {
+			getParentNode().unlinkLeft();
+		} else {
+			getParentNode().unlinkRight();
+		}
+	}
+
 	public Pane getLayoutPane() {
 		return layout.getPane();
 	}
 
 	public void setLayoutR(String layoutName) {
 		layout = (BinTreeLayout) Layout.createLayout(layoutName);
-		if (leftProperty.get() != null)
-			leftProperty.get().setLayoutR(layoutName);
-		if (rightProperty.get() != null)
-			rightProperty.get().setLayoutR(layoutName);
-		rebuildLayout();
+		if (getLeft() != null)
+			getLeft().setLayoutR(layoutName);
+		if (getRight() != null)
+			getRight().setLayoutR(layoutName);
 	}
 
-	public void setLayout(String layoutName) {
-		layout = (BinTreeLayout) Layout.createLayout(layoutName);
-		rebuildLayout();
-		recalcAbsPositionR();
-	}
-
-	public void rebuildLayout() {
-		layout.rebuild(this,
-				leftProperty.get() == null ? null : leftProperty.get(),
-				rightProperty.get() == null ? null : rightProperty.get());
+	public void reLayout() {
+		layout.rebuild(this, getLeft(), getRight());
 	}
 
 	@Override
-	public void removeLayoutXYBindings() {
-		super.removeLayoutXYBindings();
-		rebuildLayout();
+	public void recalcAbsPosition() {
+		recalcAbsPositionR();
 	}
 
 	public void recalcAbsPositionR() {
-		recalcAbsPosition();
-		if (leftProperty.get() != null)
-			leftProperty.get().recalcAbsPositionR();
-		if (rightProperty.get() != null)
-			rightProperty.get().recalcAbsPositionR();
+		super.recalcAbsPosition();
+		if (getLeft() != null)
+			getLeft().recalcAbsPositionR();
+		if (getRight() != null)
+			getRight().recalcAbsPositionR();
 	}
 
 	@Override
@@ -118,19 +185,10 @@ public class BSTNode extends Node {
 		super.storeState(state);
 		state.put(leftProperty, leftProperty.get());
 		state.put(rightProperty, rightProperty.get());
+		state.put(parentNodeProperty, parentNodeProperty.get());
 		if (leftProperty.get() != null)
 			leftProperty.get().storeState(state);
 		if (rightProperty.get() != null)
 			rightProperty.get().storeState(state);
-	}
-
-	private class SonChangeListener implements ChangeListener<BSTNode> {
-		@Override
-		public void changed(ObservableValue<? extends BSTNode> observableValue,
-				BSTNode oldNode, BSTNode newNode) {
-			if (newNode != null)
-				newNode.removeLayoutXYBindings(); // TODO tieto veci bude asi lepsie hodit do layout.rebuild()
-			rebuildLayout();
-		}
 	}
 }

@@ -24,18 +24,17 @@ import javafx.animation.ScaleTransitionBuilder;
 import javafx.util.Duration;
 
 public class BSTInsert extends Algorithm {
-	private final BST D;
-	private final int x;
+	protected final BST D;
+	protected BSTNode newNode;
 
-	protected BSTInsert(BST D, int x) {
+	protected BSTInsert(BST D, BSTNode newNode) {
 		super(D);
 		this.D = D;
-		this.x = x;
+		this.newNode = newNode;
 	}
 
 	@Override
 	public void runAlgorithm() throws InterruptedException {
-		BSTNode newNode = new BSTNode(x, NodePaint.INSERT, D.getLayout());
 		addNode(newNode, ZDepth.TOP);
 
 		if (D.getRoot() == null) {
@@ -45,16 +44,16 @@ public class BSTInsert extends Algorithm {
 			while (true) {
 				newNode.goAbove(cur);
 				pause();
-				if (x > cur.getKey()) {
+				if (newNode.getKey() > cur.getKey()) {
 					if (cur.getRight() == null) {
-						cur.setRight(newNode);
+						cur.linkRight(newNode);
 						break;
 					} else {
 						cur = cur.getRight();
 					}
 				} else {
 					if (cur.getLeft() == null) {
-						cur.setLeft(newNode);
+						cur.linkLeft(newNode);
 						break;
 					} else {
 						cur = cur.getLeft();

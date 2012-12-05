@@ -21,7 +21,6 @@ import algvis.core.MyRandom;
 import algvis2.core.PropertyStateEditable;
 import algvis2.core.Visualization;
 import algvis2.scene.control.InputField;
-import algvis2.scene.layout.Layout;
 import algvis2.scene.layout.VisPane;
 import algvis2.scene.layout.ZDepth;
 import algvis2.scene.shape.Node;
@@ -33,7 +32,7 @@ import javafx.scene.layout.FlowPane;
 public abstract class DataStructure implements PropertyStateEditable {
 	protected final VisPane visPane;
 	public final Visualization visualization;
-	protected Layout dsLayout = new DSDefaultLayout();
+	protected DSDefaultLayout dsLayout = new DSDefaultLayout();
 	protected String layoutName;
 
 	protected DataStructure(Visualization visualization) {
@@ -68,4 +67,6 @@ public abstract class DataStructure implements PropertyStateEditable {
 	public String getLayout() {
 		return layoutName;
 	}
+
+	public abstract void reLayout();
 }

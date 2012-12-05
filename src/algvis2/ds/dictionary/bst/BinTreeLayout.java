@@ -19,7 +19,6 @@ package algvis2.ds.dictionary.bst;
 
 import algvis2.scene.layout.Layout;
 import algvis2.scene.shape.Edge;
-import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
@@ -35,12 +34,6 @@ public class BinTreeLayout extends Layout {
 	@Override
 	protected Pane initPane() {
 		return new GridPane();
-	}
-
-	public void rebuild(BSTNode root, BSTNode left, BSTNode right) {
-		pane.getChildren().clear();
-		rebuildEdges(root, left, right);
-		rebuildNodes(root, left, right);
 	}
 
 	protected void rebuildNodes(BSTNode root, BSTNode left, BSTNode right) {
@@ -68,20 +61,30 @@ public class BinTreeLayout extends Layout {
 		}
 	}
 
-	@Override
-	public void rebuild(Node... nodes) {
-		switch (nodes.length) {
-		case 0:
-			break;
-		case 1:
-			rebuild(nodes[0], null, null);
-			break;
-		case 2:
-			rebuild(nodes[0], nodes[1], null);
-			break;
-		default:
-			rebuild(nodes[0], nodes[1], nodes[2]);
+	public void rebuild(BSTNode root, BSTNode left, BSTNode right) {
+		pane.getChildren().clear();
+//		if (root.layoutXProperty().isBound()) {
+//			System.out.println(root.getKey() + "ROOT");
+//			System.out.println(root.layoutXProperty());
+//		}
+		root.removeLayoutXYBindings();
+		if (left != null) {
+			left.removeLayoutXYBindings();
+//			if (left.layoutXProperty().isBound()) {
+//				System.out.println(left.getKey() + "LEFT");
+//			}
+			left.reLayout();
 		}
+		if (right != null) {
+			right.removeLayoutXYBindings();
+//			if (right.layoutXProperty().isBound()) {
+//				System.out.println(right.getKey() + "RIGHT");
+//			}
+			right.reLayout();
+		}
+
+		rebuildEdges(root, left, right);
+		rebuildNodes(root, left, right);
 	}
 
 	@Override
@@ -106,13 +109,5 @@ public class BinTreeLayout extends Layout {
 				nodePane.layoutYProperty().add(nodePane.translateYProperty())
 						.add(node.layoutYProperty())
 						.add(node.translateYProperty()));
-	}
-
-	@Override
-	public void recalcAbsPosition() {
-		for (Node node : pane.getChildren()) {
-			if (node instanceof BSTNode)
-				((BSTNode) node).recalcAbsPositionR();
-		}
 	}
 }

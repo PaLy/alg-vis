@@ -28,9 +28,9 @@ public class DSDefaultLayout extends Layout {
 		return new HBox(5);
 	}
 
-	@Override
 	public void rebuild(Node... nodes) {
 		getPane().getChildren().clear();
 		getPane().getChildren().addAll(nodes);
+		recalcAbsPosition();
 	}
 }

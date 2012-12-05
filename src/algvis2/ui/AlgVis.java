@@ -21,6 +21,7 @@ import algvis2.animation.AutoAnimsManager;
 import algvis2.core.Visualization;
 import algvis2.ds.dictionary.avl.AVLVisualization;
 import algvis2.ds.dictionary.bst.BSTVisualization;
+import algvis2.ds.dictionary.rb.RBVisualization;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -51,10 +52,10 @@ public class AlgVis extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		stage.setTitle("Gnarley Trees");
-		scene = new Scene(getRoot());
-		showVisualization(0);
+		scene = new Scene(createRoot());
+		showVisualization(6);
 		stage.setScene(scene);
-		stage.setFullScreen(true);
+		//		stage.setFullScreen(true);
 
 		//		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		//		stage.setX(primaryScreenBounds.getMinX());
@@ -73,7 +74,7 @@ public class AlgVis extends Application {
 				VISUALIZATIONS[x] = createVisualization(x);
 
 			BorderPane root = (BorderPane) scene.lookup("#rootBorderPane");
-			root.setCenter(VISUALIZATIONS[x].getRootPane());
+			root.setCenter(VISUALIZATIONS[x].getVisPane());
 			root.getCenter().toBack();
 
 			TitledPane buttons = (TitledPane) scene
@@ -86,13 +87,13 @@ public class AlgVis extends Application {
 
 	public void selectLanguage(String lang) {
 		language = lang;
-		scene.setRoot(getRoot());
+		scene.setRoot(createRoot());
 		int curVis = currentVisualization;
 		currentVisualization = -1;
 		showVisualization(curVis);
 	}
 
-	private Parent getRoot() {
+	private Parent createRoot() {
 		FXMLLoader fxmlLoader = new FXMLLoader();
 		fxmlLoader.setResources(ResourceBundle.getBundle("Messages",
 				new Locale(language)));
@@ -113,6 +114,8 @@ public class AlgVis extends Application {
 			return new BSTVisualization();
 		case 2:
 			return new AVLVisualization();
+		case 6:
+			return new RBVisualization();
 		default:
 			return null;
 		}
