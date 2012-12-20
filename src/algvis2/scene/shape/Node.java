@@ -119,10 +119,13 @@ public class Node extends Group implements AbsPosition, PropertyStateEditable {
 				//                else
 				//                    System.out.println(getKey() + " X " + newBinding.get());
 
-				if (newBinding != null) {
-					layoutXProperty().bind(newBinding);
-				} else {
-					layoutXProperty().unbind();
+				if (newBinding != oldBinding) {
+					if (newBinding != null) {
+						layoutXProperty().bind(newBinding);
+					} else {
+						layoutXProperty().unbind();
+					}
+//					System.out.println(getKey() + " bindingX: " + newBinding);
 				}
 			}
 		});
@@ -135,11 +138,14 @@ public class Node extends Group implements AbsPosition, PropertyStateEditable {
 				//                    System.out.println(getKey() + " Y " + null);
 				//                else
 				//                    System.out.println(getKey() + " Y " + newBinding.get());
-
-				if (newBinding != null) {
-					layoutYProperty().bind(newBinding);
-				} else
-					layoutYProperty().unbind();
+				if (newBinding != oldBinding) {
+					if (newBinding != null) {
+						layoutYProperty().bind(newBinding);
+					} else {
+						layoutYProperty().unbind();
+					}
+//					System.out.println(getKey() + " bindingY: " + newBinding);
+				}
 			}
 		});
 
@@ -159,6 +165,27 @@ public class Node extends Group implements AbsPosition, PropertyStateEditable {
 					AlgVis.getCurrentVis().visPane.remove(circle);
 			}
 		});
+		
+//		translateYProperty().addListener(new ChangeListener<Number>() {
+//			@Override
+//			public void changed(ObservableValue<? extends Number> observableValue, Number number, Number number2) {
+////				if (getKey() == 42) {
+//					if (Math.abs((Double)number2 - (Double)number) > 30) {
+//						System.out.println(getKey() + " Bol som zmeneny z " + number + " na " + number2);
+//					}
+////				}
+//			}
+//		});
+//		visPaneY.addListener(new ChangeListener<Number>() {
+//			@Override
+//			public void changed(ObservableValue<? extends Number> observableValue, Number number, Number number2) {
+////				if (getKey() == 42) {
+//					if (Math.abs((Double) number2 - (Double) number) > 30) {
+//						System.out.println(getKey() + " Bol som zmeneny z " + number + " na " + number2 + " visPane");
+//					}
+////				}
+//			}
+//		});
 	}
 
 	public void goAbove(Node node) {

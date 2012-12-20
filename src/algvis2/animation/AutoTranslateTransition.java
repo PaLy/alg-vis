@@ -19,7 +19,6 @@ package algvis2.animation;
 
 import algvis2.scene.Axis;
 import algvis2.ui.AlgVis;
-import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
 import javafx.animation.TranslateTransitionBuilder;
 import javafx.beans.value.ChangeListener;
@@ -59,25 +58,28 @@ public class AutoTranslateTransition implements AutoAnimation,
 			Number newValue) {
 		double d = (Double) newValue - (Double) oldValue;
 
-		TranslateTransition tt = TranslateTransitionBuilder.create().node(node)
+		final TranslateTransition tt = TranslateTransitionBuilder.create().node(node)
 				.duration(Duration.seconds(1))
-				.onFinished(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
-						AlgVis.autoAnimsManager
-								.remove(AutoTranslateTransition.this);
-					}
-				}).build();
+				.build();
+		tt.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				AlgVis.autoAnimsManager
+						.remove(tt);
+			}
+		});
 
-		if (currentTransition != null
-				&& currentTransition.getStatus().equals(
-						Animation.Status.RUNNING))
-			currentTransition.pause();
+		if (currentTransition != null) {
+			currentTransition.setRate(0); // asi lepsie ako pauza, lebo pauza nezastavi este nespustenu animaciu
+			AlgVis.autoAnimsManager.remove(currentTransition);
+		}
 
 		if (axis.equals(Axis.X))
-			node.translateXProperty().setValue(node.getTranslateX() - d);
-		else if (axis.equals(Axis.Y))
-			node.translateYProperty().setValue(node.getTranslateY() - d);
+			node.setTranslateX(node.getTranslateX() - d);
+		else if (axis.equals(Axis.Y)) {
+//			if (node instanceof algvis2.scene.shape.Node) System.out.println(((algvis2.scene.shape.Node) node).getKey() + " ano som tu");
+			node.setTranslateY(node.getTranslateY() - d);
+		}
 
 		if (currentTransition != null) {
 			if (axis.equals(Axis.X))
@@ -97,12 +99,7 @@ public class AutoTranslateTransition implements AutoAnimation,
 			tt.setFromY(node.getTranslateY());
 
 		currentTransition = tt;
-		AlgVis.autoAnimsManager.add(this);
+		AlgVis.autoAnimsManager.add(tt);
 		tt.play();
-	}
-
-	@Override
-	public synchronized void stop() {
-		currentTransition.jumpTo("end");
 	}
 }

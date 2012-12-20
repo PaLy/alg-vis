@@ -29,7 +29,7 @@ public class RBNode extends BSTNode {
 	private final RB rb;
 
 	public RBNode(RB rb, int key, String layoutName) {
-		super(key, NodePaint.RED, layoutName);
+		super(key, NodePaint.RED);
 		this.rb = rb;
 		redProperty.set(true);
 

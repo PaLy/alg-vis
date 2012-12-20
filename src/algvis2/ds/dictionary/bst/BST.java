@@ -24,11 +24,13 @@ import algvis2.scene.paint.NodePaint;
 import javafx.animation.Animation;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import org.abego.treelayout.TreeForTreeLayout;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BST extends Dictionary {
-	public static final String DEF_LAYOUT = Layout.BIN_TREE_LAYOUT;
+public class BST extends Dictionary implements TreeForTreeLayout<BSTNode> {
+	public static final String DEF_LAYOUT = Layout.COMPACT_LAYOUT;
 	public final ObjectProperty<BSTNode> rootProperty = new SimpleObjectProperty<BSTNode>();
 
 	public BST(Visualization visualization) {
@@ -55,12 +57,52 @@ public class BST extends Dictionary {
 	@Override
 	public Animation[] insert(int x) {
 		BSTInsert bstInsert = new BSTInsert(this, new BSTNode(x,
-				NodePaint.INSERT, getLayout()));
+				NodePaint.INSERT));
 		return new Animation[] { bstInsert.runA(), bstInsert.getBackToStart() };
 	}
 
 	public BSTNode getRoot() {
 		return rootProperty.get();
+	}
+
+	@Override
+	public boolean isLeaf(BSTNode bstNode) {
+		return bstNode.getLeft() == null && bstNode.getRight() == null;
+	}
+
+	@Override
+	public boolean isChildOfParent(BSTNode bstNode, BSTNode parentNode) {
+		return parentNode.getLeft() == bstNode || parentNode.getRight() == bstNode;
+	}
+
+	@Override
+	public Iterable<BSTNode> getChildren(BSTNode parentNode) {
+		ArrayList<BSTNode> list = new ArrayList<BSTNode>();
+		if (parentNode.getLeft() != null) list.add(parentNode.getLeft());
+		if (parentNode.getRight() != null) list.add(parentNode.getRight());
+		return list;
+	}
+
+	@Override
+	public Iterable<BSTNode> getChildrenReverse(BSTNode parentNode) {
+		ArrayList<BSTNode> list = new ArrayList<BSTNode>();
+		if (parentNode.getRight() != null) list.add(parentNode.getRight());
+		if (parentNode.getLeft() != null) list.add(parentNode.getLeft());
+		return list;
+	}
+
+	@Override
+	public BSTNode getFirstChild(BSTNode parentNode) {
+		if (parentNode.getLeft() != null) return parentNode.getLeft();
+		else if (parentNode.getRight() != null) return parentNode.getRight();
+		else return null;
+	}
+
+	@Override
+	public BSTNode getLastChild(BSTNode parentNode) {
+		if (parentNode.getRight() != null) return parentNode.getRight();
+		else if (parentNode.getLeft() != null) return parentNode.getLeft();
+		else return null;
 	}
 
 	public void setRoot(BSTNode root) {
@@ -125,20 +167,19 @@ public class BST extends Dictionary {
 	@Override
 	public final void setLayout(String layoutName) {
 		super.setLayout(layoutName);
-		if (getRoot() != null) {
-			getRoot().setLayoutR(layoutName);
-		}
 		reLayout();
 	}
 
 	@Override
 	public void reLayout() {
+//		System.out.println("ZACINAM");
 		if (getRoot() != null) {
-			getRoot().reLayout();
-			dsLayout.rebuild(getRoot().getLayoutPane());
+			BinTreeLayout layout = (BinTreeLayout) Layout.createLayout(layoutName, this);
+			dsLayout.rebuild(layout.rebuild(getRoot()));
 		} else {
 			dsLayout.rebuild();
 		}
+//		System.out.println("KONCIM");
 	}
 
 	@Override

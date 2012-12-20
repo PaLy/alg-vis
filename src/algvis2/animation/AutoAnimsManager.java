@@ -17,22 +17,24 @@
 
 package algvis2.animation;
 
+import javafx.animation.Transition;
+
 import java.util.HashSet;
 
 public class AutoAnimsManager {
-	private final HashSet<AutoAnimation> animations = new HashSet<AutoAnimation>(); // TODO pozor na memory leak
+	private final HashSet<Transition> animations = new HashSet<Transition>(); // TODO pozor na memory leak
 
-	public synchronized void add(AutoAnimation animation) {
+	public synchronized void add(Transition animation) {
 		animations.add(animation);
 	}
 
-	public synchronized void remove(AutoAnimation animation) {
+	public synchronized void remove(Transition animation) {
 		animations.remove(animation);
 	}
 
 	public synchronized void endAll() {
-		for (AutoAnimation animation : animations) {
-			animation.stop();
+		for (Transition animation : animations) {
+			animation.jumpTo("end");
 		}
 		animations.clear();
 	}

@@ -27,14 +27,10 @@ import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 import java.util.HashMap;
-import java.util.concurrent.Semaphore;
 
 public abstract class Algorithm implements Runnable {
 	protected final Visualization visualization;
 	protected final Animations animations;
-	private final Semaphore gate = new Semaphore(1);
-	private boolean wrapped = false;
-	private Algorithm wrapperAlg;
 
 	private PropertiesState state;
 	private PropertiesState startState;
@@ -45,19 +41,6 @@ public abstract class Algorithm implements Runnable {
 		visualization = D.visualization;
 		animations = new Animations(visualization.visPane);
 		animation = new SequentialTransition();
-		try {
-			gate.acquire();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-
-	protected Algorithm(DataStructure D, Algorithm a) {
-		this(D);
-		if (a != null) {
-			wrapped = true;
-			wrapperAlg = a;
-		}
 	}
 
 	@Override
@@ -79,21 +62,9 @@ public abstract class Algorithm implements Runnable {
 	public abstract void runAlgorithm() throws InterruptedException;
 
 	protected void pause() throws InterruptedException {
-		if (wrapped) {
-			wrapperAlg.pause();
-		} else {
-			saveChangedProperties();
-			animation.getChildren().add(
-					new PauseTransition(Duration.seconds(2)));
-		}
-	}
-
-	public void resume() {
-		if (wrapped) {
-			wrapperAlg.resume();
-		} else {
-			gate.release();
-		}
+		saveChangedProperties();
+		animation.getChildren().add(
+				new PauseTransition(Duration.seconds(2)));
 	}
 
 	void begin() {
@@ -106,6 +77,8 @@ public abstract class Algorithm implements Runnable {
 	void end() {
 		saveChangedProperties();
 		backToStart = startState.createTimeline();
+//		System.out.println("BACKTOSTART:");
+//		System.out.println(backToStart.getKeyFrames());
 	}
 
 	public Animation getBackToStart() {
@@ -122,7 +95,11 @@ public abstract class Algorithm implements Runnable {
 		visualization.storeState(preState);
 		state = new PropertiesState(preState, visualization);
 
-		startState.addNewStates(preState);
+		startState.addNewProperties(preState);
+
+//		Timeline t = (Timeline) animation.getChildren().get(animation.getChildren().size() - 1);
+//		System.out.println(t.getKeyFrames());
+//		System.out.println("*************");
 	}
 
 	protected void addAnimation(Animation anim) {

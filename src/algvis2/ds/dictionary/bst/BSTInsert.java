@@ -61,12 +61,12 @@ public class BSTInsert extends Algorithm {
 				}
 			}
 		}
-		removeNode(newNode);
 
 		addAnimation(ScaleTransitionBuilder.create().node(newNode).byX(0.5)
 				.byY(0.5).duration(Duration.millis(500)).cycleCount(2)
 				.autoReverse(true).build());
-
+		
+		removeNode(newNode); // toto moze byt kludne az tu, lebo node nemoze byt dvakrat na scene
 		newNode.setPaint(NodePaint.NORMAL);
 	}
 }

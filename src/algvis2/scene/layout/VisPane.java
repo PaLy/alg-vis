@@ -26,6 +26,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.FlowPaneBuilder;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -90,18 +91,17 @@ public class VisPane extends StackPane implements PropertyStateEditable {
 
 	@Override
 	public void storeState(HashMap<Object, Object> state) {
-		state.put(this, new ArrayList<Node>(getChildren()));
 		for (Node child : getChildren()) {
-			state.put(
-					child,
-					new ArrayList<Node>(((Parent) child)
-							.getChildrenUnmodifiable()));
-			storeStateR(state, (Parent) child);
+			if (!(child instanceof FlowPane)) {
+				state.put(
+						child,
+						new ArrayList<Node>(((Parent) child)
+								.getChildrenUnmodifiable()));
+				storeStateR(state, (Parent) child);
+			}
 		}
 	}
 
-	// TODO nie je to tak celkom rekurzivne (neuklada sa zoznam deti parenta, ale iba jednodtlive nody)
-	// a potom ich znovu ukladam vo datastructure.storeState
 	private void storeStateR(HashMap<Object, Object> state, Parent parent) {
 		for (Node child : parent.getChildrenUnmodifiable()) {
 			if (child instanceof PropertyStateEditable)

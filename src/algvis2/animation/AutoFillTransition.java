@@ -38,33 +38,30 @@ public class AutoFillTransition implements AutoAnimation, ChangeListener<Paint> 
 	}
 
 	@Override
-	public void stop() {
-		currentTransition.jumpTo("end");
-	}
-
-	@Override
 	public void changed(ObservableValue<? extends Paint> observableValue,
 			Paint oldPaint, Paint newPaint) {
 		if (oldPaint != newPaint && oldPaint instanceof Color
 				&& newPaint instanceof Color) {
-			FillTransition fillTransition = FillTransitionBuilder.create()
+			final FillTransition fillTransition = FillTransitionBuilder.create()
 					.toValue((Color) newPaint).shape(shape)
 					.duration(Duration.seconds(1))
-					.onFinished(new EventHandler<ActionEvent>() {
-						@Override
-						public void handle(ActionEvent event) {
-							AlgVis.autoAnimsManager
-									.remove(AutoFillTransition.this);
-						}
-					}).build();
+					.build();
+			fillTransition.setOnFinished(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					AlgVis.autoAnimsManager
+							.remove(fillTransition);
+				}
+			});
 			if (currentTransition != null) {
-				currentTransition.pause();
+				currentTransition.setRate(0);
+				AlgVis.autoAnimsManager.remove(currentTransition);
 				fillTransition.setFromValue((Color) shape.getFill());
 			} else {
 				fillTransition.setFromValue((Color) oldPaint);
 			}
 			currentTransition = fillTransition;
-			AlgVis.autoAnimsManager.add(this);
+			AlgVis.autoAnimsManager.add(fillTransition);
 			fillTransition.play();
 		}
 	}

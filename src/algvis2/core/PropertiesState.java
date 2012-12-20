@@ -105,13 +105,14 @@ public class PropertiesState {
 						children.add(child);
 					}
 				}
-				visualization.getDataStructure().reLayout();
+				visualization.getDataStructure().reLayout(); // TODO tu to je lepsie kvoli prechadzaniu animacie dozadu
+//				System.out.println("teraz " + (timeline.getRate() > 0 ? "dopredu" : "dozadu") + " " + k++);
 			}
 		});
 		return timeline;
 	}
 
-	public void addNewStates(HashMap<Object, Object> newStates) {
+	public void addNewProperties(HashMap<Object, Object> newStates) {
 		for (Object key : newStates.keySet()) {
 			if (!preState.containsKey(key))
 				preState.put(key, newStates.get(key));

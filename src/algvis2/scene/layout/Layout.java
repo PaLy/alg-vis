@@ -17,9 +17,7 @@
 
 package algvis2.scene.layout;
 
-import algvis2.ds.dictionary.bst.BinTreeLayout;
-import algvis2.ds.dictionary.bst.LeftBinTreeLayout;
-import algvis2.ds.dictionary.bst.RightBinTreeLayout;
+import algvis2.ds.dictionary.bst.*;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
@@ -27,6 +25,7 @@ public abstract class Layout implements AbsPosition {
 	public static final String BIN_TREE_LAYOUT = "BinTreeLayout";
 	public static final String LEFT_BIN_TREE_LAYOUT = "LeftBinTreeLayout";
 	public static final String RIGHT_BIN_TREE_LAYOUT = "RightBinTreeLayout";
+	public static final String COMPACT_LAYOUT = "CompactLayout";
 
 	protected final Pane pane;
 
@@ -42,7 +41,9 @@ public abstract class Layout implements AbsPosition {
 
 	@Override
 	public void recalcAbsPosition() {
+//		System.out.println("RECALC started");
 		recalcAbsPosition(pane);
+//		System.out.println("RECALC ended");
 	}
 
 	private void recalcAbsPosition(Pane parent) {
@@ -55,13 +56,15 @@ public abstract class Layout implements AbsPosition {
 		}
 	}
 
-	public static Layout createLayout(String layoutName) {
+	public static Layout createLayout(String layoutName, BST bst) {
 		if (layoutName.equals(BIN_TREE_LAYOUT))
 			return new BinTreeLayout();
 		else if (layoutName.equals(LEFT_BIN_TREE_LAYOUT))
 			return new LeftBinTreeLayout();
 		else if (layoutName.equals(RIGHT_BIN_TREE_LAYOUT))
 			return new RightBinTreeLayout();
+		else if (layoutName.equals(COMPACT_LAYOUT))
+			return new CompactLayout(bst);
 		else
 			return null;
 	}

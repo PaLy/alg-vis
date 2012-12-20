@@ -17,41 +17,37 @@
 
 package algvis2.ds.dictionary.bst;
 
-import algvis2.scene.layout.Layout;
 import algvis2.scene.paint.NodePaint;
 import algvis2.scene.shape.Node;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.scene.layout.Pane;
 
 import java.util.HashMap;
 
 public class BSTNode extends Node {
-	protected BinTreeLayout layout;
 	public final ObjectProperty<BSTNode> leftProperty = new SimpleObjectProperty<BSTNode>();
 	public final ObjectProperty<BSTNode> rightProperty = new SimpleObjectProperty<BSTNode>();
 	public final ObjectProperty<BSTNode> parentNodeProperty = new SimpleObjectProperty<BSTNode>();
 
-	public BSTNode(int key, String layoutName) {
+	public BSTNode(int key) {
 		super(key);
-		layout = (BinTreeLayout) Layout.createLayout(layoutName);
 	}
 
-	public BSTNode(int key, NodePaint p, String layoutName) {
+	public BSTNode(int key, NodePaint p) {
 		super(key, p);
-		layout = (BinTreeLayout) Layout.createLayout(layoutName);
 	}
 
-	public BSTNode(Node v, String layoutName) {
+	public BSTNode(Node v) {
 		super(v);
-		layout = (BinTreeLayout) Layout.createLayout(layoutName);
 	}
 
 	public void setLeft(BSTNode left) {
+		if (left != null && left.layoutXProperty().isBound()) left.removeLayoutXYBindings();
 		leftProperty.set(left);
 	}
 
 	public void setRight(BSTNode right) {
+		if (right != null && right.layoutXProperty().isBound()) right.removeLayoutXYBindings();
 		rightProperty.set(right);
 	}
 
@@ -73,6 +69,10 @@ public class BSTNode extends Node {
 
 	public boolean isRoot() {
 		return getParentNode() == null;
+	}
+	
+	public boolean isLeaf() {
+		return getLeft() == null && getRight() == null;
 	}
 
 	public boolean isLeft() {
@@ -149,35 +149,6 @@ public class BSTNode extends Node {
 		} else {
 			getParentNode().unlinkRight();
 		}
-	}
-
-	public Pane getLayoutPane() {
-		return layout.getPane();
-	}
-
-	public void setLayoutR(String layoutName) {
-		layout = (BinTreeLayout) Layout.createLayout(layoutName);
-		if (getLeft() != null)
-			getLeft().setLayoutR(layoutName);
-		if (getRight() != null)
-			getRight().setLayoutR(layoutName);
-	}
-
-	public void reLayout() {
-		layout.rebuild(this, getLeft(), getRight());
-	}
-
-	@Override
-	public void recalcAbsPosition() {
-		recalcAbsPositionR();
-	}
-
-	public void recalcAbsPositionR() {
-		super.recalcAbsPosition();
-		if (getLeft() != null)
-			getLeft().recalcAbsPositionR();
-		if (getRight() != null)
-			getRight().recalcAbsPositionR();
 	}
 
 	@Override

@@ -122,8 +122,10 @@ public class AlgVisFXMLController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				System.out.println("AFTER BACK");
-				AlgVis.autoAnimsManager.endAll();
-				SequentialTransitionBuilder.create().children(animation)
+				// AlgVis.autoAnimsManager.endAll(); // TODO toto asi nie je problem (ale daco to ovplyvni)
+				SequentialTransitionBuilder.create().children(
+//						PauseTransitionBuilder.create().duration(Duration.seconds(1)).build(),
+						animation)
 						.onFinished(new EventHandler<ActionEvent>() {
 							@Override
 							public void handle(ActionEvent event) {

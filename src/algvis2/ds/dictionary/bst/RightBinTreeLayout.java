@@ -18,6 +18,7 @@
 package algvis2.ds.dictionary.bst;
 
 import javafx.geometry.HPos;
+import javafx.scene.Node;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.ColumnConstraintsBuilder;
 import javafx.scene.layout.GridPane;
@@ -41,11 +42,11 @@ public class RightBinTreeLayout extends BinTreeLayout {
 	}
 
 	@Override
-	protected void rebuildNodes(BSTNode root, BSTNode left, BSTNode right) {
+	protected void rebuildNodes(Node root, Node left, Node right) {
 		((GridPane) pane).add(root, 1, 0);
 		if (left != null)
-			((GridPane) pane).add(left.getLayoutPane(), 0, 1);
+			((GridPane) pane).add(left, 0, 1);
 		if (right != null)
-			((GridPane) pane).add(right.getLayoutPane(), 1, 1);
+			((GridPane) pane).add(right, 1, 1);
 	}
 }

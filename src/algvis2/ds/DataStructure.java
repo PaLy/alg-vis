@@ -25,7 +25,6 @@ import algvis2.scene.layout.VisPane;
 import algvis2.scene.layout.ZDepth;
 import algvis2.scene.shape.Node;
 import javafx.animation.Animation;
-import javafx.animation.SequentialTransition;
 import javafx.geometry.Insets;
 import javafx.scene.layout.FlowPane;
 
@@ -48,16 +47,10 @@ public abstract class DataStructure implements PropertyStateEditable {
 
 	abstract public void clear();
 
-	public Animation[] random(int n) {
-		SequentialTransition pt = new SequentialTransition();
-		SequentialTransition back = new SequentialTransition();
+	public void random(int n) {
 		for (int i = 0; i < n; i++) {
-			Animation[] animations = insert(MyRandom
-					.Int(InputField.MAX_VALUE + 1));
-			pt.getChildren().add(animations[0]);
-			back.getChildren().add(animations[1]);
+			insert(MyRandom.Int(InputField.MAX_VALUE + 1));
 		}
-		return new Animation[] { pt, back };
 	}
 
 	public void setLayout(String layoutName) {

@@ -17,30 +17,16 @@
 
 package algvis2.ds.dictionary.bst;
 
-import javafx.scene.Node;
-import javafx.scene.layout.GridPane;
+import org.abego.treelayout.NodeExtentProvider;
 
-/**
- * ----------------
- * | root |       |
- * ----------------
- * | left | right |
- * ----------------
- */
-public class LeftBinTreeLayout extends BinTreeLayout {
-
-	public LeftBinTreeLayout() {
-		super();
-		((GridPane) pane).setVgap(5);
-		((GridPane) pane).setHgap(5);
+public class BSTNodeExtentProvider implements NodeExtentProvider<BSTNode> {
+	@Override
+	public double getWidth(BSTNode bstNode) {
+		return bstNode.getBoundsInLocal().getWidth();
 	}
 
 	@Override
-	protected void rebuildNodes(Node root, Node left, Node right) {
-		((GridPane) pane).add(root, 0, 0);
-		if (left != null)
-			((GridPane) pane).add(left, 0, 1);
-		if (right != null)
-			((GridPane) pane).add(right, 1, 1);
+	public double getHeight(BSTNode bstNode) {
+		return bstNode.getBoundsInLocal().getHeight();
 	}
 }

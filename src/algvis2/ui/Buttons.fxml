@@ -54,6 +54,7 @@
                   <Layout fx:constant="BIN_TREE_LAYOUT" />
                   <Layout fx:constant="LEFT_BIN_TREE_LAYOUT" />
                   <Layout fx:constant="RIGHT_BIN_TREE_LAYOUT" />
+                  <Layout fx:constant="COMPACT_LAYOUT" />
                 </FXCollections>
               </items>
             </ChoiceBox>
