@@ -107,6 +107,7 @@ public class BST extends Dictionary implements TreeForTreeLayout<BSTNode> {
 
 	public void setRoot(BSTNode root) {
 		rootProperty.set(root);
+		if (root != null) root.removeLayoutXYBindings();
 	}
 
 	protected void leftRot(BSTNode v) {
@@ -167,7 +168,7 @@ public class BST extends Dictionary implements TreeForTreeLayout<BSTNode> {
 	@Override
 	public final void setLayout(String layoutName) {
 		super.setLayout(layoutName);
-		reLayout();
+		visualization.reLayout();
 	}
 
 	@Override

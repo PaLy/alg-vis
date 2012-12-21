@@ -17,6 +17,7 @@
 
 package algvis2.core;
 
+import algvis2.animation.AnimationManager;
 import algvis2.ds.DataStructure;
 import algvis2.scene.layout.VisPane;
 import javafx.beans.property.BooleanProperty;
@@ -29,6 +30,7 @@ public abstract class Visualization implements PropertyStateEditable {
 	public final VisPane visPane;
 	protected Buttons buttons;
 	protected DataStructure dataStructure;
+	public final AnimationManager animManager = new AnimationManager(this);
 
 	protected BooleanProperty pauses = new SimpleBooleanProperty();
 
@@ -56,6 +58,11 @@ public abstract class Visualization implements PropertyStateEditable {
 
 	public DataStructure getDataStructure() {
 		return dataStructure;
+	}
+	
+	public void reLayout() {
+		dataStructure.reLayout();
+		visPane.recalcAbsPosition();
 	}
 
 	@Override

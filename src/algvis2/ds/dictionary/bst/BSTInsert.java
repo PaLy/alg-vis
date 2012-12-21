@@ -62,11 +62,13 @@ public class BSTInsert extends Algorithm {
 			}
 		}
 
+		removeNode(newNode); // toto moze byt kludne az tu, lebo node nemoze byt dvakrat na scene TODO nie nie mylil 
+		// som sa - dozadu to potom nefunguje, musi sa odstranit v tom istom kroku, 
+		// v ktorom sa prida inde na scenu
 		addAnimation(ScaleTransitionBuilder.create().node(newNode).byX(0.5)
 				.byY(0.5).duration(Duration.millis(500)).cycleCount(2)
 				.autoReverse(true).build());
 		
-		removeNode(newNode); // toto moze byt kludne az tu, lebo node nemoze byt dvakrat na scene
 		newNode.setPaint(NodePaint.NORMAL);
 	}
 }

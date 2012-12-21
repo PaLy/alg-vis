@@ -31,6 +31,5 @@ public class DSDefaultLayout extends Layout {
 	public void rebuild(Node... nodes) {
 		getPane().getChildren().clear();
 		getPane().getChildren().addAll(nodes);
-		recalcAbsPosition();
 	}
 }

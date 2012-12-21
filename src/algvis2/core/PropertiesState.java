@@ -96,16 +96,18 @@ public class PropertiesState {
 					List<Node> newChildren;
 					if (timeline.getRate() > 0)
 						newChildren = postChildren.get(parent);
-					else if (timeline.getRate() < 0) { // TODO vykona sa toto niekedy
+					else if (timeline.getRate() < 0) {
 						newChildren = preChildren.get(parent);
-					} else
+					} else {
+						System.out.println("WTF");
 						return;
+					}
 
 					for (Node child : newChildren) {
 						children.add(child);
 					}
 				}
-				visualization.getDataStructure().reLayout(); // TODO tu to je lepsie kvoli prechadzaniu animacie dozadu
+				visualization.reLayout(); // TODO tu to je lepsie kvoli prechadzaniu animacie dozadu
 //				System.out.println("teraz " + (timeline.getRate() > 0 ? "dopredu" : "dozadu") + " " + k++);
 			}
 		});

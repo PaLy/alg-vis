@@ -53,4 +53,12 @@ public class Buttons {
 		pane.lookup("#buttonClear").setDisable(disabled);
 		pane.lookup("#buttonRandom").setDisable(disabled);
 	}
+	
+	public void disableNext(boolean disabled) {
+		pane.lookup("#buttonNext").setDisable(disabled);
+	}
+
+	public void disablePrevious(boolean disabled) {
+		pane.lookup("#buttonPrevious").setDisable(disabled);
+	}
 }

@@ -86,6 +86,22 @@ public class VisPane extends StackPane implements PropertyStateEditable {
 		elementParent.get(node).getChildren().remove(node);
 	}
 
+	public void recalcAbsPosition() {
+		for(Node child : getChildren()) {
+			recalcAbsPosition((Pane) child);
+		}
+	}
+
+	private void recalcAbsPosition(Pane parent) {
+		for (Node node : parent.getChildrenUnmodifiable()) {
+			if (node instanceof Pane) {
+				recalcAbsPosition((Pane) node);
+			} else if (node instanceof AbsPosition) {
+				((AbsPosition) node).recalcAbsPosition();
+			}
+		}
+	}
+
 	@Override
 	public void storeState(HashMap<Object, Object> state) {
 		for (Node child : getChildren()) {

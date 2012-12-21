@@ -18,10 +18,9 @@
 package algvis2.scene.layout;
 
 import algvis2.ds.dictionary.bst.*;
-import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
-public abstract class Layout implements AbsPosition {
+public abstract class Layout {
 	public static final String BIN_TREE_LAYOUT = "BinTreeLayout";
 	public static final String LEFT_BIN_TREE_LAYOUT = "LeftBinTreeLayout";
 	public static final String RIGHT_BIN_TREE_LAYOUT = "RightBinTreeLayout";
@@ -37,23 +36,6 @@ public abstract class Layout implements AbsPosition {
 
 	public Pane getPane() {
 		return pane;
-	}
-
-	@Override
-	public void recalcAbsPosition() {
-//		System.out.println("RECALC started");
-		recalcAbsPosition(pane);
-//		System.out.println("RECALC ended");
-	}
-
-	private void recalcAbsPosition(Pane parent) {
-		for (Node node : parent.getChildrenUnmodifiable()) {
-			if (node instanceof Pane) {
-				recalcAbsPosition((Pane) node);
-			} else if (node instanceof AbsPosition) {
-				((AbsPosition) node).recalcAbsPosition();
-			}
-		}
 	}
 
 	public static Layout createLayout(String layoutName, BST bst) {

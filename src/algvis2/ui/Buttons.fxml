@@ -36,8 +36,9 @@
             <Button fx:id="buttonInsert" mnemonicParsing="false" onAction="#insertPressed" text="%button-insert" />
             <Button fx:id="buttonFind" mnemonicParsing="false" onAction="#findPressed" text="%button-find" />
             <Separator orientation="VERTICAL" prefHeight="-1.0" />
-            <Button disable="true" mnemonicParsing="false" text="%previous" />
-            <Button disable="true" mnemonicParsing="false" text="%next" />
+            <Button fx:id="buttonPrevious" disable="true" mnemonicParsing="false" onAction="#previousPressed" text=
+                    "%previous" />
+            <Button fx:id="buttonNext" disable="true" mnemonicParsing="false" onAction="#nextPressed" text="%next" />
           </children>
           <padding>
             <Insets bottom="20.0" fx:id="x1" />

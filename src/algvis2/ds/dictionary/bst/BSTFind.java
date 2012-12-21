@@ -42,7 +42,9 @@ public class BSTFind extends Algorithm {
 			pause();
 			if (cur.getKey() == x) {
 				newNode.goTo(cur);
+				newNode.setPaint(NodePaint.GREEN);
 				pause();
+				newNode.setPaint(NodePaint.NORMAL);
 				break;
 			} else {
 				if (cur.getKey() < x)

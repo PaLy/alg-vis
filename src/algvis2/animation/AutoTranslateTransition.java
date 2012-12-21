@@ -57,6 +57,11 @@ public class AutoTranslateTransition implements AutoAnimation,
 			ObservableValue<? extends Number> observableValue, Number oldValue,
 			Number newValue) {
 		double d = (Double) newValue - (Double) oldValue;
+		
+//		if (node instanceof algvis2.scene.shape.Node && axis.equals(Axis.X) && ((algvis2.scene.shape.Node) node)
+//				.getKey() == 42) {
+//			System.out.println(((algvis2.scene.shape.Node) node).visPaneX + " " + d);
+//		}
 
 		final TranslateTransition tt = TranslateTransitionBuilder.create().node(node)
 				.duration(Duration.seconds(1))
