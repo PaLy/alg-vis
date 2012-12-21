@@ -17,19 +17,15 @@
 
 package algvis2.scene.layout;
 
-import algvis2.animation.AutoTranslateTransition;
 import algvis2.core.PropertyStateEditable;
-import algvis2.scene.Axis;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.FlowPaneBuilder;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,20 +41,21 @@ public class VisPane extends StackPane implements PropertyStateEditable {
 	public VisPane() {
 		super();
 		setId(ID);
+		AnchorPane.setLeftAnchor(this, 0.0);
+		AnchorPane.setRightAnchor(this, 0.0);
+		AnchorPane.setTopAnchor(this, 0.0);
+		AnchorPane.setBottomAnchor(this, 0.0);
 		ObservableList<Node> children = getChildren();
 		for (int i = 0; i <= ZDepth.TOP; i++) {
 			if (i == ZDepth.NODES) {
-				children.add(FlowPaneBuilder.create().alignment(Pos.TOP_CENTER)
-						.build());
+				FlowPane ds = FlowPaneBuilder.create().alignment(Pos.TOP_CENTER)
+						.build();
+				StackPane.setMargin(ds, new Insets(25 + algvis2.scene.shape.Node.RADIUS * 2.5, 0, 0, 0));
+				children.add(ds);
 			} else {
 				children.add(new Pane());
 			}
 		}
-
-		layoutXProperty()
-				.addListener(new AutoTranslateTransition(this, Axis.X));
-		layoutYProperty()
-				.addListener(new AutoTranslateTransition(this, Axis.Y));
 
 		setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override

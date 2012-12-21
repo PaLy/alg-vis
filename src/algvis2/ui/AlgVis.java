@@ -27,7 +27,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TitledPane;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -73,9 +73,8 @@ public class AlgVis extends Application {
 			if (VISUALIZATIONS[x] == null)
 				VISUALIZATIONS[x] = createVisualization(x);
 
-			BorderPane root = (BorderPane) scene.lookup("#rootBorderPane");
-			root.setCenter(VISUALIZATIONS[x].getVisPane());
-			root.getCenter().toBack();
+			AnchorPane root = (AnchorPane) scene.getRoot();
+			root.getChildren().set(0, VISUALIZATIONS[x].getVisPane());
 
 			TitledPane buttons = (TitledPane) scene
 					.lookup("#buttonsTitledPane");

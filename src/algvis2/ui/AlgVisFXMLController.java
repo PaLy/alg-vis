@@ -115,13 +115,13 @@ public class AlgVisFXMLController implements Initializable {
 			back.getChildren().add(animations[1]);
 		}
 
-		System.out.println("BEFORE BACK");
+//		System.out.println("BEFORE BACK");
 		back.setRate(-back.getRate());
 		back.jumpTo("end");
 		back.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("AFTER BACK");
+//				System.out.println("AFTER BACK");
 				// AlgVis.autoAnimsManager.endAll(); // TODO toto asi nie je problem (ale daco to ovplyvni)
 				SequentialTransitionBuilder.create().children(
 //						PauseTransitionBuilder.create().duration(Duration.seconds(1)).build(),
@@ -179,5 +179,7 @@ public class AlgVisFXMLController implements Initializable {
 	protected void clearPressed(ActionEvent event) {
 		AlgVis.getCurrentVis().getDataStructure().clear();
 		AlgVis.getCurrentVis().getDataStructure().reLayout();
+		AlgVis.getCurrentVis().getVisPane().setTranslateX(0);
+		AlgVis.getCurrentVis().getVisPane().setTranslateY(0);
 	}
 }
