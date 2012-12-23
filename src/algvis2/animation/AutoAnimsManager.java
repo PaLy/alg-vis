@@ -32,6 +32,7 @@ public class AutoAnimsManager {
 		animations.remove(animation);
 	}
 
+	@Deprecated
 	public synchronized void endAll() {
 		for (Transition animation : animations) {
 			animation.jumpTo("end");

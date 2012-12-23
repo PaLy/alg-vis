@@ -34,7 +34,7 @@ public class BSTInsert extends Algorithm {
 	}
 
 	@Override
-	public void runAlgorithm() throws InterruptedException {
+	public void runAlgorithm() {
 		addNode(newNode, ZDepth.TOP);
 
 		if (D.getRoot() == null) {

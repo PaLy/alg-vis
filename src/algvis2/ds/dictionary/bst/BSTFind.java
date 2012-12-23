@@ -32,7 +32,7 @@ public class BSTFind extends Algorithm {
 	}
 
 	@Override
-	public void runAlgorithm() throws InterruptedException {
+	public void runAlgorithm() {
 		BSTNode newNode = new BSTNode(x, NodePaint.FIND);
 		addNode(newNode, ZDepth.TOP);
 

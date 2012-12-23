@@ -25,7 +25,7 @@ public class RBInsert extends BSTInsert {
 	}
 
 	@Override
-	public void runAlgorithm() throws InterruptedException {
+	public void runAlgorithm() {
 		super.runAlgorithm();
 		pause();
 

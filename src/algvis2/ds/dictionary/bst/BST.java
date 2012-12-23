@@ -17,11 +17,11 @@
 
 package algvis2.ds.dictionary.bst;
 
+import algvis2.core.Algorithm;
 import algvis2.core.Visualization;
 import algvis2.ds.dictionary.Dictionary;
 import algvis2.scene.layout.Layout;
 import algvis2.scene.paint.NodePaint;
-import javafx.animation.Animation;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.abego.treelayout.TreeForTreeLayout;
@@ -39,9 +39,10 @@ public class BST extends Dictionary implements TreeForTreeLayout<BSTNode> {
 	}
 
 	@Override
-	public Animation[] find(int x) {
+	public Algorithm find(int x) {
 		BSTFind bstFind = new BSTFind(this, x);
-		return new Animation[] { bstFind.runA(), bstFind.getBackToStart() };
+		bstFind.run();
+		return bstFind;
 	}
 
 	@Override
@@ -55,10 +56,11 @@ public class BST extends Dictionary implements TreeForTreeLayout<BSTNode> {
 	}
 
 	@Override
-	public Animation[] insert(int x) {
+	public Algorithm insert(int x) {
 		BSTInsert bstInsert = new BSTInsert(this, new BSTNode(x,
 				NodePaint.INSERT));
-		return new Animation[] { bstInsert.runA(), bstInsert.getBackToStart() };
+		bstInsert.run();
+		return bstInsert;
 	}
 
 	public BSTNode getRoot() {

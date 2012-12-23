@@ -36,6 +36,7 @@
             <Button fx:id="buttonInsert" mnemonicParsing="false" onAction="#insertPressed" text="%button-insert" />
             <Button fx:id="buttonFind" mnemonicParsing="false" onAction="#findPressed" text="%button-find" />
             <Separator orientation="VERTICAL" prefHeight="-1.0" />
+            <CheckBox fx:id="buttonPause" mnemonicParsing="false" selected="false" text="%button-pause" />
             <Button fx:id="buttonPrevious" disable="true" mnemonicParsing="false" onAction="#previousPressed" text=
                     "%previous" />
             <Button fx:id="buttonNext" disable="true" mnemonicParsing="false" onAction="#nextPressed" text="%next" />
@@ -46,7 +47,6 @@
         </HBox>
         <HBox alignment="CENTER" prefHeight="-1.0" prefWidth="-1.0" spacing="10.0">
           <children>
-            <CheckBox disable="true" mnemonicParsing="false" selected="true" text="%button-pause" />
             <Button fx:id="buttonClear" mnemonicParsing="false" onAction="#clearPressed" text="%button-clear" />
             <Button fx:id="buttonRandom" mnemonicParsing="false" onAction="#randomPressed" text="%button-random" />
             <ChoiceBox id="button" fx:id="button_layout">

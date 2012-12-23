@@ -19,7 +19,7 @@ package algvis2.animation;
 
 import algvis2.core.Visualization;
 import javafx.animation.Animation;
-import javafx.animation.SequentialTransition;
+import javafx.animation.PauseTransitionBuilder;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
@@ -28,86 +28,149 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AnimationManager {
-	private final List<Animation> animations = new ArrayList<Animation>();
+	final List<List<Animation>> operations = new ArrayList<List<Animation>>();
 	private final Visualization visualization;
-	private int position = -1;
+	private int operationPos = -1;
+	private int stepPos = -1; // position after last played step
 	
 	public AnimationManager(Visualization visualization) {
 		this.visualization = visualization;
 	}
 	
-	public void add(Animation animation) {
-		if (position > -1) {
-			Animation curAnim = animations.get(position);
-			if (curAnim.getRate() < 0) {
-				curAnim.jumpTo("start");
-				--position;
-			} else {
-				curAnim.jumpTo("end");
+	public void add(List<Animation> operation, boolean isDone) {
+		++operationPos;
+		if (operationPos < operations.size()) {
+			for (int i = 0; i < operations.size() - operationPos; i++) {
+				operations.remove(operations.size() - 1);
 			}
 		}
-		++position;
-		if (position < animations.size()) {
-			for (int i = 0; i < animations.size() - position; i++) {
-				animations.remove(animations.size() - 1);
+
+		if (operation.size() > 1) {
+			operation.get(0).setOnFinished(new NextStepHandler(0, operation.get(0)));
+			for (int i = 1; i < operation.size() - 1; i++) {
+				Animation step = operation.get(i);
+				step.setOnFinished(new NextStepHandler(1, step));
 			}
-		}
-		animations.add(animation);
-	}
-	
-	public void playNext() {
-		Animation curAnim = animations.get(position); 
-		if (curAnim.getCurrentTime().toMillis() < curAnim.getTotalDuration().toMillis()) {
-			if (curAnim.getRate() < 0) curAnim.setRate(-curAnim.getRate());
-			SequentialTransition st = new SequentialTransition(curAnim);
-			st.setOnFinished(new EventHandler<ActionEvent>() {
+			Animation lastStep = operation.get(operation.size() - 1);
+			lastStep.setOnFinished(new NextStepHandler(2, lastStep));
+		} else {
+			operation.get(0).setOnFinished(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent actionEvent) {
 					visualization.getButtons().setDisabled(false);
-					visualization.getButtons().disableNext(!hasNext());
 					visualization.getButtons().disablePrevious(!hasPrevious());
+					visualization.getButtons().disableNext(!hasNext());
 				}
 			});
-			st.play();
-		} else if (position < animations.size() - 1) {
-			++position;
-			playNext();
+		}
+		
+		operations.add(operation);
+		if (isDone) {
+			stepPos = operation.size() - 1;
+		} else {
+			stepPos = -1;
+		}
+	}
+	
+	public void playNext() {
+		List<Animation> curOp = operations.get(operationPos);
+		if (stepPos + 1 == curOp.size()) {
+			if (hasNext()) {
+				operationPos++;
+				stepPos = -1;
+				playNext();
+			}
+		} else {
+			stepPos++;
+			Animation curStep = curOp.get(stepPos);
+			if (curStep.getRate() < 0) curStep.setRate(-curStep.getRate());
+			curStep.play();
 		}
 	}
 
 	public void playPrevious() {
-		Animation curAnim = animations.get(position);
-		if (curAnim.getCurrentTime() != Duration.ZERO) {
-			if (curAnim.getRate() > 0) curAnim.setRate(-curAnim.getRate());
-			SequentialTransition st = new SequentialTransition(curAnim);
-			st.setOnFinished(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent actionEvent) {
-					visualization.getButtons().setDisabled(false);
-					visualization.getButtons().disableNext(!hasNext());
-					visualization.getButtons().disablePrevious(!hasPrevious());
-				}
-			});
-			st.setRate(-1);
-			st.jumpTo("end");
-			st.play();
-		} else if (position > 0) {
-			--position;
-			playPrevious();
+		List<Animation> curOp = operations.get(operationPos);
+		if (stepPos == -1) {
+			if (hasPrevious()) {
+				operationPos--;
+				stepPos = operations.get(operationPos).size() - 1;
+				playPrevious();
+			}
+		} else {
+			Animation curStep = curOp.get(stepPos);
+			if (curStep.getRate() > 0) curStep.setRate(-curStep.getRate());
+			stepPos--;
+			curStep.play();
 		}
 	}
 	
 	public boolean hasNext() {
-		return position < animations.size() - 1 || animations.get(position).getCurrentTime().toMillis() < animations.get
-				(position).getTotalDuration().toMillis();
+		return operationPos < operations.size() - 1 || stepPos < operations.get(operationPos).size() - 1;
 	}
 	
 	public boolean hasPrevious() {
-		return position > 0 || (position == 0 && animations.get(position).getCurrentTime() != Duration.ZERO);
+		return operationPos > 0 || stepPos > -1;
 	}
 	
 	public void clear() {
-		animations.clear();
-		position = -1;
+		operations.clear();
+		operationPos = -1;
+	}
+	
+	private class NextStepHandler implements EventHandler<ActionEvent> {
+		/**
+		 * 0 = first step
+		 * 1 = middle step
+		 * 2 = last step
+		 */
+		private final int pos;
+		private final Animation step;
+
+		private NextStepHandler(int pos, Animation step) {
+			this.pos = pos;
+			this.step = step;
+		}
+
+		@Override
+		public void handle(ActionEvent actionEvent) {
+			if (step.getRate() > 0 && pos < 2) {
+				if (!visualization.getButtons().isPauseChecked()) {
+					PauseTransitionBuilder.create()
+							.duration(Duration.seconds(2))
+							.onFinished(new EventHandler<ActionEvent>() {
+								@Override
+								public void handle(ActionEvent actionEvent) {
+									playNext();
+								}
+							})
+							.build()
+							.play();
+				} else {
+					visualization.getButtons().disableNext(!hasNext());
+					visualization.getButtons().disablePrevious(!hasPrevious());
+				}
+			}
+			else if (step.getRate() < 0 && pos > 0) {
+				if (!visualization.getButtons().isPauseChecked()) {
+					PauseTransitionBuilder.create()
+							.duration(Duration.seconds(2))
+							.onFinished(new EventHandler<ActionEvent>() {
+								@Override
+								public void handle(ActionEvent actionEvent) {
+									playPrevious();
+								}
+							})
+							.build()
+							.play();
+				} else {
+					visualization.getButtons().disableNext(!hasNext());
+					visualization.getButtons().disablePrevious(!hasPrevious());
+				}
+			} else {
+				visualization.getButtons().setDisabled(false);
+				visualization.getButtons().disableNext(!hasNext());
+				visualization.getButtons().disablePrevious(!hasPrevious());
+			}
+		}
 	}
 }

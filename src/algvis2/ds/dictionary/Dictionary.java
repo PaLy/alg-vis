@@ -17,9 +17,9 @@
 
 package algvis2.ds.dictionary;
 
+import algvis2.core.Algorithm;
 import algvis2.core.Visualization;
 import algvis2.ds.DataStructure;
-import javafx.animation.Animation;
 
 public abstract class Dictionary extends DataStructure {
 
@@ -27,7 +27,7 @@ public abstract class Dictionary extends DataStructure {
 		super(visualization);
 	}
 
-	abstract public Animation[] find(int x);
+	abstract public Algorithm find(int x);
 
 	abstract public void delete(int x);
 }

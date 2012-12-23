@@ -17,6 +17,7 @@
 
 package algvis2.ds.dictionary.avl;
 
+import algvis2.core.Algorithm;
 import algvis2.core.Visualization;
 import algvis2.ds.dictionary.bst.BST;
 import algvis2.scene.layout.ZDepth;
@@ -36,7 +37,7 @@ public class AVL extends BST {
 
 	SequentialTransition sequentialTransition;
 
-	public Animation[] insert(int x) {
+	public Algorithm insert(int x) {
 		//		System.out.println("teraz");
 		//		HBox hBox = new HBox();
 		//		hBox.setSpacing(20);

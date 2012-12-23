@@ -17,6 +17,7 @@
 
 package algvis2.ui;
 
+import algvis2.core.Algorithm;
 import algvis2.ds.dictionary.Dictionary;
 import algvis2.ds.dictionary.bst.BST;
 import algvis2.scene.control.InputField;
@@ -35,7 +36,10 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Vector;
 
 public class AlgVisFXMLController implements Initializable {
 	@FXML
@@ -104,65 +108,79 @@ public class AlgVisFXMLController implements Initializable {
 
 	@FXML
 	protected void insertPressed(ActionEvent event) {
-		AlgVis.getCurrentVis().getButtons().setDisabled(true);
-		AlgVis.getCurrentVis().getButtons().disableNext(true);
-		AlgVis.getCurrentVis().getButtons().disablePrevious(true);
-		final SequentialTransition animation = new SequentialTransition();
-		SequentialTransition back = new SequentialTransition();
-		for (int x : new InputField(inputField).getNonEmptyVI()) {
-			Animation[] animations = AlgVis.getCurrentVis().getDataStructure()
-					.insert(x);
-			animation.getChildren().add(animations[0]);
-			back.getChildren().add(animations[1]); // TODO treba skocit na koniec s kazdou back animaciou? asi nie
-		}
-
-//		System.out.println("BEFORE BACK");
-		back.setRate(-back.getRate());
-		back.jumpTo("end");
-		back.setOnFinished(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-//				System.out.println("AFTER BACK");
-				AlgVis.autoAnimsManager.endAll(); // TODO toto asi nie je problem (ale daco to ovplyvni)
-				AlgVis.getCurrentVis().animManager.add(animation); // TODO toto by mala byt len jedna operacia
-				AlgVis.getCurrentVis().animManager.playNext();
+		Vector<Integer> inputs = new InputField(inputField).getNonEmptyVI();
+		if (inputs.size() > 1) {
+			SequentialTransition st = new SequentialTransition();
+			for (int x : inputs) {
+				st.getChildren().add(AlgVis.getCurrentVis().getDataStructure().insert(x).getBackToStart());
 			}
-		});
-		back.play();
+			List<Animation> list =new ArrayList<Animation>();
+			list.add(st);
+			st.jumpTo("end");
+			AlgVis.getCurrentVis().animManager.add(list, true);
+			AlgVis.getCurrentVis().getButtons().disablePrevious(false);
+			AlgVis.getCurrentVis().reLayout();
+		} else {
+			AlgVis.getCurrentVis().getButtons().setDisabled(true);
+			AlgVis.getCurrentVis().getButtons().disableNext(true);
+			AlgVis.getCurrentVis().getButtons().disablePrevious(true);
+			
+			SequentialTransition back = new SequentialTransition();
+			
+			Algorithm operation = AlgVis.getCurrentVis().getDataStructure()
+					.insert(inputs.get(0));
+			AlgVis.getCurrentVis().animManager.add(operation.allSteps, false);
+			back.getChildren().add(operation.getBackToStart());
+
+			//		System.out.println("BEFORE BACK");
+			back.setRate(-back.getRate());
+			back.jumpTo("end");
+			back.setOnFinished(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					//				System.out.println("AFTER BACK");
+					AlgVis.getCurrentVis().animManager.playNext();
+				}
+			});
+			back.play();
+		}
 	}
 
 	@FXML
 	protected void findPressed(ActionEvent event) {
-		AlgVis.getCurrentVis().getButtons().setDisabled(true);
-		AlgVis.getCurrentVis().getButtons().disableNext(true);
-		AlgVis.getCurrentVis().getButtons().disablePrevious(true);
-		final SequentialTransition animation = new SequentialTransition();
-		SequentialTransition back = new SequentialTransition();
-		for (int x : new InputField(inputField).getNonEmptyVI()) {
-			Animation[] animations = ((Dictionary) AlgVis.getCurrentVis()
-					.getDataStructure()).find(x);
-			animation.getChildren().add(animations[0]);
-			back.getChildren().add(animations[1]);
+		Vector<Integer> inputs = new InputField(inputField).getNonEmptyVI();
+		if (inputs.size() == 1) {
+			AlgVis.getCurrentVis().getButtons().setDisabled(true);
+			AlgVis.getCurrentVis().getButtons().disableNext(true);
+			AlgVis.getCurrentVis().getButtons().disablePrevious(true);
+
+			SequentialTransition back = new SequentialTransition();
+
+			Algorithm operation = ((Dictionary)AlgVis.getCurrentVis().getDataStructure())
+					.find(inputs.get(0));
+			AlgVis.getCurrentVis().animManager.add(operation.allSteps, false);
+			back.getChildren().add(operation.getBackToStart());
+
+			back.setRate(-back.getRate());
+			back.jumpTo("end");
+			back.setOnFinished(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					AlgVis.getCurrentVis().animManager.playNext();
+				}
+			});
+			back.play();
 		}
-		back.setRate(-back.getRate());
-		back.jumpTo("end");
-		back.setOnFinished(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				AlgVis.autoAnimsManager.endAll();
-				AlgVis.getCurrentVis().animManager.add(animation);
-				AlgVis.getCurrentVis().animManager.playNext();
-			}
-		});
-		back.play();
 	}
 
 	@FXML
 	protected void randomPressed(ActionEvent event) {
 		Animation animation = AlgVis.getCurrentVis().getDataStructure()
 				.random(new InputField(inputField).getInt(10));
-		AlgVis.getCurrentVis().animManager.add(animation);
+		List<Animation> list =new ArrayList<Animation>();
+		list.add(animation);
 		animation.jumpTo("end");
+		AlgVis.getCurrentVis().animManager.add(list, true);
 		AlgVis.getCurrentVis().getButtons().disablePrevious(false);
 		AlgVis.getCurrentVis().reLayout();
 	}

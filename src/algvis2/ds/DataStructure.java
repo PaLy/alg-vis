@@ -18,6 +18,7 @@
 package algvis2.ds;
 
 import algvis.core.MyRandom;
+import algvis2.core.Algorithm;
 import algvis2.core.PropertyStateEditable;
 import algvis2.core.Visualization;
 import algvis2.scene.control.InputField;
@@ -40,14 +41,14 @@ public abstract class DataStructure implements PropertyStateEditable {
 
 	abstract public String getStats();
 
-	abstract public Animation[] insert(int x);
+	abstract public Algorithm insert(int x);
 
 	abstract public void clear();
 
 	public Animation random(int n) {
 		SequentialTransition st = new SequentialTransition();
 		for (int i = 0; i < n; i++) {
-			st.getChildren().add(insert(MyRandom.Int(InputField.MAX_VALUE + 1))[1]);
+			st.getChildren().add(insert(MyRandom.Int(InputField.MAX_VALUE + 1)).getBackToStart());
 		}
 		return st;
 	}

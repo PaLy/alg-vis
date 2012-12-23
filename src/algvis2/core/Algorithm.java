@@ -21,12 +21,17 @@ import algvis2.ds.DataStructure;
 import algvis2.scene.layout.VisPane;
 import algvis2.scene.layout.ZDepth;
 import algvis2.scene.shape.Node;
-import javafx.animation.*;
+import javafx.animation.Animation;
+import javafx.animation.FadeTransitionBuilder;
+import javafx.animation.SequentialTransition;
+import javafx.animation.Timeline;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public abstract class Algorithm implements Runnable {
 	protected final Visualization visualization;
@@ -34,37 +39,28 @@ public abstract class Algorithm implements Runnable {
 
 	private PropertiesState state;
 	private PropertiesState startState;
-	private final SequentialTransition animation;
+	public final List<Animation> allSteps = new ArrayList<Animation>();
+	private SequentialTransition step = new SequentialTransition();
 	private Timeline backToStart;
 
 	protected Algorithm(DataStructure D) {
 		visualization = D.visualization;
 		animations = new Animations(visualization.visPane);
-		animation = new SequentialTransition();
 	}
 
 	@Override
 	public void run() {
 		begin();
-		try {
-			runAlgorithm();
-		} catch (InterruptedException e) {
-			return;
-		}
+		runAlgorithm();
 		end();
 	}
 
-	public Animation runA() {
-		run();
-		return animation;
-	}
+	protected abstract void runAlgorithm();
 
-	public abstract void runAlgorithm() throws InterruptedException;
-
-	protected void pause() throws InterruptedException {
+	protected void pause() {
 		saveChangedProperties();
-		animation.getChildren().add(
-				new PauseTransition(Duration.seconds(2)));
+		allSteps.add(step);
+		step = new SequentialTransition();
 	}
 
 	void begin() {
@@ -75,7 +71,7 @@ public abstract class Algorithm implements Runnable {
 	}
 
 	void end() {
-		saveChangedProperties();
+		pause();
 		backToStart = startState.createTimeline();
 //		System.out.println("BACKTOSTART:");
 //		System.out.println(backToStart.getKeyFrames());
@@ -85,26 +81,22 @@ public abstract class Algorithm implements Runnable {
 		return backToStart;
 	}
 
-	public HashMap<String, Object> getResult() {
-		return null;
-	}
-
 	public void saveChangedProperties() {
-		animation.getChildren().add(state.createTimeline());
+		step.getChildren().add(state.createTimeline());
 		HashMap<Object, Object> preState = new HashMap<Object, Object>();
 		visualization.storeState(preState);
 		state = new PropertiesState(preState, visualization);
 
 		startState.addNewProperties(preState);
 
-//		Timeline t = (Timeline) animation.getChildren().get(animation.getChildren().size() - 1);
+//		Timeline t = (Timeline) step.getChildren().get(step.getChildren().size() - 1);
 //		System.out.println(t.getKeyFrames());
 //		System.out.println("*************");
 	}
 
 	protected void addAnimation(Animation anim) {
 		saveChangedProperties();
-		animation.getChildren().add(anim);
+		step.getChildren().add(anim);
 	}
 
 	protected void addNode(javafx.scene.Node node, int zDepth) {

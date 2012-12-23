@@ -18,6 +18,7 @@
 package algvis2.core;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.CheckBox;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
@@ -52,6 +53,7 @@ public class Buttons {
 		pane.lookup("#buttonFind").setDisable(disabled);
 		pane.lookup("#buttonClear").setDisable(disabled);
 		pane.lookup("#buttonRandom").setDisable(disabled);
+		pane.lookup("#buttonPause").setDisable(disabled);
 	}
 	
 	public void disableNext(boolean disabled) {
@@ -60,5 +62,9 @@ public class Buttons {
 
 	public void disablePrevious(boolean disabled) {
 		pane.lookup("#buttonPrevious").setDisable(disabled);
+	}
+	
+	public boolean isPauseChecked() {
+		return ((CheckBox) pane.lookup("#buttonPause")).isSelected();
 	}
 }

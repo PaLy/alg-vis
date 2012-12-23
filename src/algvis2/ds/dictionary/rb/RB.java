@@ -17,10 +17,10 @@
 
 package algvis2.ds.dictionary.rb;
 
+import algvis2.core.Algorithm;
 import algvis2.core.Visualization;
 import algvis2.ds.dictionary.bst.BST;
 import algvis2.scene.shape.Node;
-import javafx.animation.Animation;
 
 public class RB extends BST {
 	public final RBNode NULL = new RBNode(this, Node.NULL, getLayout());
@@ -34,9 +34,10 @@ public class RB extends BST {
 	}
 
 	@Override
-	public Animation[] insert(int x) {
+	public Algorithm insert(int x) {
 		RBInsert rbInsert = new RBInsert(this, new RBNode(this, x, getLayout()));
-		return new Animation[] { rbInsert.runA(), rbInsert.getBackToStart() };
+		rbInsert.run();
+		return rbInsert;
 	}
 
 	@Override
