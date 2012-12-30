@@ -17,9 +17,11 @@
 
 package algvis2.ds.dictionary.bst;
 
-import algvis2.scene.shape.Edge;
-import algvis2.scene.shape.Node;
-import javafx.scene.layout.GridPane;
+import algvis2.scene.layout.VisPane;
+import algvis2.scene.layout.ZDepth;
+import algvis2.scene.viselem.Edge;
+import algvis2.scene.viselem.Node;
+import algvis2.scene.viselem.VisElem;
 import javafx.scene.layout.Pane;
 import org.abego.treelayout.TreeLayout;
 import org.abego.treelayout.util.DefaultConfiguration;
@@ -29,37 +31,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class CompactLayout extends BinTreeLayout {
-	private final BST bst;
-
-	public CompactLayout(BST bst) {
-		this.bst = bst;
-	}
-
-	@Override
-	protected Pane initPane() {
-		return new Pane();
-	}
-
-	@Override
-	public Pane rebuild(BSTNode root) {
-		TreeLayout<BSTNode> layout = new TreeLayout<BSTNode>(bst, new BSTNodeExtentProvider(),
-				new DefaultConfiguration<BSTNode>(0, Node.RADIUS));
-		Map<BSTNode, Rectangle2D.Double> nodeBounds = layout.getNodeBounds();
-		for (Map.Entry<BSTNode, Rectangle2D.Double> entry : nodeBounds.entrySet()) {
-			entry.getKey().relocate(entry.getValue().getX(), entry.getValue().getY());
+public class CompactLayout {
+	public static void layout(BST bst, VisPane visPane) {
+		if (bst.getRoot() != null) {
+			TreeLayout<BSTNode> layout = new TreeLayout<BSTNode>(bst, new BSTNodeExtentProvider(),
+					new DefaultConfiguration<BSTNode>(0, Node.RADIUS));
+			Map<BSTNode, Rectangle2D.Double> nodeBounds = layout.getNodeBounds();
+			for (Map.Entry<BSTNode, Rectangle2D.Double> entry : nodeBounds.entrySet()) {
+				if (entry.getKey().getNode().layoutXProperty().isBound()) {
+//					entry.getKey().removeLayoutXYBindings();
+				} else {
+					entry.getKey().getNode().relocate(entry.getValue().getX(), entry.getValue().getY());
+				}
+			}
 		}
 		
-		pane.getChildren().clear();
-		ArrayList<BSTNode> nodes = new ArrayList<BSTNode>();
-		createChildrenR(root, nodes);
-		rebuildEdges(root);
-		pane.getChildren().addAll(nodes);
-		
-		return pane;
+		visPane.clearLayer(ZDepth.EDGES);
+		if (bst.getRoot() != null) {
+			ArrayList<VisElem> nodes = new ArrayList<VisElem>();
+			createChildrenR(bst.getRoot(), nodes);
+			rebuildEdges(bst.getRoot(), visPane);
+			visPane.setDsElements(nodes);
+		}
 	}
 
-	private void createChildrenR(BSTNode node, List<BSTNode> list) {
+	private static void createChildrenR(BSTNode node, List<VisElem> list) {
 		if (node != null) {
 			list.add(node);
 			createChildrenR(node.getLeft(), list);
@@ -67,22 +63,16 @@ public class CompactLayout extends BinTreeLayout {
 		}
 	}
 	
-	private void rebuildEdges(BSTNode node) {
+	private static void rebuildEdges(BSTNode node, VisPane visPane) {
+		ArrayList<Edge> edges = node.getEdges();
+		for (Edge edge : edges) {
+			visPane.addNotStorableVisElem(edge);
+		}
 		if (node.getLeft() != null) {
-			Edge leftEdge = new Edge();
-			bindEdgeStart(leftEdge, node);
-			bindEdgeEnd(leftEdge, node.getLeft(), pane);
-			GridPane.setConstraints(leftEdge, 0, 0);
-			pane.getChildren().add(leftEdge);
-			rebuildEdges(node.getLeft());
+			rebuildEdges(node.getLeft(), visPane);
 		}
 		if (node.getRight() != null) {
-			Edge rightEdge = new Edge();
-			bindEdgeStart(rightEdge, node);
-			bindEdgeEnd(rightEdge, node.getRight(), pane);
-			GridPane.setConstraints(rightEdge, 0, 0);
-			pane.getChildren().add(rightEdge);
-			rebuildEdges(node.getRight());
+			rebuildEdges(node.getRight(), visPane);
 		}
 	}
 }

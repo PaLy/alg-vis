@@ -17,14 +17,18 @@
 
 package algvis2.scene.layout;
 
-public class ZDepth {
-	public static final int SHADES = 0;
-	public static final int EDGES = 1;
-	public static final int BACKLIGHT = 2;
-	public static final int NODES = 3;
-	public static final int ARROWS = 4;
-	/**
-	 * i.e. algorithm elements, which are not in deeper depths
-	 */
-	public static final int TOP = 5;
+public enum ZDepth {
+	SHADES(0),
+	EDGES(1),
+	BACKLIGHT(2),
+	NODES(3),
+	ARROWS(4),
+	TOP(5),
+	DEFAULT(5);
+
+	private final int x;
+
+	private ZDepth(int x) {
+		this.x = x;
+	}
 }

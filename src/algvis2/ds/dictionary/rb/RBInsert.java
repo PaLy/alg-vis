@@ -27,54 +27,53 @@ public class RBInsert extends BSTInsert {
 	@Override
 	public void runAlgorithm() {
 		super.runAlgorithm();
-		pause();
+		pause(true);
 
 		// bubleme nahor
 		RBNode w = (RBNode) newNode;
-		RBNode pw = w.getParentNode2();
+		RBNode pw = w.getParent2();
+		addMarker(w);
 		while (!w.isRoot() && pw.isRed()) {
-			w.mark();
-			final boolean isLeft = pw.isLeft();
-			RBNode ppw = pw.getParentNode2();
+			boolean isLeft = pw.isLeft();
+			RBNode ppw = pw.getParent2();
 			RBNode y = (isLeft ? ppw.getRight() : ppw.getLeft());
 			if (y == null) {
 				y = ((RB) D).NULL;
 			}
 			if (y.isRed()) {
 				// case 1
-				pause();
+				pause(false);
 				pw.setRed(false);
 				y.setRed(false);
 				ppw.setRed(true);
-				w.unmark();
+				removeMarker(w);
 				w = ppw;
-				w.mark();
-				pw = w.getParentNode2();
-				pause();
+				addMarker(w);
+				pw = w.getParent2();
+				pause(false);
 			} else {
 				// case 2
 				if (isLeft != w.isLeft()) {
-					pause();
+					pause(false);
 					D.rotate(w);
-					pause();
+					pause(true);
 				} else {
-					w.unmark();
-					w = w.getParentNode2();
-					w.mark();
+					removeMarker(w);
+					w = w.getParent2();
+					addMarker(w);
 				}
-				pw = w.getParentNode2();
+				pw = w.getParent2();
 				// case 3
-				pause();
+				pause(false);
 				w.setRed(false);
 				pw.setRed(true);
 				D.rotate(w);
-				pause();
-				w.unmark();
+				pause(true);
 				break;
 			}
 		}
-
-		w.unmark();
+		
+		removeMarker(w);
 		((RB) D).getRoot().setRed(false);
 	}
 }

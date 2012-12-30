@@ -18,8 +18,8 @@
 package algvis2.ds.dictionary;
 
 import algvis2.core.Algorithm;
+import algvis2.core.DataStructure;
 import algvis2.core.Visualization;
-import algvis2.ds.DataStructure;
 
 public abstract class Dictionary extends DataStructure {
 
@@ -29,5 +29,5 @@ public abstract class Dictionary extends DataStructure {
 
 	abstract public Algorithm find(int x);
 
-	abstract public void delete(int x);
+	abstract public Algorithm delete(int x);
 }

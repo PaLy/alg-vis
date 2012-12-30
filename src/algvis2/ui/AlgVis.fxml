@@ -6,6 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
+<?scenebuilder-classpath-element ../../../bin?>
 <?scenebuilder-preview-i18n-resource ../../Messages_en.properties?>
 <!--
   ~ Copyright (c) 2012 Jakub Kováč, Katarína Kotrlová, Pavol Lukča, Viktor Tomkovič, Tatiana Tóthová
@@ -26,7 +27,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns:fx="http://javafx.com/fxml" fx:controller="algvis2.ui.AlgVisFXMLController">
   <children>
-    <AnchorPane></AnchorPane>
+    <Pane />
     <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <menus>
         <Menu mnemonicParsing="false" text="%dictionary">
@@ -87,8 +88,7 @@
     </MenuBar>
     <TitledPane fx:id="buttonsTitledPane" alignment="TOP_LEFT" animated="true" collapsible="true" contentDisplay="LEFT" disable="false" expanded="true" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" text="%operations" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="0.0">
       <content>
-        <fx:include source="/algvis2/ui/Buttons.fxml" />
-        <!--<fx:include source="Buttons.fxml" />-->
+        <fx:include source="Buttons.fxml" />
       </content>
     </TitledPane>
     <TitledPane alignment="TOP_LEFT" animated="true" ellipsisString="..." expanded="false" prefHeight="-1.0" prefWidth="-1.0" text="%steps" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="24.0">

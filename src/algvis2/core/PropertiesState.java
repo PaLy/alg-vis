@@ -21,18 +21,11 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.value.WritableValue;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class PropertiesState {
 	public final HashMap<Object, Object> preState;
@@ -44,9 +37,9 @@ public class PropertiesState {
 		this.visualization = visualization;
 	}
 
-	public Timeline createTimeline() {
-		final HashMap<Parent, List<Node>> preChildren = new HashMap<Parent, List<Node>>();
-		final HashMap<Parent, List<Node>> postChildren = new HashMap<Parent, List<Node>>();
+	public Timeline createTimeline(final boolean layoutRequested, final boolean refreshRequested) {
+		final HashMap<WritableValue<Collection>, Object[]> preElements = new HashMap<WritableValue<Collection>, Object[]>();
+		final HashMap<WritableValue<Collection>, Object[]> postElements = new HashMap<WritableValue<Collection>, Object[]>();
 		ArrayList<KeyValue> firstKeyFrameValues = new ArrayList<KeyValue>();
 		ArrayList<KeyValue> secondKeyFrameValues = new ArrayList<KeyValue>();
 
@@ -54,22 +47,22 @@ public class PropertiesState {
 			if (key instanceof WritableValue) {
 				WritableValue wvKey = (WritableValue) key;
 				Object preValue = preState.get(key);
-				if ((preValue != null && !preValue.equals(wvKey.getValue()))
-						|| (preValue == null && wvKey.getValue() != null)
-						|| (preValue != null && wvKey.getValue() == null)) {
-					firstKeyFrameValues.add(new KeyValue(wvKey, preValue));
-					secondKeyFrameValues.add(new KeyValue(wvKey, wvKey
-							.getValue()));
-				}
-			} else if (key instanceof Parent) {
-				Parent pKey = (Parent) key;
-				List<Node> preValue = (List<Node>) preState.get(pKey);
-				if (!preValue.equals(pKey.getChildrenUnmodifiable())) {
-					preChildren.put(pKey, preValue);
-					postChildren
-							.put(pKey,
-									new ArrayList<Node>(pKey
-											.getChildrenUnmodifiable()));
+				if (wvKey.getValue() instanceof Collection) {
+					Collection collection = (Collection) wvKey.getValue();
+					
+					Object[] preVal = (Object[]) preValue;
+					if (!Arrays.equals(preVal, collection.toArray())) {
+						preElements.put(wvKey, preVal);
+						postElements.put(wvKey, collection.toArray());
+					}
+				} else {
+					if ((preValue != null && !preValue.equals(wvKey.getValue()))
+							|| (preValue == null && wvKey.getValue() != null)
+							|| (preValue != null && wvKey.getValue() == null)) {
+						firstKeyFrameValues.add(new KeyValue(wvKey, preValue));
+						secondKeyFrameValues.add(new KeyValue(wvKey, wvKey
+								.getValue()));
+					}
 				}
 			}
 		}
@@ -83,31 +76,25 @@ public class PropertiesState {
 		timeline.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				for (Parent parent : preChildren.keySet()) {
-					ObservableList<Node> children;
-					if (parent instanceof Pane)
-						children = ((Pane) parent).getChildren();
-					else if (parent instanceof Group)
-						children = ((Group) parent).getChildren();
-					else
-						continue;
+				for (WritableValue<Collection> writableValue : preElements.keySet()) {
+					Collection collection = writableValue.getValue();
 
-					children.clear();
-					List<Node> newChildren;
+					collection.clear();
 					if (timeline.getRate() > 0)
-						newChildren = postChildren.get(parent);
+						Collections.addAll(collection, postElements.get(writableValue));
 					else if (timeline.getRate() < 0) {
-						newChildren = preChildren.get(parent);
+						Collections.addAll(collection, preElements.get(writableValue));
 					} else {
 						System.out.println("WTF");
 						return;
 					}
-
-					for (Node child : newChildren) {
-						children.add(child);
-					}
 				}
-				visualization.reLayout(); // TODO tu to je lepsie kvoli prechadzaniu animacie dozadu
+				if (layoutRequested) {
+					visualization.reLayout();
+				}
+				if (refreshRequested) {
+					visualization.visPane.refresh();
+				}
 //				System.out.println("teraz " + (timeline.getRate() > 0 ? "dopredu" : "dozadu") + " " + k++);
 			}
 		});

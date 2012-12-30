@@ -20,14 +20,14 @@ package algvis2.ds.dictionary.rb;
 import algvis2.core.Algorithm;
 import algvis2.core.Visualization;
 import algvis2.ds.dictionary.bst.BST;
-import algvis2.scene.shape.Node;
+import algvis2.scene.viselem.Node;
 
 public class RB extends BST {
-	public final RBNode NULL = new RBNode(this, Node.NULL, getLayout());
+	public final RBNode NULL = new RBNode(this, Node.NULL);
 
 	public RB(Visualization visualization) {
 		super(visualization);
-		NULL.setParentNode(NULL);
+		NULL.setParent(NULL);
 		NULL.setRight(NULL);
 		NULL.setLeft(NULL);
 		NULL.setRed(false);
@@ -35,9 +35,16 @@ public class RB extends BST {
 
 	@Override
 	public Algorithm insert(int x) {
-		RBInsert rbInsert = new RBInsert(this, new RBNode(this, x, getLayout()));
+		RBInsert rbInsert = new RBInsert(this, new RBNode(this, x));
 		rbInsert.run();
 		return rbInsert;
+	}
+
+	@Override
+	public Algorithm delete(int x) {
+		RBDelete rbDelete = new RBDelete(this, x);
+		rbDelete.run();
+		return rbDelete;
 	}
 
 	@Override

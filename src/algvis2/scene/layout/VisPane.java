@@ -17,110 +17,168 @@
 
 package algvis2.scene.layout;
 
+import algvis2.animation.AutoTranslateTransition;
+import algvis2.core.DataStructure;
 import algvis2.core.PropertyStateEditable;
-import javafx.collections.ObservableList;
+import algvis2.scene.Axis;
+import algvis2.scene.viselem.Edge;
+import algvis2.scene.viselem.VisElem;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.*;
 
-public class VisPane extends StackPane implements PropertyStateEditable {
-	private Map<Node, Pane> elementParent = new WeakHashMap<Node, Pane>();
+public class VisPane implements PropertyStateEditable, AbsPosition {
+	private final Pane pane = new Pane();
+	private final DataStructure dataStructure;
+	private ArrayList<VisElem> dsElements;
+	private final FlowPane wrappingPane = new FlowPane();
+	private final ObjectProperty<Set<VisElem>> children = new SimpleObjectProperty<Set<VisElem>>();
 	public static final String ID = "visPane";
+	private HashSet<ZDepth> doNotShow = new HashSet<ZDepth>();
+	private final Set<VisElem> notStorableChildren = new TreeSet<VisElem>();
 
 	private double mouseX, mouseY;
+	private final AutoTranslateTransition xTranslation = new AutoTranslateTransition(pane, Axis.X);
+	private final AutoTranslateTransition yTranslation = new AutoTranslateTransition(pane, Axis.Y);
+	private boolean canTranslate;
 
-	public VisPane() {
-		super();
-		setId(ID);
-		AnchorPane.setLeftAnchor(this, 0.0);
-		AnchorPane.setRightAnchor(this, 0.0);
-		AnchorPane.setTopAnchor(this, 0.0);
-		AnchorPane.setBottomAnchor(this, 0.0);
-		ObservableList<Node> children = getChildren();
-		for (int i = 0; i <= ZDepth.TOP; i++) {
-			if (i == ZDepth.NODES) {
-				FlowPane ds = FlowPaneBuilder.create().alignment(Pos.TOP_CENTER)
-						.build();
-				StackPane.setMargin(ds, new Insets(25 + algvis2.scene.shape.Node.RADIUS * 2.5, 0, 0, 0));
-				children.add(ds);
-			} else {
-				children.add(new Pane());
+	public VisPane(DataStructure dataStructure) {
+		this.dataStructure = dataStructure;
+		
+		children.set(new TreeSet<VisElem>());
+		pane.setId(ID);
+		AnchorPane.setLeftAnchor(wrappingPane, 0.0);
+		AnchorPane.setRightAnchor(wrappingPane, 0.0);
+		AnchorPane.setTopAnchor(wrappingPane, 0.0);
+		AnchorPane.setBottomAnchor(wrappingPane, 0.0);
+		wrappingPane.setAlignment(Pos.TOP_CENTER);
+		wrappingPane.getChildren().add(pane);
+
+		wrappingPane.setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent mouseEvent) {
+				mouseX = mouseEvent.getSceneX();
+				mouseY = mouseEvent.getSceneY();
+				canTranslate = !pane.getChildren().isEmpty();
+			}
+		});
+
+		wrappingPane.setOnMouseDragged(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent mouseEvent) {
+				if (canTranslate) {
+					xTranslation.translate(mouseEvent.getSceneX() - mouseX);
+					mouseX = mouseEvent.getSceneX();
+					yTranslation.translate(mouseEvent.getSceneY() - mouseY);
+					mouseY = mouseEvent.getSceneY();
+				}
+			}
+		});
+		
+		pane.layoutXProperty().addListener(xTranslation);
+		pane.layoutYProperty().addListener(yTranslation);
+		
+		add(dataStructure);
+	}
+	
+	public Pane getPane() {
+		return pane;
+	}
+	
+	public Pane getWrappingPane() {
+		return wrappingPane;
+	}
+	
+	public void setDsElements(ArrayList<VisElem> elements) {
+		dsElements = elements;
+	}
+	
+	public void refresh() {
+		Set<VisElem> allChildren = new TreeSet<VisElem>(children.get());
+		allChildren.addAll(notStorableChildren);
+		
+		List<Node> paneChildren = pane.getChildren();
+		dataStructure.getNode().getChildren().clear();
+		for (VisElem elem : dsElements) {
+			dataStructure.getNode().getChildren().add(elem.getNode());
+		}
+		paneChildren.clear();
+		for (VisElem elem : allChildren) {
+			if (!doNotShow.contains(elem.getZDepth())) {
+				paneChildren.add(elem.getNode());
 			}
 		}
-
-		setOnMousePressed(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent mouseEvent) {
-				mouseX = mouseEvent.getSceneX();
-				mouseY = mouseEvent.getSceneY();
-			}
-		});
-
-		setOnMouseDragged(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent mouseEvent) {
-				setTranslateX(getTranslateX() + mouseEvent.getSceneX() - mouseX);
-				mouseX = mouseEvent.getSceneX();
-				setTranslateY(getTranslateY() + mouseEvent.getSceneY() - mouseY);
-				mouseY = mouseEvent.getSceneY();
-			}
-		});
+		recalcAbsPosition();
 	}
 
-	public void add(Node node, int zDepth) {
-		Pane layer = (Pane) getChildren().get(zDepth);
-		layer.getChildren().add(node);
-		elementParent.put(node, layer);
+	public void add(VisElem elem) {
+		children.get().add(elem);
 	}
 
-	public void remove(Node node) {
-		elementParent.get(node).getChildren().remove(node);
+	public void remove(VisElem elem) {
+		children.get().remove(elem);
+	}
+	
+	public void hideLayer(ZDepth zDepth) {
+		doNotShow.add(zDepth);
+	}
+
+	public void showLayer(ZDepth zDepth) {
+		doNotShow.remove(zDepth);
+	}
+
+	public void clearLayer(ZDepth zDepth) {
+		if (zDepth.equals(ZDepth.EDGES)) notStorableChildren.clear();
+		else {
+			ArrayList<VisElem> toRemove = new ArrayList<VisElem>();
+			for (VisElem elem : children.get()) {
+				if (elem.getZDepth().equals(zDepth)) {
+					toRemove.add(elem);
+				}
+			}
+			for (VisElem elem : toRemove) {
+				children.get().remove(elem);
+			}
+		}
 	}
 
 	public void recalcAbsPosition() {
-		for(Node child : getChildren()) {
-			recalcAbsPosition((Pane) child);
-		}
-	}
-
-	private void recalcAbsPosition(Pane parent) {
-		for (Node node : parent.getChildrenUnmodifiable()) {
-			if (node instanceof Pane) {
-				recalcAbsPosition((Pane) node);
-			} else if (node instanceof AbsPosition) {
-				((AbsPosition) node).recalcAbsPosition();
+		for (VisElem elem : children.get()) {
+			if (elem instanceof AbsPosition) {
+				((AbsPosition) elem).recalcAbsPosition();
 			}
 		}
 	}
 
 	@Override
 	public void storeState(HashMap<Object, Object> state) {
-		for (Node child : getChildren()) {
-			if (!(child instanceof FlowPane)) {
-				state.put(
-						child,
-						new ArrayList<Node>(((Parent) child)
-								.getChildrenUnmodifiable()));
-				storeStateR(state, (Parent) child);
+		state.put(children, children.get().toArray());
+		
+		for (VisElem elem : children.get()) {
+			if (elem instanceof PropertyStateEditable) {
+				((PropertyStateEditable) elem).storeState(state);
 			}
 		}
 	}
 
-	private void storeStateR(HashMap<Object, Object> state, Parent parent) {
-		for (Node child : parent.getChildrenUnmodifiable()) {
-			if (child instanceof PropertyStateEditable)
-				((PropertyStateEditable) child).storeState(state);
-			else if (child instanceof Parent)
-				storeStateR(state, (Parent) child);
-		}
+	public void addNotStorableVisElem(Edge edge) {
+		notStorableChildren.add(edge);
+	}
+
+	public void clearPane() {
+		pane.getChildren().clear();
+	}
+
+	public void setTranslatePos(int x, int y) {
+		pane.setTranslateX(x);
+		pane.setTranslateY(y);
 	}
 }

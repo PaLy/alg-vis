@@ -28,7 +28,7 @@ public class RBNode extends BSTNode {
 	private final BooleanProperty redProperty = new SimpleBooleanProperty();
 	private final RB rb;
 
-	public RBNode(RB rb, int key, String layoutName) {
+	public RBNode(RB rb, int key) {
 		super(key, NodePaint.RED);
 		this.rb = rb;
 		redProperty.set(true);
@@ -61,7 +61,7 @@ public class RBNode extends BSTNode {
 	}
 
 	public RBNode getLeft2() {
-		return (RBNode) super.getLeft();
+		return super.getLeft() == null ? rb.NULL : (RBNode) super.getLeft();
 	}
 
 	@Override
@@ -71,16 +71,54 @@ public class RBNode extends BSTNode {
 	}
 
 	public RBNode getRight2() {
-		return (RBNode) super.getRight();
+		return super.getRight() == null ? rb.NULL : (RBNode) super.getRight();
 	}
 
 	@Override
-	public RBNode getParentNode() {
-		return (RBNode) super.getParentNode();
+	public RBNode getParent() {
+		return rb.NULL.equals(super.getParent()) ? null : (RBNode) super.getParent();
 	}
 
-	public RBNode getParentNode2() {
-		return getParentNode() == null ? rb.NULL : getParentNode();
+	public RBNode getParent2() {
+		return super.getParent() == null ? rb.NULL : (RBNode) super.getParent();
+	}
+
+	@Override
+	public void linkLeft(BSTNode newLeft) {
+		if (getLeft() != newLeft) {
+			if (getLeft() != null) {
+				// remove edge between this and left
+				unlinkLeft();
+			}
+			if (newLeft != null && newLeft != rb.NULL) {
+				if (newLeft.getParent() != null) {
+					// remove edge between newLeft and its parent
+					newLeft.unlinkParent();
+				}
+				// create new edge between this and newLeft
+				newLeft.setParent(this);
+			}
+			setLeft(newLeft);
+		}
+	}
+
+	@Override
+	public void linkRight(BSTNode newRight) {
+		if (getRight() != newRight) {
+			if (getRight() != null) {
+				// remove edge between this and right
+				unlinkRight();
+			}
+			if (newRight != null && newRight != rb.NULL) {
+				if (newRight.getParent() != null) {
+					// remove edge between newRight and its parent
+					newRight.unlinkParent();
+				}
+				// create new edge between this and newRight
+				newRight.setParent(this);
+			}
+			setRight(newRight);
+		}
 	}
 
 	@Override

@@ -17,8 +17,8 @@
 
 package algvis2.animation;
 
+import algvis2.core.AlgVis;
 import algvis2.scene.Axis;
-import algvis2.ui.AlgVis;
 import javafx.animation.TranslateTransition;
 import javafx.animation.TranslateTransitionBuilder;
 import javafx.beans.value.ChangeListener;
@@ -58,23 +58,17 @@ public class AutoTranslateTransition implements AutoAnimation,
 			Number newValue) {
 		double d = (Double) newValue - (Double) oldValue;
 		
-//		if (node instanceof algvis2.scene.shape.Node && axis.equals(Axis.X) && ((algvis2.scene.shape.Node) node)
+//		if (node instanceof algvis2.scene.viselem.Node && axis.equals(Axis.X) && ((algvis2.scene.viselem.Node) node)
 //				.getKey() == 42) {
-//			System.out.println(((algvis2.scene.shape.Node) node).visPaneX + " " + d);
+//			System.out.println(((algvis2.scene.viselem.Node) node).visPaneX + " " + d);
 //		}
 
 		final TranslateTransition tt = TranslateTransitionBuilder.create().node(node)
 				.duration(Duration.seconds(1))
 				.build();
-		tt.setOnFinished(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				AlgVis.autoAnimsManager
-						.remove(tt);
-			}
-		});
 
-		if (currentTransition != null) {
+		if (currentTransition != null) {// && currentTransition.getCurrentTime() != currentTransition.getTotalDuration()
+		// ) {
 			currentTransition.setRate(0); // asi lepsie ako pauza, lebo pauza nezastavi este nespustenu animaciu
 			AlgVis.autoAnimsManager.remove(currentTransition);
 		}
@@ -82,11 +76,12 @@ public class AutoTranslateTransition implements AutoAnimation,
 		if (axis.equals(Axis.X))
 			node.setTranslateX(node.getTranslateX() - d);
 		else if (axis.equals(Axis.Y)) {
-//			if (node instanceof algvis2.scene.shape.Node) System.out.println(((algvis2.scene.shape.Node) node).getKey() + " ano som tu");
+//			if (node instanceof algvis2.scene.viselem.Node) System.out.println(((algvis2.scene.viselem.Node) node).getKey() + " ano som tu");
 			node.setTranslateY(node.getTranslateY() - d);
 		}
 
-		if (currentTransition != null) {
+		if (currentTransition != null) {// && currentTransition.getCurrentTime() != currentTransition.getTotalDuration()
+		// ) {
 			if (axis.equals(Axis.X))
 				tt.setToX(currentTransition.getToX());
 			else if (axis.equals(Axis.Y))
@@ -106,5 +101,45 @@ public class AutoTranslateTransition implements AutoAnimation,
 		currentTransition = tt;
 		AlgVis.autoAnimsManager.add(tt);
 		tt.play();
+	}
+
+	public synchronized void translate(double d) {
+		if (currentTransition != null) {// && currentTransition.getCurrentTime() != currentTransition.getTotalDuration()
+		// ) {
+			currentTransition.setRate(0);
+			AlgVis.autoAnimsManager.remove(currentTransition);
+
+			final TranslateTransition tt = TranslateTransitionBuilder.create().node(node)
+					.duration(Duration.seconds(1))
+					.build();
+			tt.setOnFinished(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					AlgVis.autoAnimsManager
+							.remove(tt);
+					currentTransition = null;
+				}
+			});
+			// TODO - ked tu zostane null a z hentych podmienok vyhodim tu dlhu podmienku, 
+			// tak pane po cleare sa hodi naspat na 0,0 inak nie 
+
+			if (axis.equals(Axis.X)) {
+				tt.setFromX(node.getTranslateX() + d);
+				tt.setToX(currentTransition.getToX() + d);
+			} else if (axis.equals(Axis.Y)) {
+				tt.setFromY(node.getTranslateY() + d);
+				tt.setToY(currentTransition.getToY() + d);
+			}
+
+			currentTransition = tt;
+			AlgVis.autoAnimsManager.add(tt);
+			tt.play();	
+		} else {
+			if (axis.equals(Axis.X)) {
+				node.setTranslateX(node.getTranslateX() + d);
+			} else if (axis.equals(Axis.Y)) {
+				node.setTranslateY(node.getTranslateY() + d);
+			}
+		}
 	}
 }

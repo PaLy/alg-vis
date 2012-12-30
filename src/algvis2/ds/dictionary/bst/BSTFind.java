@@ -22,8 +22,9 @@ import algvis2.scene.layout.ZDepth;
 import algvis2.scene.paint.NodePaint;
 
 public class BSTFind extends Algorithm {
-	private final BST D;
-	private final int x;
+	protected final BST D;
+	protected final int x;
+	protected BSTNode found = null;
 
 	protected BSTFind(BST D, int x) {
 		super(D);
@@ -32,18 +33,19 @@ public class BSTFind extends Algorithm {
 	}
 
 	@Override
-	public void runAlgorithm() {
+	protected void runAlgorithm() {
 		BSTNode newNode = new BSTNode(x, NodePaint.FIND);
-		addNode(newNode, ZDepth.TOP);
+		addVisElem(newNode, ZDepth.TOP);
 
 		BSTNode cur = D.getRoot();
 		while (cur != null) {
 			newNode.goAbove(cur);
-			pause();
+			pause(false);
 			if (cur.getKey() == x) {
+				found = cur;
 				newNode.goTo(cur);
 				newNode.setPaint(NodePaint.GREEN);
-				pause();
+				pause(false);
 				newNode.setPaint(NodePaint.NORMAL);
 				break;
 			} else {
@@ -54,6 +56,6 @@ public class BSTFind extends Algorithm {
 			}
 		}
 
-		removeNode(newNode);
+		removeVisElem(newNode);
 	}
 }

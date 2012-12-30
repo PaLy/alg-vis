@@ -51,6 +51,7 @@ public class Buttons {
 	public void setDisabled(boolean disabled) {
 		pane.lookup("#buttonInsert").setDisable(disabled);
 		pane.lookup("#buttonFind").setDisable(disabled);
+		pane.lookup("#buttonDelete").setDisable(disabled);
 		pane.lookup("#buttonClear").setDisable(disabled);
 		pane.lookup("#buttonRandom").setDisable(disabled);
 		pane.lookup("#buttonPause").setDisable(disabled);

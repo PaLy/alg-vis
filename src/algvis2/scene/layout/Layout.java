@@ -17,37 +17,22 @@
 
 package algvis2.scene.layout;
 
-import algvis2.ds.dictionary.bst.*;
-import javafx.scene.layout.Pane;
-
 public abstract class Layout {
 	public static final String BIN_TREE_LAYOUT = "BinTreeLayout";
 	public static final String LEFT_BIN_TREE_LAYOUT = "LeftBinTreeLayout";
 	public static final String RIGHT_BIN_TREE_LAYOUT = "RightBinTreeLayout";
 	public static final String COMPACT_LAYOUT = "CompactLayout";
 
-	protected final Pane pane;
-
-	protected Layout() {
-		pane = initPane();
-	}
-
-	protected abstract Pane initPane();
-
-	public Pane getPane() {
-		return pane;
-	}
-
-	public static Layout createLayout(String layoutName, BST bst) {
-		if (layoutName.equals(BIN_TREE_LAYOUT))
-			return new BinTreeLayout();
-		else if (layoutName.equals(LEFT_BIN_TREE_LAYOUT))
-			return new LeftBinTreeLayout();
-		else if (layoutName.equals(RIGHT_BIN_TREE_LAYOUT))
-			return new RightBinTreeLayout();
-		else if (layoutName.equals(COMPACT_LAYOUT))
-			return new CompactLayout(bst);
-		else
-			return null;
-	}
+//	public static Layout createLayout(String layoutName, BST bst) {
+//		if (layoutName.equals(BIN_TREE_LAYOUT))
+//			return new BinTreeLayout();
+//		else if (layoutName.equals(LEFT_BIN_TREE_LAYOUT))
+//			return new LeftBinTreeLayout();
+//		else if (layoutName.equals(RIGHT_BIN_TREE_LAYOUT))
+//			return new RightBinTreeLayout();
+////		else if (layoutName.equals(COMPACT_LAYOUT))
+////			return new CompactLayout(bst);
+//		else
+//			return null;
+//	}
 }

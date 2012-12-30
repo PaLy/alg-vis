@@ -15,9 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.animation;
+package algvis2.core;
 
-import algvis2.core.Visualization;
 import javafx.animation.Animation;
 import javafx.animation.PauseTransitionBuilder;
 import javafx.event.ActionEvent;
@@ -57,6 +56,7 @@ public class AnimationManager {
 			operation.get(0).setOnFinished(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent actionEvent) {
+					visualization.visPane.refresh();
 					visualization.getButtons().setDisabled(false);
 					visualization.getButtons().disablePrevious(!hasPrevious());
 					visualization.getButtons().disableNext(!hasNext());
@@ -133,6 +133,7 @@ public class AnimationManager {
 
 		@Override
 		public void handle(ActionEvent actionEvent) {
+			visualization.visPane.refresh();
 			if (step.getRate() > 0 && pos < 2) {
 				if (!visualization.getButtons().isPauseChecked()) {
 					PauseTransitionBuilder.create()

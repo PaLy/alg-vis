@@ -20,7 +20,6 @@ package algvis2.ds.dictionary.bst;
 import algvis2.core.Algorithm;
 import algvis2.core.Visualization;
 import algvis2.ds.dictionary.Dictionary;
-import algvis2.scene.layout.Layout;
 import algvis2.scene.paint.NodePaint;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -30,12 +29,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BST extends Dictionary implements TreeForTreeLayout<BSTNode> {
-	public static final String DEF_LAYOUT = Layout.COMPACT_LAYOUT;
 	public final ObjectProperty<BSTNode> rootProperty = new SimpleObjectProperty<BSTNode>();
 
 	public BST(Visualization visualization) {
 		super(visualization);
-		layoutName = DEF_LAYOUT;
 	}
 
 	@Override
@@ -46,8 +43,10 @@ public class BST extends Dictionary implements TreeForTreeLayout<BSTNode> {
 	}
 
 	@Override
-	public void delete(int x) {
-		// TODO
+	public Algorithm delete(int x) {
+		BSTFind bstDelete = new BSTDelete(this, x);
+		bstDelete.run();
+		return bstDelete;
 	}
 
 	@Override
@@ -113,7 +112,7 @@ public class BST extends Dictionary implements TreeForTreeLayout<BSTNode> {
 	}
 
 	protected void leftRot(BSTNode v) {
-		final BSTNode u = v.getParentNode();
+		final BSTNode u = v.getParent();
 		if (v.getLeft() == null) {
 			u.unlinkRight();
 		} else {
@@ -123,16 +122,16 @@ public class BST extends Dictionary implements TreeForTreeLayout<BSTNode> {
 			setRoot(v);
 		} else {
 			if (u.isLeft()) {
-				u.getParentNode().linkLeft(v);
+				u.getParent().linkLeft(v);
 			} else {
-				u.getParentNode().linkRight(v);
+				u.getParent().linkRight(v);
 			}
 		}
 		v.linkLeft(u);
 	}
 
 	protected void rightRot(BSTNode v) {
-		final BSTNode u = v.getParentNode();
+		final BSTNode u = v.getParent();
 		if (v.getRight() == null) {
 			u.unlinkLeft();
 		} else {
@@ -142,9 +141,9 @@ public class BST extends Dictionary implements TreeForTreeLayout<BSTNode> {
 			setRoot(v);
 		} else {
 			if (u.isLeft()) {
-				u.getParentNode().linkLeft(v);
+				u.getParent().linkLeft(v);
 			} else {
-				u.getParentNode().linkRight(v);
+				u.getParent().linkRight(v);
 			}
 		}
 		v.linkRight(u);
@@ -168,27 +167,20 @@ public class BST extends Dictionary implements TreeForTreeLayout<BSTNode> {
 	}
 
 	@Override
-	public final void setLayout(String layoutName) {
-		super.setLayout(layoutName);
-		visualization.reLayout();
-	}
-
-	@Override
-	public void reLayout() {
-//		System.out.println("ZACINAM");
-		if (getRoot() != null) {
-			BinTreeLayout layout = (BinTreeLayout) Layout.createLayout(layoutName, this);
-			dsLayout.rebuild(layout.rebuild(getRoot()));
-		} else {
-			dsLayout.rebuild();
-		}
-//		System.out.println("KONCIM");
-	}
-
-	@Override
 	public void storeState(HashMap<Object, Object> state) {
 		state.put(rootProperty, rootProperty.get());
 		if (rootProperty.get() != null)
 			rootProperty.get().storeState(state);
+	}
+
+	@Override
+	public void recalcAbsPosition() {
+		if (getRoot() != null) recalcAbsPositionR(getRoot());
+	}
+	
+	private void recalcAbsPositionR(BSTNode node) {
+		node.recalcAbsPosition();
+		if (node.getLeft() != null) recalcAbsPositionR(node.getLeft());
+		if (node.getRight() != null) recalcAbsPositionR(node.getRight());
 	}
 }

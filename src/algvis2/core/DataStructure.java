@@ -15,28 +15,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.ds;
+package algvis2.core;
 
 import algvis.core.MyRandom;
-import algvis2.core.Algorithm;
-import algvis2.core.PropertyStateEditable;
-import algvis2.core.Visualization;
 import algvis2.scene.control.InputField;
-import algvis2.scene.layout.VisPane;
+import algvis2.scene.layout.AbsPosition;
 import algvis2.scene.layout.ZDepth;
+import algvis2.scene.viselem.Node;
+import algvis2.scene.viselem.VisElem;
 import javafx.animation.Animation;
-import javafx.animation.SequentialTransition;
+import javafx.scene.layout.Pane;
 
-public abstract class DataStructure implements PropertyStateEditable {
-	protected final VisPane visPane;
+public abstract class DataStructure extends VisElem implements PropertyStateEditable, AbsPosition {
 	public final Visualization visualization;
-	protected DSDefaultLayout dsLayout = new DSDefaultLayout();
-	protected String layoutName;
 
 	protected DataStructure(Visualization visualization) {
-		this.visPane = visualization.visPane;
+		super(new Pane());
+		getNode().setLayoutY(25 + Node.RADIUS * 2.5);
+		setZDepth(ZDepth.NODES);
 		this.visualization = visualization;
-		visPane.add(dsLayout.getPane(), ZDepth.NODES);
+	}
+
+	@Override
+	public Pane getNode() {
+		return (Pane) super.getNode();
 	}
 
 	abstract public String getStats();
@@ -45,21 +47,11 @@ public abstract class DataStructure implements PropertyStateEditable {
 
 	abstract public void clear();
 
-	public Animation random(int n) {
-		SequentialTransition st = new SequentialTransition();
+	public Animation[] random(int n) {
+		Animation[] animations = new Animation[n];
 		for (int i = 0; i < n; i++) {
-			st.getChildren().add(insert(MyRandom.Int(InputField.MAX_VALUE + 1)).getBackToStart());
+			animations[i] = insert(MyRandom.Int(InputField.MAX_VALUE + 1)).getBackToStart();
 		}
-		return st;
+		return animations;
 	}
-
-	public void setLayout(String layoutName) {
-		this.layoutName = layoutName;
-	}
-
-	public String getLayout() {
-		return layoutName;
-	}
-
-	public abstract void reLayout();
 }

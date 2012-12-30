@@ -17,7 +17,7 @@
 
 package algvis2.scene.text;
 
-import algvis2.scene.shape.Node;
+import algvis2.scene.viselem.Node;
 import javafx.scene.text.Font;
 
 public class Fonts {

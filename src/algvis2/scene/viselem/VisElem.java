@@ -15,21 +15,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.ds;
+package algvis2.scene.viselem;
 
-import algvis2.scene.layout.Layout;
+import algvis2.scene.layout.ZDepth;
 import javafx.scene.Node;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 
-public class DSDefaultLayout extends Layout {
-	@Override
-	protected Pane initPane() {
-		return new HBox(5);
+public abstract class VisElem implements Comparable<VisElem> {
+	private final Node node;
+	private ZDepth zDepth = ZDepth.DEFAULT;
+	
+	public VisElem(Node node) {
+		this.node = node;
+	}
+	
+	public Node getNode() {
+		return node;
 	}
 
-	public void rebuild(Node... nodes) {
-		getPane().getChildren().clear();
-		getPane().getChildren().addAll(nodes);
+	public ZDepth getZDepth() {
+		return zDepth;
+	}
+
+	public void setZDepth(ZDepth zDepth) {
+		this.zDepth = zDepth;
+	}
+
+	@Override
+	public int compareTo(VisElem o) {
+		int res = this.zDepth.compareTo(o.zDepth);
+		if (res == 0 && !this.equals(o)) res = -1;
+		return res;
 	}
 }

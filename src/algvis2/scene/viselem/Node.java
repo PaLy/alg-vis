@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.scene.shape;
+package algvis2.scene.viselem;
 
 import algvis2.animation.AutoFillTransition;
 import algvis2.animation.AutoTranslateTransition;
@@ -24,10 +24,8 @@ import algvis2.scene.Axis;
 import algvis2.scene.effect.Effects;
 import algvis2.scene.layout.AbsPosition;
 import algvis2.scene.layout.VisPane;
-import algvis2.scene.layout.ZDepth;
 import algvis2.scene.paint.NodePaint;
 import algvis2.scene.text.Fonts;
-import algvis2.ui.AlgVis;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
@@ -47,7 +45,7 @@ import javafx.scene.text.TextBuilder;
 
 import java.util.HashMap;
 
-public class Node extends Group implements AbsPosition, PropertyStateEditable {
+public class Node extends VisElem implements AbsPosition, PropertyStateEditable {
 	/**
 	 * absolute position (relative to visPane)
 	 */
@@ -57,6 +55,7 @@ public class Node extends Group implements AbsPosition, PropertyStateEditable {
 	public final DoubleProperty visPaneTranslateY = new SimpleDoubleProperty();
 
 	public static final int RADIUS = 20;
+	public static final int INF = 99999;
 	private final NodePaint paint = new NodePaint(NodePaint.NORMAL);
 	public final ObjectProperty<Integer> keyProperty;
 
@@ -67,27 +66,31 @@ public class Node extends Group implements AbsPosition, PropertyStateEditable {
 	private ObjectProperty<DoubleBinding> layoutYBindingProperty = new SimpleObjectProperty<DoubleBinding>();
 
 	public static final int NULL = 100000;
-	private ObjectProperty<Circle> marker = new SimpleObjectProperty<Circle>();
 
 	public Node(int key) {
-		super();
+		super(new Group());
 		this.keyProperty = new SimpleObjectProperty<Integer>(key);
 		init();
 	}
 
 	public Node(int key, NodePaint p) {
-		super();
+		super(new Group());
 		this.keyProperty = new SimpleObjectProperty<Integer>(key);
 		setPaint(p);
 		init();
 	}
 
 	public Node(Node v) {
-		super();
+		super(new Group());
 		this.keyProperty = new SimpleObjectProperty<Integer>(v.getKey());
 		visPaneX.set(v.visPaneX.get() + v.visPaneTranslateX.get());
 		visPaneY.set(v.visPaneY.get() + v.visPaneTranslateY.get());
 		init();
+	}
+
+	@Override
+	public Group getNode() {
+		return (Group) super.getNode();
 	}
 
 	private void init() {
@@ -95,20 +98,29 @@ public class Node extends Group implements AbsPosition, PropertyStateEditable {
 				.fill(paint.background.get()).stroke(Color.BLACK)
 				.effect(Effects.NODE_SHADOW).build();
 
-		Text text = TextBuilder.create().text(Integer.toString(getKey()))
+		String key;
+		switch (getKey()) {
+			case Node.INF:
+				key = "\u221e";
+				break;
+			case -Node.INF:
+				key = "-\u221e";
+				break;
+			default:
+				key = Integer.toString(getKey());
+		}
+		Text text = TextBuilder.create().text(key)
 				.font(Fonts.NODE_FONT).textOrigin(VPos.CENTER)
 				.fill(paint.text.get()).build();
 		text.setX(text.getX() - text.getBoundsInLocal().getWidth() / 2);
 
-		getChildren().addAll(circle, text);
+		getNode().getChildren().addAll(circle, text);
 
 		paint.background.addListener(new AutoFillTransition(
-				(Shape) getChildren().get(0)));
-		paint.text.addListener(new AutoFillTransition((Shape) getChildren()
+				(Shape) getNode().getChildren().get(0)));
+		paint.text.addListener(new AutoFillTransition((Shape) getNode().getChildren()
 				.get(1)));
 
-		layoutXBindingProperty.set(new SimpleDoubleProperty(0).add(0));
-		layoutYBindingProperty.set(new SimpleDoubleProperty(0).add(0));
 		layoutXBindingProperty.addListener(new ChangeListener<DoubleBinding>() {
 			@Override
 			public void changed(
@@ -119,14 +131,12 @@ public class Node extends Group implements AbsPosition, PropertyStateEditable {
 				//                else
 				//                    System.out.println(getKey() + " X " + newBinding.get());
 
-				if (newBinding != oldBinding) {
-					if (newBinding != null) {
-						layoutXProperty().bind(newBinding);
-					} else {
-						layoutXProperty().unbind();
-					}
-//					System.out.println(getKey() + " bindingX: " + newBinding);
-				}
+                if (newBinding != null) {
+                    getNode().layoutXProperty().bind(newBinding);
+                } else {
+                    getNode().layoutXProperty().unbind();
+                }
+//                System.out.println(getKey() + " bindingX: " + newBinding);
 			}
 		});
 		layoutYBindingProperty.addListener(new ChangeListener<DoubleBinding>() {
@@ -138,33 +148,21 @@ public class Node extends Group implements AbsPosition, PropertyStateEditable {
 				//                    System.out.println(getKey() + " Y " + null);
 				//                else
 				//                    System.out.println(getKey() + " Y " + newBinding.get());
-				if (newBinding != oldBinding) {
-					if (newBinding != null) {
-						layoutYProperty().bind(newBinding);
-					} else {
-						layoutYProperty().unbind();
-					}
+                if (newBinding != null) {
+                    getNode().layoutYProperty().bind(newBinding);
+                } else {
+                    getNode().layoutYProperty().unbind();
+                }
 //					System.out.println(getKey() + " bindingY: " + newBinding);
-				}
 			}
 		});
+		layoutXBindingProperty.set(new SimpleDoubleProperty(0).add(0));
+		layoutYBindingProperty.set(new SimpleDoubleProperty(0).add(0));
 
 		bindVisPanePos();
-
-		visPaneX.addListener(new AutoTranslateTransition(this, Axis.X));
-		visPaneY.addListener(new AutoTranslateTransition(this, Axis.Y));
-
-		marker.addListener(new ChangeListener<Circle>() {
-			@Override
-			public void changed(
-					ObservableValue<? extends Circle> observableValue,
-					Circle circle, Circle circle1) {
-				if (circle1 != null)
-					AlgVis.getCurrentVis().visPane.add(circle1, ZDepth.ARROWS);
-				if (circle != null)
-					AlgVis.getCurrentVis().visPane.remove(circle);
-			}
-		});
+		
+		visPaneX.addListener(new AutoTranslateTransition(getNode(), Axis.X));
+		visPaneY.addListener(new AutoTranslateTransition(getNode(), Axis.Y));
 		
 //		translateYProperty().addListener(new ChangeListener<Number>() {
 //			@Override
@@ -189,14 +187,18 @@ public class Node extends Group implements AbsPosition, PropertyStateEditable {
 	}
 
 	public void goAbove(Node node) {
-		layoutXBindingProperty.set(node.visPaneX.add(node.visPaneTranslateX));
-		layoutYBindingProperty.set(node.visPaneY.add(node.visPaneTranslateY)
-				.subtract(Node.RADIUS * 2.4));
+		layoutXBindingProperty.set(node.visPaneX.add(0));
+		layoutYBindingProperty.set(node.visPaneY.subtract(Node.RADIUS * 2.4));
 	}
 
 	public void goTo(Node node) {
-		layoutXBindingProperty.set(node.visPaneX.add(node.visPaneTranslateX));
-		layoutYBindingProperty.set(node.visPaneY.add(node.visPaneTranslateY));
+		layoutXBindingProperty.set(node.visPaneX.add(0));
+		layoutYBindingProperty.set(node.visPaneY.add(0));
+	}
+	
+	public void goNextTo(Node node) {
+		layoutXBindingProperty.set(node.visPaneX.add(Node.RADIUS * 2.4));
+		layoutYBindingProperty.set(node.visPaneY.add(0));
 	}
 
 	public void removeLayoutXYBindings() {
@@ -204,20 +206,8 @@ public class Node extends Group implements AbsPosition, PropertyStateEditable {
 		layoutYBindingProperty.set(null);
 	}
 
-	public void mark() {
-		Circle circle = CircleBuilder.create().radius(Node.RADIUS * 1.2)
-				.fill(Color.TRANSPARENT).stroke(Color.BLACK).build();
-		circle.layoutXProperty().bind(visPaneX.add(visPaneTranslateX));
-		circle.layoutYProperty().bind(visPaneY.add(visPaneTranslateY));
-		marker.set(circle);
-	}
-
-	public void unmark() {
-		marker.set(null);
-	}
-
 	public Shape getShape() {
-		return (Shape) getChildren().get(0);
+		return (Shape) getNode().getChildren().get(0);
 	}
 
 	@Override
@@ -226,16 +216,18 @@ public class Node extends Group implements AbsPosition, PropertyStateEditable {
 	}
 
 	private void bindVisPanePos() {
-		DoubleBinding vpX = layoutXProperty().add(0);
-		DoubleBinding vpY = layoutYProperty().add(0);
-		DoubleBinding vptX = translateXProperty().add(0);
-		DoubleBinding vptY = translateYProperty().add(0);
-		Parent parent = getParent();
+		DoubleBinding vpX = getNode().layoutXProperty().add(0);
+		DoubleBinding vpY = getNode().layoutYProperty().add(0);
+		DoubleBinding vptX = getNode().translateXProperty().add(0);
+		DoubleBinding vptY = getNode().translateYProperty().add(0);
+		Parent parent = getNode().getParent();
 		while (true) {
-			if (parent == null)
+			if (parent == null) {
 				break;
-			if (parent.getId() != null && parent.getId().equals(VisPane.ID))
+			}
+			if (parent.getId() != null && parent.getId().equals(VisPane.ID)) {
 				break;
+			}
 
 			vpX = vpX.add(parent.layoutXProperty());
 			vpY = vpY.add(parent.layoutYProperty());
@@ -266,6 +258,5 @@ public class Node extends Group implements AbsPosition, PropertyStateEditable {
 		state.put(keyProperty, keyProperty.get());
 		state.put(layoutXBindingProperty, layoutXBindingProperty.get());
 		state.put(layoutYBindingProperty, layoutYBindingProperty.get());
-		state.put(marker, marker.get());
 	}
 }

@@ -15,32 +15,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.ds.dictionary.bst;
+package algvis2.scene.viselem;
 
-import javafx.scene.Node;
-import javafx.scene.layout.GridPane;
+import algvis2.scene.layout.ZDepth;
+import javafx.scene.shape.Line;
 
-/**
- * ----------------
- * | root |       |
- * ----------------
- * | left | right |
- * ----------------
- */
-public class LeftBinTreeLayout extends BinTreeLayout {
-
-	public LeftBinTreeLayout() {
-		super();
-		((GridPane) pane).setVgap(5);
-		((GridPane) pane).setHgap(5);
+public class Edge extends VisElem {
+	public Edge() {
+		super(new Line());
+		setZDepth(ZDepth.EDGES);
 	}
 
 	@Override
-	protected void rebuildNodes(Node root, Node left, Node right) {
-		((GridPane) pane).add(root, 0, 0);
-		if (left != null)
-			((GridPane) pane).add(left, 0, 1);
-		if (right != null)
-			((GridPane) pane).add(right, 1, 1);
+	public Line getNode() {
+		return (Line) super.getNode();
+	}
+
+	public void bindNodes(Node startNode, Node endNode) {
+		getNode().startXProperty().bind(startNode.visPaneX.add(startNode.visPaneTranslateX));
+		getNode().startYProperty().bind(startNode.visPaneY.add(startNode.visPaneTranslateY));
+		getNode().endXProperty().bind(endNode.visPaneX.add(endNode.visPaneTranslateX));
+		getNode().endYProperty().bind(endNode.visPaneY.add(endNode.visPaneTranslateY));
 	}
 }

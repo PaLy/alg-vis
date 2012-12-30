@@ -17,7 +17,7 @@
 
 package algvis2.animation;
 
-import algvis2.ui.AlgVis;
+import algvis2.core.AlgVis;
 import javafx.animation.FillTransition;
 import javafx.animation.FillTransitionBuilder;
 import javafx.beans.value.ChangeListener;

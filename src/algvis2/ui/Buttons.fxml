@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import algvis2.scene.layout.Layout?>				
+<?import algvis2.scene.layout.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.collections.*?>
@@ -8,6 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
+<?scenebuilder-classpath-element ../../../bin?>
 <?scenebuilder-preview-i18n-resource ../../Messages_en.properties?>
 <!--
   ~ Copyright (c) 2012 Jakub Kováč, Katarína Kotrlová, Pavol Lukča, Viktor Tomkovič, Tatiana Tóthová
@@ -35,10 +36,10 @@
             <TextField fx:id="inputField" prefHeight="-1.0" prefWidth="100.0" />
             <Button fx:id="buttonInsert" mnemonicParsing="false" onAction="#insertPressed" text="%button-insert" />
             <Button fx:id="buttonFind" mnemonicParsing="false" onAction="#findPressed" text="%button-find" />
+            <Button fx:id="buttonDelete" mnemonicParsing="false" onAction="#deletePressed" text="%button-delete" />
             <Separator orientation="VERTICAL" prefHeight="-1.0" />
             <CheckBox fx:id="buttonPause" mnemonicParsing="false" selected="false" text="%button-pause" />
-            <Button fx:id="buttonPrevious" disable="true" mnemonicParsing="false" onAction="#previousPressed" text=
-                    "%previous" />
+            <Button fx:id="buttonPrevious" disable="true" mnemonicParsing="false" onAction="#previousPressed" text="%previous" />
             <Button fx:id="buttonNext" disable="true" mnemonicParsing="false" onAction="#nextPressed" text="%next" />
           </children>
           <padding>
@@ -52,9 +53,9 @@
             <ChoiceBox id="button" fx:id="button_layout">
               <items>
                 <FXCollections fx:factory="observableArrayList">
-                  <Layout fx:constant="BIN_TREE_LAYOUT" />
-                  <Layout fx:constant="LEFT_BIN_TREE_LAYOUT" />
-                  <Layout fx:constant="RIGHT_BIN_TREE_LAYOUT" />
+                  <!--<Layout fx:constant="BIN_TREE_LAYOUT" />-->
+                  <!--<Layout fx:constant="LEFT_BIN_TREE_LAYOUT" />-->
+                  <!--<Layout fx:constant="RIGHT_BIN_TREE_LAYOUT" />-->
                   <Layout fx:constant="COMPACT_LAYOUT" />
                 </FXCollections>
               </items>
