@@ -18,8 +18,6 @@
 package algvis2.core;
 
 import algvis2.scene.layout.ZDepth;
-import algvis2.scene.viselem.Marker;
-import algvis2.scene.viselem.Node;
 import algvis2.scene.viselem.VisElem;
 import javafx.animation.Animation;
 import javafx.animation.SequentialTransition;
@@ -31,20 +29,18 @@ import java.util.List;
 
 public abstract class Algorithm implements Runnable {
 	protected final Visualization visualization;
-//	protected final Animations animations;
+
+	private PropertiesState startState;
+	private Timeline backToStart;
 
 	private PropertiesState state;
-	private PropertiesState startState;
-	public final List<Animation> allSteps = new ArrayList<Animation>();
 	private SequentialTransition step = new SequentialTransition();
-	private Timeline backToStart;
+	public final List<Animation> allSteps = new ArrayList<Animation>();
 	
 	private boolean layoutRequested = false;
-	private boolean refreshRequested = false;
 
 	protected Algorithm(DataStructure D) {
 		visualization = D.visualization;
-//		animations = new Animations(visualization.visPane);
 	}
 
 	@Override
@@ -72,7 +68,7 @@ public abstract class Algorithm implements Runnable {
 
 	void end() {
 		pause(true);
-		backToStart = startState.createTimeline(false, false);
+		backToStart = startState.createTimeline(false);
 //		System.out.println("BACKTOSTART:");
 //		System.out.println(backToStart.getKeyFrames());
 	}
@@ -85,15 +81,10 @@ public abstract class Algorithm implements Runnable {
 		layoutRequested = true;
 	}
 
-	protected void requestRefresh() {
-		refreshRequested = true;
-	}
-
-	public void saveChangedProperties() {
-		step.getChildren().add(state.createTimeline(layoutRequested, refreshRequested));
-		
+	private void saveChangedProperties() {
+		step.getChildren().add(state.createTimeline(layoutRequested));
 		layoutRequested = false;
-		refreshRequested = false;
+		
 		HashMap<Object, Object> preState = new HashMap<Object, Object>();
 		visualization.storeState(preState);
 		state = new PropertiesState(preState, visualization);
@@ -123,45 +114,4 @@ public abstract class Algorithm implements Runnable {
 	protected void removeVisElem(VisElem elem) {
 		visualization.visPane.remove(elem);
 	}
-	
-	
-	private final HashMap<VisElem, Marker> markers = new HashMap<VisElem, Marker>();
-	
-	protected void addMarker(Node elem) {
-		Marker marker = new Marker(elem);
-		addVisElem(marker);
-		markers.put(elem, marker);
-	}
-	
-	protected void removeMarker(Node elem) {
-		Marker marker = markers.get(elem);
-		removeVisElem(marker);
-		markers.remove(elem);
-	}
-
-//	protected class Animations {
-//		private final VisPane visPane;
-//
-//		public Animations(VisPane visPane) {
-//			this.visPane = visPane;
-//		}
-//
-//		public void backlight(final Node node, Paint paint) {
-//			Circle nodeCircle = (Circle) node.getShape();
-//			final Circle newCircle = new Circle(nodeCircle.getRadius() * 1.3,
-//					paint);
-//			newCircle.centerXProperty().bind(node.visPaneX);
-//			newCircle.centerYProperty().bind(node.visPaneY);
-//			newCircle.translateXProperty().bind(node.visPaneTranslateX);
-//			newCircle.translateYProperty().bind(node.visPaneTranslateY);
-//
-//			visPane.add(newCircle, ZDepth.BACKLIGHT);
-//
-//			addAnimation(FadeTransitionBuilder.create().node(newCircle)
-//					.duration(Duration.millis(300)).fromValue(1).toValue(0)
-//					.cycleCount(6).autoReverse(true).build());
-//
-//			visPane.remove(newCircle);
-//		}
-//	}
 }

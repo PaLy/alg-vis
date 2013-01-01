@@ -23,7 +23,10 @@ import algvis2.ds.dictionary.bst.BSTNode;
 import algvis2.scene.layout.ZDepth;
 import algvis2.scene.paint.NodePaint;
 import algvis2.scene.viselem.Backlight;
+import algvis2.scene.viselem.Marker;
 import algvis2.scene.viselem.Node;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 public class RBDelete extends BSTFind {
 	protected RBDelete(BST D, int x) {
@@ -40,7 +43,7 @@ public class RBDelete extends BSTFind {
 
 			RBNode u = (RBNode) found, w = (u.getLeft() != null) ? u.getLeft() : u
 					.getRight2();
-			((RB) D).NULL.setParent(u.getParent2());
+			RB.NULL.setParent(u.getParent2());
 			
 			if (found.isLeaf()) { // case I - list
 				if (found.isRoot()) {
@@ -89,7 +92,7 @@ public class RBDelete extends BSTFind {
 				
 				u = son;
 				w = son.getRight2();
-				((RB) D).NULL.setParent(son.getParent2());
+				RB.NULL.setParent(son.getParent2());
 				
 				pause(false);
 				removeVisElem(v);
@@ -116,69 +119,73 @@ public class RBDelete extends BSTFind {
 				removeVisElem(son);
 			} // end case III
 			removeVisElem(foundBacklight);
-			
-			requestLayout();
 
 			if (!u.isRed()) {
+				requestLayout();
+				
 				// bubleme nahor
-				while (w.getParent2() != ((RB) D).NULL && !w.isRed()) {
-					((RB) D).NULL.setRed(false);
+				ObjectProperty<RBNode> s = new SimpleObjectProperty<RBNode>();
+				Marker sMarker = new Marker();
+				sMarker.elem.bind(s);
+				addVisElem(sMarker);
+				
+				while (w.getParent2() != RB.NULL && !w.isRed()) {
+					RB.NULL.setRed(false);
 					if (w.getParent2().getLeft2() == w) {
-						RBNode s = w.getParent2().getRight2();
-						if (s != ((RB) D).NULL) addMarker(s);
+						s.set(w.getParent2().getRight2());
 						pause(false);
-						if (s.isRed()) {
-							s.setRed(false);
+						if (s.get().isRed()) {
+							s.get().setRed(false);
 							w.getParent2().setRed(true);
-							D.rotate(s);
-						} else if (!s.getLeft2().isRed()
-								&& !s.getRight2().isRed()) {
-							s.setRed(true);
+							D.rotate(s.get());
+						} else if (!s.get().getLeft2().isRed()
+								&& !s.get().getRight2().isRed()) {
+							s.get().setRed(true);
 							w = w.getParent2();
-						} else if (!s.getRight2().isRed()) {
-							s.getLeft2().setRed(false);
-							s.setRed(true);
-							D.rotate(s.getLeft());
+						} else if (!s.get().getRight2().isRed()) {
+							s.get().getLeft2().setRed(false);
+							s.get().setRed(true);
+							D.rotate(s.get().getLeft());
 						} else {
-							s.setRed(s.getParent2().isRed());
+							s.get().setRed(s.get().getParent2().isRed());
 							w.getParent2().setRed(false);
-							s.getRight2().setRed(false);
-							D.rotate(s);
+							s.get().getRight2().setRed(false);
+							D.rotate(s.get());
 							w = (RBNode) D.getRoot();
 						}
 						pause(true);
-						if (s != ((RB) D).NULL) removeMarker(s);
 					} else {
-						RBNode s = w.getParent2().getLeft2();
-						if (s != ((RB) D).NULL) addMarker(s);
-						if (s.isRed()) {
+						s.set(w.getParent2().getLeft2());
+						if (s.get().isRed()) {
 							pause(false);
-							s.setRed(false);
+							s.get().setRed(false);
 							w.getParent2().setRed(true);
-							D.rotate(s);
-						} else if (!s.getRight2().isRed()
-								&& !s.getLeft2().isRed()) {
+							D.rotate(s.get());
+						} else if (!s.get().getRight2().isRed()
+								&& !s.get().getLeft2().isRed()) {
 							pause(false);
-							s.setRed(true);
+							s.get().setRed(true);
 							w = w.getParent2();
-						} else if (!s.getLeft2().isRed()) {
-							s.getRight2().setRed(false);
+						} else if (!s.get().getLeft2().isRed()) {
+							s.get().getRight2().setRed(false);
 							pause(false);
-							s.setRed(true);
-							D.rotate(s.getRight2());
+							s.get().setRed(true);
+							D.rotate(s.get().getRight2());
 						} else {
 							pause(false);
-							s.setRed(s.getParent2().isRed());
+							s.get().setRed(s.get().getParent2().isRed());
 							w.getParent2().setRed(false);
-							s.getLeft2().setRed(false);
-							D.rotate(s);
+							s.get().getLeft2().setRed(false);
+							D.rotate(s.get());
 							w = (RBNode) D.getRoot();
 						}
 						pause(true);
-						if (s != ((RB) D).NULL) removeMarker(s);
 					}
 				}
 				w.setRed(false);
+				
+				sMarker.elem.unbind();
+				removeVisElem(sMarker);
 			}
 		}
 	}

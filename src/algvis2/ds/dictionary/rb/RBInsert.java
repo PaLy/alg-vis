@@ -18,6 +18,9 @@
 package algvis2.ds.dictionary.rb;
 
 import algvis2.ds.dictionary.bst.BSTInsert;
+import algvis2.scene.viselem.Marker;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 public class RBInsert extends BSTInsert {
 	protected RBInsert(RB D, RBNode newNode) {
@@ -30,15 +33,20 @@ public class RBInsert extends BSTInsert {
 		pause(true);
 
 		// bubleme nahor
-		RBNode w = (RBNode) newNode;
-		RBNode pw = w.getParent2();
-		addMarker(w);
-		while (!w.isRoot() && pw.isRed()) {
+		ObjectProperty<RBNode> w = new SimpleObjectProperty<RBNode>();
+		w.set((RBNode) newNode);
+		RBNode pw = w.get().getParent2();
+		
+		Marker wMarker = new Marker();
+		wMarker.elem.bind(w);
+		addVisElem(wMarker);
+		
+		while (!w.get().isRoot() && pw.isRed()) {
 			boolean isLeft = pw.isLeft();
 			RBNode ppw = pw.getParent2();
 			RBNode y = (isLeft ? ppw.getRight() : ppw.getLeft());
 			if (y == null) {
-				y = ((RB) D).NULL;
+				y = RB.NULL;
 			}
 			if (y.isRed()) {
 				// case 1
@@ -46,34 +54,32 @@ public class RBInsert extends BSTInsert {
 				pw.setRed(false);
 				y.setRed(false);
 				ppw.setRed(true);
-				removeMarker(w);
-				w = ppw;
-				addMarker(w);
-				pw = w.getParent2();
+				w.set(ppw);
+				pw = w.get().getParent2();
 				pause(false);
 			} else {
 				// case 2
-				if (isLeft != w.isLeft()) {
+				if (isLeft != w.get().isLeft()) {
 					pause(false);
-					D.rotate(w);
+					D.rotate(w.get());
 					pause(true);
 				} else {
-					removeMarker(w);
-					w = w.getParent2();
-					addMarker(w);
+					w.set(w.get().getParent2());
 				}
-				pw = w.getParent2();
+				pw = w.get().getParent2();
 				// case 3
 				pause(false);
-				w.setRed(false);
+				w.get().setRed(false);
 				pw.setRed(true);
-				D.rotate(w);
+				D.rotate(w.get());
 				pause(true);
 				break;
 			}
 		}
 		
-		removeMarker(w);
 		((RB) D).getRoot().setRed(false);
+
+		wMarker.elem.unbind();
+		removeVisElem(wMarker);
 	}
 }

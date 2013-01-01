@@ -20,9 +20,12 @@ package algvis2.scene.viselem;
 import algvis2.animation.AutoTranslateTransition;
 import algvis2.scene.Axis;
 import algvis2.scene.layout.ZDepth;
+import javafx.animation.Animation;
+import javafx.animation.FadeTransitionBuilder;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 
 public class Backlight extends VisElem {
 	public static final Paint RED = Color.RED;
@@ -45,6 +48,21 @@ public class Backlight extends VisElem {
 		
 		getNode().layoutXProperty().addListener(new AutoTranslateTransition(getNode(), Axis.X));
 		getNode().layoutYProperty().addListener(new AutoTranslateTransition(getNode(), Axis.Y));
+	}
+	
+	public Backlight(Node node, Paint paint, boolean blinking) {
+		this(node, paint);
+		if (blinking) {
+			FadeTransitionBuilder.create()
+					.node(getNode())
+					.duration(Duration.millis(500))
+					.fromValue(1)
+					.toValue(0)
+					.cycleCount(Animation.INDEFINITE)
+					.autoReverse(true)
+					.build()
+					.play();
+		}
 	}
 
 	@Override

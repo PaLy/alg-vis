@@ -169,7 +169,6 @@ public class AlgVisFXMLController implements Initializable {
 		AlgVis.getCurrentVis().animManager.add(list, true);
 		AlgVis.getCurrentVis().getButtons().disablePrevious(false);
 		AlgVis.getCurrentVis().reLayout();
-		AlgVis.getCurrentVis().visPane.refresh();
 	}
 	
 	private void handleSingleOperation(String operation, Integer input) {
@@ -201,7 +200,6 @@ public class AlgVisFXMLController implements Initializable {
 				// System.out.println("AFTER BACK");
 				AlgVis.getCurrentVis().reLayout(); // kvoli tomu, ze sa to moze zle bindnut, 
 				// a potom sa posunie vrchol
-				AlgVis.getCurrentVis().visPane.refresh();
 				AlgVis.getCurrentVis().animManager.playNext();
 			}
 		});

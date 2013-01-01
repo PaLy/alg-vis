@@ -26,11 +26,9 @@ import javafx.beans.value.ObservableValue;
 
 public class RBNode extends BSTNode {
 	private final BooleanProperty redProperty = new SimpleBooleanProperty();
-	private final RB rb;
 
-	public RBNode(RB rb, int key) {
+	public RBNode(int key) {
 		super(key, NodePaint.RED);
-		this.rb = rb;
 		redProperty.set(true);
 
 		redProperty.addListener(new ChangeListener<Boolean>() {
@@ -56,31 +54,31 @@ public class RBNode extends BSTNode {
 
 	@Override
 	public RBNode getLeft() {
-		return rb.NULL.equals(super.getLeft()) ? null : (RBNode) super
+		return RB.NULL.equals(super.getLeft()) ? null : (RBNode) super
 				.getLeft();
 	}
 
 	public RBNode getLeft2() {
-		return super.getLeft() == null ? rb.NULL : (RBNode) super.getLeft();
+		return super.getLeft() == null ? RB.NULL : (RBNode) super.getLeft();
 	}
 
 	@Override
 	public RBNode getRight() {
-		return rb.NULL.equals(super.getRight()) ? null : (RBNode) super
+		return RB.NULL.equals(super.getRight()) ? null : (RBNode) super
 				.getRight();
 	}
 
 	public RBNode getRight2() {
-		return super.getRight() == null ? rb.NULL : (RBNode) super.getRight();
+		return super.getRight() == null ? RB.NULL : (RBNode) super.getRight();
 	}
 
 	@Override
 	public RBNode getParent() {
-		return rb.NULL.equals(super.getParent()) ? null : (RBNode) super.getParent();
+		return RB.NULL.equals(super.getParent()) ? null : (RBNode) super.getParent();
 	}
 
 	public RBNode getParent2() {
-		return super.getParent() == null ? rb.NULL : (RBNode) super.getParent();
+		return super.getParent() == null ? RB.NULL : (RBNode) super.getParent();
 	}
 
 	@Override
@@ -90,7 +88,7 @@ public class RBNode extends BSTNode {
 				// remove edge between this and left
 				unlinkLeft();
 			}
-			if (newLeft != null && newLeft != rb.NULL) {
+			if (newLeft != null && newLeft != RB.NULL) {
 				if (newLeft.getParent() != null) {
 					// remove edge between newLeft and its parent
 					newLeft.unlinkParent();
@@ -109,7 +107,7 @@ public class RBNode extends BSTNode {
 				// remove edge between this and right
 				unlinkRight();
 			}
-			if (newRight != null && newRight != rb.NULL) {
+			if (newRight != null && newRight != RB.NULL) {
 				if (newRight.getParent() != null) {
 					// remove edge between newRight and its parent
 					newRight.unlinkParent();

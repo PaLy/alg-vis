@@ -38,7 +38,7 @@ import java.util.*;
 public class VisPane implements PropertyStateEditable, AbsPosition {
 	private final Pane pane = new Pane();
 	private final DataStructure dataStructure;
-	private ArrayList<VisElem> dsElements;
+	private ArrayList<VisElem> dsElements = new ArrayList<VisElem>();
 	private final FlowPane wrappingPane = new FlowPane();
 	private final ObjectProperty<Set<VisElem>> children = new SimpleObjectProperty<Set<VisElem>>();
 	public static final String ID = "visPane";
@@ -87,10 +87,6 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 		pane.layoutYProperty().addListener(yTranslation);
 		
 		add(dataStructure);
-	}
-	
-	public Pane getPane() {
-		return pane;
 	}
 	
 	public Pane getWrappingPane() {

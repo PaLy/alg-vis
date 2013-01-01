@@ -23,7 +23,7 @@ import algvis2.ds.dictionary.bst.BST;
 import algvis2.scene.viselem.Node;
 
 public class RB extends BST {
-	public final RBNode NULL = new RBNode(this, Node.NULL);
+	public static final RBNode NULL = new RBNode(Node.NULL);
 
 	public RB(Visualization visualization) {
 		super(visualization);
@@ -35,7 +35,7 @@ public class RB extends BST {
 
 	@Override
 	public Algorithm insert(int x) {
-		RBInsert rbInsert = new RBInsert(this, new RBNode(this, x));
+		RBInsert rbInsert = new RBInsert(this, new RBNode(x));
 		rbInsert.run();
 		return rbInsert;
 	}

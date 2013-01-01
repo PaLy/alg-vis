@@ -37,7 +37,7 @@ public class PropertiesState {
 		this.visualization = visualization;
 	}
 
-	public Timeline createTimeline(final boolean layoutRequested, final boolean refreshRequested) {
+	public Timeline createTimeline(final boolean layoutRequested) {
 		final HashMap<WritableValue<Collection>, Object[]> preElements = new HashMap<WritableValue<Collection>, Object[]>();
 		final HashMap<WritableValue<Collection>, Object[]> postElements = new HashMap<WritableValue<Collection>, Object[]>();
 		ArrayList<KeyValue> firstKeyFrameValues = new ArrayList<KeyValue>();
@@ -91,9 +91,6 @@ public class PropertiesState {
 				}
 				if (layoutRequested) {
 					visualization.reLayout();
-				}
-				if (refreshRequested) {
-					visualization.visPane.refresh();
 				}
 //				System.out.println("teraz " + (timeline.getRate() > 0 ? "dopredu" : "dozadu") + " " + k++);
 			}

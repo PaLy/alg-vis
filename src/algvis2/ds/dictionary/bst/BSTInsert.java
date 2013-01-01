@@ -65,7 +65,6 @@ public class BSTInsert extends Algorithm {
 		removeVisElem(newNode);
 		
 		requestLayout();
-		requestRefresh();
 		addAnimation(ScaleTransitionBuilder.create().node(newNode.getNode()).byX(0.5)
 				.byY(0.5).duration(Duration.millis(500)).cycleCount(2)
 				.autoReverse(true).build());
