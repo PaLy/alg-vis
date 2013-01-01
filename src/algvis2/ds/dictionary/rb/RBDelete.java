@@ -22,6 +22,7 @@ import algvis2.ds.dictionary.bst.BSTFind;
 import algvis2.ds.dictionary.bst.BSTNode;
 import algvis2.scene.layout.ZDepth;
 import algvis2.scene.paint.NodePaint;
+import algvis2.scene.viselem.Backlight;
 import algvis2.scene.viselem.Node;
 
 public class RBDelete extends BSTFind {
@@ -34,7 +35,8 @@ public class RBDelete extends BSTFind {
 		super.runAlgorithm();
 		
 		if (found != null) {
-			found.setPaint(NodePaint.DELETE);
+			Backlight foundBacklight = new Backlight(found, Backlight.RED);
+			addVisElem(foundBacklight);
 
 			RBNode u = (RBNode) found, w = (u.getLeft() != null) ? u.getLeft() : u
 					.getRight2();
@@ -96,13 +98,9 @@ public class RBDelete extends BSTFind {
 				if (son.isLeft()) {
 					son.getParent().linkLeft(w);
 				}
-//				else {
-//					son.getParent().linkRight(w);
-//				}
 				son.goNextTo(found);
 				pause(true);
 				
-				son.setPaint(NodePaint.NORMAL);
 				son.linkLeft(found.getLeft());
 				if (found.getRight() != son) {
 					son.linkRight(found.getRight());
@@ -117,6 +115,7 @@ public class RBDelete extends BSTFind {
 				}
 				removeVisElem(son);
 			} // end case III
+			removeVisElem(foundBacklight);
 			
 			requestLayout();
 

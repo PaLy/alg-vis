@@ -22,7 +22,7 @@ import javafx.scene.Node;
 
 public abstract class VisElem implements Comparable<VisElem> {
 	private final Node node;
-	private ZDepth zDepth = ZDepth.DEFAULT;
+	private ZDepth zDepth = ZDepth.TOP;
 	
 	public VisElem(Node node) {
 		this.node = node;

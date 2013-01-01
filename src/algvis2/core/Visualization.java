@@ -20,8 +20,6 @@ package algvis2.core;
 import algvis2.ds.dictionary.bst.BST;
 import algvis2.ds.dictionary.bst.CompactLayout;
 import algvis2.scene.layout.VisPane;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.layout.Pane;
 
 import java.util.HashMap;

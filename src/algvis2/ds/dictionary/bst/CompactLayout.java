@@ -22,7 +22,6 @@ import algvis2.scene.layout.ZDepth;
 import algvis2.scene.viselem.Edge;
 import algvis2.scene.viselem.Node;
 import algvis2.scene.viselem.VisElem;
-import javafx.scene.layout.Pane;
 import org.abego.treelayout.TreeLayout;
 import org.abego.treelayout.util.DefaultConfiguration;
 

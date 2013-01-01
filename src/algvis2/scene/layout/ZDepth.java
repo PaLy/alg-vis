@@ -18,17 +18,10 @@
 package algvis2.scene.layout;
 
 public enum ZDepth {
-	SHADES(0),
-	EDGES(1),
-	BACKLIGHT(2),
-	NODES(3),
-	ARROWS(4),
-	TOP(5),
-	DEFAULT(5);
-
-	private final int x;
-
-	private ZDepth(int x) {
-		this.x = x;
-	}
+	SHADES,
+	BACKLIGHT,
+	EDGES,
+	NODES,
+	ARROWS,
+	TOP
 }
