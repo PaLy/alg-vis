@@ -97,7 +97,7 @@ public class AlgVis extends Application {
 		fxmlLoader.setResources(ResourceBundle.getBundle("Messages",
 				new Locale(language)));
 		fxmlLoader.setLocation(getClass().getResource(
-				"../ui/AlgVis.fxml"));
+				"/algvis2/ui/AlgVis.fxml"));
 		Parent parent = null;
 		try {
 			parent = (Parent) fxmlLoader.load();

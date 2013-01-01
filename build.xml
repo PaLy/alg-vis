@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="alg-vis2" default="default" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
+	<target name="default">
+		<taskdef resource="com/sun/javafx/tools/ant/antlib.xml"
+						 uri="javafx:com.sun.javafx.tools.ant"
+						 classpath="/usr/lib/jvm/java-7-oracle/lib/ant-javafx.jar"/>
+
+    <fx:application id="gtApp" name="Gnarley Trees" mainClass="algvis2.core.AlgVis"/>
+    <fx:resources id="appRes">
+      <fx:fileset dir="lib"/>
+      <fx:fileset file="dist/GnarleyTrees.jar"/>
+    </fx:resources>
+    
+    <delete dir="dist"/>
+    <mkdir dir="dist"/>
+    
+		<fx:jar destfile="dist/GnarleyTrees.jar">
+			<fx:application refid="gtApp"/>
+      <fx:resources refid="appRes"/>
+      <fileset dir="bin"/>
+		</fx:jar>
+
+    <fx:deploy width="1024" height="576" outdir="dist"
+							 outfile="GnarleyTrees" nativeBundles="none">
+			<fx:info title="Gnarley Trees"/>
+      <fx:application refid="gtApp"/>
+      <fx:resources refid="appRes"/>
+		</fx:deploy>
+
+    <genkey alias="gtApp" storepass="hesielko" keystore="dist/gt.keystore"
+            dname="CN=Pavol Lukca, OU=Gnarley Trees, O=algvis, L=Bratislava, C=SK" validity="3650"/>
+    <fx:signjar keystore="dist/gt.keystore" alias="gtApp" storepass="hesielko" verbose="true">
+      <fileset dir="dist" includes="**/*.jar" excludes="bundles/**/*"/>
+    </fx:signjar>
+	</target>
+
+  
+  <target name="buildAll">
+    <taskdef resource="com/sun/javafx/tools/ant/antlib.xml"
+             uri="javafx:com.sun.javafx.tools.ant"
+             classpath="/usr/lib/jvm/java-7-oracle/lib/ant-javafx.jar"/>
+
+    <fx:application id="gtApp" name="Gnarley Trees" mainClass="algvis2.core.AlgVis"/>
+    <fx:resources id="appRes">
+      <fx:fileset dir="lib"/>
+      <fx:fileset file="dist/GnarleyTrees.jar"/>
+    </fx:resources>
+
+    <delete dir="dist"/>
+    <mkdir dir="dist"/>
+
+    <fx:jar destfile="dist/GnarleyTrees.jar">
+      <fx:application refid="gtApp"/>
+      <fx:resources refid="appRes"/>
+      <fileset dir="bin"/>
+    </fx:jar>
+
+    <fx:deploy width="1024" height="576" outdir="dist"
+               outfile="GnarleyTrees" nativeBundles="all">
+      <fx:info title="Gnarley Trees"/>
+      <fx:application refid="gtApp"/>
+      <fx:resources refid="appRes"/>
+    </fx:deploy>
+
+    <genkey alias="gtApp" storepass="hesielko" keystore="dist/gt.keystore"
+            dname="CN=Pavol Lukca, OU=Gnarley Trees, O=algvis, L=Bratislava, C=SK" validity="3650"/>
+    <fx:signjar keystore="dist/gt.keystore" alias="gtApp" storepass="hesielko" verbose="true">
+      <fileset dir="dist" includes="**/*.jar" excludes="bundles/**/*"/>
+    </fx:signjar>
+  </target>
+</project>
+	

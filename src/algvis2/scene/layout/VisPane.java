@@ -17,15 +17,14 @@
 
 package algvis2.scene.layout;
 
-import algvis2.animation.AutoTranslateTransition;
 import algvis2.core.DataStructure;
 import algvis2.core.PropertyStateEditable;
-import algvis2.scene.Axis;
 import algvis2.scene.viselem.Edge;
 import algvis2.scene.viselem.VisElem;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
@@ -36,18 +35,16 @@ import javafx.scene.layout.Pane;
 import java.util.*;
 
 public class VisPane implements PropertyStateEditable, AbsPosition {
-	private final Pane pane = new Pane();
+	private final FlowPane pane = new FlowPane();
 	private final DataStructure dataStructure;
 	private ArrayList<VisElem> dsElements = new ArrayList<VisElem>();
-	private final FlowPane wrappingPane = new FlowPane();
+	private final AnchorPane wrappingPane = new AnchorPane();
 	private final ObjectProperty<Set<VisElem>> children = new SimpleObjectProperty<Set<VisElem>>();
 	public static final String ID = "visPane";
 	private HashSet<ZDepth> doNotShow = new HashSet<ZDepth>();
 	private final Set<VisElem> notStorableChildren = new TreeSet<VisElem>();
 
 	private double mouseX, mouseY;
-	private final AutoTranslateTransition xTranslation = new AutoTranslateTransition(pane, Axis.X);
-	private final AutoTranslateTransition yTranslation = new AutoTranslateTransition(pane, Axis.Y);
 	private boolean canTranslate;
 
 	public VisPane(DataStructure dataStructure) {
@@ -59,7 +56,11 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 		AnchorPane.setRightAnchor(wrappingPane, 0.0);
 		AnchorPane.setTopAnchor(wrappingPane, 0.0);
 		AnchorPane.setBottomAnchor(wrappingPane, 0.0);
-		wrappingPane.setAlignment(Pos.TOP_CENTER);
+		AnchorPane.setLeftAnchor(pane, 0.0);
+		AnchorPane.setRightAnchor(pane, 0.0);
+		AnchorPane.setTopAnchor(pane, 0.0);
+		AnchorPane.setBottomAnchor(pane, 0.0);
+		pane.setAlignment(Pos.TOP_CENTER);
 		wrappingPane.getChildren().add(pane);
 
 		wrappingPane.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -75,17 +76,15 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
 				if (canTranslate) {
-					xTranslation.translate(mouseEvent.getSceneX() - mouseX);
+					pane.setTranslateX(pane.getTranslateX() + mouseEvent.getSceneX() - mouseX);
 					mouseX = mouseEvent.getSceneX();
-					yTranslation.translate(mouseEvent.getSceneY() - mouseY);
+					pane.setTranslateY(pane.getTranslateY() + mouseEvent.getSceneY() - mouseY);
 					mouseY = mouseEvent.getSceneY();
 				}
 			}
 		});
-		
-		pane.layoutXProperty().addListener(xTranslation);
-		pane.layoutYProperty().addListener(yTranslation);
-		
+
+		FlowPane.setMargin(dataStructure.getNode(), new Insets(25 + algvis2.scene.viselem.Node.RADIUS * 2.5, 0, 0, 0));
 		add(dataStructure);
 	}
 	
@@ -105,13 +104,17 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 		dataStructure.getNode().getChildren().clear();
 		for (VisElem elem : dsElements) {
 			dataStructure.getNode().getChildren().add(elem.getNode());
+			elem.getNode().setManaged(true);
 		}
 		paneChildren.clear();
 		for (VisElem elem : allChildren) {
 			if (!doNotShow.contains(elem.getZDepth())) {
 				paneChildren.add(elem.getNode());
+				elem.getNode().setManaged(false);
 			}
 		}
+		dataStructure.getNode().setManaged(true);
+		
 		recalcAbsPosition();
 	}
 

@@ -10,4 +10,5 @@ bin/
 *.xml
 !algvis-format.xml
 !algvis-profile.xml
+!build.xml
 *.iml

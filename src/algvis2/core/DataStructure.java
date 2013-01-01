@@ -21,7 +21,6 @@ import algvis.core.MyRandom;
 import algvis2.scene.control.InputField;
 import algvis2.scene.layout.AbsPosition;
 import algvis2.scene.layout.ZDepth;
-import algvis2.scene.viselem.Node;
 import algvis2.scene.viselem.VisElem;
 import javafx.animation.Animation;
 import javafx.scene.layout.Pane;
@@ -31,7 +30,6 @@ public abstract class DataStructure extends VisElem implements PropertyStateEdit
 
 	protected DataStructure(Visualization visualization) {
 		super(new Pane());
-		getNode().setLayoutY(25 + Node.RADIUS * 2.5);
 		setZDepth(ZDepth.NODES);
 		this.visualization = visualization;
 	}
