@@ -17,6 +17,8 @@
 
 package algvis2.core;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.Pane;
@@ -29,6 +31,7 @@ import java.util.ResourceBundle;
 public class Buttons {
 	private Pane pane;
 	private final URL fxmlUrl;
+	private final State state = new State();
 
 	public Buttons(URL fxmlUrl) {
 		this.fxmlUrl = fxmlUrl;
@@ -45,6 +48,7 @@ public class Buttons {
 			e.printStackTrace();
 		}
 		pane = parent;
+		state.update();
 		return parent;
 	}
 
@@ -55,17 +59,37 @@ public class Buttons {
 		pane.lookup("#buttonClear").setDisable(disabled);
 		pane.lookup("#buttonRandom").setDisable(disabled);
 		pane.lookup("#buttonPause").setDisable(disabled);
+		state.operations = disabled;
 	}
 	
 	public void disableNext(boolean disabled) {
 		pane.lookup("#buttonNext").setDisable(disabled);
+		state.next = disabled;
 	}
 
 	public void disablePrevious(boolean disabled) {
 		pane.lookup("#buttonPrevious").setDisable(disabled);
+		state.previous = disabled;
 	}
 	
 	public boolean isPauseChecked() {
 		return ((CheckBox) pane.lookup("#buttonPause")).isSelected();
+	}
+	
+	private final class State {
+		private boolean operations = false;
+		private boolean previous = true;
+		private boolean next = true;
+		private BooleanProperty pauseSelected = new SimpleBooleanProperty();
+
+		private void update() {
+			setDisabled(operations);
+			disableNext(next);
+			disablePrevious(previous);
+			if (pauseSelected.getValue() != null) {
+				((CheckBox) pane.lookup("#buttonPause")).setSelected(pauseSelected.getValue());
+			}
+			pauseSelected.bind(((CheckBox) pane.lookup("#buttonPause")).selectedProperty());
+		}
 	}
 }

@@ -46,12 +46,12 @@ public class CompactLayout {
 		}
 		
 		visPane.clearLayer(ZDepth.EDGES);
+		ArrayList<VisElem> nodes = new ArrayList<VisElem>();
 		if (bst.getRoot() != null) {
-			ArrayList<VisElem> nodes = new ArrayList<VisElem>();
 			createChildrenR(bst.getRoot(), nodes);
 			rebuildEdges(bst.getRoot(), visPane);
-			visPane.setDsElements(nodes);
 		}
+		visPane.setDsElements(nodes);
 	}
 
 	private static void createChildrenR(BSTNode node, List<VisElem> list) {
