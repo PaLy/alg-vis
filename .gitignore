@@ -6,9 +6,11 @@
 bin/
 *.pdf
 *.png
+!src/algvis2/ui/*.png
 *.pyc
 *.xml
 !algvis-format.xml
 !algvis-profile.xml
 !build.xml
 *.iml
+*.bak

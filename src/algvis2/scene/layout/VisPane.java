@@ -88,6 +88,10 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 		add(dataStructure);
 	}
 	
+	public Pane getPane() {
+		return pane;
+	}
+	
 	public Pane getWrappingPane() {
 		return wrappingPane;
 	}

@@ -28,12 +28,24 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
+import javafx.stage.StageBuilder;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -103,6 +115,54 @@ public class AlgVisFXMLController implements Initializable {
 		} else if (source.equals(menu_rb)) {
 			AlgVis.that.showVisualization(6);
 		}
+	}
+
+	@FXML
+	protected void centerPressed(ActionEvent event) {
+		AlgVis.getCurrentVis().getVisPane().setTranslatePos(0, 0);
+	}
+	
+	@FXML
+	protected void snapshotPressed(ActionEvent event) {
+		Node node = AlgVis.getCurrentVis().getVisPane().getPane();
+		int width = (int) Math.ceil(node.getBoundsInParent().getWidth());
+		int height = (int) Math.ceil(node.getBoundsInParent().getHeight());
+		WritableImage image = new WritableImage(width, height);
+		
+		node.snapshot(new SnapshotParameters(), image);
+		saveImage(image);
+		openStage(image, width, height);
+	}
+
+	private void saveImage(WritableImage image){
+		try {
+			BufferedImage bimg = convertToAwtImage(image);
+			File outputfile = new File("snapshot.png");
+			ImageIO.write(bimg, "png", outputfile);
+		} catch (IOException e) {
+		}
+	}
+
+	private java.awt.image.BufferedImage convertToAwtImage(javafx.scene.image.Image fxImage) {
+		if (Image.impl_isExternalFormatSupported(BufferedImage.class)) {
+			java.awt.image.BufferedImage awtImage = new BufferedImage((int)fxImage.getWidth(), (int)fxImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			return (BufferedImage)fxImage.impl_toExternalImage(awtImage);
+		} else {
+			return null;
+		}
+	}
+	
+	private void openStage(Image image, int width, int height){
+		StackPane sp = new StackPane();
+		sp.getChildren().add(new ImageView(image));
+
+		StageBuilder.create()
+				.title("Snapshot - snapshot.png")
+				.width(width)
+				.height(height)
+				.scene(new Scene(sp))
+				.build()
+				.show();
 	}
 
 	@FXML
