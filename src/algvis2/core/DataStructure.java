@@ -35,8 +35,8 @@ public abstract class DataStructure extends VisElem implements PropertyStateEdit
 	}
 
 	@Override
-	public Pane getNode() {
-		return (Pane) super.getNode();
+	public Pane getVisual() {
+		return (Pane) super.getVisual();
 	}
 
 	abstract public String getStats();

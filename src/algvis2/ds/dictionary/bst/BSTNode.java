@@ -46,10 +46,10 @@ public class BSTNode extends Node {
 		init();
 	}
 
-	public BSTNode(Node v) {
-		super(v);
-		init();
+	public BSTNode(javafx.scene.Node node) {
+		super(node);
 	}
+
 	private void init() {
 		leftProperty.addListener(new ChangeListener<BSTNode>() {
 			@Override
@@ -73,12 +73,12 @@ public class BSTNode extends Node {
 	}
 
 	public void setLeft(BSTNode left) {
-		if (left != null && left.getNode().layoutXProperty().isBound()) left.removeLayoutXYBindings();
+		if (left != null && left.getVisual().layoutXProperty().isBound()) left.removeLayoutXYBindings();
 		leftProperty.set(left);
 	}
 
 	public void setRight(BSTNode right) {
-		if (right != null && right.getNode().layoutXProperty().isBound()) right.removeLayoutXYBindings();
+		if (right != null && right.getVisual().layoutXProperty().isBound()) right.removeLayoutXYBindings();
 		rightProperty.set(right);
 	}
 
@@ -192,5 +192,19 @@ public class BSTNode extends Node {
 			leftProperty.get().storeState(state);
 		if (getRight() != null)
 			rightProperty.get().storeState(state);
+	}
+
+	@Override
+	public Object clone() {
+		BSTNode clone = new BSTNode(keyProperty.get(), paint);
+		clone.setLeft(getLeft());
+		clone.setRight(getRight());
+		clone.setParent(getParent());
+		
+		clone.removeAutoTranslations();
+		clone.goTo(this);
+		clone.addAutoTranslations();
+		
+		return clone;
 	}
 }

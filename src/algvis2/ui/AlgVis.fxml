@@ -7,6 +7,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
 <?scenebuilder-classpath-element ../../../bin?>
 <?scenebuilder-preview-i18n-resource ../../Messages_en.properties?>
 <!--
@@ -45,6 +46,11 @@
             <MenuItem disable="true" mnemonicParsing="false" text="%skiplist" />
             <MenuItem disable="true" mnemonicParsing="false" text="%scapegoat" />
             <MenuItem disable="true" mnemonicParsing="false" text="%splaytree" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="%persistent">
+          <items>
+            <MenuItem mnemonicParsing="false" onAction="#selectVisualization" text="%pcbst" fx:id="menu_pcbst" />
           </items>
         </Menu>
         <Menu disable="true" mnemonicParsing="false" text="%pq">
@@ -87,6 +93,11 @@
         </Menu>
       </menus>
     </MenuBar>
+    <Text fx:id="visTitle" text="Pointer Machine" underline="true" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="26.0">
+      <font>
+        <Font name="Purisa Bold" size="30.0" />
+      </font>
+    </Text>
     <TitledPane fx:id="buttonsTitledPane" alignment="TOP_LEFT" animated="true" collapsible="true" contentDisplay="LEFT" disable="false" expanded="true" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" text="%operations" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="0.0">
       <content>
         <fx:include source="Buttons.fxml" />

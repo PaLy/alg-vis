@@ -21,6 +21,7 @@ import algvis2.animation.AutoAnimsManager;
 import algvis2.ds.dictionary.avl.AVLVisualization;
 import algvis2.ds.dictionary.bst.BSTVisualization;
 import algvis2.ds.dictionary.rb.RBVisualization;
+import algvis2.ds.persistent.partially.bst.PCBSTVisualization;
 import algvis2.ui.AlgVisFXMLController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -28,6 +29,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -39,7 +41,7 @@ public class AlgVis extends Application {
 	private static Scene scene;
 	private static AlgVisFXMLController controller;
 	private static String language = "en";
-	private static final int NUMBER_OF_VISUALIZATIONS = 7;
+	private static final int NUMBER_OF_VISUALIZATIONS = 4;
 	private static final Visualization[] VISUALIZATIONS = new Visualization[NUMBER_OF_VISUALIZATIONS];
 	private static int currentVisualization = -1;
 
@@ -53,7 +55,7 @@ public class AlgVis extends Application {
 	public void start(Stage stage) throws Exception {
 		stage.setTitle("Gnarley Trees");
 		scene = new Scene(createRoot());
-		showVisualization(6);
+		showVisualization(3);
 		stage.setScene(scene);
 		//		stage.setFullScreen(true);
 
@@ -79,6 +81,7 @@ public class AlgVis extends Application {
 			TitledPane buttons = (TitledPane) scene
 					.lookup("#buttonsTitledPane");
 			buttons.setContent(VISUALIZATIONS[x].getButtonsPane(language));
+			((Text) scene.getRoot().lookup("#visTitle")).setText(VISUALIZATIONS[x].getTitle());
 
 			currentVisualization = x;
 		}
@@ -116,10 +119,12 @@ public class AlgVis extends Application {
 		switch (x) {
 		case 0:
 			return new BSTVisualization();
-		case 2:
+		case 1:
 			return new AVLVisualization();
-		case 6:
+		case 2:
 			return new RBVisualization();
+		case 3:
+			return new PCBSTVisualization();
 		default:
 			return null;
 		}

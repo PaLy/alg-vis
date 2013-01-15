@@ -24,6 +24,7 @@ import algvis2.scene.control.InputField;
 import algvis2.scene.layout.Layout;
 import javafx.animation.Animation;
 import javafx.animation.SequentialTransition;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -43,7 +44,6 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.StageBuilder;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -59,6 +59,8 @@ public class AlgVisFXMLController implements Initializable {
 	private MenuItem menu_avl;
 	@FXML
 	private MenuItem menu_rb;
+	@FXML
+	private MenuItem menu_pcbst;
 	@FXML
 	private TextField inputField;
 	@FXML
@@ -111,9 +113,11 @@ public class AlgVisFXMLController implements Initializable {
 		if (source.equals(menu_bst)) {
 			AlgVis.that.showVisualization(0);
 		} else if (source.equals(menu_avl)) {
-			AlgVis.that.showVisualization(2);
+			AlgVis.that.showVisualization(1);
 		} else if (source.equals(menu_rb)) {
-			AlgVis.that.showVisualization(6);
+			AlgVis.that.showVisualization(2);
+		} else if (source.equals(menu_pcbst)) {
+			AlgVis.that.showVisualization(3);
 		}
 	}
 
@@ -123,43 +127,27 @@ public class AlgVisFXMLController implements Initializable {
 	}
 	
 	@FXML
-	protected void snapshotPressed(ActionEvent event) {
+	protected void snapshotPressed(ActionEvent event) {		
 		Node node = AlgVis.getCurrentVis().getVisPane().getPane();
-		int width = (int) Math.ceil(node.getBoundsInParent().getWidth());
-		int height = (int) Math.ceil(node.getBoundsInParent().getHeight());
-		WritableImage image = new WritableImage(width, height);
+		WritableImage image = node.snapshot(new SnapshotParameters(), null);
 		
-		node.snapshot(new SnapshotParameters(), image);
-		saveImage(image);
-		openStage(image, width, height);
-	}
-
-	private void saveImage(WritableImage image){
+		// TODO: probably use a file chooser here
+		File file = new File("snapshot.png");
 		try {
-			BufferedImage bimg = convertToAwtImage(image);
-			File outputfile = new File("snapshot.png");
-			ImageIO.write(bimg, "png", outputfile);
+			ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
 		} catch (IOException e) {
+			e.printStackTrace();
+			return;
 		}
-	}
-
-	private java.awt.image.BufferedImage convertToAwtImage(javafx.scene.image.Image fxImage) {
-		if (Image.impl_isExternalFormatSupported(BufferedImage.class)) {
-			java.awt.image.BufferedImage awtImage = new BufferedImage((int)fxImage.getWidth(), (int)fxImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
-			return (BufferedImage)fxImage.impl_toExternalImage(awtImage);
-		} else {
-			return null;
-		}
+		openStage(image);
 	}
 	
-	private void openStage(Image image, int width, int height){
+	private void openStage(Image image){
 		StackPane sp = new StackPane();
 		sp.getChildren().add(new ImageView(image));
 
 		StageBuilder.create()
 				.title("Snapshot - snapshot.png")
-				.width(width)
-				.height(height)
 				.scene(new Scene(sp))
 				.build()
 				.show();
@@ -228,6 +216,7 @@ public class AlgVisFXMLController implements Initializable {
 		st.jumpTo("end");
 		AlgVis.getCurrentVis().animManager.add(list, true);
 		AlgVis.getCurrentVis().getButtons().disablePrevious(false);
+		AlgVis.getCurrentVis().visPane.refresh(); // TODO co?? ...jaaaj to kvoli tomu blbemu pcBST; casom to pojde prec
 		AlgVis.getCurrentVis().reLayout();
 	}
 	

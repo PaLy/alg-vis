@@ -15,47 +15,63 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.ds.dictionary.bst;
+package algvis2.ds.persistent.partially.bst;
 
 import algvis2.core.Algorithm;
+import algvis2.ds.dictionary.bst.BSTNode;
 import algvis2.scene.layout.ZDepth;
 import algvis2.scene.paint.NodePaint;
 import javafx.animation.ScaleTransitionBuilder;
 import javafx.util.Duration;
 
-public class BSTInsert extends Algorithm {
-	protected final BST D;
-	protected BSTNode newNode;
-
-	protected BSTInsert(BST D, BSTNode newNode) {
+public class Insert extends Algorithm {
+	private final PCBST D;
+	private final BSTNode newNode;
+	
+	protected Insert(PCBST D, BSTNode newNode) {
 		super(D);
 		this.D = D;
 		this.newNode = newNode;
 	}
 
 	@Override
-	public void runAlgorithm() {
+	protected void runAlgorithm() {
+		D.time++;
+		
 		addVisElem(newNode, ZDepth.TOP);
 
 		if (D.getRoot() == null) {
 			D.setRoot(newNode);
 		} else {
-			BSTNode cur = D.getRoot();
+			GroupOfBSTNodes cur = D.getRoot();
 			while (true) {
 				newNode.goAbove(cur);
-				pause(false);
+				pause(true);
+				cur.addNode(D.time);
+				GroupOfBSTNodes parent = cur.getParent();
+				BSTNode lastOfCur = cur.getLastNode();
+				if (parent != null) {
+					BSTNode lastOfParent = parent.getLastNode();
+					if (cur.isLeft()) {
+						lastOfParent.setLeft(lastOfCur);
+					} else {
+						lastOfParent.setRight(lastOfCur);
+					}
+				}
 				if (newNode.getKey() > cur.getKey()) {
 					if (cur.getRight() == null) {
-						cur.linkRight(newNode);
+						cur.setRight(newNode);
 						break;
 					} else {
+						cur.getLastNode().setRight(null);
 						cur = cur.getRight();
 					}
 				} else {
 					if (cur.getLeft() == null) {
-						cur.linkLeft(newNode);
+						cur.setLeft(newNode);
 						break;
 					} else {
+						cur.getLastNode().setLeft(null);
 						cur = cur.getLeft();
 					}
 				}
@@ -63,12 +79,12 @@ public class BSTInsert extends Algorithm {
 		}
 
 		removeVisElem(newNode);
-		
+
 		requestLayout();
 		addAnimation(ScaleTransitionBuilder.create().node(newNode.getVisual()).byX(0.5)
 				.byY(0.5).duration(Duration.millis(500)).cycleCount(2)
 				.autoReverse(true).build());
-		
+
 		newNode.setPaint(NodePaint.NORMAL);
 	}
 }

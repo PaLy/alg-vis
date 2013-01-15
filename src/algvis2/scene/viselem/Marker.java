@@ -38,39 +38,39 @@ public class Marker extends VisElem implements PropertyStateEditable {
 	public Marker() {
 		super(new Circle());
 		setZDepth(ZDepth.TOP);
-		getNode().setFill(Color.TRANSPARENT);
-		getNode().setStroke(Color.BLACK);
+		getVisual().setFill(Color.TRANSPARENT);
+		getVisual().setStroke(Color.BLACK);
 
-		getNode().layoutXProperty().addListener(new AutoTranslateTransition(getNode(), Axis.X));
-		getNode().layoutYProperty().addListener(new AutoTranslateTransition(getNode(), Axis.Y));
+		getVisual().layoutXProperty().addListener(new AutoTranslateTransition(getVisual(), Axis.X));
+		getVisual().layoutYProperty().addListener(new AutoTranslateTransition(getVisual(), Axis.Y));
 		
 		this.elem.addListener(new ChangeListener<algvis2.scene.viselem.Node>() {
 			@Override
 			public void changed(ObservableValue<? extends algvis2.scene.viselem.Node> observableValue, algvis2.scene.viselem.Node node, algvis2.scene.viselem.Node node2) {
 				if (node != null) {
-					node.getNode().scaleXProperty().removeListener(scaleChange);
-					node.getNode().scaleYProperty().removeListener(scaleChange);
+					node.getVisual().scaleXProperty().removeListener(scaleChange);
+					node.getVisual().scaleYProperty().removeListener(scaleChange);
 				}
 
 				if (node2 != null && node2 != RB.NULL) {
-					node2.getNode().scaleXProperty().addListener(scaleChange);
-					node2.getNode().scaleYProperty().addListener(scaleChange);
+					node2.getVisual().scaleXProperty().addListener(scaleChange);
+					node2.getVisual().scaleYProperty().addListener(scaleChange);
 					scaleChange.changed(null, null, null);
 
-					getNode().layoutXProperty().bind(node2.visPaneX);
-					getNode().layoutYProperty().bind(node2.visPaneY);
+					getVisual().layoutXProperty().bind(node2.visPaneX);
+					getVisual().layoutYProperty().bind(node2.visPaneY);
 
-					getNode().setVisible(true);
+					getVisual().setVisible(true);
 				}else{
-					getNode().setVisible(false);
+					getVisual().setVisible(false);
 				}
 			}
 		});
 	}
 
 	@Override
-	public Circle getNode() {
-		return (Circle) super.getNode();
+	public Circle getVisual() {
+		return (Circle) super.getVisual();
 	}
 
 	@Override
@@ -81,8 +81,8 @@ public class Marker extends VisElem implements PropertyStateEditable {
 	private final class ScaleChange implements ChangeListener<Number> {
 		@Override
 		public void changed(ObservableValue<? extends Number> observableValue, Number number, Number number2) {
-			getNode().setRadius(Math.max(elem.get().getNode().getBoundsInParent().getWidth(),
-					elem.get().getNode().getBoundsInParent().getHeight()) * 0.5);
+			getVisual().setRadius(Math.max(elem.get().getVisual().getBoundsInParent().getWidth(),
+					elem.get().getVisual().getBoundsInParent().getHeight()) * 0.5);
 		}
 	}
 }

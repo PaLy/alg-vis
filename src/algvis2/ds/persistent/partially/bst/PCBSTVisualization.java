@@ -15,15 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.scene.text;
+package algvis2.ds.persistent.partially.bst;
 
-import algvis2.scene.viselem.Node;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
+import algvis2.core.Buttons;
+import algvis2.core.Visualization;
 
-public class Fonts {
-	// TODO font "System" je zlo
-	// TODO 2: fonty treba pridat do jar subory, lebo nemusia byt na kazdom OS, napr. na windowse nie je "Purisa"
-	public static final Font NODE_FONT = new Font(Node.RADIUS - 3);
-	public static final Font TOP_TEXT = Font.font("Arial", FontWeight.BOLD, 15);
+public class PCBSTVisualization extends Visualization {
+	@Override
+	protected void init() {
+		dataStructure = new PCBST(this);
+		buttons = new Buttons(getClass()
+				.getResource("/algvis2/ui/Buttons.fxml"));
+	}
+
+	@Override
+	public String getTitle() {
+		return "BST with path copying"; // partially persistent
+	}
 }

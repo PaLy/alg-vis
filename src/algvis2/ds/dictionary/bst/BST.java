@@ -106,6 +106,16 @@ public class BST extends Dictionary implements TreeForTreeLayout<BSTNode> {
 		else return null;
 	}
 
+	@Override
+	public boolean isLeft(BSTNode node) {
+		return node.isLeft();
+	}
+
+	@Override
+	public boolean isBinaryTree() {
+		return true;
+	}
+
 	public void setRoot(BSTNode root) {
 		rootProperty.set(root);
 		if (root != null) root.removeLayoutXYBindings();

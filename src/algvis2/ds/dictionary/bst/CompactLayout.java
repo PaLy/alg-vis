@@ -22,6 +22,7 @@ import algvis2.scene.layout.ZDepth;
 import algvis2.scene.viselem.Edge;
 import algvis2.scene.viselem.Node;
 import algvis2.scene.viselem.VisElem;
+import org.abego.treelayout.Configuration;
 import org.abego.treelayout.TreeLayout;
 import org.abego.treelayout.util.DefaultConfiguration;
 
@@ -34,13 +35,14 @@ public class CompactLayout {
 	public static void layout(BST bst, VisPane visPane) {
 		if (bst.getRoot() != null) {
 			TreeLayout<BSTNode> layout = new TreeLayout<BSTNode>(bst, new BSTNodeExtentProvider(),
-					new DefaultConfiguration<BSTNode>(0, Node.RADIUS));
+					new DefaultConfiguration<BSTNode>(0, Node.RADIUS, Configuration.Location.Top,
+							Configuration.AlignmentInLevel.AwayFromRoot));
 			Map<BSTNode, Rectangle2D.Double> nodeBounds = layout.getNodeBounds();
 			for (Map.Entry<BSTNode, Rectangle2D.Double> entry : nodeBounds.entrySet()) {
-				if (entry.getKey().getNode().layoutXProperty().isBound()) {
+				if (entry.getKey().getVisual().layoutXProperty().isBound()) {
 //					entry.getKey().removeLayoutXYBindings();
 				} else {
-					entry.getKey().getNode().relocate(entry.getValue().getX(), entry.getValue().getY());
+					entry.getKey().getVisual().relocate(entry.getValue().getX(), entry.getValue().getY());
 				}
 			}
 		}

@@ -27,4 +27,9 @@ public class AVLVisualization extends Visualization {
 		buttons = new Buttons(getClass()
 				.getResource("/algvis2/ui/Buttons.fxml"));
 	}
+
+	@Override
+	public String getTitle() {
+		return "AVL tree";
+	}
 }

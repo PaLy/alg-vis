@@ -15,21 +15,56 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.ds.dictionary.rb;
+package algvis2.ds.persistent.partially.bst;
 
-import algvis2.core.Buttons;
+import algvis2.core.Algorithm;
 import algvis2.core.Visualization;
+import algvis2.ds.dictionary.bst.BST;
+import algvis2.ds.dictionary.bst.BSTNode;
+import algvis2.scene.paint.NodePaint;
 
-public class RBVisualization extends Visualization {
-	@Override
-	protected void init() {
-		dataStructure = new RB(this);
-		buttons = new Buttons(getClass()
-				.getResource("/algvis2/ui/Buttons.fxml"));
+/**
+ * Partially persistent binary search tree with path copying
+ */
+public class PCBST extends BST {
+	int time = -1;
+	
+	public PCBST(Visualization visualization) {
+		super(visualization);
 	}
 
 	@Override
-	public String getTitle() {
-		return "Red-black tree";
+	public void clear() {
+		super.clear();
+		time = -1;
+	}
+
+	@Override
+	public GroupOfBSTNodes getRoot() {
+		return (GroupOfBSTNodes) super.getRoot();
+	}
+
+	@Override
+	public void setRoot(BSTNode root) {
+		if (rootProperty.get() == null) {
+			if (root != null) {
+				rootProperty.set(new GroupOfBSTNodes(root, 0));
+				root.removeLayoutXYBindings();
+			}
+		} else {
+			if (root == null) {
+				rootProperty.set(null);
+			} else {
+				// TODO
+			}
+		}
+	}
+
+	@Override
+	public Algorithm insert(int x) {
+		Insert insert = new Insert(this, new BSTNode(x,
+				NodePaint.INSERT));
+		insert.run();
+		return insert;
 	}
 }

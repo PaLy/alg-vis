@@ -21,15 +21,15 @@ import algvis2.scene.layout.ZDepth;
 import javafx.scene.Node;
 
 public abstract class VisElem implements Comparable<VisElem> {
-	private final Node node;
+	private final Node visual;
 	private ZDepth zDepth = ZDepth.TOP;
 	
-	public VisElem(Node node) {
-		this.node = node;
+	public VisElem(Node visual) {
+		this.visual = visual;
 	}
 	
-	public Node getNode() {
-		return node;
+	public Node getVisual() {
+		return visual;
 	}
 
 	public ZDepth getZDepth() {

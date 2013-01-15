@@ -27,14 +27,14 @@ public class Edge extends VisElem {
 	}
 
 	@Override
-	public Line getNode() {
-		return (Line) super.getNode();
+	public Line getVisual() {
+		return (Line) super.getVisual();
 	}
 
 	public void bindNodes(Node startNode, Node endNode) {
-		getNode().startXProperty().bind(startNode.visPaneX.add(startNode.visPaneTranslateX));
-		getNode().startYProperty().bind(startNode.visPaneY.add(startNode.visPaneTranslateY));
-		getNode().endXProperty().bind(endNode.visPaneX.add(endNode.visPaneTranslateX));
-		getNode().endYProperty().bind(endNode.visPaneY.add(endNode.visPaneTranslateY));
+		getVisual().startXProperty().bind(startNode.visPaneX.add(startNode.visPaneTranslateX));
+		getVisual().startYProperty().bind(startNode.visPaneY.add(startNode.visPaneTranslateY));
+		getVisual().endXProperty().bind(endNode.visPaneX.add(endNode.visPaneTranslateX));
+		getVisual().endYProperty().bind(endNode.visPaneY.add(endNode.visPaneTranslateY));
 	}
 }

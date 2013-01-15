@@ -40,6 +40,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.CircleBuilder;
 import javafx.scene.shape.Shape;
+import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBuilder;
 
@@ -56,8 +57,8 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 
 	public static final int RADIUS = 20;
 	public static final int INF = 99999;
-	private final NodePaint paint = new NodePaint(NodePaint.NORMAL);
-	public final ObjectProperty<Integer> keyProperty;
+	protected final NodePaint paint = new NodePaint(NodePaint.NORMAL);
+	protected ObjectProperty<Integer> keyProperty;
 
 	// TODO node can be bound only if it is not managed?
 	// these properties are used if this node is bound to another node
@@ -66,6 +67,8 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 	private ObjectProperty<DoubleBinding> layoutYBindingProperty = new SimpleObjectProperty<DoubleBinding>();
 
 	public static final int NULL = 100000;
+	private final AutoTranslateTransition autoTranslateXTransition = new AutoTranslateTransition(getVisual(), Axis.X);
+	private final AutoTranslateTransition autoTranslateYTransition = new AutoTranslateTransition(getVisual(), Axis.Y);
 
 	public Node(int key) {
 		super(new Group());
@@ -80,17 +83,8 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 		init();
 	}
 
-	public Node(Node v) {
-		super(new Group());
-		this.keyProperty = new SimpleObjectProperty<Integer>(v.getKey());
-		visPaneX.set(v.visPaneX.get() + v.visPaneTranslateX.get());
-		visPaneY.set(v.visPaneY.get() + v.visPaneTranslateY.get());
-		init();
-	}
-
-	@Override
-	public Group getNode() {
-		return (Group) super.getNode();
+	public Node(javafx.scene.Node node) {
+		super(node);
 	}
 
 	private void init() {
@@ -114,11 +108,12 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 				.fill(paint.text.get()).build();
 		text.setX(text.getX() - text.getBoundsInLocal().getWidth() / 2);
 
-		getNode().getChildren().addAll(circle, text);
+		Group visual = (Group) getVisual();
+		visual.getChildren().addAll(circle, text);
 
 		paint.background.addListener(new AutoFillTransition(
-				(Shape) getNode().getChildren().get(0)));
-		paint.text.addListener(new AutoFillTransition((Shape) getNode().getChildren()
+				(Shape) visual.getChildren().get(0)));
+		paint.text.addListener(new AutoFillTransition((Shape) visual.getChildren()
 				.get(1)));
 
 		layoutXBindingProperty.addListener(new ChangeListener<DoubleBinding>() {
@@ -132,9 +127,9 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 				//                    System.out.println(getKey() + " X " + newBinding.get());
 
                 if (newBinding != null) {
-                    getNode().layoutXProperty().bind(newBinding);
+                    getVisual().layoutXProperty().bind(newBinding);
                 } else {
-                    getNode().layoutXProperty().unbind();
+                    getVisual().layoutXProperty().unbind();
                 }
 //                System.out.println(getKey() + " bindingX: " + newBinding);
 			}
@@ -149,9 +144,9 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 				//                else
 				//                    System.out.println(getKey() + " Y " + newBinding.get());
                 if (newBinding != null) {
-                    getNode().layoutYProperty().bind(newBinding);
+                    getVisual().layoutYProperty().bind(newBinding);
                 } else {
-                    getNode().layoutYProperty().unbind();
+                    getVisual().layoutYProperty().unbind();
                 }
 //					System.out.println(getKey() + " bindingY: " + newBinding);
 			}
@@ -160,9 +155,10 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 		layoutYBindingProperty.set(new SimpleDoubleProperty(0).add(0));
 
 		bindVisPanePos();
-		
-		visPaneX.addListener(new AutoTranslateTransition(getNode(), Axis.X));
-		visPaneY.addListener(new AutoTranslateTransition(getNode(), Axis.Y));
+
+		visPaneX.addListener(autoTranslateXTransition); // TODO len layoutX.addListener? pane by mal mat vlastny 
+		// autoTranslation
+		visPaneY.addListener(autoTranslateYTransition);
 		
 //		translateYProperty().addListener(new ChangeListener<Number>() {
 //			@Override
@@ -185,10 +181,42 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 //			}
 //		});
 	}
+	
+	public void removeAutoTranslations() {
+		visPaneX.removeListener(autoTranslateXTransition);
+		visPaneY.removeListener(autoTranslateYTransition);
+	}
+	
+	public void addAutoTranslations() {
+		visPaneX.removeListener(autoTranslateXTransition);
+		visPaneY.removeListener(autoTranslateYTransition);
+		visPaneX.addListener(autoTranslateXTransition);
+		visPaneY.addListener(autoTranslateYTransition);
+	}
+
+	public void setTopText(String s) {
+		Text text = TextBuilder.create()
+				.text(s)
+				.font(Fonts.TOP_TEXT)
+				.stroke(Color.WHITE)
+				.strokeType(StrokeType.OUTSIDE)
+				.strokeWidth(2)
+				.build();
+		text.setX(text.getX() - text.getBoundsInLocal().getWidth() / 2);
+		text.setY(text.getY() - Node.RADIUS * 1.2);
+		
+		((Group) getVisual()).getChildren().add(text);
+	}
 
 	public void goAbove(Node node) {
-		layoutXBindingProperty.set(node.visPaneX.add(0));
-		layoutYBindingProperty.set(node.visPaneY.subtract(Node.RADIUS * 2.4));
+		// TODO tieto ify bude treba tiez poriesit
+		if (node.getVisual() instanceof Group) {
+			layoutXBindingProperty.set(node.visPaneX.add(0));
+			layoutYBindingProperty.set(node.visPaneY.subtract(Node.RADIUS * 2.4));
+		} else {
+			layoutXBindingProperty.set(node.visPaneX.add(node.getVisual().getBoundsInLocal().getWidth() / 2));
+			layoutYBindingProperty.set(node.visPaneY.subtract(Node.RADIUS * 1.5));
+		}
 	}
 
 	public void goTo(Node node) {
@@ -197,8 +225,13 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 	}
 	
 	public void goNextTo(Node node) {
-		layoutXBindingProperty.set(node.visPaneX.add(Node.RADIUS * 2.4));
-		layoutYBindingProperty.set(node.visPaneY.add(0));
+		if (node.getVisual() instanceof Group) {
+			layoutXBindingProperty.set(node.visPaneX.add(Node.RADIUS * 1.5));
+			layoutYBindingProperty.set(node.visPaneY.add(0));
+		} else {
+			layoutXBindingProperty.set(node.visPaneX.add(node.getVisual().getBoundsInLocal().getWidth() / 2));
+			layoutYBindingProperty.set(node.visPaneY.add(0));
+		}
 	}
 
 	public void removeLayoutXYBindings() {
@@ -207,7 +240,7 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 	}
 
 	public Shape getShape() {
-		return (Shape) getNode().getChildren().get(0);
+		return (Shape) ((Group) getVisual()).getChildren().get(0);
 	}
 
 	@Override
@@ -216,11 +249,11 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 	}
 
 	private void bindVisPanePos() {
-		DoubleBinding vpX = getNode().layoutXProperty().add(0);
-		DoubleBinding vpY = getNode().layoutYProperty().add(0);
-		DoubleBinding vptX = getNode().translateXProperty().add(0);
-		DoubleBinding vptY = getNode().translateYProperty().add(0);
-		Parent parent = getNode().getParent();
+		DoubleBinding vpX = getVisual().layoutXProperty().add(0);
+		DoubleBinding vpY = getVisual().layoutYProperty().add(0);
+		DoubleBinding vptX = getVisual().translateXProperty().add(0);
+		DoubleBinding vptY = getVisual().translateYProperty().add(0);
+		Parent parent = getVisual().getParent();
 		while (true) {
 			if (parent == null) {
 				break;
@@ -255,7 +288,7 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 	public void storeState(HashMap<Object, Object> state) {
 		state.put(paint.background, paint.background.get());
 		state.put(paint.text, paint.text.get());
-		state.put(keyProperty, keyProperty.get());
+		if (keyProperty != null) state.put(keyProperty, keyProperty.get());
 		state.put(layoutXBindingProperty, layoutXBindingProperty.get());
 		state.put(layoutYBindingProperty, layoutYBindingProperty.get());
 	}

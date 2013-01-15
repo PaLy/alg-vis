@@ -70,4 +70,6 @@ public abstract class Visualization implements PropertyStateEditable {
 		visPane.storeState(state);
 		dataStructure.storeState(state);
 	}
+
+	public abstract String getTitle();
 }

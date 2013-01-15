@@ -22,11 +22,11 @@ import org.abego.treelayout.NodeExtentProvider;
 public class BSTNodeExtentProvider implements NodeExtentProvider<BSTNode> {
 	@Override
 	public double getWidth(BSTNode bstNode) {
-		return bstNode.getNode().getBoundsInLocal().getWidth();
+		return bstNode.getVisual().getBoundsInLocal().getWidth();
 	}
 
 	@Override
 	public double getHeight(BSTNode bstNode) {
-		return bstNode.getNode().getBoundsInLocal().getHeight();
+		return bstNode.getVisual().getBoundsInLocal().getHeight();
 	}
 }

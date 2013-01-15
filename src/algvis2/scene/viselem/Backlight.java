@@ -33,28 +33,28 @@ public class Backlight extends VisElem {
 	
 	public Backlight(Node node, Paint paint) {
 		super(new Circle());
-		getNode().setRadius(Node.RADIUS * 1.25);
-		getNode().layoutXProperty().bind(node.visPaneX);
-		getNode().layoutYProperty().bind(node.visPaneY);
-//		getNode().setFill(RadialGradientBuilder.create()
+		getVisual().setRadius(Node.RADIUS * 1.25);
+		getVisual().layoutXProperty().bind(node.visPaneX);
+		getVisual().layoutYProperty().bind(node.visPaneY);
+//		getVisual().setFill(RadialGradientBuilder.create()
 //				.centerX(0.5)
 //				.centerY(0.5)
 //				.radius(1)
 //				.stops(new Stop(0, Color.RED), new Stop(1, Color.WHITE))
 //				.build());
-		getNode().setFill(paint);
+		getVisual().setFill(paint);
 		
 		setZDepth(ZDepth.BACKLIGHT);
 		
-		getNode().layoutXProperty().addListener(new AutoTranslateTransition(getNode(), Axis.X));
-		getNode().layoutYProperty().addListener(new AutoTranslateTransition(getNode(), Axis.Y));
+		getVisual().layoutXProperty().addListener(new AutoTranslateTransition(getVisual(), Axis.X));
+		getVisual().layoutYProperty().addListener(new AutoTranslateTransition(getVisual(), Axis.Y));
 	}
 	
 	public Backlight(Node node, Paint paint, boolean blinking) {
 		this(node, paint);
 		if (blinking) {
 			FadeTransitionBuilder.create()
-					.node(getNode())
+					.node(getVisual())
 					.duration(Duration.millis(500))
 					.fromValue(1)
 					.toValue(0)
@@ -66,7 +66,7 @@ public class Backlight extends VisElem {
 	}
 
 	@Override
-	public Circle getNode() {
-		return (Circle) super.getNode();
+	public Circle getVisual() {
+		return (Circle) super.getVisual();
 	}
 }
