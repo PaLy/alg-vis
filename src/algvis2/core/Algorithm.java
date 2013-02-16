@@ -37,7 +37,7 @@ public abstract class Algorithm implements Runnable {
 	private SequentialTransition step = new SequentialTransition();
 	public final List<Animation> allSteps = new ArrayList<Animation>();
 	
-	private boolean layoutRequested = false;
+	private boolean layoutRequested = true;
 
 	protected Algorithm(DataStructure D) {
 		visualization = D.visualization;
@@ -81,7 +81,7 @@ public abstract class Algorithm implements Runnable {
 		layoutRequested = true;
 	}
 
-	private void saveChangedProperties() {
+	protected void saveChangedProperties() {
 		step.getChildren().add(state.createTimeline(layoutRequested));
 		layoutRequested = false;
 		

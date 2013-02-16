@@ -56,6 +56,7 @@ public class BST extends Dictionary implements TreeForTreeLayout<BSTNode> {
 
 	@Override
 	public Algorithm insert(int x) {
+		// TODO! node vytvarat az v algoritme?
 		BSTInsert bstInsert = new BSTInsert(this, new BSTNode(x,
 				NodePaint.INSERT));
 		bstInsert.run();
@@ -118,7 +119,7 @@ public class BST extends Dictionary implements TreeForTreeLayout<BSTNode> {
 
 	public void setRoot(BSTNode root) {
 		rootProperty.set(root);
-		if (root != null) root.removeLayoutXYBindings();
+		if (root != null) root.removePosBinding();
 	}
 
 	protected void leftRot(BSTNode v) {

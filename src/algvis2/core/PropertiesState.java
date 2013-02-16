@@ -49,11 +49,19 @@ public class PropertiesState {
 				Object preValue = preState.get(key);
 				if (wvKey.getValue() instanceof Collection) {
 					Collection collection = (Collection) wvKey.getValue();
-					
+
 					Object[] preVal = (Object[]) preValue;
 					if (!Arrays.equals(preVal, collection.toArray())) {
 						preElements.put(wvKey, preVal);
 						postElements.put(wvKey, collection.toArray());
+					}
+				} else if (wvKey.getValue() instanceof Map) {
+					Map map = (Map) wvKey.getValue();
+
+					Object[] preVal = (Object[]) preValue;
+					if (!Arrays.equals(preVal, map.entrySet().toArray())) {
+						preElements.put(wvKey, preVal);
+						postElements.put(wvKey, map.entrySet().toArray());
 					}
 				} else {
 					if ((preValue != null && !preValue.equals(wvKey.getValue()))
@@ -76,23 +84,47 @@ public class PropertiesState {
 		timeline.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				for (WritableValue<Collection> writableValue : preElements.keySet()) {
-					Collection collection = writableValue.getValue();
+				for (WritableValue writableValue : preElements.keySet()) {
+					if (writableValue.getValue() instanceof Collection) {
+						Collection collection = (Collection) writableValue
+								.getValue();
 
-					collection.clear();
-					if (timeline.getRate() > 0)
-						Collections.addAll(collection, postElements.get(writableValue));
-					else if (timeline.getRate() < 0) {
-						Collections.addAll(collection, preElements.get(writableValue));
-					} else {
-						System.out.println("WTF");
-						return;
+						collection.clear();
+						if (timeline.getRate() > 0)
+							Collections.addAll(collection,
+									postElements.get(writableValue));
+						else if (timeline.getRate() < 0) {
+							Collections.addAll(collection,
+									preElements.get(writableValue));
+						} else {
+							System.out.println("WTF");
+							return;
+
+						}
+					} else if (writableValue.getValue() instanceof Map) {
+						Map map = (Map) writableValue.getValue();
+
+						map.clear();
+						if (timeline.getRate() > 0) {
+							for (Object entry : postElements.get(writableValue)) {
+								Map.Entry e = (Map.Entry) entry;
+								map.put(e.getKey(), e.getValue());
+							}
+						} else if (timeline.getRate() < 0) {
+							for (Object entry : preElements.get(writableValue)) {
+								Map.Entry e = (Map.Entry) entry;
+								map.put(e.getKey(), e.getValue());
+							}
+						} else {
+							System.out.println("WTF2");
+							return;
+						}
 					}
 				}
 				if (layoutRequested) {
 					visualization.reLayout();
 				}
-//				System.out.println("teraz " + (timeline.getRate() > 0 ? "dopredu" : "dozadu") + " " + k++);
+				//				System.out.println("teraz " + (timeline.getRate() > 0 ? "dopredu" : "dozadu") + " " + k++);
 			}
 		});
 		return timeline;

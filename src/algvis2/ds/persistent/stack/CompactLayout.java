@@ -15,8 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.ds.dictionary.bst;
+package algvis2.ds.persistent.stack;
 
+import algvis2.ds.dictionary.bst.MyNodeExtentProvider;
 import algvis2.scene.layout.VisPane;
 import algvis2.scene.layout.ZDepth;
 import algvis2.scene.viselem.Edge;
@@ -32,48 +33,61 @@ import java.util.List;
 import java.util.Map;
 
 public class CompactLayout {
-	public static void layout(BST bst, VisPane visPane) {
-		if (bst.getRoot() != null) {
-			TreeLayout<BSTNode> layout = new TreeLayout<BSTNode>(bst, new MyNodeExtentProvider<BSTNode>(),
-					new DefaultConfiguration<BSTNode>(0, Node.RADIUS, Configuration.Location.Top,
-							Configuration.AlignmentInLevel.AwayFromRoot));
-			Map<BSTNode, Rectangle2D.Double> nodeBounds = layout.getNodeBounds();
-			for (Map.Entry<BSTNode, Rectangle2D.Double> entry : nodeBounds.entrySet()) {
+	public static void layout(Stack.StackTree stackTree, VisPane visPane) {
+		if (stackTree.getRoot() != null) {
+			TreeLayout<Node> layout = new TreeLayout<Node>(stackTree, new MyNodeExtentProvider<Node>(),
+					new DefaultConfiguration<Node>(Node.RADIUS / 2, Node.RADIUS, Configuration.Location.Bottom,
+							Configuration.AlignmentInLevel.Center));
+			Map<Node, Rectangle2D.Double> nodeBounds = layout.getNodeBounds();
+			for (Map.Entry<Node, Rectangle2D.Double> entry : nodeBounds.entrySet()) {
 				if (entry.getKey().getVisual().layoutXProperty().isBound()) {
-//					entry.getKey().removePosBinding();
+					// entry.getKey().removePosBinding();
 				} else {
 					entry.getKey().getVisual().relocate(entry.getValue().getX(), entry.getValue().getY());
 				}
 			}
 		}
-		
+
 		visPane.clearLayer(ZDepth.EDGES);
 		ArrayList<VisElem> nodes = new ArrayList<VisElem>();
-		if (bst.getRoot() != null) {
-			createChildrenR(bst.getRoot(), nodes);
-			rebuildEdges(bst.getRoot(), visPane);
+		if (stackTree.getRoot() != null) {
+			createChildrenR(stackTree.getRoot(), nodes);
+			rebuildEdges(stackTree.getRoot(), visPane);
 		}
 		visPane.setDsElements(nodes);
+
 	}
 
-	private static void createChildrenR(BSTNode node, List<VisElem> list) {
+	private static void createChildrenR(StackNode node, List<VisElem> list) {
 		if (node != null) {
 			list.add(node);
-			createChildrenR(node.getLeft(), list);
-			createChildrenR(node.getRight(), list);
+			for (Map.Entry<Node, Boolean> entry : node.parentNodes().entrySet()) {
+				if (entry.getValue()) {
+					if (entry.getKey() instanceof StackNode) {
+						createChildrenR((StackNode) entry.getKey(), list);
+					} else {
+						list.add(entry.getKey());
+					}
+				}
+			}
 		}
 	}
-	
-	private static void rebuildEdges(BSTNode node, VisPane visPane) {
-		ArrayList<Edge> edges = node.getEdges();
-		for (Edge edge : edges) {
-			visPane.addNotStorableVisElem(edge);
-		}
-		if (node.getLeft() != null) {
-			rebuildEdges(node.getLeft(), visPane);
-		}
-		if (node.getRight() != null) {
-			rebuildEdges(node.getRight(), visPane);
+
+	private static void rebuildEdges(StackNode node, VisPane visPane) {
+		for (Map.Entry<Node, Boolean> entry : node.parentNodes().entrySet()) {
+			if (entry.getValue()) {
+				Edge edge;
+				if (node instanceof StackNode.NullNode) {
+					edge = new Edge();
+				} else {
+					edge = new Edge(Node.RADIUS);
+				}
+				edge.bindNodes(entry.getKey(), node);
+				visPane.addNotStorableVisElem(edge);
+				if (entry.getKey() instanceof StackNode) {
+					rebuildEdges((StackNode) entry.getKey(), visPane);
+				}
+			}
 		}
 	}
 }

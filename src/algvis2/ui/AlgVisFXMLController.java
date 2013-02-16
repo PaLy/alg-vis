@@ -62,6 +62,8 @@ public class AlgVisFXMLController implements Initializable {
 	@FXML
 	private MenuItem menu_pcbst;
 	@FXML
+	private MenuItem menu_pstack;
+	@FXML
 	private TextField inputField;
 	@FXML
 	private ChoiceBox<String> button_layout;
@@ -118,6 +120,8 @@ public class AlgVisFXMLController implements Initializable {
 			AlgVis.that.showVisualization(2);
 		} else if (source.equals(menu_pcbst)) {
 			AlgVis.that.showVisualization(3);
+		} else if (source.equals(menu_pstack)) {
+			AlgVis.that.showVisualization(4);
 		}
 	}
 
@@ -194,8 +198,12 @@ public class AlgVisFXMLController implements Initializable {
 			}
 		} else if (operation.equals("delete")) {
 			for (int x : inputs) {
-				st.getChildren().add(((Dictionary)AlgVis.getCurrentVis().getDataStructure()).delete(x).getBackToStart
-						());
+				Algorithm delete = AlgVis.getCurrentVis().getDataStructure().delete(x);
+				if (delete != null) {
+					st.getChildren().add(delete.getBackToStart());
+				} else {
+					// TODO napr. vypisat, ze zasobnik je prazdny
+				}
 			}
 		} else if (operation.equals("random")) {
 			Animation[] animations = AlgVis.getCurrentVis().getDataStructure()
@@ -229,14 +237,20 @@ public class AlgVisFXMLController implements Initializable {
 
 		Algorithm algorithm = null;
 		if (operation.equals("delete")) {
-			algorithm = ((Dictionary) AlgVis.getCurrentVis().getDataStructure())
-					.delete(input);
+			algorithm = AlgVis.getCurrentVis().getDataStructure().delete(input);
 		} else if (operation.equals("insert")) {
 			algorithm = AlgVis.getCurrentVis().getDataStructure().insert(input);
 		} else if (operation.equals("find")) {
 			algorithm = ((Dictionary) AlgVis.getCurrentVis().getDataStructure()).find(input);
 		}
 		
+		if (algorithm == null) { // TODO
+			AlgVis.getCurrentVis().getButtons().setDisabled(false);
+			AlgVis.getCurrentVis().getButtons().disableNext(!AlgVis.getCurrentVis().animManager.hasNext());
+			AlgVis.getCurrentVis().getButtons().disablePrevious(!AlgVis.getCurrentVis().animManager.hasPrevious());
+			return;
+		}
+
 		AlgVis.getCurrentVis().animManager.add(algorithm.allSteps, false);
 		back.getChildren().add(algorithm.getBackToStart());
 
@@ -258,8 +272,8 @@ public class AlgVisFXMLController implements Initializable {
 	@FXML
 	protected void clearPressed(ActionEvent event) {
 		AlgVis.getCurrentVis().getDataStructure().clear();
-		AlgVis.getCurrentVis().reLayout();
 		AlgVis.getCurrentVis().visPane.clearPane();
+		AlgVis.getCurrentVis().reLayout();
 		AlgVis.getCurrentVis().animManager.clear();
 		AlgVis.getCurrentVis().getButtons().disablePrevious(true);
 		AlgVis.getCurrentVis().getButtons().disableNext(true);

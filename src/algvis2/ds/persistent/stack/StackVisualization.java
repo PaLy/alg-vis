@@ -15,18 +15,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.ds.dictionary.bst;
+package algvis2.ds.persistent.stack;
 
-import org.abego.treelayout.NodeExtentProvider;
+import algvis2.core.Buttons;
+import algvis2.core.Visualization;
 
-public class BSTNodeExtentProvider implements NodeExtentProvider<BSTNode> {
+public class StackVisualization extends Visualization {
 	@Override
-	public double getWidth(BSTNode bstNode) {
-		return bstNode.getVisual().getBoundsInLocal().getWidth();
+	protected void init() {
+		dataStructure = new Stack(this);
+		buttons = new Buttons(getClass()
+				.getResource("/algvis2/ds/persistent/stack/Buttons.fxml"));
 	}
 
 	@Override
-	public double getHeight(BSTNode bstNode) {
-		return bstNode.getVisual().getBoundsInLocal().getHeight();
+	public String getTitle() {
+		return "Fully Persistent Stack";
+	}
+
+	@Override
+	public void reLayout() {
+		CompactLayout.layout(((Stack) dataStructure).stackTree, visPane);
+		visPane.refresh();
 	}
 }

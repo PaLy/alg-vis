@@ -15,35 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.scene.viselem;
+package algvis2.ds.dictionary.bst;
 
-import algvis2.scene.layout.ZDepth;
-import javafx.scene.Node;
+import algvis2.scene.viselem.Node;
+import org.abego.treelayout.NodeExtentProvider;
 
-public abstract class VisElem implements Comparable<VisElem> {
-	protected Node visual;
-	private ZDepth zDepth = ZDepth.TOP;
-	
-	public VisElem(Node visual) {
-		this.visual = visual;
-	}
-	
-	public Node getVisual() {
-		return visual;
-	}
-
-	public ZDepth getZDepth() {
-		return zDepth;
-	}
-
-	public void setZDepth(ZDepth zDepth) {
-		this.zDepth = zDepth;
+public class MyNodeExtentProvider<N extends Node> implements NodeExtentProvider<N> {
+	@Override
+	public double getWidth(N node) {
+		return node.getVisual().getBoundsInLocal().getWidth();
 	}
 
 	@Override
-	public int compareTo(VisElem o) {
-		int res = this.zDepth.compareTo(o.zDepth);
-		if (res == 0 && !this.equals(o)) res = -1;
-		return res;
+	public double getHeight(N node) {
+		return node.getVisual().getBoundsInLocal().getHeight();
 	}
 }

@@ -52,4 +52,6 @@ public abstract class DataStructure extends VisElem implements PropertyStateEdit
 		}
 		return animations;
 	}
+
+	abstract public Algorithm delete(int x);
 }

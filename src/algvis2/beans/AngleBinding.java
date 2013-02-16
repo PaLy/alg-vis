@@ -15,35 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.scene.viselem;
+package algvis2.beans;
 
-import algvis2.scene.layout.ZDepth;
-import javafx.scene.Node;
+import javafx.beans.binding.DoubleBinding;
+import javafx.beans.value.ObservableDoubleValue;
 
-public abstract class VisElem implements Comparable<VisElem> {
-	protected Node visual;
-	private ZDepth zDepth = ZDepth.TOP;
-	
-	public VisElem(Node visual) {
-		this.visual = visual;
-	}
-	
-	public Node getVisual() {
-		return visual;
-	}
+public class AngleBinding extends DoubleBinding {
+	private final ObservableDoubleValue dy, dx;
 
-	public ZDepth getZDepth() {
-		return zDepth;
-	}
-
-	public void setZDepth(ZDepth zDepth) {
-		this.zDepth = zDepth;
+	public AngleBinding(ObservableDoubleValue dy, ObservableDoubleValue dx) {
+		this.dy = dy;
+		this.dx = dx;
+		super.bind(dy, dx);
 	}
 
 	@Override
-	public int compareTo(VisElem o) {
-		int res = this.zDepth.compareTo(o.zDepth);
-		if (res == 0 && !this.equals(o)) res = -1;
-		return res;
+	protected double computeValue() {
+		return Math.atan2(dy.get(), dx.get()) * 180 / Math.PI - 90;
 	}
 }

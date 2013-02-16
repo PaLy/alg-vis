@@ -22,6 +22,7 @@ import algvis2.ds.dictionary.avl.AVLVisualization;
 import algvis2.ds.dictionary.bst.BSTVisualization;
 import algvis2.ds.dictionary.rb.RBVisualization;
 import algvis2.ds.persistent.partially.bst.PCBSTVisualization;
+import algvis2.ds.persistent.stack.StackVisualization;
 import algvis2.ui.AlgVisFXMLController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -41,7 +42,7 @@ public class AlgVis extends Application {
 	private static Scene scene;
 	private static AlgVisFXMLController controller;
 	private static String language = "en";
-	private static final int NUMBER_OF_VISUALIZATIONS = 4;
+	private static final int NUMBER_OF_VISUALIZATIONS = 5;
 	private static final Visualization[] VISUALIZATIONS = new Visualization[NUMBER_OF_VISUALIZATIONS];
 	private static int currentVisualization = -1;
 
@@ -55,7 +56,7 @@ public class AlgVis extends Application {
 	public void start(Stage stage) throws Exception {
 		stage.setTitle("Gnarley Trees");
 		scene = new Scene(createRoot());
-		showVisualization(3);
+		showVisualization(4);
 		stage.setScene(scene);
 		//		stage.setFullScreen(true);
 
@@ -125,6 +126,8 @@ public class AlgVis extends Application {
 			return new RBVisualization();
 		case 3:
 			return new PCBSTVisualization();
+		case 4:
+			return new StackVisualization();
 		default:
 			return null;
 		}

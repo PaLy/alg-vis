@@ -33,6 +33,7 @@ public abstract class Visualization implements PropertyStateEditable {
 	public Visualization() {
 		init();
 		visPane = new VisPane(dataStructure);
+		reLayout(); // TODO kvoli vykresleniu pociatocneho stavu stacku, vo vseobecnosti asi vyhodit
 	}
 
 	/**

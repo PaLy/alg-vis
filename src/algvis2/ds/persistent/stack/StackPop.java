@@ -15,35 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.scene.viselem;
+package algvis2.ds.persistent.stack;
 
-import algvis2.scene.layout.ZDepth;
-import javafx.scene.Node;
+import algvis2.core.Algorithm;
 
-public abstract class VisElem implements Comparable<VisElem> {
-	protected Node visual;
-	private ZDepth zDepth = ZDepth.TOP;
-	
-	public VisElem(Node visual) {
-		this.visual = visual;
-	}
-	
-	public Node getVisual() {
-		return visual;
-	}
+public class StackPop extends Algorithm {
+	private final Stack stack;
+	private final int version;
 
-	public ZDepth getZDepth() {
-		return zDepth;
-	}
-
-	public void setZDepth(ZDepth zDepth) {
-		this.zDepth = zDepth;
+	protected StackPop(Stack stack, int version) {
+		super(stack);
+		this.version = version;
+		this.stack = stack;
 	}
 
 	@Override
-	public int compareTo(VisElem o) {
-		int res = this.zDepth.compareTo(o.zDepth);
-		if (res == 0 && !this.equals(o)) res = -1;
-		return res;
+	protected void runAlgorithm() {
+		StackNode oldVersionTop = stack.versions.get(version).nextNode;
+		int nextVersion = stack.versions.size();
+		StackNode.NullNode nullNode = new StackNode.NullNode(nextVersion, oldVersionTop.nextNode);
+		
+		saveChangedProperties();
+		nullNode.removePosBinding();
+		
+		stack.versions.add(nullNode);
 	}
 }

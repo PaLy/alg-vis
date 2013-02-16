@@ -22,12 +22,9 @@ import algvis2.core.DataStructure;
 import algvis2.core.Visualization;
 
 public abstract class Dictionary extends DataStructure {
-
 	protected Dictionary(Visualization visualization) {
 		super(visualization);
 	}
 
 	abstract public Algorithm find(int x);
-
-	abstract public Algorithm delete(int x);
 }

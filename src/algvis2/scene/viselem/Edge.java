@@ -18,23 +18,39 @@
 package algvis2.scene.viselem;
 
 import algvis2.scene.layout.ZDepth;
-import javafx.scene.shape.Line;
+import algvis2.scene.shape.Arrow;
 
 public class Edge extends VisElem {
 	public Edge() {
-		super(new Line());
+		super(new Arrow(0));
+		setZDepth(ZDepth.EDGES);
+	}
+	
+	public Edge(double radius) {
+		super(new Arrow(radius));
 		setZDepth(ZDepth.EDGES);
 	}
 
 	@Override
-	public Line getVisual() {
-		return (Line) super.getVisual();
+	public Arrow getVisual() {
+		return (Arrow) super.getVisual();
 	}
 
 	public void bindNodes(Node startNode, Node endNode) {
-		getVisual().startXProperty().bind(startNode.visPaneX.add(startNode.visPaneTranslateX));
-		getVisual().startYProperty().bind(startNode.visPaneY.add(startNode.visPaneTranslateY));
-		getVisual().endXProperty().bind(endNode.visPaneX.add(endNode.visPaneTranslateX));
-		getVisual().endYProperty().bind(endNode.visPaneY.add(endNode.visPaneTranslateY));
+		getVisual().startXProperty().bind(
+				startNode.visPaneX
+				.add(startNode.visPaneTranslateX));
+		getVisual().startYProperty().bind(
+				startNode.visPaneY
+				.add(startNode.visPaneTranslateY));
+
+		getVisual().endXProperty().bind(
+				endNode.visPaneX
+				.add(endNode.visPaneTranslateX)
+				.subtract(getVisual().layoutXProperty()));
+		getVisual().endYProperty().bind(
+				endNode.visPaneY
+				.add(endNode.visPaneTranslateY)
+				.subtract(getVisual().layoutYProperty()));
 	}
 }

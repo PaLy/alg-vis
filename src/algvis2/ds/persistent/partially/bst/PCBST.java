@@ -49,7 +49,7 @@ public class PCBST extends BST {
 		if (rootProperty.get() == null) {
 			if (root != null) {
 				rootProperty.set(new GroupOfBSTNodes(root, 0));
-				root.removeLayoutXYBindings();
+				root.removePosBinding();
 			}
 		} else {
 			if (root == null) {

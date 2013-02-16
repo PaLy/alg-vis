@@ -36,7 +36,7 @@ public class GroupOfBSTNodes extends BSTNode {
 		super(new HBox(5));
 		nodes.set(new ArrayList<BSTNode>());
 		nodes.get().add(node);
-		node.removeLayoutXYBindings();
+		node.removePosBinding();
 		
 		node.setTopText(Integer.toString(time));
 		lastTime = 0;
@@ -61,7 +61,7 @@ public class GroupOfBSTNodes extends BSTNode {
 		BSTNode lastNode = nodes.get().get(nodes.get().size() - 1);
 		BSTNode newNode = (BSTNode) lastNode.clone();
 		nodes.get().add(newNode);
-		newNode.removeLayoutXYBindings();
+		newNode.removePosBinding();
 		
 		newNode.setTopText(Integer.toString(time));
 		lastTime = time;
@@ -85,7 +85,7 @@ public class GroupOfBSTNodes extends BSTNode {
 	@Override
 	public void setLeft(BSTNode left) {
 		if (leftProperty.get() == null && left != null) {
-			if (left.getVisual().layoutXProperty().isBound()) left.removeLayoutXYBindings();
+			if (left.getVisual().layoutXProperty().isBound()) left.removePosBinding();
 			GroupOfBSTNodes leftGroup = new GroupOfBSTNodes(left, lastTime);
 			leftGroup.setParent(this);
 			leftProperty.set(leftGroup);
@@ -105,7 +105,7 @@ public class GroupOfBSTNodes extends BSTNode {
 	@Override
 	public void setRight(BSTNode right) {
 		if (rightProperty.get() == null && right != null) {
-			if (right.getVisual().layoutXProperty().isBound()) right.removeLayoutXYBindings();
+			if (right.getVisual().layoutXProperty().isBound()) right.removePosBinding();
 			GroupOfBSTNodes rightGroup = new GroupOfBSTNodes(right, lastTime);
 			rightGroup.setParent(this);
 			rightProperty.set(rightGroup);

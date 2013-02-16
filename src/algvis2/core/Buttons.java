@@ -20,6 +20,7 @@ package algvis2.core;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.Pane;
 
@@ -54,10 +55,16 @@ public class Buttons {
 
 	public void setDisabled(boolean disabled) {
 		pane.lookup("#buttonInsert").setDisable(disabled);
-		pane.lookup("#buttonFind").setDisable(disabled);
+		Node find = pane.lookup("#buttonFind");
+		if (find != null) {
+			find.setDisable(disabled);
+		}
 		pane.lookup("#buttonDelete").setDisable(disabled);
 		pane.lookup("#buttonClear").setDisable(disabled);
-		pane.lookup("#buttonRandom").setDisable(disabled);
+		Node random = pane.lookup("#buttonRandom");
+		if (random != null) {
+			random.setDisable(disabled);
+		}
 		pane.lookup("#buttonPause").setDisable(disabled);
 		state.operations = disabled;
 	}

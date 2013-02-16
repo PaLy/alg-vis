@@ -234,7 +234,7 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 		}
 	}
 
-	public void removeLayoutXYBindings() {
+	public void removePosBinding() {
 		layoutXBindingProperty.set(null);
 		layoutYBindingProperty.set(null);
 	}

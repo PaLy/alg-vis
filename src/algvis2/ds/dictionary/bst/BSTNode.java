@@ -73,12 +73,12 @@ public class BSTNode extends Node {
 	}
 
 	public void setLeft(BSTNode left) {
-		if (left != null && left.getVisual().layoutXProperty().isBound()) left.removeLayoutXYBindings();
+		if (left != null && left.getVisual().layoutXProperty().isBound()) left.removePosBinding();
 		leftProperty.set(left);
 	}
 
 	public void setRight(BSTNode right) {
-		if (right != null && right.getVisual().layoutXProperty().isBound()) right.removeLayoutXYBindings();
+		if (right != null && right.getVisual().layoutXProperty().isBound()) right.removePosBinding();
 		rightProperty.set(right);
 	}
 

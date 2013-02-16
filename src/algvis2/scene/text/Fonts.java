@@ -23,7 +23,8 @@ import javafx.scene.text.FontWeight;
 
 public class Fonts {
 	// TODO font "System" je zlo
-	// TODO 2: fonty treba pridat do jar subory, lebo nemusia byt na kazdom OS, napr. na windowse nie je "Purisa"
+	// TODO 2: fonty treba pridat do jar suboru, lebo nemusia byt na kazdom OS, napr. na windowse nie je "Purisa"
 	public static final Font NODE_FONT = new Font(Node.RADIUS - 3);
+	public static final Font VER_NO_FONT = new Font(Node.RADIUS - 5);
 	public static final Font TOP_TEXT = Font.font("Arial", FontWeight.BOLD, 15);
 }
