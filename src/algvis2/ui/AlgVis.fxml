@@ -101,7 +101,7 @@
     </Text>
     <TitledPane fx:id="buttonsTitledPane" alignment="TOP_LEFT" animated="true" collapsible="true" contentDisplay="LEFT" disable="false" expanded="true" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" text="%operations" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="0.0">
       <content>
-        <fx:include source="Buttons.fxml" />
+        <!--<fx:include source="DictButtons.fxml" />-->
       </content>
     </TitledPane>
     <TitledPane alignment="TOP_LEFT" animated="true" ellipsisString="..." expanded="false" prefHeight="-1.0" prefWidth="-1.0" text="%steps" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="24.0">

@@ -17,8 +17,6 @@
 
 package algvis2.core;
 
-import algvis.core.MyRandom;
-import algvis2.scene.control.InputField;
 import algvis2.scene.layout.AbsPosition;
 import algvis2.scene.layout.ZDepth;
 import algvis2.scene.viselem.VisElem;
@@ -41,17 +39,7 @@ public abstract class DataStructure extends VisElem implements PropertyStateEdit
 
 	abstract public String getStats();
 
-	abstract public Algorithm insert(int x);
-
 	abstract public void clear();
-
-	public Animation[] random(int n) {
-		Animation[] animations = new Animation[n];
-		for (int i = 0; i < n; i++) {
-			animations[i] = insert(MyRandom.Int(InputField.MAX_VALUE + 1)).getBackToStart();
-		}
-		return animations;
-	}
-
-	abstract public Algorithm delete(int x);
+	
+	abstract public Animation random(int n);
 }

@@ -17,15 +17,17 @@
 
 package algvis2.ds.dictionary.bst;
 
-import algvis2.core.Buttons;
 import algvis2.core.Visualization;
 
 public class BSTVisualization extends Visualization {
+	public BSTVisualization() {
+		super(BSTVisualization.class
+				.getResource("/algvis2/ui/DictButtons.fxml"));
+	}
+
 	@Override
 	protected void init() {
 		dataStructure = new BST(this);
-		buttons = new Buttons(getClass()
-				.getResource("/algvis2/ui/Buttons.fxml"));
 	}
 
 	@Override

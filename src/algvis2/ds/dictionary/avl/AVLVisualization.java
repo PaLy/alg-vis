@@ -17,15 +17,17 @@
 
 package algvis2.ds.dictionary.avl;
 
-import algvis2.core.Buttons;
 import algvis2.core.Visualization;
 
 public class AVLVisualization extends Visualization {
+	public AVLVisualization() {
+		super(AVLVisualization.class
+				.getResource("/algvis2/ui/DictButtons.fxml"));
+	}
+
 	@Override
 	protected void init() {
 		dataStructure = new AVL(this);
-		buttons = new Buttons(getClass()
-				.getResource("/algvis2/ui/Buttons.fxml"));
 	}
 
 	@Override

@@ -17,15 +17,17 @@
 
 package algvis2.ds.persistent.partially.bst;
 
-import algvis2.core.Buttons;
 import algvis2.core.Visualization;
 
 public class PCBSTVisualization extends Visualization {
+	public PCBSTVisualization() {
+		super(PCBSTVisualization.class
+				.getResource("/algvis2/ui/DictButtons.fxml"));
+	}
+
 	@Override
 	protected void init() {
 		dataStructure = new PCBST(this);
-		buttons = new Buttons(getClass()
-				.getResource("/algvis2/ui/Buttons.fxml"));
 	}
 
 	@Override

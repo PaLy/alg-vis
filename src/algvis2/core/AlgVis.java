@@ -38,13 +38,12 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class AlgVis extends Application {
-	public static AlgVis that;
-	private static Scene scene;
-	private static AlgVisFXMLController controller;
-	private static String language = "en";
-	private static final int NUMBER_OF_VISUALIZATIONS = 5;
-	private static final Visualization[] VISUALIZATIONS = new Visualization[NUMBER_OF_VISUALIZATIONS];
-	private static int currentVisualization = -1;
+	private Scene scene;
+	private AlgVisFXMLController controller;
+	private String language = "en";
+	private final int NUMBER_OF_VISUALIZATIONS = 5;
+	private final Visualization[] VISUALIZATIONS = new Visualization[NUMBER_OF_VISUALIZATIONS];
+	private int currentVisualization = -1;
 
 	public static final AutoAnimsManager autoAnimsManager = new AutoAnimsManager();
 
@@ -67,8 +66,6 @@ public class AlgVis extends Application {
 		//		stage.setHeight(primaryScreenBounds.getHeight());
 
 		stage.show();
-
-		that = this;
 	}
 
 	public void showVisualization(int x) {
@@ -81,9 +78,10 @@ public class AlgVis extends Application {
 
 			TitledPane buttons = (TitledPane) scene
 					.lookup("#buttonsTitledPane");
-			buttons.setContent(VISUALIZATIONS[x].getButtonsPane(language));
+			buttons.setContent(VISUALIZATIONS[x].loadButtons(language));
 			((Text) scene.getRoot().lookup("#visTitle")).setText(VISUALIZATIONS[x].getTitle());
 
+			controller.setVis(VISUALIZATIONS[x]);
 			currentVisualization = x;
 		}
 	}
@@ -105,10 +103,12 @@ public class AlgVis extends Application {
 		Parent parent = null;
 		try {
 			parent = (Parent) fxmlLoader.load();
-			controller = fxmlLoader.getController();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		controller = fxmlLoader.getController();
+		controller.setAlgvis(this);
+		
 		return parent;
 		// possible static way:
 		// parent = FXMLLoader.load(getClass().getResource(
@@ -131,9 +131,5 @@ public class AlgVis extends Application {
 		default:
 			return null;
 		}
-	}
-
-	public static Visualization getCurrentVis() {
-		return VISUALIZATIONS[currentVisualization];
 	}
 }

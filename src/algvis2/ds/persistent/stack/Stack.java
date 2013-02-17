@@ -17,12 +17,18 @@
 
 package algvis2.ds.persistent.stack;
 
+import algvis.core.MyRandom;
 import algvis2.core.Algorithm;
 import algvis2.core.DataStructure;
 import algvis2.core.Visualization;
+import algvis2.scene.control.InputField;
 import algvis2.scene.viselem.Node;
+import javafx.animation.Animation;
+import javafx.animation.SequentialTransition;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import org.abego.treelayout.TreeForTreeLayout;
 
 import java.util.HashMap;
@@ -49,15 +55,34 @@ public class Stack extends DataStructure {
 		return null; // TODO
 	}
 
-	@Override
-	public Algorithm insert(int x) {
-		return insert(x, versions.size() - 1); // last version
-	}
-
-	public Algorithm insert(int x, int version) {
+	public Algorithm push(int x, int version) {
+		if (version < 0 || version >= versions.size()) {
+			version = versions.size() - 1;
+		}
 		StackPush stackPush = new StackPush(this, x, version);
 		stackPush.run();
 		return stackPush;
+	}
+	
+	public Algorithm push(int x) {
+		return push(x, versions.size() - 1); // last version
+	}
+
+	@Override
+	public Animation random(int n) {
+		SequentialTransition st = new SequentialTransition();
+		for (int i = 0; i < n; i++) {
+			st.getChildren().add(push(MyRandom.Int(InputField.MAX_VALUE + 1),
+					MyRandom.Int(versions.size())).startEndTransition());
+		}
+		st.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				visualization.reLayout();
+			}
+		});
+		st.jumpTo("end");
+		return st;
 	}
 
 	@Override
@@ -67,8 +92,7 @@ public class Stack extends DataStructure {
 		bottom.parentNodes().put(versions.get(0), true);
 	}
 
-	@Override
-	public Algorithm delete(int version) {
+	public Algorithm pop(int version) {
 		if (version < 0 || version >= versions.size()) {
 			version = versions.size() - 1; // last version
 		}

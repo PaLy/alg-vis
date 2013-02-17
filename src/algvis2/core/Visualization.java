@@ -20,17 +20,30 @@ package algvis2.core;
 import algvis2.ds.dictionary.bst.BST;
 import algvis2.ds.dictionary.bst.CompactLayout;
 import algvis2.scene.layout.VisPane;
+import algvis2.ui.ButtonsController;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public abstract class Visualization implements PropertyStateEditable {
 	public final VisPane visPane;
-	protected Buttons buttons;
+	
+	private ButtonsController buttonsController;
+	private final URL buttonsFile;
+	private ButtonsState buttonsState;
+	
 	protected DataStructure dataStructure;
 	public final AnimationManager animManager = new AnimationManager(this);
 
-	public Visualization() {
+	public Visualization(URL buttonsFile) {
+		this.buttonsFile = buttonsFile;
 		init();
 		visPane = new VisPane(dataStructure);
 		reLayout(); // TODO kvoli vykresleniu pociatocneho stavu stacku, vo vseobecnosti asi vyhodit
@@ -49,12 +62,28 @@ public abstract class Visualization implements PropertyStateEditable {
 		return visPane;
 	}
 
-	public Pane getButtonsPane(String lang) {
-		return buttons.getPane(lang);
+	public Pane loadButtons(String lang) {
+		FXMLLoader fxmlLoader = new FXMLLoader();
+		fxmlLoader.setResources(ResourceBundle.getBundle("Messages",
+				new Locale(lang)));
+		Pane parent = null;
+		try {
+			parent = (Pane) fxmlLoader.load(buttonsFile.openStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		buttonsController = fxmlLoader.getController();
+		buttonsController.setVis(this);
+		if (buttonsState == null) {
+			buttonsState = new ButtonsState();
+		}
+		buttonsState.updateButtons();
+		
+		return parent;
 	}
-
-	public Buttons getButtons() {
-		return buttons;
+	
+	public ButtonsController getButtonsController() {
+		return buttonsController;
 	}
 
 	public DataStructure getDataStructure() {
@@ -73,4 +102,31 @@ public abstract class Visualization implements PropertyStateEditable {
 	}
 
 	public abstract String getTitle();
+
+	private final class ButtonsState {
+		private BooleanProperty disableOperations = new SimpleBooleanProperty();
+		private BooleanProperty disablePrevious = new SimpleBooleanProperty();
+		private BooleanProperty disableNext = new SimpleBooleanProperty();
+		private BooleanProperty pauseSelected = new SimpleBooleanProperty();
+
+		private ButtonsState() {
+			bindButtons();
+		}
+
+		private void updateButtons() {
+			buttonsController.disableOperations(disableOperations.getValue());
+			buttonsController.disableNext(disableNext.getValue());
+			buttonsController.disablePrevious(disablePrevious.getValue());
+			buttonsController.setPausesSelected(pauseSelected.getValue());
+			
+			bindButtons();
+		}
+		
+		private void bindButtons() {
+			disableOperations.bind(buttonsController.operationsButtons.disableProperty());
+			disablePrevious.bind(buttonsController.buttonPrevious.disableProperty());
+			disableNext.bind(buttonsController.buttonNext.disableProperty());
+			pauseSelected.bind(buttonsController.buttonPause.selectedProperty());
+		}
+	}
 }

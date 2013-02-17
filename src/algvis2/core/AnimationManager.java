@@ -57,9 +57,9 @@ public class AnimationManager {
 				@Override
 				public void handle(ActionEvent actionEvent) {
 					visualization.visPane.refresh();
-					visualization.getButtons().setDisabled(false);
-					visualization.getButtons().disablePrevious(!hasPrevious());
-					visualization.getButtons().disableNext(!hasNext());
+					visualization.getButtonsController().disableOperations(false);
+					visualization.getButtonsController().disablePrevious(!hasPrevious());
+					visualization.getButtonsController().disableNext(!hasNext());
 				}
 			});
 		}
@@ -135,7 +135,7 @@ public class AnimationManager {
 		public void handle(ActionEvent actionEvent) {
 			visualization.visPane.refresh();
 			if (step.getRate() > 0 && pos < 2) {
-				if (!visualization.getButtons().isPauseChecked()) {
+				if (!visualization.getButtonsController().isPauseSelected()) {
 					PauseTransitionBuilder.create()
 							.duration(Duration.seconds(2))
 							.onFinished(new EventHandler<ActionEvent>() {
@@ -147,12 +147,12 @@ public class AnimationManager {
 							.build()
 							.play();
 				} else {
-					visualization.getButtons().disableNext(!hasNext());
-					visualization.getButtons().disablePrevious(!hasPrevious());
+					visualization.getButtonsController().disableNext(!hasNext());
+					visualization.getButtonsController().disablePrevious(!hasPrevious());
 				}
 			}
 			else if (step.getRate() < 0 && pos > 0) {
-				if (!visualization.getButtons().isPauseChecked()) {
+				if (!visualization.getButtonsController().isPauseSelected()) {
 					PauseTransitionBuilder.create()
 							.duration(Duration.seconds(2))
 							.onFinished(new EventHandler<ActionEvent>() {
@@ -164,13 +164,13 @@ public class AnimationManager {
 							.build()
 							.play();
 				} else {
-					visualization.getButtons().disableNext(!hasNext());
-					visualization.getButtons().disablePrevious(!hasPrevious());
+					visualization.getButtonsController().disableNext(!hasNext());
+					visualization.getButtonsController().disablePrevious(!hasPrevious());
 				}
 			} else {
-				visualization.getButtons().setDisabled(false);
-				visualization.getButtons().disableNext(!hasNext());
-				visualization.getButtons().disablePrevious(!hasPrevious());
+				visualization.getButtonsController().disableOperations(false);
+				visualization.getButtonsController().disableNext(!hasNext());
+				visualization.getButtonsController().disablePrevious(!hasPrevious());
 			}
 		}
 	}

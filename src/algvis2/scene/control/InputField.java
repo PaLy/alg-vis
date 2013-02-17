@@ -138,7 +138,7 @@ public class InputField {
 	 * the input may be delimited by whitespaces and/or commas. If no input is
 	 * given, a vector with 1 random value in the range min..max is returned.
 	 */
-	Vector<Integer> getNonEmptyVI(int min, int max) {
+	public Vector<Integer> getNonEmptyVI(int min, int max) {
 		Vector<Integer> args = getVI();
 		if (args.size() == 0) {
 			args.add(MyRandom.Int(min, max));

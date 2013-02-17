@@ -31,7 +31,7 @@ public abstract class Algorithm implements Runnable {
 	protected final Visualization visualization;
 
 	private PropertiesState startState;
-	private Timeline backToStart;
+	private Timeline startEndTransition;
 
 	private PropertiesState state;
 	private SequentialTransition step = new SequentialTransition();
@@ -68,13 +68,13 @@ public abstract class Algorithm implements Runnable {
 
 	void end() {
 		pause(true);
-		backToStart = startState.createTimeline(false);
+		startEndTransition = startState.createTimeline(false);
 //		System.out.println("BACKTOSTART:");
-//		System.out.println(backToStart.getKeyFrames());
+//		System.out.println(startEndTransition.getKeyFrames());
 	}
 
-	public Animation getBackToStart() {
-		return backToStart;
+	public Animation startEndTransition() {
+		return startEndTransition;
 	}
 	
 	protected void requestLayout() {

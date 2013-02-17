@@ -17,15 +17,16 @@
 
 package algvis2.ds.dictionary.rb;
 
-import algvis2.core.Buttons;
 import algvis2.core.Visualization;
 
 public class RBVisualization extends Visualization {
+	public RBVisualization() {
+		super(RBVisualization.class.getResource("/algvis2/ui/DictButtons.fxml"));
+	}
+
 	@Override
 	protected void init() {
 		dataStructure = new RB(this);
-		buttons = new Buttons(getClass()
-				.getResource("/algvis2/ui/Buttons.fxml"));
 	}
 
 	@Override

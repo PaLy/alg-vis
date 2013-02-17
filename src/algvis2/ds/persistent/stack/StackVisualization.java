@@ -17,15 +17,17 @@
 
 package algvis2.ds.persistent.stack;
 
-import algvis2.core.Buttons;
 import algvis2.core.Visualization;
 
 public class StackVisualization extends Visualization {
+	public StackVisualization() {
+		super(StackVisualization.class
+				.getResource("/algvis2/ds/persistent/stack/StackButtons.fxml"));
+	}
+
 	@Override
 	protected void init() {
 		dataStructure = new Stack(this);
-		buttons = new Buttons(getClass()
-				.getResource("/algvis2/ds/persistent/stack/Buttons.fxml"));
 	}
 
 	@Override
@@ -37,5 +39,10 @@ public class StackVisualization extends Visualization {
 	public void reLayout() {
 		CompactLayout.layout(((Stack) dataStructure).stackTree, visPane);
 		visPane.refresh();
+	}
+
+	@Override
+	public Stack getDataStructure() {
+		return (Stack) super.getDataStructure();
 	}
 }
