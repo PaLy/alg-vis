@@ -22,18 +22,17 @@ import algvis2.scene.layout.VisPane;
 import algvis2.scene.layout.ZDepth;
 import algvis2.scene.viselem.Edge;
 import algvis2.scene.viselem.Node;
-import algvis2.scene.viselem.VisElem;
 import org.abego.treelayout.Configuration;
 import org.abego.treelayout.TreeLayout;
 import org.abego.treelayout.util.DefaultConfiguration;
 
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class CompactLayout {
-	public static void layout(Stack.StackTree stackTree, VisPane visPane) {
+	public static void layout(Stack stack, VisPane visPane) {
+		Stack.StackTree stackTree = stack.stackTree;
+		
 		if (stackTree.getRoot() != null) {
 			TreeLayout<Node> layout = new TreeLayout<Node>(stackTree, new MyNodeExtentProvider<Node>(),
 					new DefaultConfiguration<Node>(Node.RADIUS / 2, Node.RADIUS, Configuration.Location.Bottom,
@@ -49,32 +48,12 @@ public class CompactLayout {
 		}
 
 		visPane.clearLayer(ZDepth.EDGES);
-		ArrayList<VisElem> nodes = new ArrayList<VisElem>();
-		if (stackTree.getRoot() != null) {
-			createChildrenR(stackTree.getRoot(), nodes);
-			rebuildEdges(stackTree.getRoot(), visPane);
-		}
-		visPane.setDsElements(nodes);
-
-	}
-
-	private static void createChildrenR(StackNode node, List<VisElem> list) {
-		if (node != null) {
-			list.add(node);
-			for (Map.Entry<Node, Boolean> entry : node.parentNodes().entrySet()) {
-				if (entry.getValue()) {
-					if (entry.getKey() instanceof StackNode) {
-						createChildrenR((StackNode) entry.getKey(), list);
-					} else {
-						list.add(entry.getKey());
-					}
-				}
-			}
-		}
+		rebuildEdges(stackTree.getRoot(), visPane);
+		visPane.setDsElements(stack.dump());
 	}
 
 	private static void rebuildEdges(StackNode node, VisPane visPane) {
-		for (Map.Entry<Node, Boolean> entry : node.parentNodes().entrySet()) {
+		for (Map.Entry<StackNode, Boolean> entry : node.parentNodes().entrySet()) {
 			if (entry.getValue()) {
 				Edge edge;
 				if (node instanceof StackNode.NullNode) {
@@ -84,9 +63,7 @@ public class CompactLayout {
 				}
 				edge.bindNodes(entry.getKey(), node);
 				visPane.addNotStorableVisElem(edge);
-				if (entry.getKey() instanceof StackNode) {
-					rebuildEdges((StackNode) entry.getKey(), visPane);
-				}
+				rebuildEdges(entry.getKey(), visPane);
 			}
 		}
 	}

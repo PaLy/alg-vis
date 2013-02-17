@@ -51,7 +51,7 @@
         </Menu>
         <Menu mnemonicParsing="false" text="%persistent">
           <items>
-            <MenuItem mnemonicParsing="false" onAction="#selectVisualization" text="%pcbst" fx:id="menu_pcbst" />
+            <MenuItem disable="true" mnemonicParsing="false" onAction="#selectVisualization" text="%pcbst" fx:id="menu_pcbst" />
             <MenuItem mnemonicParsing="false" onAction="#selectVisualization" text="%pstack" fx:id="menu_pstack" />
           </items>
         </Menu>

@@ -39,9 +39,12 @@ import java.util.*;
 public class VisPane implements PropertyStateEditable, AbsPosition {
 	private final FlowPane pane = new FlowPane();
 	private final DataStructure dataStructure;
-	private ArrayList<VisElem> dsElements = new ArrayList<VisElem>();
+	private List<VisElem> dsElements = new ArrayList<VisElem>();
 	private final AnchorPane wrappingPane = new AnchorPane();
-	private final ObjectProperty<Set<VisElem>> children = new SimpleObjectProperty<Set<VisElem>>();
+	/**
+	 * Sorted elements (by layers) which should be on scene.
+	 */
+	private final ObjectProperty<TreeSet<VisElem>> children = new SimpleObjectProperty<TreeSet<VisElem>>();
 	public static final String ID = "visPane";
 	private HashSet<ZDepth> doNotShow = new HashSet<ZDepth>();
 	private final Set<VisElem> notStorableChildren = new TreeSet<VisElem>();
@@ -98,7 +101,7 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 		return wrappingPane;
 	}
 	
-	public void setDsElements(ArrayList<VisElem> elements) {
+	public void setDsElements(List<VisElem> elements) {
 		dsElements = elements;
 	}
 	
@@ -167,17 +170,16 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 	}
 
 	public void clearLayer(ZDepth zDepth) {
-		if (zDepth.equals(ZDepth.EDGES)) notStorableChildren.clear();
-		else {
+		if (zDepth.equals(ZDepth.EDGES)) {
+			notStorableChildren.clear();
+		} else {
 			ArrayList<VisElem> toRemove = new ArrayList<VisElem>();
 			for (VisElem elem : children.get()) {
 				if (elem.getZDepth().equals(zDepth)) {
 					toRemove.add(elem);
 				}
 			}
-			for (VisElem elem : toRemove) {
-				children.get().remove(elem);
-			}
+			children.get().removeAll(toRemove);
 		}
 	}
 
@@ -202,6 +204,10 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 
 	public void addNotStorableVisElem(Edge edge) {
 		notStorableChildren.add(edge);
+	}
+
+	public void addNotStorableVisElemAll(Collection<? extends Edge> c) {
+		notStorableChildren.addAll(c);
 	}
 
 	public void clearPane() {

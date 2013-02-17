@@ -37,7 +37,7 @@ public class StackVisualization extends Visualization {
 
 	@Override
 	public void reLayout() {
-		CompactLayout.layout(((Stack) dataStructure).stackTree, visPane);
+		CompactLayout.layout(((Stack) dataStructure), visPane);
 		visPane.refresh();
 	}
 

@@ -23,6 +23,8 @@ import algvis2.scene.viselem.VisElem;
 import javafx.animation.Animation;
 import javafx.scene.layout.Pane;
 
+import java.util.List;
+
 public abstract class DataStructure extends VisElem implements PropertyStateEditable, AbsPosition {
 	public final Visualization visualization;
 
@@ -42,4 +44,6 @@ public abstract class DataStructure extends VisElem implements PropertyStateEdit
 	abstract public void clear();
 	
 	abstract public Animation random(int n);
+	
+	abstract public List<VisElem> dump();
 }

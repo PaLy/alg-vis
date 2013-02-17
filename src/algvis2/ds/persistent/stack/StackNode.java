@@ -31,19 +31,20 @@ import java.util.Map;
 
 public class StackNode extends Node {
 	StackNode nextNode;
-	ObjectProperty<LinkedHashMap<Node, Boolean>> parentNodesProperty = new SimpleObjectProperty<LinkedHashMap<Node, 
+	ObjectProperty<LinkedHashMap<StackNode, Boolean>> parentNodesProperty = new 
+			SimpleObjectProperty<LinkedHashMap<StackNode, 
 			Boolean>>();
 
 	public StackNode(int key, StackNode nextNode) {
 		super(key);
 		this.nextNode = nextNode;
-		parentNodesProperty.set(new LinkedHashMap<Node, Boolean>());
+		parentNodesProperty.set(new LinkedHashMap<StackNode, Boolean>());
 		if (nextNode != null) {
 			nextNode.parentNodes().put(this, true);
 		}
 	}
 	
-	LinkedHashMap<Node, Boolean> parentNodes() {
+	LinkedHashMap<StackNode, Boolean> parentNodes() {
 		return parentNodesProperty.getValue();
 	}
 
@@ -51,7 +52,7 @@ public class StackNode extends Node {
 	public void storeState(HashMap<Object, Object> state) {
 		super.storeState(state);		
 		state.put(parentNodesProperty, parentNodesProperty.getValue().entrySet().toArray());
-		for (Map.Entry<Node, Boolean> entry : parentNodes().entrySet()) {
+		for (Map.Entry<StackNode, Boolean> entry : parentNodes().entrySet()) {
 			if (entry.getValue()) {
 				entry.getKey().storeState(state);
 			}

@@ -21,12 +21,14 @@ import algvis2.core.Algorithm;
 import algvis2.core.Visualization;
 import algvis2.ds.dictionary.Dictionary;
 import algvis2.scene.paint.NodePaint;
+import algvis2.scene.viselem.VisElem;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.abego.treelayout.TreeForTreeLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class BST extends Dictionary implements TreeForTreeLayout<BSTNode> {
 	public final ObjectProperty<BSTNode> rootProperty = new SimpleObjectProperty<BSTNode>();
@@ -175,6 +177,31 @@ public class BST extends Dictionary implements TreeForTreeLayout<BSTNode> {
 	@Override
 	public void clear() {
 		setRoot(null);
+	}
+
+	@Override
+	public List<VisElem> dump() {
+		List<VisElem> elements = new ArrayList<VisElem>();
+
+		if (getRoot() != null) {
+			java.util.Stack<BSTNode> todo = new java.util.Stack<BSTNode>();
+			todo.push(getRoot());
+			elements.add(getRoot());
+	
+			while (!todo.empty()) {
+				BSTNode elem = todo.pop();
+				if (elem.getLeft() != null) {
+					todo.add(elem.getLeft());
+					elements.add(elem.getLeft());
+				}
+				if (elem.getRight() != null) {
+					todo.add(elem.getRight());
+					elements.add(elem.getRight());
+				}
+			}
+		}
+
+		return elements;
 	}
 
 	@Override

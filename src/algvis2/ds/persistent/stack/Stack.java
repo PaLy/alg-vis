@@ -23,6 +23,7 @@ import algvis2.core.DataStructure;
 import algvis2.core.Visualization;
 import algvis2.scene.control.InputField;
 import algvis2.scene.viselem.Node;
+import algvis2.scene.viselem.VisElem;
 import javafx.animation.Animation;
 import javafx.animation.SequentialTransition;
 import javafx.beans.property.SimpleListProperty;
@@ -31,10 +32,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import org.abego.treelayout.TreeForTreeLayout;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Stack extends DataStructure {
 	final SimpleListProperty<StackNode.NullNode> versions = new SimpleListProperty<StackNode.NullNode>(FXCollections
@@ -86,6 +84,29 @@ public class Stack extends DataStructure {
 	}
 
 	@Override
+	public List<VisElem> dump() {
+		List<VisElem> elements = new ArrayList<VisElem>();
+		
+		java.util.Stack<StackNode> todo = new java.util.Stack<StackNode>();
+		todo.add(bottom);
+		elements.add(bottom);
+		
+		while (!todo.empty()) {
+			StackNode elem = todo.pop();
+			for (Map.Entry<StackNode, Boolean> entry : elem.parentNodes().entrySet()) {
+				if (entry.getValue()) {
+					if (!(entry.getKey() instanceof StackNode.NullNode)) {
+						todo.add(entry.getKey());
+					}
+					elements.add(entry.getKey());
+				}
+			}		
+		}
+		
+		return elements;
+	}
+
+	@Override
 	public void clear() {
 		versions.remove(1, versions.size());
 		bottom.parentNodes().clear();
@@ -113,7 +134,7 @@ public class Stack extends DataStructure {
 	private void recalcAbsPositionR(Node node) {
 		node.recalcAbsPosition();
 		if (node instanceof StackNode) {
-			for (Map.Entry<Node, Boolean> entry : ((StackNode) node).parentNodes().entrySet()) {
+			for (Map.Entry<StackNode, Boolean> entry : ((StackNode) node).parentNodes().entrySet()) {
 				if (entry.getValue()) {
 					recalcAbsPositionR(entry.getKey());
 				}
@@ -159,7 +180,7 @@ public class Stack extends DataStructure {
 		public Iterable<Node> getChildren(Node parentNode) {
 			if (parentNode instanceof StackNode) {
 				List<Node> res = new LinkedList<Node>();
-				for (Map.Entry<Node, Boolean> entry : ((StackNode) parentNode).parentNodes().entrySet()) {
+				for (Map.Entry<StackNode, Boolean> entry : ((StackNode) parentNode).parentNodes().entrySet()) {
 					if (entry.getValue()) {
 						res.add(entry.getKey());
 					}
@@ -174,7 +195,7 @@ public class Stack extends DataStructure {
 		public Iterable<Node> getChildrenReverse(Node parentNode) {
 			if (parentNode instanceof StackNode) {
 				LinkedList<Node> res = new LinkedList<Node>();
-				for (Map.Entry<Node, Boolean> entry : ((StackNode) parentNode).parentNodes().entrySet()) {
+				for (Map.Entry<StackNode, Boolean> entry : ((StackNode) parentNode).parentNodes().entrySet()) {
 					if (entry.getValue()) {
 						res.addFirst(entry.getKey());
 					}
@@ -188,7 +209,7 @@ public class Stack extends DataStructure {
 		@Override
 		public Node getFirstChild(Node parentNode) {
 			if (parentNode instanceof StackNode) {
-				for (Map.Entry<Node, Boolean> entry : ((StackNode) parentNode).parentNodes().entrySet()) {
+				for (Map.Entry<StackNode, Boolean> entry : ((StackNode) parentNode).parentNodes().entrySet()) {
 					if (entry.getValue()) {
 						return entry.getKey();
 					}
@@ -201,7 +222,7 @@ public class Stack extends DataStructure {
 		public Node getLastChild(Node parentNode) {
 			if (parentNode instanceof StackNode) {
 				Node res = null;
-				for (Map.Entry<Node, Boolean> entry : ((StackNode) parentNode).parentNodes().entrySet()) {
+				for (Map.Entry<StackNode, Boolean> entry : ((StackNode) parentNode).parentNodes().entrySet()) {
 					if (entry.getValue()) {
 						res = entry.getKey();
 					}

@@ -33,8 +33,8 @@ public class BSTNode extends Node {
 	public final ObjectProperty<BSTNode> rightProperty = new SimpleObjectProperty<BSTNode>();
 	public final ObjectProperty<BSTNode> parentProperty = new SimpleObjectProperty<BSTNode>();
 	
-	private Edge leftEdge = new Edge();
-	private Edge rightEdge = new Edge();
+	private Edge leftEdge = new Edge(Node.RADIUS);
+	private Edge rightEdge = new Edge(Node.RADIUS);
 
 	public BSTNode(int key) {
 		super(key);

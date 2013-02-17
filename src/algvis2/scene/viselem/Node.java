@@ -61,8 +61,10 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 	protected ObjectProperty<Integer> keyProperty;
 
 	// TODO node can be bound only if it is not managed?
-	// these properties are used if this node is bound to another node
-	// because of this, this node's parent cannot change layoutX and layoutY of this node 
+	/**
+	 * These properties contain node binding to another node. If node is bound, then node's parent cannot
+	 * change layoutX and layoutY of this node.
+	 */
 	private ObjectProperty<DoubleBinding> layoutXBindingProperty = new SimpleObjectProperty<DoubleBinding>();
 	private ObjectProperty<DoubleBinding> layoutYBindingProperty = new SimpleObjectProperty<DoubleBinding>();
 
@@ -121,17 +123,11 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 			public void changed(
 					ObservableValue<? extends DoubleBinding> observableValue,
 					DoubleBinding oldBinding, DoubleBinding newBinding) {
-				//                if (newBinding == null) 
-				//                    System.out.println(getKey() + " X " + null);
-				//                else
-				//                    System.out.println(getKey() + " X " + newBinding.get());
-
                 if (newBinding != null) {
                     getVisual().layoutXProperty().bind(newBinding);
                 } else {
                     getVisual().layoutXProperty().unbind();
                 }
-//                System.out.println(getKey() + " bindingX: " + newBinding);
 			}
 		});
 		layoutYBindingProperty.addListener(new ChangeListener<DoubleBinding>() {
@@ -139,16 +135,11 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 			public void changed(
 					ObservableValue<? extends DoubleBinding> observableValue,
 					DoubleBinding oldBinding, DoubleBinding newBinding) {
-				//                if (newBinding == null)
-				//                    System.out.println(getKey() + " Y " + null);
-				//                else
-				//                    System.out.println(getKey() + " Y " + newBinding.get());
                 if (newBinding != null) {
                     getVisual().layoutYProperty().bind(newBinding);
                 } else {
                     getVisual().layoutYProperty().unbind();
                 }
-//					System.out.println(getKey() + " bindingY: " + newBinding);
 			}
 		});
 		layoutXBindingProperty.set(new SimpleDoubleProperty(0).add(0));
@@ -156,30 +147,8 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 
 		bindVisPanePos();
 
-		visPaneX.addListener(autoTranslateXTransition); // TODO len layoutX.addListener? pane by mal mat vlastny 
-		// autoTranslation
+		visPaneX.addListener(autoTranslateXTransition);
 		visPaneY.addListener(autoTranslateYTransition);
-		
-//		translateYProperty().addListener(new ChangeListener<Number>() {
-//			@Override
-//			public void changed(ObservableValue<? extends Number> observableValue, Number number, Number number2) {
-////				if (getKey() == 42) {
-//					if (Math.abs((Double)number2 - (Double)number) > 30) {
-//						System.out.println(getKey() + " Bol som zmeneny z " + number + " na " + number2);
-//					}
-////				}
-//			}
-//		});
-//		visPaneY.addListener(new ChangeListener<Number>() {
-//			@Override
-//			public void changed(ObservableValue<? extends Number> observableValue, Number number, Number number2) {
-////				if (getKey() == 42) {
-//					if (Math.abs((Double) number2 - (Double) number) > 30) {
-//						System.out.println(getKey() + " Bol som zmeneny z " + number + " na " + number2 + " visPane");
-//					}
-////				}
-//			}
-//		});
 	}
 	
 	public void removeAutoTranslations() {

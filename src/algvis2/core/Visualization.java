@@ -46,7 +46,7 @@ public abstract class Visualization implements PropertyStateEditable {
 		this.buttonsFile = buttonsFile;
 		init();
 		visPane = new VisPane(dataStructure);
-		reLayout(); // TODO kvoli vykresleniu pociatocneho stavu stacku, vo vseobecnosti asi vyhodit
+		reLayout();
 	}
 
 	/**
@@ -98,7 +98,6 @@ public abstract class Visualization implements PropertyStateEditable {
 	@Override
 	public void storeState(HashMap<Object, Object> state) {
 		visPane.storeState(state);
-		dataStructure.storeState(state);
 	}
 
 	public abstract String getTitle();
