@@ -19,19 +19,25 @@ package algvis2.ui;
 
 import algvis2.core.AlgVis;
 import algvis2.core.Visualization;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.beans.value.WeakChangeListener;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.StageBuilder;
 
 import javax.imageio.ImageIO;
@@ -41,14 +47,28 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class AlgVisFXMLController implements Initializable {
+	public AnchorPane rootPane;
+	public TitledPane buttonsTitledPane;
+	public Text visTitle;
 	public MenuItem menu_bst;
 	public MenuItem menu_avl;
 	public MenuItem menu_rb;
 	public MenuItem menu_pcbst;
 	public MenuItem menu_pstack;
+	public Button fullscreenButton;
 	
 	private Visualization visualization;
 	private AlgVis algvis;
+	private ChangeListener<Boolean> fullScreenChangeListener = new ChangeListener<Boolean>() {
+		@Override
+		public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+			if (newValue) {
+				fullscreenButton.setGraphic(new ImageView("algvis2/ui/fullscreen_off.png"));
+			} else {
+				fullscreenButton.setGraphic(new ImageView("algvis2/ui/fullscreen_on.png"));
+			}
+		}
+	};
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -115,11 +135,23 @@ public class AlgVisFXMLController implements Initializable {
 				.show();
 	}
 
-	public void setVis(Visualization visualization) {
+	public void setVis(Visualization visualization, String language) {
 		this.visualization = visualization;
+		rootPane.getChildren().set(0, visualization.getVisPaneWrapper());
+		visTitle.setText(visualization.getTitle());
+		buttonsTitledPane.setContent(visualization.loadButtons(language));
 	}
 
 	public void setAlgvis(AlgVis algvis) {
 		this.algvis = algvis;
+		if (algvis.getStage().isFullScreen()) {
+			fullscreenButton.setGraphic(new ImageView("algvis2/ui/fullscreen_off.png"));
+		}
+		
+		algvis.getStage().fullScreenProperty().addListener(new WeakChangeListener<Boolean>(fullScreenChangeListener));
+	}
+
+	public void fullscreenPressed(ActionEvent event) {
+		algvis.getStage().setFullScreen(!algvis.getStage().isFullScreen());
 	}
 }

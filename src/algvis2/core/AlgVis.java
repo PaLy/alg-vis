@@ -28,9 +28,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TitledPane;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -38,6 +35,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class AlgVis extends Application {
+	private Stage stage;
 	private Scene scene;
 	private AlgVisFXMLController controller;
 	private String language = "en";
@@ -53,11 +51,11 @@ public class AlgVis extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		this.stage = stage;
 		stage.setTitle("Gnarley Trees");
 		scene = new Scene(createRoot());
 		showVisualization(4);
 		stage.setScene(scene);
-		//		stage.setFullScreen(true);
 
 		//		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		//		stage.setX(primaryScreenBounds.getMinX());
@@ -70,28 +68,21 @@ public class AlgVis extends Application {
 
 	public void showVisualization(int x) {
 		if (x != currentVisualization) {
-			if (VISUALIZATIONS[x] == null)
-				VISUALIZATIONS[x] = createVisualization(x);
-
-			AnchorPane root = (AnchorPane) scene.getRoot();
-			root.getChildren().set(0, VISUALIZATIONS[x].getVisPaneWrapper());
-
-			TitledPane buttons = (TitledPane) scene
-					.lookup("#buttonsTitledPane");
-			buttons.setContent(VISUALIZATIONS[x].loadButtons(language));
-			((Text) scene.getRoot().lookup("#visTitle")).setText(VISUALIZATIONS[x].getTitle());
-
-			controller.setVis(VISUALIZATIONS[x]);
+			controller.setVis(getVisualization(x), language);
 			currentVisualization = x;
 		}
 	}
 
 	public void selectLanguage(String lang) {
-		language = lang;
-		scene.setRoot(createRoot());
-		int curVis = currentVisualization;
-		currentVisualization = -1;
-		showVisualization(curVis);
+		if (!lang.equals(language)) {
+			language = lang;
+			scene.setRoot(createRoot());
+			
+			int curVis = currentVisualization;
+			
+			currentVisualization = -1;
+			showVisualization(curVis);
+		}
 	}
 
 	private Parent createRoot() {
@@ -116,20 +107,32 @@ public class AlgVis extends Application {
 		//		new Locale(language)));
 	}
 
-	private Visualization createVisualization(int x) {
-		switch (x) {
-		case 0:
-			return new BSTVisualization();
-		case 1:
-			return new AVLVisualization();
-		case 2:
-			return new RBVisualization();
-		case 3:
-			return new PCBSTVisualization();
-		case 4:
-			return new StackVisualization();
-		default:
-			return null;
+	private Visualization getVisualization(int x) {
+		if (VISUALIZATIONS[x] == null) {
+			switch (x) {
+			case 0:
+				VISUALIZATIONS[x] = new BSTVisualization();
+				break;
+			case 1:
+				VISUALIZATIONS[x] = new AVLVisualization();
+				break;
+			case 2:
+				VISUALIZATIONS[x] = new RBVisualization();
+				break;
+			case 3:
+				VISUALIZATIONS[x] = new PCBSTVisualization();
+				break;
+			case 4:
+				VISUALIZATIONS[x] = new StackVisualization();
+				break;
+			default:
+				VISUALIZATIONS[x] = null;
+			}
 		}
+		return VISUALIZATIONS[x];
+	}
+	
+	public Stage getStage() {
+		return stage;
 	}
 }

@@ -27,7 +27,8 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns:fx="http://javafx.com/fxml" fx:controller="algvis2.ui.AlgVisFXMLController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="576.0" prefWidth="1024.0" xmlns:fx="http://javafx.com/fxml" fx:controller="algvis2.ui.AlgVisFXMLController">
   <children>
     <Pane />
     <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -136,6 +137,15 @@
           <ImageView>
             <image>
               <Image url="@camera.png" />
+            </image>
+          </ImageView>
+        </graphic>
+      </Button>
+      <Button fx:id="fullscreenButton" onAction="#fullscreenPressed">
+        <graphic>
+          <ImageView>
+            <image>
+              <Image url="@fullscreen_on.png" />
             </image>
           </ImageView>
         </graphic>
