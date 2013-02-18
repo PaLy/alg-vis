@@ -36,7 +36,7 @@
     </fx:signjar>
 	</target>
 
-  <!-- TODO: standalone verzia sa nemusi podpisovat, aby zbytocne neotravovala povolenim -->
+  <!-- TODO: java web start verzia sa nemusi podpisovat, aby zbytocne neotravovala povolenim -->
   
   <target name="buildAll">
     <taskdef resource="com/sun/javafx/tools/ant/antlib.xml"

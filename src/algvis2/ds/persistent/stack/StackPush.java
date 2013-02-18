@@ -42,7 +42,7 @@ public class StackPush extends Algorithm {
 		
 		saveChangedProperties();
 		node.removePosBinding();
-		newVerPointer.removePosBinding(); // TODO asi to spravit nejak inak
+		newVerPointer.removePosBinding();
 		
 		stack.versions.add(newVerPointer);
 	}

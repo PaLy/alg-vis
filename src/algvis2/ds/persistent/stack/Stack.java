@@ -48,11 +48,6 @@ public class Stack extends DataStructure {
 		versions.add(emptyVersion);
 	}
 
-	@Override
-	public String getStats() {
-		return null; // TODO
-	}
-
 	public Algorithm push(int x, int version) {
 		if (version < 0 || version >= versions.size()) {
 			version = versions.size() - 1;

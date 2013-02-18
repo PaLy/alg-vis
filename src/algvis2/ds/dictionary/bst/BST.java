@@ -52,13 +52,8 @@ public class BST extends Dictionary implements TreeForTreeLayout<BSTNode> {
 	}
 
 	@Override
-	public String getStats() {
-		return null; // TODO
-	}
-
-	@Override
 	public Algorithm insert(int x) {
-		// TODO! node vytvarat az v algoritme?
+		// TODO node vytvarat az v algoritme?
 		BSTInsert bstInsert = new BSTInsert(this, new BSTNode(x,
 				NodePaint.INSERT));
 		bstInsert.run();

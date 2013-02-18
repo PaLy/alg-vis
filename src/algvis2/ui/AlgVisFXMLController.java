@@ -23,11 +23,15 @@ import javafx.beans.value.ObservableValue;
 import javafx.beans.value.WeakChangeListener;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBuilder;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
@@ -37,12 +41,16 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.stage.StageBuilder;
 
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 
 public class AlgVisFXMLController implements Initializable {
@@ -111,27 +119,59 @@ public class AlgVisFXMLController implements Initializable {
 	public void snapshotPressed(ActionEvent event) {		
 		Node node = visualization.getVisPane().getPane();
 		WritableImage image = node.snapshot(new SnapshotParameters(), null);
-		
-		// TODO: probably use a file chooser here
-		File file = new File("snapshot.png");
-		try {
-			ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return;
-		}
+	
 		openStage(image);
 	}
 	
-	private void openStage(Image image){
+	private void openStage(final Image image){
 		StackPane sp = new StackPane();
-		sp.getChildren().add(new ImageView(image));
 
-		StageBuilder.create()
-				.title("Snapshot - snapshot.png")
+		final Stage stage = StageBuilder.create()
+				.title("Snapshot")
 				.scene(new Scene(sp))
-				.build()
-				.show();
+				.build();
+		
+		Button saveButton = ButtonBuilder.create()
+				.text("Save")
+				.onMouseClicked(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent event) {
+						FileChooser fileChooser = new FileChooser();
+						fileChooser.setTitle("Save as");
+						File file = fileChooser.showSaveDialog(stage);
+
+						if (file != null) {
+							String fileName = file.getName();
+							String extension = "";
+							int i = fileName.lastIndexOf('.');
+							if (i > 0) {
+								extension = fileName.substring(i + 1);
+							}
+
+							HashSet<String> writerFormatNames = new HashSet<String>();
+							Collections.addAll(writerFormatNames, ImageIO.getWriterFormatNames());
+
+							if (writerFormatNames.contains(extension)) { // TODO aj tak asi funguje len png a gif
+								try {
+									ImageIO.write(SwingFXUtils.fromFXImage(image, null), extension, file);
+								} catch (IOException e) {
+									// TODO error dialog
+									e.printStackTrace();
+								}
+							} else {
+								// TODO error dialog
+							}
+						}
+					}
+				})
+				.build();
+		
+		StackPane.setAlignment(saveButton, Pos.TOP_LEFT);
+		StackPane.setMargin(saveButton, new Insets(10));
+		
+		sp.getChildren().addAll(new ImageView(image), saveButton);		
+		
+		stage.show();
 	}
 
 	public void setVis(Visualization visualization, String language) {

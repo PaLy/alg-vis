@@ -39,8 +39,6 @@ public abstract class DataStructure extends VisElem implements PropertyStateEdit
 		return (Pane) super.getVisual();
 	}
 
-	abstract public String getStats();
-
 	abstract public void clear();
 	
 	abstract public Animation random(int n);

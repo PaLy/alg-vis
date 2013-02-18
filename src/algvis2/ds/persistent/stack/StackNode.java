@@ -69,7 +69,7 @@ public class StackNode extends Node {
 				text.setFont(Fonts.VER_NO_FONT);
 				text.setText("v" + text.getText());
 				text.setX(-text.getBoundsInLocal().getWidth() / 2);
-				text.setY(text.getY() - 10); // TODO inak ten text
+				text.setY(text.getY() - 10);
 			} else {
 				((Group) visual).getChildren().set(0, new Line(-Node.RADIUS / 2, 0, Node.RADIUS / 2, 0));
 				((Group) visual).getChildren().get(1).setVisible(false);
