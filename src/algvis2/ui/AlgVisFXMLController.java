@@ -17,7 +17,6 @@
 
 package algvis2.ui;
 
-import algvis2.core.AlgVis;
 import algvis2.core.Visualization;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

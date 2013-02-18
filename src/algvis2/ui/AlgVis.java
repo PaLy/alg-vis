@@ -15,15 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.core;
+package algvis2.ui;
 
 import algvis2.animation.AutoAnimsManager;
+import algvis2.core.Visualization;
 import algvis2.ds.dictionary.avl.AVLVisualization;
 import algvis2.ds.dictionary.bst.BSTVisualization;
 import algvis2.ds.dictionary.rb.RBVisualization;
 import algvis2.ds.persistent.partially.bst.PCBSTVisualization;
 import algvis2.ds.persistent.stack.StackVisualization;
-import algvis2.ui.AlgVisFXMLController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

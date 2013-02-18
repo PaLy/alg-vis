@@ -17,7 +17,7 @@
 
 package algvis2.animation;
 
-import algvis2.core.AlgVis;
+import algvis2.ui.AlgVis;
 import algvis2.scene.Axis;
 import javafx.animation.TranslateTransition;
 import javafx.animation.TranslateTransitionBuilder;

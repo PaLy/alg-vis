@@ -17,7 +17,6 @@
 
 package algvis2.ds.persistent.stack;
 
-import algvis2.core.AlgVis;
 import algvis2.core.Algorithm;
 import algvis2.scene.control.InputField;
 import algvis2.ui.ButtonsController;

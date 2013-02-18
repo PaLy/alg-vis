@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import algvis2.scene.text.Fonts?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.geometry.*?>
@@ -97,7 +98,7 @@
     </MenuBar>
     <Text fx:id="visTitle" text="Pointer Machine" underline="true" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="26.0">
       <font>
-        <Font name="Purisa Bold" size="30.0" />
+        <Fonts fx:constant="PURISA_BOLD_30" />
       </font>
     </Text>
     <TitledPane fx:id="buttonsTitledPane" alignment="TOP_LEFT" animated="true" collapsible="true" contentDisplay="LEFT" disable="false" expanded="true" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" text="%operations" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="0.0">

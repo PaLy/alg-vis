@@ -5,7 +5,7 @@
 						 uri="javafx:com.sun.javafx.tools.ant"
 						 classpath="/usr/lib/jvm/java-7-oracle/lib/ant-javafx.jar"/>
 
-    <fx:application id="gtApp" name="Gnarley Trees" mainClass="algvis2.core.AlgVis"/>
+    <fx:application id="gtApp" name="Gnarley Trees" mainClass="algvis2.ui.AlgVis"/>
     <fx:resources id="appRes">
       <!--<fx:fileset dir="lib"/>-->
       <fx:fileset file="dist/GnarleyTrees.jar"/>
@@ -43,7 +43,7 @@
              uri="javafx:com.sun.javafx.tools.ant"
              classpath="/usr/lib/jvm/java-7-oracle/lib/ant-javafx.jar"/>
 
-    <fx:application id="gtApp" name="Gnarley Trees" mainClass="algvis2.core.AlgVis"/>
+    <fx:application id="gtApp" name="Gnarley Trees" mainClass="algvis2.ui.AlgVis"/>
     <fx:resources id="appRes">
       <!--<fx:fileset dir="lib"/>-->
       <fx:fileset file="dist/GnarleyTrees.jar"/>

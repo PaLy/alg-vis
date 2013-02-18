@@ -17,7 +17,6 @@
 
 package algvis2.ui;
 
-import algvis2.core.AlgVis;
 import algvis2.core.Visualization;
 import algvis2.scene.control.InputField;
 import javafx.animation.Animation;
