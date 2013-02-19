@@ -44,10 +44,13 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageBuilder;
+import jfxtras.labs.dialogs.DialogFX;
+import jfxtras.labs.dialogs.DialogFXBuilder;
 
 import javax.imageio.ImageIO;
 import java.io.File;
-import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashSet;
@@ -136,32 +139,7 @@ public class AlgVisFXMLController implements Initializable {
 				.onMouseClicked(new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent event) {
-						FileChooser fileChooser = new FileChooser();
-						fileChooser.setTitle("Save as");
-						File file = fileChooser.showSaveDialog(stage);
-
-						if (file != null) {
-							String fileName = file.getName();
-							String extension = "";
-							int i = fileName.lastIndexOf('.');
-							if (i > 0) {
-								extension = fileName.substring(i + 1);
-							}
-
-							HashSet<String> writerFormatNames = new HashSet<String>();
-							Collections.addAll(writerFormatNames, ImageIO.getWriterFormatNames());
-
-							if (writerFormatNames.contains(extension)) { // TODO aj tak asi funguje len png a gif
-								try {
-									ImageIO.write(SwingFXUtils.fromFXImage(image, null), extension, file);
-								} catch (IOException e) {
-									// TODO error dialog
-									e.printStackTrace();
-								}
-							} else {
-								// TODO error dialog
-							}
-						}
+						showFileChooser(stage, image);
 					}
 				})
 				.build();
@@ -172,6 +150,53 @@ public class AlgVisFXMLController implements Initializable {
 		sp.getChildren().addAll(new ImageView(image), saveButton);		
 		
 		stage.show();
+	}
+	
+	private void showFileChooser(Stage stage, Image image) {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Save as");
+		File file = fileChooser.showSaveDialog(stage);
+
+		if (file != null) {
+			String fileName = file.getName();
+			String extension = "";
+			int i = fileName.lastIndexOf('.');
+			if (i > 0) {
+				extension = fileName.substring(i + 1);
+			}
+
+			HashSet<String> writerFormatNames = new HashSet<String>();
+			Collections.addAll(writerFormatNames, ImageIO.getWriterFormatNames());
+
+			if (writerFormatNames.contains(extension) && (extension.toLowerCase().equals("png") || extension
+					.toLowerCase().equals("gif"))) {				
+				try {
+					image = null;
+					ImageIO.write(SwingFXUtils.fromFXImage(image, null), extension, file);
+				} catch (Exception e) {
+					StringWriter error = new StringWriter();
+					e.printStackTrace(new PrintWriter(error));
+					
+					DialogFX dialog = DialogFXBuilder.create()
+							.type(DialogFX.Type.ERROR)
+							.titleText("Something went wrong :(")
+							.message("An unexpected error has occurred. Image cannot be saved.")
+							.build();
+					
+					dialog.showDialog();
+				}
+			} else {
+				DialogFX dialog = DialogFXBuilder.create()
+						.type(DialogFX.Type.ERROR)
+						.titleText("Error")
+						.message("Bad file format. Use .png or .gif file format.")
+						.build();
+				
+				dialog.showDialog();
+				showFileChooser(stage, image);
+			}
+		}
+
 	}
 
 	public void setVis(Visualization visualization, String language) {
