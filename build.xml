@@ -1,24 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="alg-vis2" default="jar+webpage" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
-	<target name="jar+webpage">
+  <property name="jdkPath" location="/usr/lib/jvm/java-7-oracle"/>
+  <property name="lib" location="lib"/>
+  <property name="build" location="bin"/>
+  <property name="dist" location="dist"/>
+
+  
+  <target name="clean">
+    <delete dir="${dist}"/>
+  </target>
+  
+  
+  <target name="jar+webpage" depends="clean">
 		<taskdef resource="com/sun/javafx/tools/ant/antlib.xml"
 						 uri="javafx:com.sun.javafx.tools.ant"
-						 classpath="/usr/lib/jvm/java-7-oracle/lib/ant-javafx.jar"/>
+						 classpath="${jdkPath}/lib/ant-javafx.jar"/>
 
     <fx:application id="gtApp" name="Gnarley Trees" mainClass="algvis2.ui.AlgVis"/>
     <fx:resources id="appRes">
-      <!--<fx:fileset dir="lib"/>-->
-      <fx:fileset file="dist/GnarleyTrees.jar"/>
+      <fx:fileset dir="${lib}" excludes="jfxtras-labs/jfxtras-labs-2.2-r4-sources.jar"/>
+      <fx:fileset file="${dist}/GnarleyTrees.jar"/>
     </fx:resources>
     
-    <delete dir="dist"/>
-    <mkdir dir="dist"/>
+    <mkdir dir="${dist}"/>
     
-    <fx:jar destfile="dist/GnarleyTrees.jar">
+    <fx:jar destfile="${dist}/GnarleyTrees.jar">
       <fx:application refid="gtApp"/>
       <fx:resources refid="appRes"/>
-      <fileset dir="bin"/>
-	</fx:jar>
+      <fileset dir="${build}"/>
+	  </fx:jar>
     
     <fx:deploy embeddedwidth="100%" embeddedheight="100%" width="1024" height="576" outdir="dist"
                outfile="GnarleyTrees" nativeBundles="none" embedjnlp="true">
@@ -31,31 +41,30 @@
     <genkey alias="gtApp" storepass="hesielko" keystore="dist/gt.keystore"
             dname="CN=Pavol Lukca, OU=Gnarley Trees, O=algvis, L=Bratislava, C=SK" validity="3650"/>
     <fx:signjar keystore="dist/gt.keystore" alias="gtApp" storepass="hesielko" verbose="true">
-      <fileset file="dist/GnarleyTrees.jar"/>
-      <!--<fileset dir="dist" includes="**/*.jar" excludes="bundles/**/*"/>-->
+      <fileset file="${dist}/GnarleyTrees.jar"/>
+      <fileset dir="${dist}" includes="**/*.jar" excludes="bundles/**/*"/>
     </fx:signjar>
 	</target>
 
-  <!-- TODO: java web start verzia sa nemusi podpisovat, aby zbytocne neotravovala povolenim -->
   
-  <target name="buildAll">
+  <!-- TODO: java web start verzia sa nemusi podpisovat, aby zbytocne neotravovala povolenim -->
+  <target name="buildAll" depends="clean">
     <taskdef resource="com/sun/javafx/tools/ant/antlib.xml"
              uri="javafx:com.sun.javafx.tools.ant"
-             classpath="/usr/lib/jvm/java-7-oracle/lib/ant-javafx.jar"/>
+             classpath="${jdkPath}/lib/ant-javafx.jar"/>
 
     <fx:application id="gtApp" name="Gnarley Trees" mainClass="algvis2.ui.AlgVis"/>
     <fx:resources id="appRes">
-      <!--<fx:fileset dir="lib"/>-->
-      <fx:fileset file="dist/GnarleyTrees.jar"/>
+      <fx:fileset dir="${lib}" excludes="jfxtras-labs/jfxtras-labs-2.2-r4-sources.jar"/>
+      <fx:fileset file="${dist}/GnarleyTrees.jar"/>
     </fx:resources>
 
-    <delete dir="dist"/>
-    <mkdir dir="dist"/>
+    <mkdir dir="${dist}"/>
 
-    <fx:jar destfile="dist/GnarleyTrees.jar">
+    <fx:jar destfile="${dist}/GnarleyTrees.jar">
       <fx:application refid="gtApp"/>
       <fx:resources refid="appRes"/>
-      <fileset dir="bin"/>
+      <fileset dir="${build}"/>
     </fx:jar>
 
     <fx:deploy embeddedwidth="100%" embeddedheight="100%" width="1024" height="576" outdir="dist"
@@ -69,9 +78,16 @@
     <genkey alias="gtApp" storepass="hesielko" keystore="dist/gt.keystore"
             dname="CN=Pavol Lukca, OU=Gnarley Trees, O=algvis, L=Bratislava, C=SK" validity="3650"/>
     <fx:signjar keystore="dist/gt.keystore" alias="gtApp" storepass="hesielko" verbose="true">
-      <fileset file="dist/GnarleyTrees.jar"/>
-      <!--<fileset dir="dist" includes="**/*.jar" excludes="bundles/**/*"/>-->
+      <fileset file="${dist}/GnarleyTrees.jar"/>
+      <fileset dir="${dist}" includes="**/*.jar" excludes="bundles/**/*"/>
     </fx:signjar>
+  </target>
+  
+  
+  <target name="buildAll+symlink" depends="buildAll">
+    <mkdir dir="${dist}/bundles/GnarleyTrees/runtime/jre/lib/amd64/client" />
+    <symlink link="${dist}/bundles/GnarleyTrees/runtime/jre/lib/amd64/client/libjvm.so"
+             resource="../server/libjvm.so"/>
   </target>
 </project>
 	

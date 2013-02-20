@@ -85,6 +85,7 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 		init();
 	}
 
+	@Deprecated
 	public Node(javafx.scene.Node node) {
 		super(node);
 	}

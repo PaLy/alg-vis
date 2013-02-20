@@ -17,6 +17,7 @@
 
 package algvis2.ds.persistent.stack;
 
+import algvis2.animation.AnimationFactory;
 import algvis2.core.Algorithm;
 
 public class StackPush extends Algorithm {
@@ -45,5 +46,8 @@ public class StackPush extends Algorithm {
 		newVerPointer.removePosBinding();
 		
 		stack.versions.add(newVerPointer);
+		
+		addAnimation(AnimationFactory.scaleInOut(node));
+		addAnimation(AnimationFactory.scaleInOut(newVerPointer));
 	}
 }

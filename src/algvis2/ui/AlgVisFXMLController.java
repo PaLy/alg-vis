@@ -171,8 +171,13 @@ public class AlgVisFXMLController implements Initializable {
 			if (writerFormatNames.contains(extension) && (extension.toLowerCase().equals("png") || extension
 					.toLowerCase().equals("gif"))) {				
 				try {
-					image = null;
 					ImageIO.write(SwingFXUtils.fromFXImage(image, null), extension, file);
+					DialogFX dialog = DialogFXBuilder.create()
+							.type(DialogFX.Type.INFO)
+							.titleText("Success")
+							.message("Image saved successfully.")
+							.build();
+					dialog.showDialog();
 				} catch (Exception e) {
 					StringWriter error = new StringWriter();
 					e.printStackTrace(new PrintWriter(error));
@@ -180,7 +185,7 @@ public class AlgVisFXMLController implements Initializable {
 					DialogFX dialog = DialogFXBuilder.create()
 							.type(DialogFX.Type.ERROR)
 							.titleText("Something went wrong :(")
-							.message("An unexpected error has occurred. Image cannot be saved.")
+							.message("An unexpected error has occurred. Image cannot be saved.\n\n" + e.toString())
 							.build();
 					
 					dialog.showDialog();

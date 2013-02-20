@@ -91,7 +91,7 @@ public class StackButtonsController extends ButtonsController {
 			back.play();
 		} else {
 			disableOperations(false);
-			disableNext(visualization.animManager.hasNext());
+			disableNext(!visualization.animManager.hasNext());
 			disablePrevious(!visualization.animManager.hasPrevious());
 		}
 	}

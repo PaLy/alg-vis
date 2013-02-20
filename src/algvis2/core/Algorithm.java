@@ -96,7 +96,15 @@ public abstract class Algorithm implements Runnable {
 //		System.out.println("*************");
 	}
 
+	/**
+	 * For smaller overhead rather use<br/><br/>
+	 * <code>addAnimation(new SequentialTransition(anims));</code><br/><br/>
+	 * than<br/><br/> <code>{ addAnimation(anims[0]); 
+	 * addAnimation(anims[1]); }</code><br/>
+	 * @param anim animation to add to current step
+	 */
 	protected void addAnimation(Animation anim) {
+		layoutRequested = true; // inak by sa napr. node pripojil na DS az po vykonani animacie
 		saveChangedProperties();
 		step.getChildren().add(anim);
 	}

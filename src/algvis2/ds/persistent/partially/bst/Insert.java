@@ -80,7 +80,6 @@ public class Insert extends Algorithm {
 
 		removeVisElem(newNode);
 
-		requestLayout();
 		addAnimation(ScaleTransitionBuilder.create().node(newNode.getVisual()).byX(0.5)
 				.byY(0.5).duration(Duration.millis(500)).cycleCount(2)
 				.autoReverse(true).build());

@@ -22,7 +22,12 @@ import javafx.scene.Node;
 
 public abstract class VisElem implements Comparable<VisElem> {
 	protected Node visual;
-	private ZDepth zDepth = ZDepth.TOP;
+	/**
+	 * Malo by byt final, kedze podla toho porovnavam VisElemy (napr. v strome).
+	 * Aby sa dala menit hlbka VisElemu, tak nemusi byt final, ale potom po zmene hlbky nejakeho vrchola treba 
+	 * refreshnut visPane, aby VisElemy boli v spravnej hlbke.
+	 */
+	private ZDepth zDepth;
 	
 	public VisElem(Node visual) {
 		this.visual = visual;

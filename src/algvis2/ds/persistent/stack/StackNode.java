@@ -17,6 +17,7 @@
 
 package algvis2.ds.persistent.stack;
 
+import algvis2.scene.layout.ZDepth;
 import algvis2.scene.text.Fonts;
 import algvis2.scene.viselem.Node;
 import javafx.beans.property.ObjectProperty;
@@ -62,6 +63,8 @@ public class StackNode extends Node {
 	public static class NullNode extends StackNode {
 		public NullNode(int key, StackNode nextNode) {
 			super(key, nextNode);
+			setZDepth(ZDepth.VERSION_POINTER_TEXT); // TODO aj tak je to v DS hlbke, a nic s tym nespravim, 
+			// lebo je sucastou DS, ktora je vlozena ako jeden celok v jednej hlbke
 			if (nextNode != null) {
 				nextNode.parentNodes().put(this, true);
 				((Group) visual).getChildren().get(0).setVisible(false);

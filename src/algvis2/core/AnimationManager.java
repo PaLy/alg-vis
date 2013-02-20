@@ -29,17 +29,17 @@ import java.util.List;
 public class AnimationManager {
 	final List<List<Animation>> operations = new ArrayList<List<Animation>>();
 	private final Visualization visualization;
-	private int operationPos = -1;
-	private int stepPos = -1; // position after last played step
+	private int operationPos = -1; // position of last played operation (in forward direction)
+	private int stepPos = -1; // position of last played step (in forward direction)
 	
 	public AnimationManager(Visualization visualization) {
 		this.visualization = visualization;
 	}
 	
 	public void add(List<Animation> operation, boolean isDone) {
-		++operationPos;
-		if (operationPos < operations.size()) {
-			for (int i = 0; i < operations.size() - operationPos; i++) {
+		if (operationPos < operations.size() - 1) {			
+			int toRemove = operations.size() - operationPos - 1;
+			for (int i = 0; i < toRemove; i++) {
 				operations.remove(operations.size() - 1);
 			}
 		}
@@ -66,13 +66,15 @@ public class AnimationManager {
 		
 		operations.add(operation);
 		if (isDone) {
+			operationPos++;
 			stepPos = operation.size() - 1;
-		} else {
-			stepPos = -1;
 		}
 	}
 	
 	public void playNext() {
+		if (operationPos == -1)
+			operationPos++;
+		
 		List<Animation> curOp = operations.get(operationPos);
 		if (stepPos + 1 == curOp.size()) {
 			if (hasNext()) {
@@ -100,6 +102,11 @@ public class AnimationManager {
 			Animation curStep = curOp.get(stepPos);
 			if (curStep.getRate() > 0) curStep.setRate(-curStep.getRate());
 			stepPos--;
+			if (stepPos == -1) {
+				operationPos--;
+				if (operationPos > - 1)
+					stepPos = operations.get(operationPos).size() - 1;
+			}
 			curStep.play();
 		}
 	}
@@ -109,12 +116,13 @@ public class AnimationManager {
 	}
 	
 	public boolean hasPrevious() {
-		return operationPos > 0 || stepPos > -1;
+		return operationPos >= 0;
 	}
 	
 	public void clear() {
 		operations.clear();
 		operationPos = -1;
+		stepPos = -1;
 	}
 	
 	private class NextStepHandler implements EventHandler<ActionEvent> {

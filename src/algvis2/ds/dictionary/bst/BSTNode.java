@@ -46,6 +46,7 @@ public class BSTNode extends Node {
 		init();
 	}
 
+	@Deprecated
 	public BSTNode(javafx.scene.Node node) {
 		super(node);
 	}

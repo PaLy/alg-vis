@@ -17,11 +17,10 @@
 
 package algvis2.ds.dictionary.bst;
 
+import algvis2.animation.AnimationFactory;
 import algvis2.core.Algorithm;
 import algvis2.scene.layout.ZDepth;
 import algvis2.scene.paint.NodePaint;
-import javafx.animation.ScaleTransitionBuilder;
-import javafx.util.Duration;
 
 public class BSTInsert extends Algorithm {
 	protected final BST D;
@@ -64,10 +63,7 @@ public class BSTInsert extends Algorithm {
 
 		removeVisElem(newNode);
 		
-		requestLayout();
-		addAnimation(ScaleTransitionBuilder.create().node(newNode.getVisual()).byX(0.5)
-				.byY(0.5).duration(Duration.millis(500)).cycleCount(2)
-				.autoReverse(true).build());
+		addAnimation(AnimationFactory.scaleInOut(newNode));
 		
 		newNode.setPaint(NodePaint.NORMAL);
 	}

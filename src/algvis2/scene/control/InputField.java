@@ -17,8 +17,8 @@
 
 package algvis2.scene.control;
 
-import algvis.core.MyRandom;
 import algvis.core.WordGenerator;
+import algvis2.core.MyRandom;
 import javafx.scene.control.TextField;
 
 import java.util.Vector;
@@ -70,7 +70,7 @@ public class InputField {
 	}
 
 	/**
-	 * Returns a vector of integers in the range 1..MAX. Numbers in the input
+	 * Returns a vector of integers in the range <1..MAX). Numbers in the input
 	 * may be delimited by whitespaces and/or commas.
 	 */
 	public Vector<Integer> getVI() {
@@ -78,7 +78,7 @@ public class InputField {
 	}
 
 	/**
-	 * Returns a vector of integers in the range min..max. Numbers in the input
+	 * Returns a vector of integers in the range <min..max). Numbers in the input
 	 * may be delimited by whitespaces and/or commas.
 	 */
 	public Vector<Integer> getVI(int min, int max) {
@@ -98,8 +98,8 @@ public class InputField {
 						// TODO
 						//						sb.setText("value too small; using the minimum value instead");
 					}
-					if (x > max) {
-						x = max;
+					if (x >= max) {
+						x = max - 1; // TODO pozor na pripad min = max
 						// TODO
 						//						sb.setText("value too high; using the maximum value instead");
 					}
@@ -125,18 +125,18 @@ public class InputField {
 	}
 
 	/**
-	 * Returns a non-empty vector of integers in the range 1..MAX. Numbers in
+	 * Returns a non-empty vector of integers in the range <1..MAX). Numbers in
 	 * the input may be delimited by whitespaces and/or commas. If no input is
-	 * given, a vector with 1 random value in the range 1..MAX is returned.
+	 * given, a vector with 1 random value in the range <1..MAX) is returned.
 	 */
 	public Vector<Integer> getNonEmptyVI() {
 		return getNonEmptyVI(1, MAX_VALUE);
 	}
 
 	/**
-	 * Returns a non-empty vector of integers in the range min..max. Numbers in
+	 * Returns a non-empty vector of integers in the range <min..max). Numbers in
 	 * the input may be delimited by whitespaces and/or commas. If no input is
-	 * given, a vector with 1 random value in the range min..max is returned.
+	 * given, a vector with 1 random value in the range <min..max) is returned.
 	 */
 	public Vector<Integer> getNonEmptyVI(int min, int max) {
 		Vector<Integer> args = getVI();

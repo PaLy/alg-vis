@@ -15,32 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.ds.persistent.stack;
+package algvis2.animation;
 
-import algvis2.animation.AnimationFactory;
-import algvis2.core.Algorithm;
+import algvis2.scene.viselem.Node;
+import javafx.animation.Animation;
+import javafx.animation.ScaleTransitionBuilder;
+import javafx.util.Duration;
 
-public class StackPop extends Algorithm {
-	private final Stack stack;
-	private final int version;
-
-	protected StackPop(Stack stack, int version) {
-		super(stack);
-		this.version = version;
-		this.stack = stack;
+public class AnimationFactory {
+	
+	public static Animation scaleInOut(Node node) {
+		return ScaleTransitionBuilder.create().node(node.getVisual()).byX(0.5)
+				.byY(0.5).duration(Duration.millis(500)).cycleCount(2)
+				.autoReverse(true).build();
 	}
-
-	@Override
-	protected void runAlgorithm() {
-		StackNode oldVersionTop = stack.versions.get(version).nextNode;
-		int nextVersion = stack.versions.size();
-		StackNode.NullNode newVerPointer = new StackNode.NullNode(nextVersion, oldVersionTop.nextNode);
-		
-		saveChangedProperties();
-		newVerPointer.removePosBinding();
-		
-		stack.versions.add(newVerPointer);
-		
-		addAnimation(AnimationFactory.scaleInOut(newVerPointer));
-	}
+	
 }

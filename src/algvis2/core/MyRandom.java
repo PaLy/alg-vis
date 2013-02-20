@@ -15,32 +15,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.ds.persistent.stack;
+package algvis2.core;
 
-import algvis2.animation.AnimationFactory;
-import algvis2.core.Algorithm;
+import java.util.Random;
 
-public class StackPop extends Algorithm {
-	private final Stack stack;
-	private final int version;
+public class MyRandom {
+	static Random G = new Random(System.currentTimeMillis());
 
-	protected StackPop(Stack stack, int version) {
-		super(stack);
-		this.version = version;
-		this.stack = stack;
+	public static boolean heads() {
+		return G.nextInt(2) == 1;
 	}
 
-	@Override
-	protected void runAlgorithm() {
-		StackNode oldVersionTop = stack.versions.get(version).nextNode;
-		int nextVersion = stack.versions.size();
-		StackNode.NullNode newVerPointer = new StackNode.NullNode(nextVersion, oldVersionTop.nextNode);
-		
-		saveChangedProperties();
-		newVerPointer.removePosBinding();
-		
-		stack.versions.add(newVerPointer);
-		
-		addAnimation(AnimationFactory.scaleInOut(newVerPointer));
+	public static boolean tails() {
+		return G.nextInt(2) == 0;
+	}
+
+	public static int bit() {
+		return G.nextInt(2);
+	}
+
+	public static int Int(int n) {
+		return G.nextInt(n);
+	}
+
+	public static int Int(int min, int max) {
+		return G.nextInt(max - min) + min;
 	}
 }
+
