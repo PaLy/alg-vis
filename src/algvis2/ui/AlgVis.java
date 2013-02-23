@@ -31,17 +31,15 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class AlgVis extends Application {
 	private Stage stage;
 	private Scene scene;
 	private AlgVisFXMLController controller;
 	private String language = "en";
-	private final int NUMBER_OF_VISUALIZATIONS = 5;
-	private final Visualization[] VISUALIZATIONS = new Visualization[NUMBER_OF_VISUALIZATIONS];
-	private int currentVisualization = -1;
+	private final Map<Visualization.Type, Visualization> VISUALIZATIONS = new HashMap<>();
+	private Visualization.Type currentVisualization = null;
 
 	public static final AutoAnimsManager autoAnimsManager = new AutoAnimsManager();
 
@@ -54,7 +52,7 @@ public class AlgVis extends Application {
 		this.stage = stage;
 		stage.setTitle("Gnarley Trees");
 		scene = new Scene(createRoot());
-		showVisualization(4);
+		showVisualization(Visualization.Type.FP_STACK);
 		stage.setScene(scene);
 
 		//		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
@@ -66,10 +64,10 @@ public class AlgVis extends Application {
 		stage.show();
 	}
 
-	public void showVisualization(int x) {
-		if (x != currentVisualization) {
-			controller.setVis(getVisualization(x), language);
-			currentVisualization = x;
+	public void showVisualization(Visualization.Type visType) {
+		if (visType != currentVisualization) {
+			controller.setVis(getVisualization(visType), language);
+			currentVisualization = visType;
 		}
 	}
 
@@ -78,9 +76,9 @@ public class AlgVis extends Application {
 			language = lang;
 			scene.setRoot(createRoot());
 			
-			int curVis = currentVisualization;
+			Visualization.Type curVis = currentVisualization;
 			
-			currentVisualization = -1;
+			currentVisualization = null;
 			showVisualization(curVis);
 		}
 	}
@@ -107,29 +105,27 @@ public class AlgVis extends Application {
 		//		new Locale(language)));
 	}
 
-	private Visualization getVisualization(int x) {
-		if (VISUALIZATIONS[x] == null) {
+	private Visualization getVisualization(Visualization.Type x) {
+		if (VISUALIZATIONS.get(x) == null) {
 			switch (x) {
-			case 0:
-				VISUALIZATIONS[x] = new BSTVisualization();
+			case BST:
+				VISUALIZATIONS.put(x, new BSTVisualization());
 				break;
-			case 1:
-				VISUALIZATIONS[x] = new AVLVisualization();
+			case AVL:
+				VISUALIZATIONS.put(x, new AVLVisualization());
 				break;
-			case 2:
-				VISUALIZATIONS[x] = new RBVisualization();
+			case RB:
+				VISUALIZATIONS.put(x, new RBVisualization());
 				break;
-			case 3:
-				VISUALIZATIONS[x] = new PCBSTVisualization();
+			case FP_PC_BST:
+				VISUALIZATIONS.put(x, new PCBSTVisualization());
 				break;
-			case 4:
-				VISUALIZATIONS[x] = new StackVisualization();
+			case FP_STACK:
+				VISUALIZATIONS.put(x, new StackVisualization());
 				break;
-			default:
-				VISUALIZATIONS[x] = null;
 			}
 		}
-		return VISUALIZATIONS[x];
+		return VISUALIZATIONS.get(x);
 	}
 	
 	public Stage getStage() {

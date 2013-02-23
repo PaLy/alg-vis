@@ -128,4 +128,13 @@ public abstract class Visualization implements PropertyStateEditable {
 			pauseSelected.bind(buttonsController.buttonPause.selectedProperty());
 		}
 	}
+	
+	public enum Type {
+		BST,
+		AVL,
+		RB,
+		
+		FP_PC_BST,
+		FP_STACK
+	}
 }

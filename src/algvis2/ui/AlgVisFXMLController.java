@@ -103,15 +103,15 @@ public class AlgVisFXMLController implements Initializable {
 	public void selectVisualization(ActionEvent event) {
 		Object source = event.getSource();
 		if (source == menu_bst) {
-			algvis.showVisualization(0);
+			algvis.showVisualization(Visualization.Type.BST);
 		} else if (source == menu_avl) {
-			algvis.showVisualization(1);
+			algvis.showVisualization(Visualization.Type.AVL);
 		} else if (source == menu_rb) {
-			algvis.showVisualization(2);
+			algvis.showVisualization(Visualization.Type.RB);
 		} else if (source == menu_pcbst) {
-			algvis.showVisualization(3);
+			algvis.showVisualization(Visualization.Type.FP_PC_BST);
 		} else if (source == menu_pstack) {
-			algvis.showVisualization(4);
+			algvis.showVisualization(Visualization.Type.FP_STACK);
 		}
 	}
 	
