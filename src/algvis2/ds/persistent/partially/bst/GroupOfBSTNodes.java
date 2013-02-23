@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class GroupOfBSTNodes extends BSTNode {
-	private final ObjectProperty<List<BSTNode>> nodes = new SimpleObjectProperty<List<BSTNode>>();
+	private final ObjectProperty<List<BSTNode>> nodes = new SimpleObjectProperty<>();
 	private int lastTime;
 
 	public GroupOfBSTNodes(BSTNode node, int time) {
@@ -70,7 +70,7 @@ public class GroupOfBSTNodes extends BSTNode {
 
 	@Override
 	public ArrayList<Edge> getEdges() {
-		ArrayList<Edge> res = new ArrayList<Edge>();
+		ArrayList<Edge> res = new ArrayList<>();
 		for (BSTNode node : nodes.get()) {
 			res.addAll(node.getEdges());
 		}

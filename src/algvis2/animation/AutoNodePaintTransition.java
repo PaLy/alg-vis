@@ -15,37 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.scene.viselem;
+package algvis2.animation;
 
-import algvis2.scene.layout.ZDepth;
-import javafx.scene.Node;
+import algvis2.scene.paint.NodePaint;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.shape.Shape;
 
-import java.util.Comparator;
-
-public abstract class VisElem {
-	protected Node visual;
-	private ZDepth zDepth;
+public class AutoNodePaintTransition implements AutoAnimation, ChangeListener<NodePaint> {
+	private final AutoFillTransition backgroundTransition, textTransition;
 	
-	public VisElem(Node visual) {
-		this.visual = visual;
-	}
-	
-	public Node getVisual() {
-		return visual;
+	public AutoNodePaintTransition(Shape background, Shape text) {
+		backgroundTransition = new AutoFillTransition(background);
+		textTransition = new AutoFillTransition(text);
 	}
 
-	public ZDepth getZDepth() {
-		return zDepth;
+	@Override
+	public void changed(ObservableValue<? extends NodePaint> observable, NodePaint oldValue, NodePaint newValue) {
+		backgroundTransition.changed(null, oldValue.getBackground(), newValue.getBackground());
+		textTransition.changed(null, oldValue.getText(), newValue.getText());
 	}
-
-	public void setZDepth(ZDepth zDepth) {
-		this.zDepth = zDepth;
-	}
-	
-	public static final Comparator<VisElem> ZDEPTH_COMPARATOR = new Comparator<VisElem>() {
-		@Override
-		public int compare(VisElem o1, VisElem o2) {
-			return o1.zDepth.compareTo(o2.zDepth);
-		}
-	};
 }

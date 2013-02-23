@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AnimationManager {
-	final List<List<Animation>> operations = new ArrayList<List<Animation>>();
+	final List<List<Animation>> operations = new ArrayList<>();
 	private final Visualization visualization;
 	private int operationPos = -1; // position of last played operation (in forward direction)
 	private int stepPos = -1; // position of last played step (in forward direction)
@@ -37,11 +37,8 @@ public class AnimationManager {
 	}
 	
 	public void add(List<Animation> operation, boolean isDone) {
-		if (operationPos < operations.size() - 1) {			
-			int toRemove = operations.size() - operationPos - 1;
-			for (int i = 0; i < toRemove; i++) {
-				operations.remove(operations.size() - 1);
-			}
+		if (operationPos + 1 < operations.size()) {
+			operations.subList(operationPos + 1, operations.size()).clear();
 		}
 
 		if (operation.size() > 1) {

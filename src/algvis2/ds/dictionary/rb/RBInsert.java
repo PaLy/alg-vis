@@ -33,7 +33,7 @@ public class RBInsert extends BSTInsert {
 		pause(true);
 
 		// bubleme nahor
-		ObjectProperty<RBNode> w = new SimpleObjectProperty<RBNode>();
+		ObjectProperty<RBNode> w = new SimpleObjectProperty<>();
 		w.set((RBNode) newNode);
 		RBNode pw = w.get().getParent2();
 		

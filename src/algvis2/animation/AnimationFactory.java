@@ -23,6 +23,10 @@ import javafx.animation.ScaleTransitionBuilder;
 import javafx.util.Duration;
 
 public class AnimationFactory {
+	// Suppress default constructor for noninstantiability
+	private AnimationFactory() {
+		throw new AssertionError();
+	}
 	
 	public static Animation scaleInOut(Node node) {
 		return ScaleTransitionBuilder.create().node(node.getVisual()).byX(0.5)

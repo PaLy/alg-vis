@@ -58,7 +58,7 @@ public class AutoTranslateTransition implements AutoAnimation,
 			Number newValue) {
 		double d = (Double) newValue - (Double) oldValue;
 		
-//		if (node instanceof algvis2.scene.viselem.Node && axis.equals(Axis.X) && ((algvis2.scene.viselem.Node) node)
+//		if (node instanceof algvis2.scene.viselem.Node && axis == Axis.X && ((algvis2.scene.viselem.Node) node)
 //				.getKey() == 42) {
 //			System.out.println(((algvis2.scene.viselem.Node) node).visPaneX + " " + d);
 //		}
@@ -73,29 +73,29 @@ public class AutoTranslateTransition implements AutoAnimation,
 			AlgVis.autoAnimsManager.remove(currentTransition);
 		}
 
-		if (axis.equals(Axis.X))
+		if (axis == Axis.X)
 			node.setTranslateX(node.getTranslateX() - d);
-		else if (axis.equals(Axis.Y)) {
+		else if (axis == Axis.Y) {
 //			if (node instanceof algvis2.scene.viselem.Node) System.out.println(((algvis2.scene.viselem.Node) node).getKey() + " ano som tu");
 			node.setTranslateY(node.getTranslateY() - d);
 		}
 
 		if (currentTransition != null) {// && currentTransition.getCurrentTime() != currentTransition.getTotalDuration()
 		// ) {
-			if (axis.equals(Axis.X))
+			if (axis == Axis.X)
 				tt.setToX(currentTransition.getToX());
-			else if (axis.equals(Axis.Y))
+			else if (axis == Axis.Y)
 				tt.setToY(currentTransition.getToY());
 		} else {
-			if (axis.equals(Axis.X))
+			if (axis == Axis.X)
 				tt.setToX(node.getTranslateX() + d);
-			else if (axis.equals(Axis.Y))
+			else if (axis == Axis.Y)
 				tt.setToY(node.getTranslateY() + d);
 		}
 
-		if (axis.equals(Axis.X))
+		if (axis == Axis.X)
 			tt.setFromX(node.getTranslateX());
-		else if (axis.equals(Axis.Y))
+		else if (axis == Axis.Y)
 			tt.setFromY(node.getTranslateY());
 
 		currentTransition = tt;
@@ -123,10 +123,10 @@ public class AutoTranslateTransition implements AutoAnimation,
 			// TODO - ked tu zostane null a z hentych podmienok vyhodim tu dlhu podmienku, 
 			// tak pane po cleare sa hodi naspat na 0,0 inak nie 
 
-			if (axis.equals(Axis.X)) {
+			if (axis == Axis.X) {
 				tt.setFromX(node.getTranslateX() + d);
 				tt.setToX(currentTransition.getToX() + d);
-			} else if (axis.equals(Axis.Y)) {
+			} else if (axis == Axis.Y) {
 				tt.setFromY(node.getTranslateY() + d);
 				tt.setToY(currentTransition.getToY() + d);
 			}
@@ -135,9 +135,9 @@ public class AutoTranslateTransition implements AutoAnimation,
 			AlgVis.autoAnimsManager.add(tt);
 			tt.play();	
 		} else {
-			if (axis.equals(Axis.X)) {
+			if (axis == Axis.X) {
 				node.setTranslateX(node.getTranslateX() + d);
-			} else if (axis.equals(Axis.Y)) {
+			} else if (axis == Axis.Y) {
 				node.setTranslateY(node.getTranslateY() + d);
 			}
 		}

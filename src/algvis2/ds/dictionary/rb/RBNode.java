@@ -54,7 +54,7 @@ public class RBNode extends BSTNode {
 
 	@Override
 	public RBNode getLeft() {
-		return RB.NULL.equals(super.getLeft()) ? null : (RBNode) super
+		return RB.NULL == super.getLeft() ? null : (RBNode) super
 				.getLeft();
 	}
 
@@ -64,7 +64,7 @@ public class RBNode extends BSTNode {
 
 	@Override
 	public RBNode getRight() {
-		return RB.NULL.equals(super.getRight()) ? null : (RBNode) super
+		return RB.NULL == super.getRight() ? null : (RBNode) super
 				.getRight();
 	}
 
@@ -74,7 +74,7 @@ public class RBNode extends BSTNode {
 
 	@Override
 	public RBNode getParent() {
-		return RB.NULL.equals(super.getParent()) ? null : (RBNode) super.getParent();
+		return RB.NULL == super.getParent() ? null : (RBNode) super.getParent();
 	}
 
 	public RBNode getParent2() {
@@ -121,7 +121,7 @@ public class RBNode extends BSTNode {
 
 	@Override
 	public void setPaint(NodePaint paint) {
-		if (paint.equals(NodePaint.NORMAL)) {
+		if (paint == NodePaint.NORMAL) {
 			if (isRed())
 				super.setPaint(NodePaint.RED);
 			else

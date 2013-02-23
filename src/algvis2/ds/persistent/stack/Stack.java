@@ -30,12 +30,12 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import org.abego.treelayout.TreeForTreeLayout;
+import org.abego.treelayout.util.AbstractTreeForTreeLayout;
 
 import java.util.*;
 
 public class Stack extends DataStructure {
-	final SimpleListProperty<StackNode.NullNode> versions = new SimpleListProperty<StackNode.NullNode>(FXCollections
+	final SimpleListProperty<StackNode.NullNode> versions = new SimpleListProperty<>(FXCollections
 			.<StackNode.NullNode>observableArrayList());
 	private final StackNode bottom = new StackNode.NullNode(-1, null);
 
@@ -80,9 +80,9 @@ public class Stack extends DataStructure {
 
 	@Override
 	public List<VisElem> dump() {
-		List<VisElem> elements = new ArrayList<VisElem>();
+		List<VisElem> elements = new ArrayList<>();
 		
-		java.util.Stack<StackNode> todo = new java.util.Stack<StackNode>();
+		java.util.Stack<StackNode> todo = new java.util.Stack<>();
 		todo.add(bottom);
 		elements.add(bottom);
 		
@@ -148,93 +148,21 @@ public class Stack extends DataStructure {
 	}
 
 
-	public final StackTree stackTree = new StackTree();
-
-	public class StackTree implements TreeForTreeLayout<Node> {
+	public final AbstractTreeForTreeLayout<StackNode> stackTree = new AbstractTreeForTreeLayout<StackNode>(bottom) {
 		@Override
-		public StackNode getRoot() {
-			return bottom;
+		public StackNode getParent(StackNode stackNode) {
+			return stackNode.nextNode;
 		}
 
 		@Override
-		public boolean isLeaf(Node node) {
-			return node instanceof StackNode && ((StackNode) node).parentNodes().size() == 0;
-		}
-
-		@Override
-		public boolean isChildOfParent(Node node, Node parentNode) {
-			if (parentNode instanceof StackNode) {
-				Boolean is = ((StackNode) parentNode).parentNodes().get(node);
-				return is == null ? false : is;
-			} else {
-				return false;
-			}
-		}
-
-		@Override
-		public Iterable<Node> getChildren(Node parentNode) {
-			if (parentNode instanceof StackNode) {
-				List<Node> res = new LinkedList<Node>();
-				for (Map.Entry<StackNode, Boolean> entry : ((StackNode) parentNode).parentNodes().entrySet()) {
-					if (entry.getValue()) {
-						res.add(entry.getKey());
-					}
-				}
-				return res;
-			} else {
-				return null;
-			}
-		}
-
-		@Override
-		public Iterable<Node> getChildrenReverse(Node parentNode) {
-			if (parentNode instanceof StackNode) {
-				LinkedList<Node> res = new LinkedList<Node>();
-				for (Map.Entry<StackNode, Boolean> entry : ((StackNode) parentNode).parentNodes().entrySet()) {
-					if (entry.getValue()) {
-						res.addFirst(entry.getKey());
-					}
-				}
-				return res;
-			} else {
-				return null;
-			}
-		}
-
-		@Override
-		public Node getFirstChild(Node parentNode) {
-			if (parentNode instanceof StackNode) {
-				for (Map.Entry<StackNode, Boolean> entry : ((StackNode) parentNode).parentNodes().entrySet()) {
-					if (entry.getValue()) {
-						return entry.getKey();
-					}
+		public List<StackNode> getChildrenList(StackNode stackNode) {
+			List<StackNode> res = new LinkedList<>();
+			for (Map.Entry<StackNode, Boolean> entry : stackNode.parentNodes().entrySet()) {
+				if (entry.getValue()) {
+					res.add(entry.getKey());
 				}
 			}
-			return null;
+			return res;
 		}
-
-		@Override
-		public Node getLastChild(Node parentNode) {
-			if (parentNode instanceof StackNode) {
-				Node res = null;
-				for (Map.Entry<StackNode, Boolean> entry : ((StackNode) parentNode).parentNodes().entrySet()) {
-					if (entry.getValue()) {
-						res = entry.getKey();
-					}
-				}
-				return res;
-			}
-			return null;
-		}
-
-		@Override
-		public boolean isLeft(Node node) {
-			return false;
-		}
-
-		@Override
-		public boolean isBinaryTree() {
-			return false;
-		}
-	}
+	};
 }

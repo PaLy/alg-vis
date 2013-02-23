@@ -24,6 +24,7 @@ import algvis2.scene.viselem.Edge;
 import algvis2.scene.viselem.Node;
 import org.abego.treelayout.Configuration;
 import org.abego.treelayout.TreeLayout;
+import org.abego.treelayout.util.AbstractTreeForTreeLayout;
 import org.abego.treelayout.util.DefaultConfiguration;
 
 import java.awt.geom.Rectangle2D;
@@ -31,14 +32,14 @@ import java.util.Map;
 
 public class CompactLayout {
 	public static void layout(Stack stack, VisPane visPane) {
-		Stack.StackTree stackTree = stack.stackTree;
+		AbstractTreeForTreeLayout<StackNode> stackTree = stack.stackTree;
 		
 		if (stackTree.getRoot() != null) {
-			TreeLayout<Node> layout = new TreeLayout<Node>(stackTree, new MyNodeExtentProvider<Node>(),
-					new DefaultConfiguration<Node>(Node.RADIUS / 2, Node.RADIUS, Configuration.Location.Bottom,
+			TreeLayout<StackNode> layout = new TreeLayout<>(stackTree, new MyNodeExtentProvider<StackNode>(),
+					new DefaultConfiguration<StackNode>(Node.RADIUS / 2, Node.RADIUS, Configuration.Location.Bottom,
 							Configuration.AlignmentInLevel.Center));
-			Map<Node, Rectangle2D.Double> nodeBounds = layout.getNodeBounds();
-			for (Map.Entry<Node, Rectangle2D.Double> entry : nodeBounds.entrySet()) {
+			Map<StackNode, Rectangle2D.Double> nodeBounds = layout.getNodeBounds();
+			for (Map.Entry<StackNode, Rectangle2D.Double> entry : nodeBounds.entrySet()) {
 				if (entry.getKey().getVisual().layoutXProperty().isBound()) {
 					// entry.getKey().removePosBinding();
 				} else {

@@ -83,7 +83,7 @@ public class InputField {
 	 */
 	public Vector<Integer> getVI(int min, int max) {
 		boolean range = false;
-		Vector<Integer> args = new Vector<Integer>();
+		Vector<Integer> args = new Vector<>();
 		String[] tokens = textField.getText().replaceAll("\\.{2,}", " .. ")
 				.split("(\\s|,)+");
 		for (String t : tokens) {
@@ -154,7 +154,7 @@ public class InputField {
 	 */
 	public Vector<String> getVS() {
 		String ss = textField.getText();
-		Vector<String> result = new Vector<String>();
+		Vector<String> result = new Vector<>();
 		if (ss.compareTo("") == 0) {
 			result.add(WordGenerator.getWord());
 		} else {
@@ -166,7 +166,7 @@ public class InputField {
 
 	public Vector<String> getVABS() {
 		String ss = textField.getText();
-		Vector<String> result = new Vector<String>();
+		Vector<String> result = new Vector<>();
 		if (ss.compareTo("") == 0) {
 			result.add(WordGenerator.getABWord(20));
 		} else {

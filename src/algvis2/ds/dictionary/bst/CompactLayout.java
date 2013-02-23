@@ -19,22 +19,21 @@ package algvis2.ds.dictionary.bst;
 
 import algvis2.scene.layout.VisPane;
 import algvis2.scene.layout.ZDepth;
-import algvis2.scene.viselem.Edge;
 import algvis2.scene.viselem.Node;
-import algvis2.scene.viselem.VisElem;
 import org.abego.treelayout.Configuration;
 import org.abego.treelayout.TreeLayout;
+import org.abego.treelayout.util.AbstractTreeForTreeLayout;
 import org.abego.treelayout.util.DefaultConfiguration;
 
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class CompactLayout {
 	public static void layout(BST bst, VisPane visPane) {
-		if (bst.getRoot() != null) {
-			TreeLayout<BSTNode> layout = new TreeLayout<BSTNode>(bst, new MyNodeExtentProvider<BSTNode>(),
+		AbstractTreeForTreeLayout<BSTNode> tree = bst.treeForTreeLayout;
+		
+		if (tree.getRoot() != null) {
+			TreeLayout<BSTNode> layout = new TreeLayout<>(tree, new MyNodeExtentProvider<BSTNode>(),
 					new DefaultConfiguration<BSTNode>(0, Node.RADIUS, Configuration.Location.Top,
 							Configuration.AlignmentInLevel.AwayFromRoot));
 			Map<BSTNode, Rectangle2D.Double> nodeBounds = layout.getNodeBounds();

@@ -29,9 +29,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BSTNode extends Node {
-	public final ObjectProperty<BSTNode> leftProperty = new SimpleObjectProperty<BSTNode>();
-	public final ObjectProperty<BSTNode> rightProperty = new SimpleObjectProperty<BSTNode>();
-	public final ObjectProperty<BSTNode> parentProperty = new SimpleObjectProperty<BSTNode>();
+	public final ObjectProperty<BSTNode> leftProperty = new SimpleObjectProperty<>();
+	public final ObjectProperty<BSTNode> rightProperty = new SimpleObjectProperty<>();
+	public final ObjectProperty<BSTNode> parentProperty = new SimpleObjectProperty<>();
 	
 	private Edge leftEdge = new Edge(Node.RADIUS);
 	private Edge rightEdge = new Edge(Node.RADIUS);
@@ -67,7 +67,7 @@ public class BSTNode extends Node {
 	}
 	
 	public ArrayList<Edge> getEdges() {
-		ArrayList<Edge> res = new ArrayList<Edge>();
+		ArrayList<Edge> res = new ArrayList<>();
 		if (getLeft() != null) res.add(leftEdge);
 		if (getRight() != null) res.add(rightEdge);
 		return res;
@@ -196,8 +196,8 @@ public class BSTNode extends Node {
 	}
 
 	@Override
-	public Object clone() {
-		BSTNode clone = new BSTNode(keyProperty.get(), paint);
+	public BSTNode clone() {
+		BSTNode clone = new BSTNode(keyProperty.get(), getPaint());
 		clone.setLeft(getLeft());
 		clone.setRight(getRight());
 		clone.setParent(getParent());

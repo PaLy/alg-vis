@@ -50,7 +50,7 @@ public class ButtonsController implements Initializable {
 		Animation animation = visualization.getDataStructure()
 				.random(new InputField(insertField).getInt(10));
 
-		List<Animation> wrapper = new ArrayList<Animation>();
+		List<Animation> wrapper = new ArrayList<>();
 		wrapper.add(new SequentialTransition(animation));
 
 		visualization.animManager.add(wrapper, true);

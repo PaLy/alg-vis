@@ -33,7 +33,7 @@ import java.util.HashMap;
 
 public class Marker extends VisElem implements PropertyStateEditable {
 	private final ScaleChange scaleChange = new ScaleChange();
-	public final ObjectProperty<algvis2.scene.viselem.Node> elem = new SimpleObjectProperty<algvis2.scene.viselem.Node>();
+	public final ObjectProperty<algvis2.scene.viselem.Node> elem = new SimpleObjectProperty<>();
 	
 	public Marker() {
 		super(new Circle());

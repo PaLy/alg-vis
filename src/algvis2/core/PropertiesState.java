@@ -38,10 +38,10 @@ public class PropertiesState {
 	}
 
 	public Timeline createTimeline(final boolean layoutRequested) {
-		final HashMap<WritableValue<Collection>, Object[]> preElements = new HashMap<WritableValue<Collection>, Object[]>();
-		final HashMap<WritableValue<Collection>, Object[]> postElements = new HashMap<WritableValue<Collection>, Object[]>();
-		ArrayList<KeyValue> firstKeyFrameValues = new ArrayList<KeyValue>();
-		ArrayList<KeyValue> secondKeyFrameValues = new ArrayList<KeyValue>();
+		final HashMap<WritableValue<Collection>, Object[]> preElements = new HashMap<>();
+		final HashMap<WritableValue<Collection>, Object[]> postElements = new HashMap<>();
+		ArrayList<KeyValue> firstKeyFrameValues = new ArrayList<>();
+		ArrayList<KeyValue> secondKeyFrameValues = new ArrayList<>();
 
 		for (Object key : preState.keySet()) {
 			if (key instanceof WritableValue) {

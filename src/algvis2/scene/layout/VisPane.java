@@ -39,15 +39,15 @@ import java.util.*;
 public class VisPane implements PropertyStateEditable, AbsPosition {
 	private final FlowPane pane = new FlowPane();
 	private final DataStructure dataStructure;
-	private List<VisElem> dsElements = new ArrayList<VisElem>();
+	private List<VisElem> dsElements = new ArrayList<>();
 	private final AnchorPane wrappingPane = new AnchorPane();
 	/**
 	 * Sorted elements (by layers) which should be on scene.
 	 */
-	private final ObjectProperty<TreeSet<VisElem>> children = new SimpleObjectProperty<TreeSet<VisElem>>();
+	private final ObjectProperty<HashSet<VisElem>> children = new SimpleObjectProperty<>();
 	public static final String ID = "visPane";
-	private HashSet<ZDepth> doNotShow = new HashSet<ZDepth>();
-	private final Set<VisElem> notStorableChildren = new TreeSet<VisElem>();
+	private HashSet<ZDepth> doNotShow = new HashSet<>();
+	private final Set<VisElem> notStorableChildren = new HashSet<>();
 
 	private double mouseX, mouseY;
 	private boolean canTranslate;
@@ -55,7 +55,7 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 	public VisPane(DataStructure dataStructure) {
 		this.dataStructure = dataStructure;
 		
-		children.set(new TreeSet<VisElem>());
+		children.set(new HashSet<VisElem>());
 		pane.setId(ID);
 		AnchorPane.setLeftAnchor(wrappingPane, 0.0);
 		AnchorPane.setRightAnchor(wrappingPane, 0.0);
@@ -105,24 +105,21 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 		dsElements = elements;
 	}
 	
-	public void refresh() {
-		Set<VisElem> allChildren = new TreeSet<VisElem>(children.get());
-		allChildren.addAll(notStorableChildren);
-		
+	public void refresh() {		
 		List<Node> paneChildren = pane.getChildren();
 		dataStructure.getVisual().getChildren().clear();
 		for (VisElem elem : dsElements) {
 			if (elem instanceof GroupOfBSTNodes) {
 				// TODO namiesto tohto radsej moze byt hashmapa, v ktorej sa budu aktualizovat prvky hned pocas 
 				// algoritmu...?
-				ArrayList<Node> toAdd = new ArrayList<Node>();
+				ArrayList<Node> toAdd = new ArrayList<>();
 				for (BSTNode node : ((GroupOfBSTNodes) elem).getNodes()) {
 					if (!((GroupOfBSTNodes) elem).getVisual().getChildren().contains(node.getVisual())) {
 						toAdd.add(node.getVisual());
 						node.getVisual().setManaged(true);// TODO pozor na setManage
 					}
 				}
-				ArrayList<Node> toRemove = new ArrayList<Node>();
+				ArrayList<Node> toRemove = new ArrayList<>();
 				for (Node node : ((GroupOfBSTNodes) elem).getVisual().getChildren()) {
 					boolean found = false;
 					for (BSTNode node2 : ((GroupOfBSTNodes) elem).getNodes()) {
@@ -141,6 +138,11 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 			dataStructure.getVisual().getChildren().add(elem.getVisual());
 			elem.getVisual().setManaged(true);
 		}
+
+		ArrayList<VisElem> allChildren = new ArrayList<>(children.get());
+		allChildren.addAll(notStorableChildren);
+		Collections.sort(allChildren, VisElem.ZDEPTH_COMPARATOR);
+		
 		paneChildren.clear();
 		for (VisElem elem : allChildren) {
 			if (!doNotShow.contains(elem.getZDepth())) {
@@ -170,12 +172,12 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 	}
 
 	public void clearLayer(ZDepth zDepth) {
-		if (zDepth.equals(ZDepth.EDGES)) {
+		if (zDepth == ZDepth.EDGES) {
 			notStorableChildren.clear();
 		} else {
-			ArrayList<VisElem> toRemove = new ArrayList<VisElem>();
+			ArrayList<VisElem> toRemove = new ArrayList<>();
 			for (VisElem elem : children.get()) {
-				if (elem.getZDepth().equals(zDepth)) {
+				if (elem.getZDepth() == zDepth) {
 					toRemove.add(elem);
 				}
 			}

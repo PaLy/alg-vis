@@ -19,6 +19,7 @@ package algvis2.ds.persistent.stack;
 
 import algvis2.animation.AnimationFactory;
 import algvis2.core.Algorithm;
+import algvis2.scene.paint.NodePaint;
 
 public class StackPush extends Algorithm {
 	private final int x;
@@ -36,7 +37,7 @@ public class StackPush extends Algorithm {
 	protected void runAlgorithm() {
 		StackNode node;
 		StackNode oldVersionTop = stack.versions.get(version).nextNode;
-		node = new StackNode(x, oldVersionTop);
+		node = new StackNode(x, oldVersionTop, NodePaint.INSERT);
 		
 		int newVerID = stack.versions.size();
 		StackNode.NullNode newVerPointer = new StackNode.NullNode(newVerID, node);
@@ -49,5 +50,7 @@ public class StackPush extends Algorithm {
 		
 		addAnimation(AnimationFactory.scaleInOut(node));
 		addAnimation(AnimationFactory.scaleInOut(newVerPointer));
+		
+		node.setPaint(NodePaint.NORMAL);
 	}
 }

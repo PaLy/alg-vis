@@ -102,15 +102,15 @@ public class AlgVisFXMLController implements Initializable {
 
 	public void selectVisualization(ActionEvent event) {
 		Object source = event.getSource();
-		if (source.equals(menu_bst)) {
+		if (source == menu_bst) {
 			algvis.showVisualization(0);
-		} else if (source.equals(menu_avl)) {
+		} else if (source == menu_avl) {
 			algvis.showVisualization(1);
-		} else if (source.equals(menu_rb)) {
+		} else if (source == menu_rb) {
 			algvis.showVisualization(2);
-		} else if (source.equals(menu_pcbst)) {
+		} else if (source == menu_pcbst) {
 			algvis.showVisualization(3);
-		} else if (source.equals(menu_pstack)) {
+		} else if (source == menu_pstack) {
 			algvis.showVisualization(4);
 		}
 	}
@@ -165,7 +165,7 @@ public class AlgVisFXMLController implements Initializable {
 				extension = fileName.substring(i + 1);
 			}
 
-			HashSet<String> writerFormatNames = new HashSet<String>();
+			HashSet<String> writerFormatNames = new HashSet<>();
 			Collections.addAll(writerFormatNames, ImageIO.getWriterFormatNames());
 
 			if (writerFormatNames.contains(extension) && (extension.toLowerCase().equals("png") || extension
@@ -217,7 +217,7 @@ public class AlgVisFXMLController implements Initializable {
 			fullscreenButton.setGraphic(new ImageView("algvis2/ui/fullscreen_off.png"));
 		}
 		
-		algvis.getStage().fullScreenProperty().addListener(new WeakChangeListener<Boolean>(fullScreenChangeListener));
+		algvis.getStage().fullScreenProperty().addListener(new WeakChangeListener<>(fullScreenChangeListener));
 	}
 
 	public void fullscreenPressed(ActionEvent event) {

@@ -18,6 +18,7 @@
 package algvis2.ds.persistent.stack;
 
 import algvis2.scene.layout.ZDepth;
+import algvis2.scene.paint.NodePaint;
 import algvis2.scene.text.Fonts;
 import algvis2.scene.viselem.Node;
 import javafx.beans.property.ObjectProperty;
@@ -33,18 +34,26 @@ import java.util.Map;
 public class StackNode extends Node {
 	StackNode nextNode;
 	ObjectProperty<LinkedHashMap<StackNode, Boolean>> parentNodesProperty = new 
-			SimpleObjectProperty<LinkedHashMap<StackNode, 
-			Boolean>>();
+			SimpleObjectProperty<>();
+
+	public StackNode(int key, StackNode nextNode, NodePaint paint) {
+		super(key, paint);
+		init(nextNode);
+	}
 
 	public StackNode(int key, StackNode nextNode) {
 		super(key);
+		init(nextNode);
+	}
+
+	private void init(StackNode nextNode) {
 		this.nextNode = nextNode;
 		parentNodesProperty.set(new LinkedHashMap<StackNode, Boolean>());
 		if (nextNode != null) {
 			nextNode.parentNodes().put(this, true);
 		}
 	}
-	
+
 	LinkedHashMap<StackNode, Boolean> parentNodes() {
 		return parentNodesProperty.getValue();
 	}

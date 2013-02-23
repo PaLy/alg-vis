@@ -24,14 +24,14 @@ import algvis2.scene.paint.NodePaint;
 import algvis2.scene.viselem.VisElem;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import org.abego.treelayout.TreeForTreeLayout;
+import org.abego.treelayout.util.AbstractTreeForTreeLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class BST extends Dictionary implements TreeForTreeLayout<BSTNode> {
-	public final ObjectProperty<BSTNode> rootProperty = new SimpleObjectProperty<BSTNode>();
+public class BST extends Dictionary {
+	public final ObjectProperty<BSTNode> rootProperty = new SimpleObjectProperty<>();
 
 	public BST(Visualization visualization) {
 		super(visualization);
@@ -62,56 +62,6 @@ public class BST extends Dictionary implements TreeForTreeLayout<BSTNode> {
 
 	public BSTNode getRoot() {
 		return rootProperty.get();
-	}
-
-	@Override
-	public boolean isLeaf(BSTNode bstNode) {
-		return bstNode.getLeft() == null && bstNode.getRight() == null;
-	}
-
-	@Override
-	public boolean isChildOfParent(BSTNode bstNode, BSTNode parentNode) {
-		return parentNode.getLeft() == bstNode || parentNode.getRight() == bstNode;
-	}
-
-	@Override
-	public Iterable<BSTNode> getChildren(BSTNode parentNode) {
-		ArrayList<BSTNode> list = new ArrayList<BSTNode>();
-		if (parentNode.getLeft() != null) list.add(parentNode.getLeft());
-		if (parentNode.getRight() != null) list.add(parentNode.getRight());
-		return list;
-	}
-
-	@Override
-	public Iterable<BSTNode> getChildrenReverse(BSTNode parentNode) {
-		ArrayList<BSTNode> list = new ArrayList<BSTNode>();
-		if (parentNode.getRight() != null) list.add(parentNode.getRight());
-		if (parentNode.getLeft() != null) list.add(parentNode.getLeft());
-		return list;
-	}
-
-	@Override
-	public BSTNode getFirstChild(BSTNode parentNode) {
-		if (parentNode.getLeft() != null) return parentNode.getLeft();
-		else if (parentNode.getRight() != null) return parentNode.getRight();
-		else return null;
-	}
-
-	@Override
-	public BSTNode getLastChild(BSTNode parentNode) {
-		if (parentNode.getRight() != null) return parentNode.getRight();
-		else if (parentNode.getLeft() != null) return parentNode.getLeft();
-		else return null;
-	}
-
-	@Override
-	public boolean isLeft(BSTNode node) {
-		return node.isLeft();
-	}
-
-	@Override
-	public boolean isBinaryTree() {
-		return true;
 	}
 
 	public void setRoot(BSTNode root) {
@@ -176,10 +126,10 @@ public class BST extends Dictionary implements TreeForTreeLayout<BSTNode> {
 
 	@Override
 	public List<VisElem> dump() {
-		List<VisElem> elements = new ArrayList<VisElem>();
+		List<VisElem> elements = new ArrayList<>();
 
 		if (getRoot() != null) {
-			java.util.Stack<BSTNode> todo = new java.util.Stack<BSTNode>();
+			java.util.Stack<BSTNode> todo = new java.util.Stack<>();
 			todo.push(getRoot());
 			elements.add(getRoot());
 	
@@ -216,4 +166,37 @@ public class BST extends Dictionary implements TreeForTreeLayout<BSTNode> {
 		if (node.getLeft() != null) recalcAbsPositionR(node.getLeft());
 		if (node.getRight() != null) recalcAbsPositionR(node.getRight());
 	}
+	
+	public final AbstractTreeForTreeLayout<BSTNode> treeForTreeLayout = new AbstractTreeForTreeLayout<BSTNode>(null) {
+		@Override
+		public BSTNode getRoot() {
+			return rootProperty.get();
+		}
+
+		@Override
+		public BSTNode getParent(BSTNode node) {
+			return node.getParent();
+		}
+
+		@Override
+		public List<BSTNode> getChildrenList(BSTNode node) {
+			List<BSTNode> res = new ArrayList<>();
+			if (node.getLeft() != null)
+				res.add(node.getLeft());
+			if (node.getRight() != null)
+				res.add(node.getRight());
+			
+			return res;
+		}
+
+		@Override
+		public boolean isBinaryTree() {
+			return true;
+		}
+
+		@Override
+		public boolean isLeft(BSTNode node) {
+			return node.isLeft();
+		}
+	};
 }

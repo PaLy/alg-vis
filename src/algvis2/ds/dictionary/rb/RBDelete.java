@@ -124,7 +124,7 @@ public class RBDelete extends BSTFind {
 				requestLayout();
 				
 				// bubleme nahor
-				ObjectProperty<RBNode> s = new SimpleObjectProperty<RBNode>();
+				ObjectProperty<RBNode> s = new SimpleObjectProperty<>();
 				Marker sMarker = new Marker();
 				sMarker.elem.bind(s);
 				addVisElem(sMarker);

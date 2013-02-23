@@ -40,7 +40,7 @@ public class AutoFillTransition implements AutoAnimation, ChangeListener<Paint> 
 	@Override
 	public void changed(ObservableValue<? extends Paint> observableValue,
 			Paint oldPaint, Paint newPaint) {
-		if (oldPaint != newPaint && oldPaint instanceof Color
+		if (!oldPaint.equals(newPaint) && oldPaint instanceof Color
 				&& newPaint instanceof Color) {
 			final FillTransition fillTransition = FillTransitionBuilder.create()
 					.toValue((Color) newPaint).shape(shape)

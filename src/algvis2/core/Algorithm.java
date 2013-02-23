@@ -35,7 +35,7 @@ public abstract class Algorithm implements Runnable {
 
 	private PropertiesState state;
 	private SequentialTransition step = new SequentialTransition();
-	public final List<Animation> allSteps = new ArrayList<Animation>();
+	public final List<Animation> allSteps = new ArrayList<>();
 	
 	private boolean layoutRequested = true;
 
@@ -60,7 +60,7 @@ public abstract class Algorithm implements Runnable {
 	}
 
 	void begin() {
-		HashMap<Object, Object> preState = new HashMap<Object, Object>();
+		HashMap<Object, Object> preState = new HashMap<>();
 		visualization.storeState(preState);
 		state = new PropertiesState(preState, visualization);
 		startState = state;
@@ -85,7 +85,7 @@ public abstract class Algorithm implements Runnable {
 		step.getChildren().add(state.createTimeline(layoutRequested));
 		layoutRequested = false;
 		
-		HashMap<Object, Object> preState = new HashMap<Object, Object>();
+		HashMap<Object, Object> preState = new HashMap<>();
 		visualization.storeState(preState);
 		state = new PropertiesState(preState, visualization);
 
