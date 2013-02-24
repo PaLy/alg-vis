@@ -24,8 +24,8 @@ import algvis2.scene.viselem.Node;
 class RB extends BST {
 	public static final RBNode NULL = new RBNode(Node.NULL);
 
-	public RB(Visualization visualization) {
-		super(visualization);
+	RB() {
+		super();
 		NULL.setParent(NULL);
 		NULL.setRight(NULL);
 		NULL.setLeft(NULL);
@@ -33,15 +33,15 @@ class RB extends BST {
 	}
 
 	@Override
-	public Algorithm insert(int x) {
-		RBInsert rbInsert = new RBInsert(this, new RBNode(x));
+	public Algorithm insert(Visualization visualization, int x) {
+		RBInsert rbInsert = new RBInsert(visualization, this, new RBNode(x));
 		rbInsert.run();
 		return rbInsert;
 	}
 
 	@Override
-	public Algorithm delete(int x) {
-		RBDelete rbDelete = new RBDelete(this, x);
+	public Algorithm delete(Visualization visualization, int x) {
+		RBDelete rbDelete = new RBDelete(visualization, this, x);
 		rbDelete.run();
 		return rbDelete;
 	}

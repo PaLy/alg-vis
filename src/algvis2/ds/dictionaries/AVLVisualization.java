@@ -18,9 +18,8 @@
 package algvis2.ds.dictionaries;
 
 public class AVLVisualization extends BSTVisualization {
-	@Override
-	protected void init() {
-		dataStructure = new AVL(this);
+	public AVLVisualization() {
+		super(new AVL());
 	}
 
 	@Override

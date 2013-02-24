@@ -19,13 +19,14 @@ package algvis2.ds.stack;
 
 import algvis2.animation.AnimationFactory;
 import algvis2.core.Algorithm;
+import algvis2.core.Visualization;
 
 class StackPop extends Algorithm {
 	private final Stack stack;
 	private final int version;
 
-	protected StackPop(Stack stack, int version) {
-		super(stack);
+	protected StackPop(Visualization visualization, Stack stack, int version) {
+		super(visualization);
 		this.version = version;
 		this.stack = stack;
 	}

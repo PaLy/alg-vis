@@ -52,7 +52,7 @@ public class AlgVis extends Application {
 		this.stage = stage;
 		stage.setTitle("Gnarley Trees");
 		scene = new Scene(createRoot());
-		showVisualization(Visualization.Type.FP_STACK);
+		showVisualization(Visualization.Type.BST);
 		stage.setScene(scene);
 
 		//		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();

@@ -18,10 +18,8 @@
 package algvis2.ds.dictionaries;
 
 public class RBVisualization extends BSTVisualization {
-
-	@Override
-	protected void init() {
-		dataStructure = new RB(this);
+	public RBVisualization() {
+		super(new RB());
 	}
 
 	@Override

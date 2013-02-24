@@ -17,13 +17,14 @@
 
 package algvis2.ds.dictionaries;
 
+import algvis2.core.Visualization;
 import algvis2.scene.viselem.Marker;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
 class RBInsert extends BSTInsert {
-	protected RBInsert(RB D, RBNode newNode) {
-		super(D, newNode);
+	protected RBInsert(Visualization visualization, RB D, RBNode newNode) {
+		super(visualization, D, newNode);
 	}
 
 	@Override

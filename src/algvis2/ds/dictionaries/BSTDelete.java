@@ -17,14 +17,15 @@
 
 package algvis2.ds.dictionaries;
 
+import algvis2.core.Visualization;
 import algvis2.scene.layout.ZDepth;
 import algvis2.scene.paint.NodePaint;
 import algvis2.scene.viselem.Backlight;
 import algvis2.scene.viselem.Node;
 
 class BSTDelete extends BSTFind {
-	protected BSTDelete(BST D, int x) {
-		super(D, x);
+	protected BSTDelete(Visualization visualization, BST D, int x) {
+		super(visualization, D, x);
 	}
 	
 	@Override

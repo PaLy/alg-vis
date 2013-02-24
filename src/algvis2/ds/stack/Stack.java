@@ -28,8 +28,6 @@ import javafx.animation.Animation;
 import javafx.animation.SequentialTransition;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import org.abego.treelayout.util.AbstractTreeForTreeLayout;
 
 import java.util.*;
@@ -39,8 +37,8 @@ class Stack extends DataStructure {
 			.<StackNode.NullNode>observableArrayList());
 	private final StackNode bottom = new StackNode.NullNode(-1, null);
 
-	protected Stack(Visualization visualization) {
-		super(visualization);
+	protected Stack() {
+		super();
 		StackNode.NullNode emptyVersion = new StackNode.NullNode(0, bottom);
 		bottom.removePosBinding();
 		emptyVersion.removePosBinding();
@@ -48,27 +46,28 @@ class Stack extends DataStructure {
 		versions.add(emptyVersion);
 	}
 
-	public Algorithm push(int x, int version) {
+	public Algorithm push(Visualization visualization, int x, int version) {
 		if (version < 0 || version >= versions.size()) {
 			version = versions.size() - 1;
 		}
-		StackPush stackPush = new StackPush(this, x, version);
+		StackPush stackPush = new StackPush(visualization, this, x, version);
 		stackPush.run();
 		return stackPush;
 	}
 	
-	public Algorithm push(int x) {
-		return push(x, versions.size() - 1); // last version
+	public Algorithm push(Visualization visualization, int x) {
+		return push(visualization, x, versions.size() - 1); // last version
 	}
 
 	@Override
-	public Animation random(int n) {
+	public Animation random(Visualization visualization, int n) {
 		SequentialTransition st = new SequentialTransition();
 		for (int i = 0; i < n; i++) {
-			st.getChildren().add(push(MyRandom.Int(InputField.MAX_VALUE + 1),
+			st.getChildren().add(push(visualization, MyRandom.Int(InputField.MAX_VALUE + 1),
 					MyRandom.Int(versions.size())).startEndTransition());
 		}
 		return st;
+
 	}
 
 	@Override
@@ -101,12 +100,12 @@ class Stack extends DataStructure {
 		bottom.parentNodes().put(versions.get(0), true);
 	}
 
-	public Algorithm pop(int version) {
+	public Algorithm pop(Visualization visualization, int version) {
 		if (version < 0 || version >= versions.size()) {
 			version = versions.size() - 1; // last version
 		}
 		if (versions.get(version).nextNode.nextNode != null) {
-			StackPop stackPop = new StackPop(this, version);
+			StackPop stackPop = new StackPop(visualization, this, version);
 			stackPop.run();
 			return stackPop;
 		} else {

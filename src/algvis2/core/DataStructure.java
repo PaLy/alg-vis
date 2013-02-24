@@ -26,12 +26,10 @@ import javafx.scene.layout.Pane;
 import java.util.List;
 
 public abstract class DataStructure extends VisElem implements PropertyStateEditable, AbsPosition {
-	public final Visualization visualization;
 
-	protected DataStructure(Visualization visualization) {
+	protected DataStructure() {
 		super(new Pane());
 		setZDepth(ZDepth.NODES);
-		this.visualization = visualization;
 	}
 
 	@Override
@@ -41,7 +39,7 @@ public abstract class DataStructure extends VisElem implements PropertyStateEdit
 
 	abstract public void clear();
 	
-	abstract public Animation random(int n);
+	abstract public Animation random(Visualization visualization, int n);
 	
 	abstract public List<VisElem> dump();
 }

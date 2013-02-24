@@ -32,29 +32,27 @@ import java.util.List;
 class BST extends Dictionary {
 	public final ObjectProperty<BSTNode> rootProperty = new SimpleObjectProperty<>();
 
-	public BST(Visualization visualization) {
-		super(visualization);
+	BST() {
+		super();
 	}
 
 	@Override
-	public Algorithm find(int x) {
-		BSTFind bstFind = new BSTFind(this, x);
+	public Algorithm find(Visualization visualization, int x) {
+		BSTFind bstFind = new BSTFind(visualization, this, x);
 		bstFind.run();
 		return bstFind;
 	}
 
 	@Override
-	public Algorithm delete(int x) {
-		BSTFind bstDelete = new BSTDelete(this, x);
+	public Algorithm delete(Visualization visualization, int x) {
+		BSTFind bstDelete = new BSTDelete(visualization, this, x);
 		bstDelete.run();
 		return bstDelete;
 	}
 
 	@Override
-	public Algorithm insert(int x) {
-		// TODO node vytvarat az v algoritme?
-		BSTInsert bstInsert = new BSTInsert(this, new BSTNode(x,
-				NodePaint.INSERT));
+	public Algorithm insert(Visualization visualization, int x) {
+		BSTInsert bstInsert = new BSTInsert(visualization, this, new BSTNode(x, NodePaint.INSERT));
 		bstInsert.run();
 		return bstInsert;
 	}

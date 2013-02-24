@@ -17,22 +17,19 @@
 
 package algvis2.ds.dictionaries;
 
-import algvis2.core.Visualization;
+public class BSTVisualization extends DictVisualization {
 
-public class BSTVisualization extends Visualization {
 	public BSTVisualization() {
-		super(BSTVisualization.class
-				.getResource("/algvis2/ds/dictionaries/DictButtons.fxml"));
+		super(new BST());
 	}
 
-	@Override
-	protected void init() {
-		dataStructure = new BST(this);
+	BSTVisualization(BST bst) {
+		super(bst);
 	}
 
 	@Override
 	public void reLayout() {
-		BSTCompactLayout.layout((BST) dataStructure, visPane);
+		BSTCompactLayout.layout((BST) getDataStructure(), visPane);
 		visPane.refresh();
 	}
 

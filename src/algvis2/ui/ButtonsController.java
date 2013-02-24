@@ -41,56 +41,36 @@ public class ButtonsController implements Initializable {
 	public Button buttonPrevious;
 	public CheckBox buttonPause;
 	
-	protected Visualization visualization;
+	private Visualization visualization;
+	
+	protected Visualization getVisualization() {
+		return visualization;
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 	}
 
 	public void randomPressed(ActionEvent event) {
-		Animation animation = visualization.getDataStructure()
-				.random(new InputField(insertField).getInt(10));
-		animation.setOnFinished(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				visualization.reLayout();
-			}
-		});
-		animation.jumpTo("end");
-
-		List<Animation> wrapper = new ArrayList<>();
-		wrapper.add(new SequentialTransition(animation));
-
-		visualization.animManager.add(wrapper, true);
+		disableAllButtons(true);
+		visualization.random(new InputField(insertField).getInt(10));
+		disableOperations(false);
 		disablePrevious(false);
-
-		visualization.visPane.refresh();
-		visualization.reLayout();
 	}
 
 	public void clearPressed(ActionEvent event) {
-		visualization.getDataStructure().clear();
-		visualization.visPane.clearPane();
-		visualization.reLayout();
-		visualization.animManager.clear();
-
-		disableNext(true);
-		disablePrevious(true);
-
-		visualization.getVisPane().setTranslatePos(0, 0);
+		disableAllButtons(true);
+		visualization.clear();
+		disableOperations(false);
 	}
 
 	public void previousPressed(ActionEvent event) {
-		disableOperations(true);
-		disableNext(true);
-		disablePrevious(true);
+		disableAllButtons(true);
 		visualization.animManager.playPrevious();
 	}
 
 	public void nextPressed(ActionEvent event) {
-		disableOperations(true);
-		disableNext(true);
-		disablePrevious(true);
+		disableAllButtons(true);
 		visualization.animManager.playNext();
 	}
 	
@@ -103,6 +83,12 @@ public class ButtonsController implements Initializable {
 
 	public void disablePrevious(boolean value) {
 		buttonPrevious.setDisable(value);
+	}
+	
+	public void disableAllButtons(boolean value) {
+		disableOperations(value);
+		disablePrevious(value);
+		disableNext(value);
 	}
 	
 	public void setPausesSelected(boolean value) {

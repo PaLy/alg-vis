@@ -24,25 +24,25 @@ import algvis2.core.Visualization;
 import algvis2.scene.control.InputField;
 import javafx.animation.Animation;
 import javafx.animation.SequentialTransition;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 
 abstract class Dictionary extends DataStructure {
-	protected Dictionary(Visualization visualization) {
-		super(visualization);
+	Dictionary() {
+		super();
 	}
 
-	abstract public Algorithm insert(int x);
+	abstract public Algorithm insert(Visualization visualization, int x);
 	
-	abstract public Algorithm find(int x);
+	abstract public Algorithm find(Visualization visualization, int x);
 
-	abstract public Algorithm delete(int x);
+	abstract public Algorithm delete(Visualization visualization, int x);
 
-	public Animation random(int n) {
+	@Override
+	public Animation random(Visualization visualization, int n) {
 		SequentialTransition st = new SequentialTransition();
 		for (int i = 0; i < n; i++) {
-			st.getChildren().add(insert(MyRandom.Int(InputField.MAX_VALUE + 1)).startEndTransition());
+			st.getChildren().add(insert(visualization, MyRandom.Int(InputField.MAX_VALUE + 1)).startEndTransition());
 		}
 		return st;
+
 	}
 }

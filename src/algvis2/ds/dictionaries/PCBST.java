@@ -26,9 +26,9 @@ import algvis2.scene.paint.NodePaint;
  */
 class PCBST extends BST {
 	int time = -1;
-	
-	public PCBST(Visualization visualization) {
-		super(visualization);
+
+	PCBST() {
+		super();
 	}
 
 	@Override
@@ -59,8 +59,8 @@ class PCBST extends BST {
 	}
 
 	@Override
-	public Algorithm insert(int x) {
-		PCBSTInsert insert = new PCBSTInsert(this, new BSTNode(x,
+	public Algorithm insert(Visualization visualization, int x) {
+		PCBSTInsert insert = new PCBSTInsert(visualization, this, new BSTNode(x,
 				NodePaint.INSERT));
 		insert.run();
 		return insert;

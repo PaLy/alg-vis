@@ -19,6 +19,7 @@ package algvis2.ds.dictionaries;
 
 import algvis2.animation.AnimationFactory;
 import algvis2.core.Algorithm;
+import algvis2.core.Visualization;
 import algvis2.scene.layout.ZDepth;
 import algvis2.scene.paint.NodePaint;
 
@@ -26,8 +27,8 @@ class BSTInsert extends Algorithm {
 	protected final BST D;
 	protected BSTNode newNode;
 
-	protected BSTInsert(BST D, BSTNode newNode) {
-		super(D);
+	protected BSTInsert(Visualization visualization, BST D, BSTNode newNode) {
+		super(visualization);
 		this.D = D;
 		this.newNode = newNode;
 	}

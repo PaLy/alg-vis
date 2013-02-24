@@ -17,6 +17,7 @@
 
 package algvis2.ds.dictionaries;
 
+import algvis2.core.Visualization;
 import algvis2.scene.layout.ZDepth;
 import algvis2.scene.paint.NodePaint;
 import algvis2.scene.viselem.Backlight;
@@ -26,8 +27,8 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
 class RBDelete extends BSTFind {
-	protected RBDelete(BST D, int x) {
-		super(D, x);
+	protected RBDelete(Visualization visualization, BST D, int x) {
+		super(visualization, D, x);
 	}
 
 	@Override

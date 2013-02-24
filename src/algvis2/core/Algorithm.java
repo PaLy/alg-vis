@@ -39,8 +39,8 @@ public abstract class Algorithm implements Runnable {
 	
 	private boolean layoutRequested = true;
 
-	protected Algorithm(DataStructure D) {
-		visualization = D.visualization;
+	protected Algorithm(Visualization visualization) {
+		this.visualization = visualization;
 	}
 
 	@Override

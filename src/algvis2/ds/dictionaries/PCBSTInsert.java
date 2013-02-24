@@ -18,6 +18,7 @@
 package algvis2.ds.dictionaries;
 
 import algvis2.core.Algorithm;
+import algvis2.core.Visualization;
 import algvis2.scene.layout.ZDepth;
 import algvis2.scene.paint.NodePaint;
 import javafx.animation.ScaleTransitionBuilder;
@@ -27,8 +28,8 @@ class PCBSTInsert extends Algorithm {
 	private final PCBST D;
 	private final BSTNode newNode;
 	
-	protected PCBSTInsert(PCBST D, BSTNode newNode) {
-		super(D);
+	protected PCBSTInsert(Visualization visualization, PCBST D, BSTNode newNode) {
+		super(visualization);
 		this.D = D;
 		this.newNode = newNode;
 	}

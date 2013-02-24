@@ -17,13 +17,37 @@
 
 package algvis2.ds.dictionaries;
 
-public class PCBSTVisualization extends BSTVisualization {
-	public PCBSTVisualization() {
-		super(new PCBST());
+import algvis2.core.Algorithm;
+import algvis2.core.Visualization;
+import javafx.animation.SequentialTransition;
+import javafx.animation.SequentialTransitionBuilder;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+
+abstract class DictVisualization extends Visualization {
+	public DictVisualization(Dictionary dataStructure) {
+		super(DictVisualization.class
+				.getResource("/algvis2/ds/dictionaries/DictButtons.fxml"),
+				dataStructure);
 	}
 
 	@Override
-	public String getTitle() {
-		return "BST with path copying"; // partially persistent
+	public Dictionary getDataStructure() {
+		return (Dictionary) super.getDataStructure();
+	}
+
+	public void insert(int x) {
+		Algorithm algorithm = getDataStructure().insert(this, x);
+		addAndPlay(algorithm);
+	}
+
+	public void delete(int x) {
+		Algorithm algorithm = getDataStructure().delete(this, x);
+		addAndPlay(algorithm);
+	}
+
+	public void find(int x) {
+		Algorithm algorithm = getDataStructure().find(this, x);
+		addAndPlay(algorithm);
 	}
 }

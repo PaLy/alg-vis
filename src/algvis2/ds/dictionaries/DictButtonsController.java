@@ -17,91 +17,42 @@
 
 package algvis2.ds.dictionaries;
 
-import algvis2.core.Algorithm;
 import algvis2.scene.control.InputField;
 import algvis2.ui.ButtonsController;
-import javafx.animation.SequentialTransition;
-import javafx.animation.SequentialTransitionBuilder;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.TextField;
-
-import java.util.Vector;
 
 public class DictButtonsController extends ButtonsController {
 	public TextField findField;
 	public TextField deleteField;
-	
+
+	@Override
+	protected DictVisualization getVisualization() {
+		return (DictVisualization) super.getVisualization();
+	}
+
 	public void insertPressed(ActionEvent event) {
 		disableOperations(true);
 		disableNext(true);
 		disablePrevious(true);
-		
-		Vector<Integer> input = new InputField(insertField).getNonEmptyVI();
-
-		Algorithm algorithm = ((Dictionary) visualization.getDataStructure()).insert(input.get(0));
-		visualization.animManager.add(algorithm.allSteps, false);
-
-		SequentialTransition back = SequentialTransitionBuilder.create()
-				.children(algorithm.startEndTransition())
-				.rate(-1)
-				.onFinished(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
-						visualization.reLayout(); // kvoli tomu, ze sa to moze zle bindnut,
-						visualization.animManager.playNext();
-					}
-				}).build();
-		back.jumpTo("end");
-		back.play();
+		getVisualization().insert(
+				new InputField(insertField).getNonEmptyVI().get(0));
 	}
 
 	public void deletePressed(ActionEvent event) {
 		disableOperations(true);
 		disableNext(true);
 		disablePrevious(true);
-		
-		Vector<Integer> input = new InputField(deleteField).getNonEmptyVI();
-
-		Algorithm algorithm = ((Dictionary) visualization.getDataStructure()).delete(input.get(0));
-		visualization.animManager.add(algorithm.allSteps, false);
-
-		SequentialTransition back = SequentialTransitionBuilder.create()
-				.children(algorithm.startEndTransition())
-				.rate(-1)
-				.onFinished(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
-						visualization.reLayout(); // kvoli tomu, ze sa to moze zle bindnut,
-						visualization.animManager.playNext();
-					}
-				}).build();
-		back.jumpTo("end");
-		back.play();
+		getVisualization().delete(
+				new InputField(deleteField).getNonEmptyVI().get(0));
 	}
 
 	public void findPressed(ActionEvent event) {
 		disableOperations(true);
 		disableNext(true);
 		disablePrevious(true);
-				
-		Vector<Integer> input = new InputField(findField).getNonEmptyVI();
-
-		Algorithm algorithm = ((Dictionary) visualization.getDataStructure()).find(input.get(0));
-		visualization.animManager.add(algorithm.allSteps, false);
-
-		SequentialTransition back = SequentialTransitionBuilder.create()
-				.children(algorithm.startEndTransition())
-				.rate(-1)
-				.onFinished(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
-						visualization.reLayout(); // kvoli tomu, ze sa to moze zle bindnut,
-						visualization.animManager.playNext();
-					}
-				}).build();
-		back.jumpTo("end");
-		back.play();
+		getVisualization().find(
+				new InputField(findField).getNonEmptyVI().get(0));
 
 	}
 }

@@ -23,8 +23,8 @@ import javafx.animation.Interpolator;
 import javafx.animation.SequentialTransition;
 
 class AVL extends BST {
-	public AVL(Visualization visualization) {
-		super(visualization);
+	AVL() {
+		super();
 		//		test();
 	}
 

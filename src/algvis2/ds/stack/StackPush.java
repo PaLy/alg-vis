@@ -19,6 +19,7 @@ package algvis2.ds.stack;
 
 import algvis2.animation.AnimationFactory;
 import algvis2.core.Algorithm;
+import algvis2.core.Visualization;
 import algvis2.scene.paint.NodePaint;
 
 class StackPush extends Algorithm {
@@ -26,8 +27,8 @@ class StackPush extends Algorithm {
 	private final int version;
 	private final Stack stack;
 
-	public StackPush(Stack stack, int x, int version) {
-		super(stack);
+	public StackPush(Visualization visualization, Stack stack, int x, int version) {
+		super(visualization);
 		this.x = x;
 		this.version = version;
 		this.stack = stack;

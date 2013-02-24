@@ -19,16 +19,19 @@ package algvis2.core;
 
 import algvis2.scene.layout.VisPane;
 import algvis2.ui.ButtonsController;
+import javafx.animation.Animation;
+import javafx.animation.SequentialTransition;
+import javafx.animation.SequentialTransitionBuilder;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public abstract class Visualization implements PropertyStateEditable {
 	public final VisPane visPane;
@@ -37,20 +40,15 @@ public abstract class Visualization implements PropertyStateEditable {
 	private final URL buttonsFile;
 	private ButtonsState buttonsState;
 	
-	protected DataStructure dataStructure;
+	private final DataStructure dataStructure;
 	public final AnimationManager animManager = new AnimationManager(this);
 
-	public Visualization(URL buttonsFile) {
+	public Visualization(URL buttonsFile, DataStructure dataStructure) {
 		this.buttonsFile = buttonsFile;
-		init();
+		this.dataStructure = dataStructure;
 		visPane = new VisPane(dataStructure);
 		reLayout();
 	}
-
-	/**
-	 * init buttonsPane and dataStructure
-	 */
-	protected abstract void init();
 
 	public Pane getVisPaneWrapper() {
 		return visPane.getWrappingPane();
@@ -88,6 +86,32 @@ public abstract class Visualization implements PropertyStateEditable {
 		return dataStructure;
 	}
 	
+	public void random(int x) {
+		Animation animation = dataStructure.random(this, x);
+		animation.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				reLayout();
+			}
+		});
+		animation.jumpTo("end");
+
+		List<Animation> wrapper = new ArrayList<>();
+		wrapper.add(new SequentialTransition(animation));
+		animManager.add(wrapper, true);
+
+		visPane.refresh();
+		reLayout();
+	}
+	
+	public void clear() {
+		dataStructure.clear();
+		visPane.clearPane();
+		reLayout();
+		animManager.clear();
+		visPane.setTranslatePos(0, 0);
+	}
+	
 	public abstract void reLayout();
 
 	@Override
@@ -97,6 +121,24 @@ public abstract class Visualization implements PropertyStateEditable {
 
 	public abstract String getTitle();
 
+	protected final void addAndPlay(Algorithm algorithm) {
+		animManager.add(algorithm.allSteps, false);
+
+		SequentialTransition back = SequentialTransitionBuilder.create()
+				.children(algorithm.startEndTransition()).rate(-1)
+				.onFinished(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						reLayout(); // kvoli tomu, ze sa to moze zle bindnut TODO!!! -> lebo sa menia vlastnosti 
+						// visualov; takisto pocas vykonavania algorimu sa menia vlastnosti visualov 
+						animManager.playNext();
+					}
+				}).build();
+		back.jumpTo("end");
+		back.play();
+	}
+
+	
 	private final class ButtonsState {
 		private BooleanProperty disableOperations = new SimpleBooleanProperty();
 		private BooleanProperty disablePrevious = new SimpleBooleanProperty();
@@ -123,6 +165,7 @@ public abstract class Visualization implements PropertyStateEditable {
 			pauseSelected.bind(buttonsController.buttonPause.selectedProperty());
 		}
 	}
+	
 	
 	public enum Type {
 		BST,

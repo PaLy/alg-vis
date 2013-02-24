@@ -18,6 +18,7 @@
 package algvis2.ds.dictionaries;
 
 import algvis2.core.Algorithm;
+import algvis2.core.Visualization;
 import algvis2.scene.layout.ZDepth;
 import algvis2.scene.paint.NodePaint;
 
@@ -26,8 +27,8 @@ class BSTFind extends Algorithm {
 	protected final int x;
 	protected BSTNode found = null;
 
-	protected BSTFind(BST D, int x) {
-		super(D);
+	protected BSTFind(Visualization visualization, BST D, int x) {
+		super(visualization);
 		this.D = D;
 		this.x = x;
 	}

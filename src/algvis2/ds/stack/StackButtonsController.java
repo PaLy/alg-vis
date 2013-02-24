@@ -17,82 +17,41 @@
 
 package algvis2.ds.stack;
 
-import algvis2.core.Algorithm;
 import algvis2.scene.control.InputField;
 import algvis2.ui.ButtonsController;
-import javafx.animation.SequentialTransition;
-import javafx.animation.SequentialTransitionBuilder;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.TextField;
-
-import java.util.Vector;
 
 public class StackButtonsController extends ButtonsController {
 	public TextField versionPushField;
 	public TextField versionPopField;
 
+	@Override
+	protected StackVisualization getVisualization() {
+		return (StackVisualization) super.getVisualization();
+	}
+
 	public void pushPressed(ActionEvent event) {
-		disableOperations(true);
-		disableNext(true);
-		disablePrevious(true);
-		
-		final StackVisualization visualization = (StackVisualization) this.visualization;
-
-		Vector<Integer> version = new InputField(versionPushField)
-				.getNonEmptyVI(0, visualization.getDataStructure().versions
-						.size());
-		Vector<Integer> input = new InputField(insertField).getNonEmptyVI();
-
-		Algorithm algorithm = visualization.getDataStructure().push(
-				input.get(0), version.get(0));
-		visualization.animManager.add(algorithm.allSteps, false);
-
-		SequentialTransition back = SequentialTransitionBuilder.create()
-				.children(algorithm.startEndTransition())
-				.rate(-1)
-				.onFinished(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
-						visualization.reLayout(); // kvoli tomu, ze sa to moze zle bindnut,
-						visualization.animManager.playNext();
-					}
-				}).build();
-		back.jumpTo("end");
-		back.play();
+		disableAllButtons(true);
+		int versionsSize = getVisualization().getDataStructure().versions
+				.size();
+		getVisualization().push(
+				new InputField(insertField).getNonEmptyVI().get(0),
+				new InputField(versionPushField).getNonEmptyVI(0, versionsSize)
+						.get(0));
 	}
 
 	public void popPressed(ActionEvent event) {
-		disableOperations(true);
-		disableNext(true);
-		disablePrevious(true);
-		
-		final StackVisualization visualization = (StackVisualization) this.visualization;
-
-		Vector<Integer> version = new InputField(versionPopField)
-				.getNonEmptyVI(0, visualization.getDataStructure().versions.size());
-
-		Algorithm algorithm = visualization.getDataStructure().pop(
-				version.get(0));
-		if (algorithm != null) {
-			visualization.animManager.add(algorithm.allSteps, false);
-
-			SequentialTransition back = SequentialTransitionBuilder.create()
-					.children(algorithm.startEndTransition())
-					.rate(-1)
-					.onFinished(new EventHandler<ActionEvent>() {
-						@Override
-						public void handle(ActionEvent event) {
-							visualization.reLayout(); // kvoli tomu, ze sa to moze zle bindnut,
-							visualization.animManager.playNext();
-						}
-					}).build();
-			back.jumpTo("end");
-			back.play();
-		} else {
+		disableAllButtons(true);
+		int versionsSize = getVisualization().getDataStructure().versions
+				.size();
+		boolean ok = getVisualization().pop(
+				new InputField(versionPopField).getNonEmptyVI(0, versionsSize)
+						.get(0));
+		if (!ok) {
 			disableOperations(false);
-			disableNext(!visualization.animManager.hasNext());
-			disablePrevious(!visualization.animManager.hasPrevious());
+			disableNext(!getVisualization().animManager.hasNext());
+			disablePrevious(!getVisualization().animManager.hasPrevious());
 		}
 	}
 }
