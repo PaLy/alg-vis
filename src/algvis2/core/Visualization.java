@@ -129,8 +129,6 @@ public abstract class Visualization implements PropertyStateEditable {
 				.onFinished(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
-						reLayout(); // kvoli tomu, ze sa to moze zle bindnut TODO!!! -> lebo sa menia vlastnosti 
-						// visualov; takisto pocas vykonavania algorimu sa menia vlastnosti visualov 
 						animManager.playNext();
 					}
 				}).build();

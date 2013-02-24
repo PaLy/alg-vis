@@ -18,13 +18,19 @@
 package algvis2.scene.viselem;
 
 import algvis2.scene.layout.ZDepth;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.Node;
 
 import java.util.Comparator;
 
 public abstract class VisElem {
-	protected Node visual;
+	private Node visual;
 	private ZDepth zDepth;
+	/**
+	 * refresh of visual
+	 */
+	protected final BooleanProperty refreshAllowed = new SimpleBooleanProperty(false);
 	
 	public VisElem(Node visual) {
 		this.visual = visual;
@@ -36,6 +42,10 @@ public abstract class VisElem {
 
 	public ZDepth getZDepth() {
 		return zDepth;
+	}
+	
+	public void allowRefresh(boolean value) {
+		refreshAllowed.set(value);
 	}
 
 	public void setZDepth(ZDepth zDepth) {

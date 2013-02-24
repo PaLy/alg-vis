@@ -19,10 +19,6 @@ package algvis2.ds.dictionaries;
 
 import algvis2.core.Algorithm;
 import algvis2.core.Visualization;
-import javafx.animation.SequentialTransition;
-import javafx.animation.SequentialTransitionBuilder;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 
 abstract class DictVisualization extends Visualization {
 	public DictVisualization(Dictionary dataStructure) {
@@ -37,16 +33,19 @@ abstract class DictVisualization extends Visualization {
 	}
 
 	public void insert(int x) {
+		visPane.disableVisualsRefresh();
 		Algorithm algorithm = getDataStructure().insert(this, x);
 		addAndPlay(algorithm);
 	}
 
 	public void delete(int x) {
+		visPane.disableVisualsRefresh();
 		Algorithm algorithm = getDataStructure().delete(this, x);
 		addAndPlay(algorithm);
 	}
 
 	public void find(int x) {
+		visPane.disableVisualsRefresh();
 		Algorithm algorithm = getDataStructure().find(this, x);
 		addAndPlay(algorithm);
 	}

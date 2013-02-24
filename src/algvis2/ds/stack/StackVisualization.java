@@ -43,11 +43,13 @@ public class StackVisualization extends Visualization {
 	}
 	
 	public void push(int x, int version) {
+		visPane.disableVisualsRefresh();
 		Algorithm algorithm = getDataStructure().push(this, x, version);
 		addAndPlay(algorithm);
 	}
 
 	public boolean pop(int version) {
+		visPane.disableVisualsRefresh();
 		Algorithm algorithm = getDataStructure().pop(this, version);
 		if (algorithm != null) {
 			addAndPlay(algorithm);

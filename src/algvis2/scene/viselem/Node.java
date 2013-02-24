@@ -27,6 +27,7 @@ import algvis2.scene.layout.VisPane;
 import algvis2.scene.paint.NodePaint;
 import algvis2.scene.text.Fonts;
 import javafx.beans.binding.DoubleBinding;
+import javafx.beans.binding.When;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -111,8 +112,7 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 		text.setX(text.getX() - text.getBoundsInLocal().getWidth() / 2);
 
 		paintProperty.addListener(new AutoNodePaintTransition(circle, text));
-		Group visual = (Group) getVisual();
-		visual.getChildren().addAll(circle, text);
+		getVisual().getChildren().addAll(circle, text);
 
 		layoutXBindingProperty.addListener(new ChangeListener<DoubleBinding>() {
 			@Override
@@ -120,7 +120,8 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 					ObservableValue<? extends DoubleBinding> observableValue,
 					DoubleBinding oldBinding, DoubleBinding newBinding) {
                 if (newBinding != null) {
-                    getVisual().layoutXProperty().bind(newBinding);
+					getVisual().layoutXProperty().bind(new When(refreshAllowed).then(newBinding).otherwise(getVisual
+							().getLayoutX()));
                 } else {
                     getVisual().layoutXProperty().unbind();
                 }
@@ -132,7 +133,8 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 					ObservableValue<? extends DoubleBinding> observableValue,
 					DoubleBinding oldBinding, DoubleBinding newBinding) {
                 if (newBinding != null) {
-                    getVisual().layoutYProperty().bind(newBinding);
+					getVisual().layoutYProperty().bind(new When(refreshAllowed).then(newBinding).otherwise(getVisual
+							().getLayoutY()));
                 } else {
                     getVisual().layoutYProperty().unbind();
                 }
@@ -146,7 +148,12 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 		visPaneX.addListener(autoTranslateXTransition);
 		visPaneY.addListener(autoTranslateYTransition);
 	}
-	
+
+	@Override
+	public Group getVisual() {
+		return (Group) super.getVisual();
+	}
+
 	public void removeAutoTranslations() {
 		visPaneX.removeListener(autoTranslateXTransition);
 		visPaneY.removeListener(autoTranslateYTransition);
@@ -170,7 +177,7 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 		text.setX(text.getX() - text.getBoundsInLocal().getWidth() / 2);
 		text.setY(text.getY() - Node.RADIUS * 1.2);
 		
-		((Group) getVisual()).getChildren().add(text);
+		getVisual().getChildren().add(text);
 	}
 
 	public void goAbove(Node node) {

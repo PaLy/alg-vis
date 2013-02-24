@@ -42,10 +42,10 @@ class GroupOfBSTNodes extends BSTNode {
 //		getVisual().getChildren().add(node.getVisual()); // TODO nie
 	}
 
-	@Override
-	public HBox getVisual() {
-		return (HBox) super.getVisual();
-	}
+//	@Override
+//	public HBox getVisual() {
+//		return (HBox) super.getVisual();
+//	}
 	
 	public List<BSTNode> getNodes() {
 		return nodes.get();

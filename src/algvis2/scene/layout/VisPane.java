@@ -144,13 +144,28 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 		paneChildren.clear();
 		for (VisElem elem : allChildren) {
 			if (!doNotShow.contains(elem.getZDepth())) {
+				elem.allowRefresh(true);
 				paneChildren.add(elem.getVisual());
 				elem.getVisual().setManaged(false);
 			}
 		}
+		for (VisElem elem : dsElements) {
+			elem.allowRefresh(true);
+		}
 		dataStructure.getVisual().setManaged(true);
 		
 		recalcAbsPosition();
+	}
+	
+	public void disableVisualsRefresh() {
+		for (VisElem elem : children.get()) {
+			if (!doNotShow.contains(elem.getZDepth())) {
+				elem.allowRefresh(false);
+			}
+		}
+		for (VisElem elem : dsElements) {
+			elem.allowRefresh(false);
+		}
 	}
 
 	public void add(VisElem elem) {
