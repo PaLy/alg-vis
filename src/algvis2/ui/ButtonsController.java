@@ -22,6 +22,7 @@ import algvis2.scene.control.InputField;
 import javafx.animation.Animation;
 import javafx.animation.SequentialTransition;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -49,6 +50,13 @@ public class ButtonsController implements Initializable {
 	public void randomPressed(ActionEvent event) {
 		Animation animation = visualization.getDataStructure()
 				.random(new InputField(insertField).getInt(10));
+		animation.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				visualization.reLayout();
+			}
+		});
+		animation.jumpTo("end");
 
 		List<Animation> wrapper = new ArrayList<>();
 		wrapper.add(new SequentialTransition(animation));
@@ -56,7 +64,7 @@ public class ButtonsController implements Initializable {
 		visualization.animManager.add(wrapper, true);
 		disablePrevious(false);
 
-		visualization.visPane.refresh(); // TODO co?? ...jaaaj to kvoli tomu blbemu pcBST; casom to pojde prec
+		visualization.visPane.refresh();
 		visualization.reLayout();
 	}
 

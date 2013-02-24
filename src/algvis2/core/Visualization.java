@@ -17,8 +17,6 @@
 
 package algvis2.core;
 
-import algvis2.ds.dictionary.bst.BST;
-import algvis2.ds.dictionary.bst.CompactLayout;
 import algvis2.scene.layout.VisPane;
 import algvis2.ui.ButtonsController;
 import javafx.beans.property.BooleanProperty;
@@ -90,10 +88,7 @@ public abstract class Visualization implements PropertyStateEditable {
 		return dataStructure;
 	}
 	
-	public void reLayout() {
-		CompactLayout.layout((BST) dataStructure, visPane);
-		visPane.refresh();
-	}
+	public abstract void reLayout();
 
 	@Override
 	public void storeState(HashMap<Object, Object> state) {

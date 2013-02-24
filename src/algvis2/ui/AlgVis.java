@@ -19,11 +19,11 @@ package algvis2.ui;
 
 import algvis2.animation.AutoAnimsManager;
 import algvis2.core.Visualization;
-import algvis2.ds.dictionary.avl.AVLVisualization;
-import algvis2.ds.dictionary.bst.BSTVisualization;
-import algvis2.ds.dictionary.rb.RBVisualization;
-import algvis2.ds.persistent.partially.bst.PCBSTVisualization;
-import algvis2.ds.persistent.stack.StackVisualization;
+import algvis2.ds.dictionaries.AVLVisualization;
+import algvis2.ds.dictionaries.BSTVisualization;
+import algvis2.ds.dictionaries.RBVisualization;
+import algvis2.ds.dictionaries.PCBSTVisualization;
+import algvis2.ds.stack.StackVisualization;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

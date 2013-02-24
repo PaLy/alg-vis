@@ -19,7 +19,6 @@ package algvis2.scene.viselem;
 
 import algvis2.animation.AutoTranslateTransition;
 import algvis2.core.PropertyStateEditable;
-import algvis2.ds.dictionary.rb.RB;
 import algvis2.scene.Axis;
 import algvis2.scene.layout.ZDepth;
 import javafx.beans.property.ObjectProperty;
@@ -52,7 +51,7 @@ public class Marker extends VisElem implements PropertyStateEditable {
 					node.getVisual().scaleYProperty().removeListener(scaleChange);
 				}
 
-				if (node2 != null && node2 != RB.NULL) {
+				if (node2 != null) {
 					node2.getVisual().scaleXProperty().addListener(scaleChange);
 					node2.getVisual().scaleYProperty().addListener(scaleChange);
 					scaleChange.changed(null, null, null);

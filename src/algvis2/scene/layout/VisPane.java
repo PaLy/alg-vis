@@ -19,8 +19,6 @@ package algvis2.scene.layout;
 
 import algvis2.core.DataStructure;
 import algvis2.core.PropertyStateEditable;
-import algvis2.ds.dictionary.bst.BSTNode;
-import algvis2.ds.persistent.partially.bst.GroupOfBSTNodes;
 import algvis2.scene.viselem.Edge;
 import algvis2.scene.viselem.VisElem;
 import javafx.beans.property.ObjectProperty;
@@ -109,32 +107,32 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 		List<Node> paneChildren = pane.getChildren();
 		dataStructure.getVisual().getChildren().clear();
 		for (VisElem elem : dsElements) {
-			if (elem instanceof GroupOfBSTNodes) {
-				// TODO namiesto tohto radsej moze byt hashmapa, v ktorej sa budu aktualizovat prvky hned pocas 
-				// algoritmu...?
-				ArrayList<Node> toAdd = new ArrayList<>();
-				for (BSTNode node : ((GroupOfBSTNodes) elem).getNodes()) {
-					if (!((GroupOfBSTNodes) elem).getVisual().getChildren().contains(node.getVisual())) {
-						toAdd.add(node.getVisual());
-						node.getVisual().setManaged(true);// TODO pozor na setManage
-					}
-				}
-				ArrayList<Node> toRemove = new ArrayList<>();
-				for (Node node : ((GroupOfBSTNodes) elem).getVisual().getChildren()) {
-					boolean found = false;
-					for (BSTNode node2 : ((GroupOfBSTNodes) elem).getNodes()) {
-						if (node2.getVisual().equals(node)) {
-							found = true;
-							break;
-						}
-					}
-					if (!found) {
-						toRemove.add(node);
-					}
-				}
-				((GroupOfBSTNodes) elem).getVisual().getChildren().removeAll(toRemove);
-				((GroupOfBSTNodes) elem).getVisual().getChildren().addAll(toAdd);
-			}
+//			if (elem instanceof GroupOfBSTNodes) {
+//				// TODO namiesto tohto radsej moze byt hashmapa, v ktorej sa budu aktualizovat prvky hned pocas 
+//				// algoritmu...?
+//				ArrayList<Node> toAdd = new ArrayList<>();
+//				for (BSTNode node : ((GroupOfBSTNodes) elem).getNodes()) {
+//					if (!((GroupOfBSTNodes) elem).getVisual().getChildren().contains(node.getVisual())) {
+//						toAdd.add(node.getVisual());
+//						node.getVisual().setManaged(true);// TODO pozor na setManage
+//					}
+//				}
+//				ArrayList<Node> toRemove = new ArrayList<>();
+//				for (Node node : ((GroupOfBSTNodes) elem).getVisual().getChildren()) {
+//					boolean found = false;
+//					for (BSTNode node2 : ((GroupOfBSTNodes) elem).getNodes()) {
+//						if (node2.getVisual().equals(node)) {
+//							found = true;
+//							break;
+//						}
+//					}
+//					if (!found) {
+//						toRemove.add(node);
+//					}
+//				}
+//				((GroupOfBSTNodes) elem).getVisual().getChildren().removeAll(toRemove);
+//				((GroupOfBSTNodes) elem).getVisual().getChildren().addAll(toAdd);
+//			}
 			dataStructure.getVisual().getChildren().add(elem.getVisual());
 			elem.getVisual().setManaged(true);
 		}

@@ -42,7 +42,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import algvis2.ds.dictionary.bst.BSTNode;
 import org.abego.treelayout.Configuration.AlignmentInLevel;
 import org.abego.treelayout.Configuration.Location;
 import org.abego.treelayout.internal.util.java.lang.string.StringUtil;
