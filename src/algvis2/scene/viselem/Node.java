@@ -255,4 +255,9 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 		state.put(layoutXBindingProperty, layoutXBindingProperty.get());
 		state.put(layoutYBindingProperty, layoutYBindingProperty.get());
 	}
+
+	@Override
+	public String toString() {
+		return String.valueOf(getKey());
+	}
 }

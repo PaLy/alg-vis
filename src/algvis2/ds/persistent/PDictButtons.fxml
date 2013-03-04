@@ -27,7 +27,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="-1.0" prefWidth="-1.0" xmlns:fx="http://javafx.com/fxml" fx:controller="algvis2.ds.dictionaries.DictButtonsController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" 
+            prefHeight="-1.0" prefWidth="-1.0" xmlns:fx="http://javafx.com/fxml" 
+            fx:controller="algvis2.ds.persistent.PDictButtonsController">
   <children>
     <HBox layoutX="0.0" layoutY="0.0" prefHeight="-1.0" prefWidth="-1.0" spacing="5.0">
       <children>
@@ -40,16 +42,17 @@
                 <Button mnemonicParsing="false" onAction="#randomPressed" text="%button-random" />
               </children>
             </HBox>
-            <HBox alignment="TOP_RIGHT" prefHeight="-1.0" prefWidth="-1.0" spacing="5.0">
+            <HBox disable="true" alignment="TOP_RIGHT" prefHeight="-1.0" prefWidth="-1.0" spacing="5.0">
               <children>
-                <TextField fx:id="findField" prefHeight="-1.0" prefWidth="60.0" promptText="number" />
-                <Button fx:id="buttonFind" mnemonicParsing="false" onAction="#findPressed" text="%button-find" />
+                <TextField fx:id="deleteField" prefHeight="-1.0" prefWidth="60.0" promptText="number" />
+                <Button fx:id="buttonDelete" mnemonicParsing="false" onAction="#deletePressed" text="%button-delete" />
               </children>
             </HBox>
             <HBox alignment="TOP_RIGHT" prefHeight="-1.0" prefWidth="-1.0" spacing="5.0">
               <children>
-                <TextField fx:id="deleteField" prefHeight="-1.0" prefWidth="60.0" promptText="number" />
-                <Button fx:id="buttonDelete" mnemonicParsing="false" onAction="#deletePressed" text="%button-delete" />
+                <TextField fx:id="findVersion" prefHeight="-1.0" prefWidth="60.0" promptText="version" />
+                <TextField fx:id="findField" prefHeight="-1.0" prefWidth="60.0" promptText="number" />
+                <Button fx:id="buttonFind" mnemonicParsing="false" onAction="#findPressed" text="%button-find" />
               </children>
             </HBox>
             <HBox alignment="TOP_RIGHT" prefHeight="-1.0" prefWidth="-1.0" spacing="5.0">

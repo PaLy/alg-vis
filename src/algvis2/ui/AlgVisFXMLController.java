@@ -63,8 +63,9 @@ public class AlgVisFXMLController implements Initializable {
 	public MenuItem menu_bst;
 	public MenuItem menu_avl;
 	public MenuItem menu_rb;
-	public MenuItem menu_pcbst;
+	public MenuItem menu_pc_pbst;
 	public MenuItem menu_pstack;
+	public MenuItem menu_fn_pbst;
 	public Button fullscreenButton;
 	
 	private Visualization visualization;
@@ -108,14 +109,17 @@ public class AlgVisFXMLController implements Initializable {
 			algvis.showVisualization(Visualization.Type.AVL);
 		} else if (source == menu_rb) {
 			algvis.showVisualization(Visualization.Type.RB);
-		} else if (source == menu_pcbst) {
-			algvis.showVisualization(Visualization.Type.FP_PC_BST);
+		} else if (source == menu_pc_pbst) {
+			algvis.showVisualization(Visualization.Type.PC_PBST);
 		} else if (source == menu_pstack) {
-			algvis.showVisualization(Visualization.Type.FP_STACK);
+			algvis.showVisualization(Visualization.Type.PSTACK);
+		} else if (source == menu_fn_pbst) {
+		    algvis.showVisualization(Visualization.Type.FN_PBST);
 		}
 	}
 	
 	public void centerPressed(ActionEvent event) {
+		visualization.reLayout();
 		visualization.getVisPane().setTranslatePos(0, 0);
 	}
 	

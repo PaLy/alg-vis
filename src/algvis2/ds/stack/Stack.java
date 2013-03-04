@@ -67,7 +67,6 @@ class Stack extends DataStructure {
 					MyRandom.Int(versions.size())).startEndTransition());
 		}
 		return st;
-
 	}
 
 	@Override

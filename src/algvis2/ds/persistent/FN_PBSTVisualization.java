@@ -15,33 +15,48 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.ds.dictionaries;
+package algvis2.ds.persistent;
 
-import algvis.core.MyRandom;
 import algvis2.core.Algorithm;
-import algvis2.core.DataStructure;
 import algvis2.core.Visualization;
-import algvis2.scene.control.InputField;
-import javafx.animation.Animation;
-import javafx.animation.SequentialTransition;
 
-abstract class Dictionary extends DataStructure {
-	Dictionary() {
-		super();
+public class FN_PBSTVisualization extends Visualization {
+	public FN_PBSTVisualization() {
+		super(FN_PBSTVisualization.class
+				.getResource("/algvis2/ds/persistent/PDictButtons.fxml"), new FN_PBST());
 	}
 
-	abstract public Algorithm insert(Visualization visualization, int x);
-	
-	abstract public Algorithm find(Visualization visualization, int x);
-
-	abstract public Algorithm delete(Visualization visualization, int x);
+	@Override
+	public void reLayout() {
+		FNLayout.layout(getDataStructure(), visPane);
+		visPane.refresh();
+	}
 
 	@Override
-	public Animation random(Visualization visualization, int n) {
-		SequentialTransition st = new SequentialTransition();
-		for (int i = 0; i < n; i++) {
-			st.getChildren().add(insert(visualization, MyRandom.Int(InputField.MAX_VALUE + 1)).startEndTransition());
-		}
-		return st;
+	public String getTitle() {
+		return "Partially Persistent BST - fat node method";
+	}
+
+	@Override
+	public FN_PBST getDataStructure() {
+		return (FN_PBST) super.getDataStructure();
+	}
+
+	public void insert(int x) {
+		visPane.disableVisualsRefresh();
+		Algorithm algorithm = getDataStructure().insert(this, x);
+		addAndPlay(algorithm);
+	}
+
+	public void delete(int x) {
+		visPane.disableVisualsRefresh();
+		Algorithm algorithm = getDataStructure().delete(this, x);
+		addAndPlay(algorithm);
+	}
+
+	public void find(int x, int version) {
+		visPane.disableVisualsRefresh();
+		Algorithm algorithm = getDataStructure().find(this, x, version);
+		addAndPlay(algorithm);
 	}
 }

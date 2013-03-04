@@ -15,33 +15,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.ds.dictionaries;
+package algvis2.scene.viselem;
 
-import algvis.core.MyRandom;
-import algvis2.core.Algorithm;
-import algvis2.core.DataStructure;
-import algvis2.core.Visualization;
-import algvis2.scene.control.InputField;
-import javafx.animation.Animation;
-import javafx.animation.SequentialTransition;
+import algvis2.scene.text.Fonts;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.StrokeType;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextBuilder;
 
-abstract class Dictionary extends DataStructure {
-	Dictionary() {
+public class AnnotatedEdge extends Edge {
+	public AnnotatedEdge(int version) {
 		super();
+		init(version);
 	}
 
-	abstract public Algorithm insert(Visualization visualization, int x);
-	
-	abstract public Algorithm find(Visualization visualization, int x);
+	public AnnotatedEdge(int version, double radius) {
+		super(radius);
+		init(version);
+	}
 
-	abstract public Algorithm delete(Visualization visualization, int x);
+	private void init(int version) {
+		Text text = TextBuilder.create()
+				.text(String.valueOf(version))
+				.font(Fonts.TOP_TEXT)
+				.stroke(Color.WHITE)
+				.strokeType(StrokeType.OUTSIDE)
+				.strokeWidth(2)
+				.build();
+		text.xProperty().bind(getVisual().endXProperty().divide(2.0));
+		text.yProperty().bind(getVisual().endYProperty().divide(2.0));
 
-	@Override
-	public Animation random(Visualization visualization, int n) {
-		SequentialTransition st = new SequentialTransition();
-		for (int i = 0; i < n; i++) {
-			st.getChildren().add(insert(visualization, MyRandom.Int(InputField.MAX_VALUE + 1)).startEndTransition());
-		}
-		return st;
+		getVisual().getChildren().add(text);
 	}
 }

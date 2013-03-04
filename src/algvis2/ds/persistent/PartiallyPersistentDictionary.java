@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.ds.dictionaries;
+package algvis2.ds.persistent;
 
 import algvis.core.MyRandom;
 import algvis2.core.Algorithm;
@@ -24,24 +24,47 @@ import algvis2.core.Visualization;
 import algvis2.scene.control.InputField;
 import javafx.animation.Animation;
 import javafx.animation.SequentialTransition;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
-abstract class Dictionary extends DataStructure {
-	Dictionary() {
+import java.util.HashMap;
+
+public abstract class PartiallyPersistentDictionary extends DataStructure {
+	final IntegerProperty versionsCountProperty = new SimpleIntegerProperty(0);
+
+	protected PartiallyPersistentDictionary() {
 		super();
 	}
 
 	abstract public Algorithm insert(Visualization visualization, int x);
-	
-	abstract public Algorithm find(Visualization visualization, int x);
+
+	abstract public Algorithm find(Visualization visualization, int version,
+			int x);
 
 	abstract public Algorithm delete(Visualization visualization, int x);
 
 	@Override
-	public Animation random(Visualization visualization, int n) {
+	public Animation random(Visualization visualization, int n) {// TODO random creates one version?
 		SequentialTransition st = new SequentialTransition();
 		for (int i = 0; i < n; i++) {
-			st.getChildren().add(insert(visualization, MyRandom.Int(InputField.MAX_VALUE + 1)).startEndTransition());
+			Animation animation = insert(visualization,
+					MyRandom.Int(InputField.MAX_VALUE + 1))
+					.startEndTransition();
+			st.getChildren().add(animation);
 		}
 		return st;
+	}
+
+	int getVersionsCount() {
+		return versionsCountProperty.get();
+	}
+
+	void incVersionsCount() {
+		versionsCountProperty.set(versionsCountProperty.get() + 1);
+	}
+
+	@Override
+	public void storeState(HashMap<Object, Object> state) {
+		state.put(versionsCountProperty, versionsCountProperty.getValue());
 	}
 }

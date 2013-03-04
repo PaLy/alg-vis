@@ -169,8 +169,9 @@ public abstract class Visualization implements PropertyStateEditable {
 		BST,
 		AVL,
 		RB,
-		
-		FP_PC_BST,
-		FP_STACK
+
+		FN_PBST,
+		PC_PBST,
+		PSTACK
 	}
 }

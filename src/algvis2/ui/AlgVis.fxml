@@ -52,7 +52,9 @@
         </Menu>
         <Menu mnemonicParsing="false" text="%persistent">
           <items>
-            <MenuItem disable="true" mnemonicParsing="false" onAction="#selectVisualization" text="%pcbst" fx:id="menu_pcbst" />
+            <MenuItem disable="true" mnemonicParsing="false" onAction="#selectVisualization" text="%pc-pbst"
+                      fx:id="menu_pc_pbst" />
+            <MenuItem mnemonicParsing="false" onAction="#selectVisualization" text="%fn-pbst" fx:id="menu_fn_pbst" />
             <MenuItem mnemonicParsing="false" onAction="#selectVisualization" text="%pstack" fx:id="menu_pstack" />
           </items>
         </Menu>

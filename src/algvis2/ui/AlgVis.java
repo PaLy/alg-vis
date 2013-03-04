@@ -23,6 +23,7 @@ import algvis2.ds.dictionaries.AVLVisualization;
 import algvis2.ds.dictionaries.BSTVisualization;
 import algvis2.ds.dictionaries.RBVisualization;
 import algvis2.ds.dictionaries.PCBSTVisualization;
+import algvis2.ds.persistent.FN_PBSTVisualization;
 import algvis2.ds.stack.StackVisualization;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -52,7 +53,7 @@ public class AlgVis extends Application {
 		this.stage = stage;
 		stage.setTitle("Gnarley Trees");
 		scene = new Scene(createRoot());
-		showVisualization(Visualization.Type.BST);
+		showVisualization(Visualization.Type.FN_PBST);
 		stage.setScene(scene);
 
 		//		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
@@ -117,11 +118,14 @@ public class AlgVis extends Application {
 			case RB:
 				VISUALIZATIONS.put(x, new RBVisualization());
 				break;
-			case FP_PC_BST:
+			case PC_PBST:
 				VISUALIZATIONS.put(x, new PCBSTVisualization());
 				break;
-			case FP_STACK:
+			case PSTACK:
 				VISUALIZATIONS.put(x, new StackVisualization());
+				break;
+			case FN_PBST:
+				VISUALIZATIONS.put(x, new FN_PBSTVisualization());
 				break;
 			}
 		}
