@@ -23,7 +23,6 @@ import algvis2.scene.text.Fonts;
 import algvis2.scene.viselem.Node;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.scene.Group;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 
@@ -33,8 +32,7 @@ import java.util.Map;
 
 class StackNode extends Node {
 	StackNode nextNode;
-	ObjectProperty<LinkedHashMap<StackNode, Boolean>> parentNodesProperty = new 
-			SimpleObjectProperty<>();
+	ObjectProperty<LinkedHashMap<StackNode, Boolean>> parentNodesProperty = new SimpleObjectProperty<>();
 
 	public StackNode(int key, StackNode nextNode, NodePaint paint) {
 		super(key, paint);
@@ -60,7 +58,7 @@ class StackNode extends Node {
 
 	@Override
 	public void storeState(HashMap<Object, Object> state) {
-		super.storeState(state);		
+		super.storeState(state);
 		state.put(parentNodesProperty, parentNodesProperty.getValue().entrySet().toArray());
 		for (Map.Entry<StackNode, Boolean> entry : parentNodes().entrySet()) {
 			if (entry.getValue()) {

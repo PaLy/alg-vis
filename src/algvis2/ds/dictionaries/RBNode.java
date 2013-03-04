@@ -32,8 +32,7 @@ class RBNode extends BSTNode {
 
 		redProperty.addListener(new ChangeListener<Boolean>() {
 			@Override
-			public void changed(
-					ObservableValue<? extends Boolean> observableValue,
+			public void changed(ObservableValue<? extends Boolean> observableValue,
 					Boolean oldValue, Boolean newValue) {
 				if (newValue)
 					setPaint(NodePaint.RED);
@@ -53,8 +52,7 @@ class RBNode extends BSTNode {
 
 	@Override
 	public RBNode getLeft() {
-		return RB.NULL == super.getLeft() ? null : (RBNode) super
-				.getLeft();
+		return RB.NULL == super.getLeft() ? null : (RBNode) super.getLeft();
 	}
 
 	public RBNode getLeft2() {
@@ -63,8 +61,7 @@ class RBNode extends BSTNode {
 
 	@Override
 	public RBNode getRight() {
-		return RB.NULL == super.getRight() ? null : (RBNode) super
-				.getRight();
+		return RB.NULL == super.getRight() ? null : (RBNode) super.getRight();
 	}
 
 	public RBNode getRight2() {

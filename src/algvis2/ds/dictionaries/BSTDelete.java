@@ -27,7 +27,7 @@ class BSTDelete extends BSTFind {
 	protected BSTDelete(Visualization visualization, BST D, int x) {
 		super(visualization, D, x);
 	}
-	
+
 	@Override
 	protected void runAlgorithm() {
 		super.runAlgorithm();
@@ -44,8 +44,7 @@ class BSTDelete extends BSTFind {
 				} else {
 					found.getParent().unlinkRight();
 				}
-			} else if (found.getLeft() == null
-					|| found.getRight() == null) {
+			} else if (found.getLeft() == null || found.getRight() == null) {
 				// case II - 1 child
 				BSTNode son;
 				if (found.getLeft() == null) {
@@ -53,14 +52,14 @@ class BSTDelete extends BSTFind {
 				} else {
 					son = found.getLeft();
 				}
-//				if (son.isLeft() == found.isLeft()) {
-//					son.setArc(found.getParent());
-//				} else {
-//					son.pointTo(found.getParent());
-//				}
-//				pause(false);
-//				son.noArc();
-//				son.noArrow();
+				//				if (son.isLeft() == found.isLeft()) {
+				//					son.setArc(found.getParent());
+				//				} else {
+				//					son.pointTo(found.getParent());
+				//				}
+				//				pause(false);
+				//				son.noArc();
+				//				son.noArrow();
 				if (found.getLeft() == null) {
 					found.unlinkRight();
 				} else {
@@ -90,33 +89,33 @@ class BSTDelete extends BSTFind {
 				v.goTo(son);
 				BSTNode sonsParent = son.getParent(), sonsRight = son.getRight();
 				v.setPaint(NodePaint.FOUND);
-//				if (sonsRight == null) {
-//					addStep("bst-delete-succ-unlink");
-//				} else {
-//					addStep("bst-delete-succ-link", sonsRight.getKey(), sonsParent.getKey());
-//					if (son.isLeft()) {
-//						sonsRight.pointTo(sonsParent);
-//					} else {
-//						sonsRight.setArc(sonsParent);
-//					}
-//				}
+				//				if (sonsRight == null) {
+				//					addStep("bst-delete-succ-unlink");
+				//				} else {
+				//					addStep("bst-delete-succ-link", sonsRight.getKey(), sonsParent.getKey());
+				//					if (son.isLeft()) {
+				//						sonsRight.pointTo(sonsParent);
+				//					} else {
+				//						sonsRight.setArc(sonsParent);
+				//					}
+				//				}
 				pause(false);
-//				if (sonsRight != null) {
-//					sonsRight.noArc();
-//					sonsRight.noArrow();
-//				}
+				//				if (sonsRight != null) {
+				//					sonsRight.noArc();
+				//					sonsRight.noArrow();
+				//				}
 				removeVisElem(v);
 				addVisElem(son, ZDepth.TOP);
 				if (son.isLeft()) {
 					sonsParent.linkLeft(sonsRight);
 				}
 				son.goNextTo(found);
-				
+
 				pause(true);
 				son.linkLeft(found.getLeft());
 				if (found.getRight() != son) {
 					son.linkRight(found.getRight());
-				}				
+				}
 				if (found.isRoot()) {
 					son.setParent(null);
 					D.setRoot(son);
@@ -127,7 +126,7 @@ class BSTDelete extends BSTFind {
 				}
 				removeVisElem(son);
 			} // end case III
-			
+
 			removeVisElem(foundBacklight);
 		}
 	}

@@ -19,10 +19,7 @@ package algvis2.ui;
 
 import algvis2.core.Visualization;
 import algvis2.scene.control.InputField;
-import javafx.animation.Animation;
-import javafx.animation.SequentialTransition;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -30,8 +27,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class ButtonsController implements Initializable {
@@ -40,9 +35,9 @@ public class ButtonsController implements Initializable {
 	public Button buttonNext;
 	public Button buttonPrevious;
 	public CheckBox buttonPause;
-	
+
 	private Visualization visualization;
-	
+
 	protected Visualization getVisualization() {
 		return visualization;
 	}
@@ -73,10 +68,11 @@ public class ButtonsController implements Initializable {
 		disableAllButtons(true);
 		visualization.animManager.playNext();
 	}
-	
+
 	public void disableOperations(boolean value) {
 		operationsButtons.setDisable(value);
 	}
+
 	public void disableNext(boolean value) {
 		buttonNext.setDisable(value);
 	}
@@ -84,13 +80,13 @@ public class ButtonsController implements Initializable {
 	public void disablePrevious(boolean value) {
 		buttonPrevious.setDisable(value);
 	}
-	
+
 	public void disableAllButtons(boolean value) {
 		disableOperations(value);
 		disablePrevious(value);
 		disableNext(value);
 	}
-	
+
 	public void setPausesSelected(boolean value) {
 		buttonPause.setSelected(value);
 	}

@@ -38,23 +38,18 @@ public class FNLayout {
 
 		if (tree.getRoot() != null) {
 			TreeLayout<BinFatNode> layout = new TreeLayout<>(tree,
-					new MyNodeExtentProvider<BinFatNode>(),
-					new DefaultConfiguration<BinFatNode>(Node.RADIUS,
-							Node.RADIUS, Configuration.Location.Top,
+					new MyNodeExtentProvider<BinFatNode>(), new DefaultConfiguration<BinFatNode>(
+							Node.RADIUS, Node.RADIUS, Configuration.Location.Top,
 							Configuration.AlignmentInLevel.TowardsRoot));
-			Map<BinFatNode, Rectangle2D.Double> nodeBounds = layout
-					.getNodeBounds();
-			for (Map.Entry<BinFatNode, Rectangle2D.Double> entry : nodeBounds
-					.entrySet()) {
+			Map<BinFatNode, Rectangle2D.Double> nodeBounds = layout.getNodeBounds();
+			for (Map.Entry<BinFatNode, Rectangle2D.Double> entry : nodeBounds.entrySet()) {
 				if (entry.getKey().getVisual().layoutXProperty().isBound()) {
-//					entry.getKey().removePosBinding();
-//					System.out.println("nie");
+					//					entry.getKey().removePosBinding();
+					//					System.out.println("nie");
 				} else {
 					//					System.out.println("Moving " +entry.getKey().getKey() + " " + entry);
-					entry.getKey()
-							.getVisual()
-							.relocate(entry.getValue().getX(),
-									entry.getValue().getY());
+					entry.getKey().getVisual()
+							.relocate(entry.getValue().getX(), entry.getValue().getY());
 				}
 			}
 		}
@@ -67,14 +62,11 @@ public class FNLayout {
 	}
 
 	private static void rebuildEdges(BinFatNode parentNode, VisPane visPane) {
-		rebuildChildren(parentNode.getLeftChildren().entrySet(), parentNode,
-				visPane);
-		rebuildChildren(parentNode.getRightChildren().entrySet(), parentNode,
-				visPane);
+		rebuildChildren(parentNode.getLeftChildren().entrySet(), parentNode, visPane);
+		rebuildChildren(parentNode.getRightChildren().entrySet(), parentNode, visPane);
 	}
 
-	private static void rebuildChildren(
-			Set<Map.Entry<Integer, BinFatNode>> children,
+	private static void rebuildChildren(Set<Map.Entry<Integer, BinFatNode>> children,
 			BinFatNode parentNode, VisPane visPane) {
 		for (Map.Entry<Integer, BinFatNode> child : children) {
 			Edge edge;

@@ -60,8 +60,7 @@ class PCBST extends BST {
 
 	@Override
 	public Algorithm insert(Visualization visualization, int x) {
-		PCBSTInsert insert = new PCBSTInsert(visualization, this, new BSTNode(x,
-				NodePaint.INSERT));
+		PCBSTInsert insert = new PCBSTInsert(visualization, this, new BSTNode(x, NodePaint.INSERT));
 		insert.run();
 		return insert;
 	}

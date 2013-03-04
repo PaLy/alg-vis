@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import algvis2.scene.layout.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.collections.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
 <?scenebuilder-classpath-element ../../../../../bin?>
 <?scenebuilder-preview-i18n-resource ../../../../../bin/Messages_en.properties?>
 <!--
@@ -27,6 +19,10 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" 
             prefHeight="-1.0" prefWidth="-1.0" xmlns:fx="http://javafx.com/fxml" 
             fx:controller="algvis2.ds.stack.StackButtonsController">

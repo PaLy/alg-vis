@@ -36,11 +36,11 @@ class RBInsert extends BSTInsert {
 		ObjectProperty<RBNode> w = new SimpleObjectProperty<>();
 		w.set((RBNode) newNode);
 		RBNode pw = w.get().getParent2();
-		
+
 		Marker wMarker = new Marker();
 		wMarker.elem.bind(w);
 		addVisElem(wMarker);
-		
+
 		while (!w.get().isRoot() && pw.isRed()) {
 			boolean isLeft = pw.isLeft();
 			RBNode ppw = pw.getParent2();
@@ -76,7 +76,7 @@ class RBInsert extends BSTInsert {
 				break;
 			}
 		}
-		
+
 		((RB) D).getRoot().setRed(false);
 
 		wMarker.elem.unbind();

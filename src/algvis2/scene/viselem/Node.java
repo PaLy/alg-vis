@@ -57,20 +57,23 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 
 	public static final int RADIUS = 20;
 	public static final int INF = 99999;
-	private final ObjectProperty<NodePaint> paintProperty = new SimpleObjectProperty<>(NodePaint.NORMAL);
+	private final ObjectProperty<NodePaint> paintProperty = new SimpleObjectProperty<>(
+			NodePaint.NORMAL);
 	protected ObjectProperty<Integer> keyProperty;
 
 	// TODO node can be bound only if it is not managed?
 	/**
-	 * These properties contain node binding to another node. If node is bound, then node's parent cannot
-	 * change layoutX and layoutY of this node.
+	 * These properties contain node binding to another node. If node is bound, then node's parent
+	 * cannot change layoutX and layoutY of this node.
 	 */
 	private ObjectProperty<DoubleBinding> layoutXBindingProperty = new SimpleObjectProperty<>();
 	private ObjectProperty<DoubleBinding> layoutYBindingProperty = new SimpleObjectProperty<>();
 
 	public static final int NULL = 100000;
-	private final AutoTranslateTransition autoTranslateXTransition = new AutoTranslateTransition(getVisual(), Axis.X);
-	private final AutoTranslateTransition autoTranslateYTransition = new AutoTranslateTransition(getVisual(), Axis.Y);
+	private final AutoTranslateTransition autoTranslateXTransition = new AutoTranslateTransition(
+			getVisual(), Axis.X);
+	private final AutoTranslateTransition autoTranslateYTransition = new AutoTranslateTransition(
+			getVisual(), Axis.Y);
 
 	public Node(int key) {
 		super(new Group());
@@ -92,22 +95,21 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 
 	private void init() {
 		final Circle circle = CircleBuilder.create().radius(RADIUS)
-				.fill(getPaint().getBackground()).stroke(Color.BLACK)
-				.effect(Effects.NODE_SHADOW).build();
+				.fill(getPaint().getBackground()).stroke(Color.BLACK).effect(Effects.NODE_SHADOW)
+				.build();
 
 		String key;
 		switch (getKey()) {
-			case Node.INF:
-				key = "\u221e";
-				break;
-			case -Node.INF:
-				key = "-\u221e";
-				break;
-			default:
-				key = Integer.toString(getKey());
+		case Node.INF:
+			key = "\u221e";
+			break;
+		case -Node.INF:
+			key = "-\u221e";
+			break;
+		default:
+			key = Integer.toString(getKey());
 		}
-		Text text = TextBuilder.create().text(key)
-				.font(Fonts.NODE_FONT).textOrigin(VPos.CENTER)
+		Text text = TextBuilder.create().text(key).font(Fonts.NODE_FONT).textOrigin(VPos.CENTER)
 				.fill(getPaint().getText()).build();
 		text.setX(text.getX() - text.getBoundsInLocal().getWidth() / 2);
 
@@ -116,28 +118,28 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 
 		layoutXBindingProperty.addListener(new ChangeListener<DoubleBinding>() {
 			@Override
-			public void changed(
-					ObservableValue<? extends DoubleBinding> observableValue,
+			public void changed(ObservableValue<? extends DoubleBinding> observableValue,
 					DoubleBinding oldBinding, DoubleBinding newBinding) {
-                if (newBinding != null) {
-					getVisual().layoutXProperty().bind(new When(refreshAllowed).then(newBinding).otherwise(getVisual
-							().getLayoutX()));
-                } else {
-                    getVisual().layoutXProperty().unbind();
-                }
+				if (newBinding != null) {
+					getVisual().layoutXProperty().bind(
+							new When(refreshAllowed).then(newBinding).otherwise(
+									getVisual().getLayoutX()));
+				} else {
+					getVisual().layoutXProperty().unbind();
+				}
 			}
 		});
 		layoutYBindingProperty.addListener(new ChangeListener<DoubleBinding>() {
 			@Override
-			public void changed(
-					ObservableValue<? extends DoubleBinding> observableValue,
+			public void changed(ObservableValue<? extends DoubleBinding> observableValue,
 					DoubleBinding oldBinding, DoubleBinding newBinding) {
-                if (newBinding != null) {
-					getVisual().layoutYProperty().bind(new When(refreshAllowed).then(newBinding).otherwise(getVisual
-							().getLayoutY()));
-                } else {
-                    getVisual().layoutYProperty().unbind();
-                }
+				if (newBinding != null) {
+					getVisual().layoutYProperty().bind(
+							new When(refreshAllowed).then(newBinding).otherwise(
+									getVisual().getLayoutY()));
+				} else {
+					getVisual().layoutYProperty().unbind();
+				}
 			}
 		});
 		layoutXBindingProperty.set(new SimpleDoubleProperty(0).add(0));
@@ -158,7 +160,7 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 		visPaneX.removeListener(autoTranslateXTransition);
 		visPaneY.removeListener(autoTranslateYTransition);
 	}
-	
+
 	public void addAutoTranslations() {
 		visPaneX.removeListener(autoTranslateXTransition);
 		visPaneY.removeListener(autoTranslateYTransition);
@@ -167,35 +169,30 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 	}
 
 	public void setTopText(String s) {
-		Text text = TextBuilder.create()
-				.text(s)
-				.font(Fonts.TOP_TEXT)
-				.stroke(Color.WHITE)
-				.strokeType(StrokeType.OUTSIDE)
-				.strokeWidth(2)
-				.build();
+		Text text = TextBuilder.create().text(s).font(Fonts.TOP_TEXT).stroke(Color.WHITE)
+				.strokeType(StrokeType.OUTSIDE).strokeWidth(2).build();
 		text.setX(text.getX() - text.getBoundsInLocal().getWidth() / 2);
 		text.setY(text.getY() - Node.RADIUS * 1.2);
-		
+
 		getVisual().getChildren().add(text);
 	}
 
 	public void goAbove(Node node) {
 		layoutXBindingProperty.set(node.visPaneX.add(0));
-		layoutYBindingProperty.set(node.visPaneY
-				.subtract(node.getVisual().getBoundsInLocal().getHeight() / 2)
-				.subtract(getVisual().getBoundsInLocal().getHeight() / 2));
+		layoutYBindingProperty.set(node.visPaneY.subtract(
+				node.getVisual().getBoundsInLocal().getHeight() / 2).subtract(
+				getVisual().getBoundsInLocal().getHeight() / 2));
 	}
 
 	public void goTo(Node node) {
 		layoutXBindingProperty.set(node.visPaneX.add(0));
 		layoutYBindingProperty.set(node.visPaneY.add(0));
 	}
-	
+
 	public void goNextTo(Node node) {
-		layoutXBindingProperty.set(node.visPaneX
-				.add(node.getVisual().getBoundsInLocal().getWidth() / 2)
-				.add(getVisual().getBoundsInLocal().getWidth() / 2));
+		layoutXBindingProperty.set(node.visPaneX.add(
+				node.getVisual().getBoundsInLocal().getWidth() / 2).add(
+				getVisual().getBoundsInLocal().getWidth() / 2));
 		layoutYBindingProperty.set(node.visPaneY.add(0));
 	}
 
@@ -239,7 +236,7 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 	public int getKey() {
 		return keyProperty.getValue();
 	}
-	
+
 	public NodePaint getPaint() {
 		return paintProperty.get();
 	}
@@ -251,7 +248,8 @@ public class Node extends VisElem implements AbsPosition, PropertyStateEditable 
 	@Override
 	public void storeState(HashMap<Object, Object> state) {
 		state.put(paintProperty, paintProperty.get());
-		if (keyProperty != null) state.put(keyProperty, keyProperty.get());
+		if (keyProperty != null)
+			state.put(keyProperty, keyProperty.get());
 		state.put(layoutXBindingProperty, layoutXBindingProperty.get());
 		state.put(layoutYBindingProperty, layoutYBindingProperty.get());
 	}

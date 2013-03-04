@@ -32,26 +32,28 @@ import java.util.Map;
 class BSTCompactLayout {
 	public static void layout(BST bst, VisPane visPane) {
 		AbstractTreeForTreeLayout<BSTNode> tree = bst.treeForTreeLayout;
-		
+
 		if (tree.getRoot() != null) {
-			TreeLayout<BSTNode> layout = new TreeLayout<>(tree, new MyNodeExtentProvider<BSTNode>(),
-					new DefaultConfiguration<BSTNode>(0, Node.RADIUS, Configuration.Location.Top,
+			TreeLayout<BSTNode> layout = new TreeLayout<>(tree,
+					new MyNodeExtentProvider<BSTNode>(), new DefaultConfiguration<BSTNode>(0,
+							Node.RADIUS, Configuration.Location.Top,
 							Configuration.AlignmentInLevel.AwayFromRoot));
 			Map<BSTNode, Rectangle2D.Double> nodeBounds = layout.getNodeBounds();
 			for (Map.Entry<BSTNode, Rectangle2D.Double> entry : nodeBounds.entrySet()) {
 				if (entry.getKey().getVisual().layoutXProperty().isBound()) {
-//					entry.getKey().removePosBinding();
+					//					entry.getKey().removePosBinding();
 				} else {
-					entry.getKey().getVisual().relocate(entry.getValue().getX(), entry.getValue().getY());
+					entry.getKey().getVisual()
+							.relocate(entry.getValue().getX(), entry.getValue().getY());
 				}
 			}
 		}
-		
+
 		visPane.clearLayer(ZDepth.EDGES);
 		rebuildEdges(bst.getRoot(), visPane);
 		visPane.setDsElements(bst.dump());
 	}
-	
+
 	private static void rebuildEdges(BSTNode node, VisPane visPane) {
 		if (node != null) {
 			visPane.addNotStorableVisElemAll(node.getEdges());

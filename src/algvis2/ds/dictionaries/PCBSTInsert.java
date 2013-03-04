@@ -27,7 +27,7 @@ import javafx.util.Duration;
 class PCBSTInsert extends Algorithm {
 	private final PCBST D;
 	private final BSTNode newNode;
-	
+
 	protected PCBSTInsert(Visualization visualization, PCBST D, BSTNode newNode) {
 		super(visualization);
 		this.D = D;
@@ -37,7 +37,7 @@ class PCBSTInsert extends Algorithm {
 	@Override
 	protected void runAlgorithm() {
 		D.time++;
-		
+
 		addVisElem(newNode, ZDepth.TOP);
 
 		if (D.getRoot() == null) {
@@ -80,9 +80,8 @@ class PCBSTInsert extends Algorithm {
 
 		removeVisElem(newNode);
 
-		addAnimation(ScaleTransitionBuilder.create().node(newNode.getVisual()).byX(0.5)
-				.byY(0.5).duration(Duration.millis(500)).cycleCount(2)
-				.autoReverse(true).build());
+		addAnimation(ScaleTransitionBuilder.create().node(newNode.getVisual()).byX(0.5).byY(0.5)
+				.duration(Duration.millis(500)).cycleCount(2).autoReverse(true).build());
 
 		newNode.setPaint(NodePaint.NORMAL);
 	}

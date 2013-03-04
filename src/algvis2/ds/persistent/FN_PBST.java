@@ -42,8 +42,7 @@ public class FN_PBST extends PartiallyPersistentDictionary {
 
 	@Override
 	public Algorithm insert(Visualization visualization, int x) {
-		FN_PBSTInsert bstInsert = new FN_PBSTInsert(visualization, this,
-				x);
+		FN_PBSTInsert bstInsert = new FN_PBSTInsert(visualization, this, x);
 		bstInsert.run();
 		return bstInsert;
 	}
@@ -56,16 +55,14 @@ public class FN_PBST extends PartiallyPersistentDictionary {
 		if (version > getVersionsCount() || version < 0) {
 			version = getVersionsCount();
 		}
-		FN_PBSTFind bstFind = new FN_PBSTFind(visualization, this,
-				version, x);
+		FN_PBSTFind bstFind = new FN_PBSTFind(visualization, this, version, x);
 		bstFind.run();
 		return bstFind;
 	}
 
 	@Override
 	public Algorithm delete(Visualization visualization, int x) {
-		FN_PBSTDelete bstDelete = new FN_PBSTDelete(visualization, this,
-				x);
+		FN_PBSTDelete bstDelete = new FN_PBSTDelete(visualization, this, x);
 		bstDelete.run();
 		return bstDelete;
 	}

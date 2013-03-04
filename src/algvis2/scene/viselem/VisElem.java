@@ -31,11 +31,11 @@ public abstract class VisElem {
 	 * refresh of visual
 	 */
 	protected final BooleanProperty refreshAllowed = new SimpleBooleanProperty(false);
-	
+
 	public VisElem(Node visual) {
 		this.visual = visual;
 	}
-	
+
 	public Node getVisual() {
 		return visual;
 	}
@@ -43,7 +43,7 @@ public abstract class VisElem {
 	public ZDepth getZDepth() {
 		return zDepth;
 	}
-	
+
 	public void allowRefresh(boolean value) {
 		refreshAllowed.set(value);
 	}
@@ -51,7 +51,7 @@ public abstract class VisElem {
 	public void setZDepth(ZDepth zDepth) {
 		this.zDepth = zDepth;
 	}
-	
+
 	public static final Comparator<VisElem> ZDEPTH_COMPARATOR = new Comparator<VisElem>() {
 		@Override
 		public int compare(VisElem o1, VisElem o2) {

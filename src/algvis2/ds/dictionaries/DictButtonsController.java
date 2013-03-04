@@ -35,24 +35,21 @@ public class DictButtonsController extends ButtonsController {
 		disableOperations(true);
 		disableNext(true);
 		disablePrevious(true);
-		getVisualization().insert(
-				new InputField(insertField).getNonEmptyVI().get(0));
+		getVisualization().insert(new InputField(insertField).getNonEmptyVI().get(0));
 	}
 
 	public void deletePressed(ActionEvent event) {
 		disableOperations(true);
 		disableNext(true);
 		disablePrevious(true);
-		getVisualization().delete(
-				new InputField(deleteField).getNonEmptyVI().get(0));
+		getVisualization().delete(new InputField(deleteField).getNonEmptyVI().get(0));
 	}
 
 	public void findPressed(ActionEvent event) {
 		disableOperations(true);
 		disableNext(true);
 		disablePrevious(true);
-		getVisualization().find(
-				new InputField(findField).getNonEmptyVI().get(0));
+		getVisualization().find(new InputField(findField).getNonEmptyVI().get(0));
 
 	}
 }

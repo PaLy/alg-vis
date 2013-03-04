@@ -33,17 +33,19 @@ import java.util.Map;
 public class CompactLayout {
 	public static void layout(Stack stack, VisPane visPane) {
 		AbstractTreeForTreeLayout<StackNode> stackTree = stack.stackTree;
-		
+
 		if (stackTree.getRoot() != null) {
-			TreeLayout<StackNode> layout = new TreeLayout<>(stackTree, new MyNodeExtentProvider<StackNode>(),
-					new DefaultConfiguration<StackNode>(Node.RADIUS / 2, Node.RADIUS, Configuration.Location.Bottom,
+			TreeLayout<StackNode> layout = new TreeLayout<>(stackTree,
+					new MyNodeExtentProvider<StackNode>(), new DefaultConfiguration<StackNode>(
+							Node.RADIUS / 2, Node.RADIUS, Configuration.Location.Bottom,
 							Configuration.AlignmentInLevel.Center));
 			Map<StackNode, Rectangle2D.Double> nodeBounds = layout.getNodeBounds();
 			for (Map.Entry<StackNode, Rectangle2D.Double> entry : nodeBounds.entrySet()) {
 				if (entry.getKey().getVisual().layoutXProperty().isBound()) {
 					// entry.getKey().removePosBinding();
 				} else {
-					entry.getKey().getVisual().relocate(entry.getValue().getX(), entry.getValue().getY());
+					entry.getKey().getVisual()
+							.relocate(entry.getValue().getX(), entry.getValue().getY());
 				}
 			}
 		}

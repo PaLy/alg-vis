@@ -30,38 +30,32 @@ import javafx.util.Duration;
 public class Backlight extends VisElem {
 	public static final Paint RED = Color.RED;
 	public static final Paint GREEN = Color.LIMEGREEN;
-	
+
 	public Backlight(Node node, Paint paint) {
 		super(new Circle());
 		getVisual().setRadius(Node.RADIUS * 1.25);
 		getVisual().layoutXProperty().bind(node.visPaneX);
 		getVisual().layoutYProperty().bind(node.visPaneY);
-//		getVisual().setFill(RadialGradientBuilder.create()
-//				.centerX(0.5)
-//				.centerY(0.5)
-//				.radius(1)
-//				.stops(new Stop(0, Color.RED), new Stop(1, Color.WHITE))
-//				.build());
+		//		getVisual().setFill(RadialGradientBuilder.create()
+		//				.centerX(0.5)
+		//				.centerY(0.5)
+		//				.radius(1)
+		//				.stops(new Stop(0, Color.RED), new Stop(1, Color.WHITE))
+		//				.build());
 		getVisual().setFill(paint);
-		
+
 		setZDepth(ZDepth.BACKLIGHT);
-		
+
 		getVisual().layoutXProperty().addListener(new AutoTranslateTransition(getVisual(), Axis.X));
 		getVisual().layoutYProperty().addListener(new AutoTranslateTransition(getVisual(), Axis.Y));
 	}
-	
+
 	public Backlight(Node node, Paint paint, boolean blinking) {
 		this(node, paint);
 		if (blinking) {
-			FadeTransitionBuilder.create()
-					.node(getVisual())
-					.duration(Duration.millis(500))
-					.fromValue(1)
-					.toValue(0)
-					.cycleCount(Animation.INDEFINITE)
-					.autoReverse(true)
-					.build()
-					.play();
+			FadeTransitionBuilder.create().node(getVisual()).duration(Duration.millis(500))
+					.fromValue(1).toValue(0).cycleCount(Animation.INDEFINITE).autoReverse(true)
+					.build().play();
 		}
 	}
 

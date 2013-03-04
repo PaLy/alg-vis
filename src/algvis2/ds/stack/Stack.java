@@ -33,8 +33,8 @@ import org.abego.treelayout.util.AbstractTreeForTreeLayout;
 import java.util.*;
 
 class Stack extends DataStructure {
-	final SimpleListProperty<StackNode.NullNode> versions = new SimpleListProperty<>(FXCollections
-			.<StackNode.NullNode>observableArrayList());
+	final SimpleListProperty<StackNode.NullNode> versions = new SimpleListProperty<>(
+			FXCollections.<StackNode.NullNode> observableArrayList());
 	private final StackNode bottom = new StackNode.NullNode(-1, null);
 
 	protected Stack() {
@@ -42,7 +42,7 @@ class Stack extends DataStructure {
 		StackNode.NullNode emptyVersion = new StackNode.NullNode(0, bottom);
 		bottom.removePosBinding();
 		emptyVersion.removePosBinding();
-		
+
 		versions.add(emptyVersion);
 	}
 
@@ -54,7 +54,7 @@ class Stack extends DataStructure {
 		stackPush.run();
 		return stackPush;
 	}
-	
+
 	public Algorithm push(Visualization visualization, int x) {
 		return push(visualization, x, versions.size() - 1); // last version
 	}
@@ -63,8 +63,9 @@ class Stack extends DataStructure {
 	public Animation random(Visualization visualization, int n) {
 		SequentialTransition st = new SequentialTransition();
 		for (int i = 0; i < n; i++) {
-			st.getChildren().add(push(visualization, MyRandom.Int(InputField.MAX_VALUE + 1),
-					MyRandom.Int(versions.size())).startEndTransition());
+			st.getChildren().add(
+					push(visualization, MyRandom.Int(InputField.MAX_VALUE + 1),
+							MyRandom.Int(versions.size())).startEndTransition());
 		}
 		return st;
 	}
@@ -72,11 +73,11 @@ class Stack extends DataStructure {
 	@Override
 	public List<VisElem> dump() {
 		List<VisElem> elements = new ArrayList<>();
-		
+
 		java.util.Stack<StackNode> todo = new java.util.Stack<>();
 		todo.add(bottom);
 		elements.add(bottom);
-		
+
 		while (!todo.empty()) {
 			StackNode elem = todo.pop();
 			for (Map.Entry<StackNode, Boolean> entry : elem.parentNodes().entrySet()) {
@@ -86,9 +87,9 @@ class Stack extends DataStructure {
 					}
 					elements.add(entry.getKey());
 				}
-			}		
+			}
 		}
-		
+
 		return elements;
 	}
 
@@ -138,8 +139,8 @@ class Stack extends DataStructure {
 		bottom.storeState(state);
 	}
 
-
-	public final AbstractTreeForTreeLayout<StackNode> stackTree = new AbstractTreeForTreeLayout<StackNode>(bottom) {
+	public final AbstractTreeForTreeLayout<StackNode> stackTree = new AbstractTreeForTreeLayout<StackNode>(
+			bottom) {
 		@Override
 		public StackNode getParent(StackNode stackNode) {
 			return stackNode.nextNode;

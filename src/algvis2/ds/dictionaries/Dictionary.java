@@ -31,7 +31,7 @@ abstract class Dictionary extends DataStructure {
 	}
 
 	abstract public Algorithm insert(Visualization visualization, int x);
-	
+
 	abstract public Algorithm find(Visualization visualization, int x);
 
 	abstract public Algorithm delete(Visualization visualization, int x);
@@ -40,7 +40,9 @@ abstract class Dictionary extends DataStructure {
 	public Animation random(Visualization visualization, int n) {
 		SequentialTransition st = new SequentialTransition();
 		for (int i = 0; i < n; i++) {
-			st.getChildren().add(insert(visualization, MyRandom.Int(InputField.MAX_VALUE + 1)).startEndTransition());
+			st.getChildren().add(
+					insert(visualization, MyRandom.Int(InputField.MAX_VALUE + 1))
+							.startEndTransition());
 		}
 		return st;
 	}

@@ -31,8 +31,7 @@ public class PropertiesState {
 	public final HashMap<Object, Object> preState;
 	private final Visualization visualization;
 
-	public PropertiesState(HashMap<Object, Object> preState,
-			Visualization visualization) {
+	public PropertiesState(HashMap<Object, Object> preState, Visualization visualization) {
 		this.preState = preState;
 		this.visualization = visualization;
 	}
@@ -68,17 +67,14 @@ public class PropertiesState {
 							|| (preValue == null && wvKey.getValue() != null)
 							|| (preValue != null && wvKey.getValue() == null)) {
 						firstKeyFrameValues.add(new KeyValue(wvKey, preValue));
-						secondKeyFrameValues.add(new KeyValue(wvKey, wvKey
-								.getValue()));
+						secondKeyFrameValues.add(new KeyValue(wvKey, wvKey.getValue()));
 					}
 				}
 			}
 		}
 
-		KeyFrame firstKeyFrame = new KeyFrame(Duration.ZERO, null, null,
-				firstKeyFrameValues);
-		KeyFrame secondKeyFrame = new KeyFrame(Duration.millis(1), null, null,
-				secondKeyFrameValues);
+		KeyFrame firstKeyFrame = new KeyFrame(Duration.ZERO, null, null, firstKeyFrameValues);
+		KeyFrame secondKeyFrame = new KeyFrame(Duration.millis(1), null, null, secondKeyFrameValues);
 		final Timeline timeline = new Timeline(firstKeyFrame, secondKeyFrame);
 
 		timeline.setOnFinished(new EventHandler<ActionEvent>() {
@@ -86,16 +82,13 @@ public class PropertiesState {
 			public void handle(ActionEvent event) {
 				for (WritableValue writableValue : preElements.keySet()) {
 					if (writableValue.getValue() instanceof Collection) {
-						Collection collection = (Collection) writableValue
-								.getValue();
+						Collection collection = (Collection) writableValue.getValue();
 
 						collection.clear();
 						if (timeline.getRate() > 0)
-							Collections.addAll(collection,
-									postElements.get(writableValue));
+							Collections.addAll(collection, postElements.get(writableValue));
 						else if (timeline.getRate() < 0) {
-							Collections.addAll(collection,
-									preElements.get(writableValue));
+							Collections.addAll(collection, preElements.get(writableValue));
 						} else {
 							System.out.println("WTF");
 							return;

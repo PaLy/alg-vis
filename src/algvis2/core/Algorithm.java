@@ -36,7 +36,7 @@ public abstract class Algorithm implements Runnable {
 	private PropertiesState state;
 	private SequentialTransition step = new SequentialTransition();
 	public final List<Animation> allSteps = new ArrayList<>();
-	
+
 	private boolean layoutRequested = true;
 
 	protected Algorithm(Visualization visualization) {
@@ -53,7 +53,8 @@ public abstract class Algorithm implements Runnable {
 	protected abstract void runAlgorithm();
 
 	protected void pause(boolean relayout) {
-		if (relayout) layoutRequested = true;
+		if (relayout)
+			layoutRequested = true;
 		saveChangedProperties();
 		allSteps.add(step);
 		step = new SequentialTransition();
@@ -69,14 +70,14 @@ public abstract class Algorithm implements Runnable {
 	void end() {
 		pause(true);
 		startEndTransition = startState.createTimeline(false);
-//		System.out.println("BACKTOSTART:");
-//		System.out.println(startEndTransition.getKeyFrames());
+		//		System.out.println("BACKTOSTART:");
+		//		System.out.println(startEndTransition.getKeyFrames());
 	}
 
 	public Animation startEndTransition() {
 		return startEndTransition;
 	}
-	
+
 	protected void requestLayout() {
 		layoutRequested = true;
 	}
@@ -84,24 +85,30 @@ public abstract class Algorithm implements Runnable {
 	protected void saveChangedProperties() {
 		step.getChildren().add(state.createTimeline(layoutRequested));
 		layoutRequested = false;
-		
+
 		HashMap<Object, Object> preState = new HashMap<>();
 		visualization.storeState(preState);
 		state = new PropertiesState(preState, visualization);
 
 		startState.addNewProperties(preState);
 
-//		Timeline t = (Timeline) step.getChildren().get(step.getChildren().size() - 1);
-//		System.out.println(t.getKeyFrames());
-//		System.out.println("*************");
+		//		Timeline t = (Timeline) step.getChildren().get(step.getChildren().size() - 1);
+		//		System.out.println(t.getKeyFrames());
+		//		System.out.println("*************");
 	}
 
 	/**
-	 * For smaller overhead rather use<br/><br/>
-	 * <code>addAnimation(new SequentialTransition(anims));</code><br/><br/>
-	 * than<br/><br/> <code>{ addAnimation(anims[0]); 
+	 * For smaller overhead rather use<br/>
+	 * <br/>
+	 * <code>addAnimation(new SequentialTransition(anims));</code><br/>
+	 * <br/>
+	 * than<br/>
+	 * <br/>
+	 * <code>{ addAnimation(anims[0]); 
 	 * addAnimation(anims[1]); }</code><br/>
-	 * @param anim animation to add to current step
+	 * 
+	 * @param anim
+	 *            animation to add to current step
 	 */
 	protected void addAnimation(Animation anim) {
 		layoutRequested = true; // inak by sa napr. node pripojil na DS az po vykonani animacie

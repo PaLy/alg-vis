@@ -27,11 +27,10 @@ public class AnimationFactory {
 	private AnimationFactory() {
 		throw new AssertionError();
 	}
-	
+
 	public static Animation scaleInOut(Node node) {
-		return ScaleTransitionBuilder.create().node(node.getVisual()).byX(0.5)
-				.byY(0.5).duration(Duration.millis(500)).cycleCount(2)
-				.autoReverse(true).build();
+		return ScaleTransitionBuilder.create().node(node.getVisual()).byX(0.5).byY(0.5)
+				.duration(Duration.millis(500)).cycleCount(2).autoReverse(true).build();
 	}
-	
+
 }

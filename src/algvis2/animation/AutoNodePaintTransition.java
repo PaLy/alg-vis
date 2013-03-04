@@ -24,14 +24,15 @@ import javafx.scene.shape.Shape;
 
 public class AutoNodePaintTransition implements AutoAnimation, ChangeListener<NodePaint> {
 	private final AutoFillTransition backgroundTransition, textTransition;
-	
+
 	public AutoNodePaintTransition(Shape background, Shape text) {
 		backgroundTransition = new AutoFillTransition(background);
 		textTransition = new AutoFillTransition(text);
 	}
 
 	@Override
-	public void changed(ObservableValue<? extends NodePaint> observable, NodePaint oldValue, NodePaint newValue) {
+	public void changed(ObservableValue<? extends NodePaint> observable, NodePaint oldValue,
+			NodePaint newValue) {
 		backgroundTransition.changed(null, oldValue.getBackground(), newValue.getBackground());
 		textTransition.changed(null, oldValue.getText(), newValue.getText());
 	}

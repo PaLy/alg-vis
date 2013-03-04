@@ -34,15 +34,14 @@ class RBDelete extends BSTFind {
 	@Override
 	protected void runAlgorithm() {
 		super.runAlgorithm();
-		
+
 		if (found != null) {
 			Backlight foundBacklight = new Backlight(found, Backlight.RED);
 			addVisElem(foundBacklight);
 
-			RBNode u = (RBNode) found, w = (u.getLeft() != null) ? u.getLeft() : u
-					.getRight2();
+			RBNode u = (RBNode) found, w = (u.getLeft() != null) ? u.getLeft() : u.getRight2();
 			RB.NULL.setParent(u.getParent2());
-			
+
 			if (found.isLeaf()) { // case I - list
 				if (found.isRoot()) {
 					D.setRoot(null);
@@ -87,11 +86,11 @@ class RBDelete extends BSTFind {
 				}
 				v.goTo(son);
 				v.setPaint(NodePaint.FOUND);
-				
+
 				u = son;
 				w = son.getRight2();
 				RB.NULL.setParent(son.getParent2());
-				
+
 				pause(false);
 				removeVisElem(v);
 				addVisElem(son, ZDepth.TOP);
@@ -101,7 +100,7 @@ class RBDelete extends BSTFind {
 				}
 				son.goNextTo(found);
 				pause(true);
-				
+
 				son.linkLeft(found.getLeft());
 				if (found.getRight() != son) {
 					son.linkRight(found.getRight());
@@ -120,13 +119,13 @@ class RBDelete extends BSTFind {
 
 			if (!u.isRed()) {
 				requestLayout();
-				
+
 				// bubleme nahor
 				ObjectProperty<RBNode> s = new SimpleObjectProperty<>();
 				Marker sMarker = new Marker();
 				sMarker.elem.bind(s);
 				addVisElem(sMarker);
-				
+
 				while (w.getParent2() != RB.NULL && !w.isRed()) {
 					RB.NULL.setRed(false);
 					if (w.getParent2().getLeft2() == w) {
@@ -136,8 +135,7 @@ class RBDelete extends BSTFind {
 							s.get().setRed(false);
 							w.getParent2().setRed(true);
 							D.rotate(s.get());
-						} else if (!s.get().getLeft2().isRed()
-								&& !s.get().getRight2().isRed()) {
+						} else if (!s.get().getLeft2().isRed() && !s.get().getRight2().isRed()) {
 							s.get().setRed(true);
 							w = w.getParent2();
 						} else if (!s.get().getRight2().isRed()) {
@@ -159,8 +157,7 @@ class RBDelete extends BSTFind {
 							s.get().setRed(false);
 							w.getParent2().setRed(true);
 							D.rotate(s.get());
-						} else if (!s.get().getRight2().isRed()
-								&& !s.get().getLeft2().isRed()) {
+						} else if (!s.get().getRight2().isRed() && !s.get().getLeft2().isRed()) {
 							pause(false);
 							s.get().setRed(true);
 							w = w.getParent2();
@@ -181,7 +178,7 @@ class RBDelete extends BSTFind {
 					}
 				}
 				w.setRed(false);
-				
+
 				sMarker.elem.unbind();
 				removeVisElem(sMarker);
 			}

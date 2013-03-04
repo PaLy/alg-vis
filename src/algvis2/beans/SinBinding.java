@@ -18,7 +18,6 @@
 package algvis2.beans;
 
 import javafx.beans.binding.DoubleBinding;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ObservableDoubleValue;
 
 public class SinBinding extends DoubleBinding {

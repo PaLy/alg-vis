@@ -39,19 +39,19 @@ class StackPush extends Algorithm {
 		StackNode node;
 		StackNode oldVersionTop = stack.versions.get(version).nextNode;
 		node = new StackNode(x, oldVersionTop, NodePaint.INSERT);
-		
+
 		int newVerID = stack.versions.size();
 		StackNode.NullNode newVerPointer = new StackNode.NullNode(newVerID, node);
-		
+
 		saveChangedProperties();
 		node.removePosBinding();
 		newVerPointer.removePosBinding();
-		
+
 		stack.versions.add(newVerPointer);
-		
+
 		addAnimation(AnimationFactory.scaleInOut(node));
 		addAnimation(AnimationFactory.scaleInOut(newVerPointer));
-		
+
 		node.setPaint(NodePaint.NORMAL);
 	}
 }

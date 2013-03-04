@@ -63,7 +63,8 @@ class BST extends Dictionary {
 
 	public void setRoot(BSTNode root) {
 		rootProperty.set(root);
-		if (root != null) root.removePosBinding();
+		if (root != null)
+			root.removePosBinding();
 	}
 
 	protected void leftRot(BSTNode v) {
@@ -105,8 +106,8 @@ class BST extends Dictionary {
 	}
 
 	/**
-	 * Rotation is specified by a single vertex v; if v is a left child of its
-	 * parent, rotate right, if it is a right child, rotate left
+	 * Rotation is specified by a single vertex v; if v is a left child of its parent, rotate right,
+	 * if it is a right child, rotate left
 	 */
 	public void rotate(BSTNode v) {
 		if (v.isLeft()) {
@@ -129,7 +130,7 @@ class BST extends Dictionary {
 			java.util.Stack<BSTNode> todo = new java.util.Stack<>();
 			todo.push(getRoot());
 			elements.add(getRoot());
-	
+
 			while (!todo.empty()) {
 				BSTNode elem = todo.pop();
 				if (elem.getLeft() != null) {
@@ -155,16 +156,20 @@ class BST extends Dictionary {
 
 	@Override
 	public void recalcAbsPosition() {
-		if (getRoot() != null) recalcAbsPositionR(getRoot());
+		if (getRoot() != null)
+			recalcAbsPositionR(getRoot());
 	}
-	
+
 	private void recalcAbsPositionR(BSTNode node) {
 		node.recalcAbsPosition();
-		if (node.getLeft() != null) recalcAbsPositionR(node.getLeft());
-		if (node.getRight() != null) recalcAbsPositionR(node.getRight());
+		if (node.getLeft() != null)
+			recalcAbsPositionR(node.getLeft());
+		if (node.getRight() != null)
+			recalcAbsPositionR(node.getRight());
 	}
-	
-	public final AbstractTreeForTreeLayout<BSTNode> treeForTreeLayout = new AbstractTreeForTreeLayout<BSTNode>(null) {
+
+	public final AbstractTreeForTreeLayout<BSTNode> treeForTreeLayout = new AbstractTreeForTreeLayout<BSTNode>(
+			null) {
 		@Override
 		public BSTNode getRoot() {
 			return rootProperty.get();
@@ -182,7 +187,7 @@ class BST extends Dictionary {
 				res.add(node.getLeft());
 			if (node.getRight() != null)
 				res.add(node.getRight());
-			
+
 			return res;
 		}
 

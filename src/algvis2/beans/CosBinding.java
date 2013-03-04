@@ -18,7 +18,6 @@
 package algvis2.beans;
 
 import javafx.beans.binding.DoubleBinding;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ObservableDoubleValue;
 
 public class CosBinding extends DoubleBinding {
@@ -28,7 +27,7 @@ public class CosBinding extends DoubleBinding {
 		this.angle = angle;
 		super.bind(angle);
 	}
-	
+
 	@Override
 	protected double computeValue() {
 		return Math.cos((angle.get() - 90) * Math.PI / 180.0);

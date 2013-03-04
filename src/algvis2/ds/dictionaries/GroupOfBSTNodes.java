@@ -36,17 +36,17 @@ class GroupOfBSTNodes extends BSTNode {
 		nodes.set(new ArrayList<BSTNode>());
 		nodes.get().add(node);
 		node.removePosBinding();
-		
+
 		node.setTopText(Integer.toString(time));
 		lastTime = 0;
-//		getVisual().getChildren().add(node.getVisual()); // TODO nie
+		//		getVisual().getChildren().add(node.getVisual()); // TODO nie
 	}
 
-//	@Override
-//	public HBox getVisual() {
-//		return (HBox) super.getVisual();
-//	}
-	
+	//	@Override
+	//	public HBox getVisual() {
+	//		return (HBox) super.getVisual();
+	//	}
+
 	public List<BSTNode> getNodes() {
 		return nodes.get();
 	}
@@ -61,10 +61,10 @@ class GroupOfBSTNodes extends BSTNode {
 		BSTNode newNode = (BSTNode) lastNode.clone();
 		nodes.get().add(newNode);
 		newNode.removePosBinding();
-		
+
 		newNode.setTopText(Integer.toString(time));
 		lastTime = time;
-//		getVisual().getChildren().add(newNode.getVisual()); // TODO nie
+		//		getVisual().getChildren().add(newNode.getVisual()); // TODO nie
 	}
 
 	@Override
@@ -84,12 +84,13 @@ class GroupOfBSTNodes extends BSTNode {
 	@Override
 	public void setLeft(BSTNode left) {
 		if (leftProperty.get() == null && left != null) {
-			if (left.getVisual().layoutXProperty().isBound()) left.removePosBinding();
+			if (left.getVisual().layoutXProperty().isBound())
+				left.removePosBinding();
 			GroupOfBSTNodes leftGroup = new GroupOfBSTNodes(left, lastTime);
 			leftGroup.setParent(this);
 			leftProperty.set(leftGroup);
-			
-//			getLastNode().linkLeft(left); // TODO toho sa uz treba konecne zbavit
+
+			//			getLastNode().linkLeft(left); // TODO toho sa uz treba konecne zbavit
 			getLastNode().setLeft(left);
 		} else {
 			// TODO
@@ -104,12 +105,13 @@ class GroupOfBSTNodes extends BSTNode {
 	@Override
 	public void setRight(BSTNode right) {
 		if (rightProperty.get() == null && right != null) {
-			if (right.getVisual().layoutXProperty().isBound()) right.removePosBinding();
+			if (right.getVisual().layoutXProperty().isBound())
+				right.removePosBinding();
 			GroupOfBSTNodes rightGroup = new GroupOfBSTNodes(right, lastTime);
 			rightGroup.setParent(this);
 			rightProperty.set(rightGroup);
-			
-//			getLastNode().linkRight(right);
+
+			//			getLastNode().linkRight(right);
 			getLastNode().setRight(right);
 		} else {
 			// TODO
@@ -136,7 +138,7 @@ class GroupOfBSTNodes extends BSTNode {
 	@Override
 	public void storeState(HashMap<Object, Object> state) {
 		super.storeState(state);
-		
+
 		state.put(nodes, nodes.get().toArray());
 		for (Node node : nodes.get()) {
 			node.storeState(state);

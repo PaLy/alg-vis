@@ -45,17 +45,13 @@ public class FN_PBSTDelete extends FN_PBSTFind {
 				if (found.isRoot()) {
 					bst.setRoot(null);
 				} else if (found.isLeft()) {
-					found.getParent().addLeftChild(new BinFatNode.Null(),
-							newVersion);
+					found.getParent().addLeftChild(new BinFatNode.Null(), newVersion);
 				} else {
-					found.getParent().addRightChild(new BinFatNode.Null(),
-							newVersion);
+					found.getParent().addRightChild(new BinFatNode.Null(), newVersion);
 				}
 			} else {
-				BinFatNode leftChild = FN_PBSTAlgorithmUtil.getLeftChild(found,
-						lastVersion);
-				BinFatNode rightChild = FN_PBSTAlgorithmUtil.getRightChild(
-						found, lastVersion);
+				BinFatNode leftChild = FN_PBSTAlgorithmUtil.getLeftChild(found, lastVersion);
+				BinFatNode rightChild = FN_PBSTAlgorithmUtil.getRightChild(found, lastVersion);
 				if (leftChild == null || rightChild == null) {
 					// case II - 1 child
 					BinFatNode son;
@@ -72,11 +68,11 @@ public class FN_PBSTDelete extends FN_PBSTFind {
 					//				pause(false);
 					//				son.noArc();
 					//				son.noArrow();
-//					if (leftChild == null) {
-//						found.addRightChild(new BinFatNode.Null(), newVersion);
-//					} else {
-//						found.addLeftChild(new BinFatNode.Null(), newVersion);
-//					}
+					//					if (leftChild == null) {
+					//						found.addRightChild(new BinFatNode.Null(), newVersion);
+					//					} else {
+					//						found.addLeftChild(new BinFatNode.Null(), newVersion);
+					//					}
 					if (found.isRoot()) {
 						bst.setRoot(son);
 						son.setParent(null);
@@ -94,12 +90,10 @@ public class FN_PBSTDelete extends FN_PBSTFind {
 					addVisElem(v, ZDepth.TOP);
 					v.goAbove(son);
 					pause(false);
-					BinFatNode sonsLeft = FN_PBSTAlgorithmUtil.getLeftChild(
-							son, lastVersion);
+					BinFatNode sonsLeft = FN_PBSTAlgorithmUtil.getLeftChild(son, lastVersion);
 					while (sonsLeft != null) {
 						son = sonsLeft;
-						sonsLeft = FN_PBSTAlgorithmUtil.getLeftChild(son,
-								lastVersion);
+						sonsLeft = FN_PBSTAlgorithmUtil.getLeftChild(son, lastVersion);
 						v.goAbove(son);
 						pause(false);
 					}

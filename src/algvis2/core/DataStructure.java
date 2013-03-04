@@ -38,8 +38,8 @@ public abstract class DataStructure extends VisElem implements PropertyStateEdit
 	}
 
 	abstract public void clear();
-	
+
 	abstract public Animation random(Visualization visualization, int n);
-	
+
 	abstract public List<VisElem> dump();
 }

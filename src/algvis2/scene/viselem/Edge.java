@@ -25,7 +25,7 @@ public class Edge extends VisElem {
 		super(new Arrow(0));
 		setZDepth(ZDepth.EDGES);
 	}
-	
+
 	public Edge(double radius) {
 		super(new Arrow(radius));
 		setZDepth(ZDepth.EDGES);
@@ -37,20 +37,14 @@ public class Edge extends VisElem {
 	}
 
 	public void bindNodes(Node startNode, Node endNode) {
-		getVisual().startXProperty().bind(
-				startNode.visPaneX
-				.add(startNode.visPaneTranslateX));
-		getVisual().startYProperty().bind(
-				startNode.visPaneY
-				.add(startNode.visPaneTranslateY));
+		getVisual().startXProperty().bind(startNode.visPaneX.add(startNode.visPaneTranslateX));
+		getVisual().startYProperty().bind(startNode.visPaneY.add(startNode.visPaneTranslateY));
 
 		getVisual().endXProperty().bind(
-				endNode.visPaneX
-				.add(endNode.visPaneTranslateX)
-				.subtract(getVisual().layoutXProperty()));
+				endNode.visPaneX.add(endNode.visPaneTranslateX).subtract(
+						getVisual().layoutXProperty()));
 		getVisual().endYProperty().bind(
-				endNode.visPaneY
-				.add(endNode.visPaneTranslateY)
-				.subtract(getVisual().layoutYProperty()));
+				endNode.visPaneY.add(endNode.visPaneTranslateY).subtract(
+						getVisual().layoutYProperty()));
 	}
 }

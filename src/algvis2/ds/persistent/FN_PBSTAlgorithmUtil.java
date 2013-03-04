@@ -29,8 +29,7 @@ public class FN_PBSTAlgorithmUtil {
 		return getChild(version, node.getRightChildren().entrySet());
 	}
 
-	private static BinFatNode getChild(int version,
-			Set<Map.Entry<Integer, BinFatNode>> children) {
+	private static BinFatNode getChild(int version, Set<Map.Entry<Integer, BinFatNode>> children) {
 		int latestVersion = 0; // TODO ked bude spraveny delete, tak to bude musiet byt asi -1
 		BinFatNode res = null;
 		for (Map.Entry<Integer, BinFatNode> entry : children) {
@@ -44,7 +43,7 @@ public class FN_PBSTAlgorithmUtil {
 		}
 		return res;
 	}
-	
+
 	static boolean isLeaf(BinFatNode node, int version) {
 		return getLeftChild(node, version) == null && getRightChild(node, version) == null;
 	}

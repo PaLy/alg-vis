@@ -22,8 +22,8 @@ import algvis2.core.Visualization;
 
 public class FN_PBSTVisualization extends Visualization {
 	public FN_PBSTVisualization() {
-		super(FN_PBSTVisualization.class
-				.getResource("/algvis2/ds/persistent/PDictButtons.fxml"), new FN_PBST());
+		super(FN_PBSTVisualization.class.getResource("/algvis2/ds/persistent/PDictButtons.fxml"),
+				new FN_PBST());
 	}
 
 	@Override

@@ -52,30 +52,29 @@ public class NodePaint {
 	public Paint getBackground() {
 		return background;
 	}
-	
+
 	public Paint getText() {
 		return text;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		return obj instanceof NodePaint
-				&& background.equals(((NodePaint) obj).background)
+		return obj instanceof NodePaint && background.equals(((NodePaint) obj).background)
 				&& text.equals(((NodePaint) obj).text);
 	}
 
 	@Override
 	public int hashCode() {
 		int result = 27;
-		
+
 		result = 31 * result;
 		int inc = background == null ? 0 : background.hashCode();
 		result += inc;
-		
+
 		result = 31 * result;
 		inc = text == null ? 0 : text.hashCode();
 		result += inc;
-		
+
 		return result;
 	}
 }

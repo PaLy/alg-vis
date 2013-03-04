@@ -35,13 +35,8 @@ public class AnnotatedEdge extends Edge {
 	}
 
 	private void init(int version) {
-		Text text = TextBuilder.create()
-				.text(String.valueOf(version))
-				.font(Fonts.TOP_TEXT)
-				.stroke(Color.WHITE)
-				.strokeType(StrokeType.OUTSIDE)
-				.strokeWidth(2)
-				.build();
+		Text text = TextBuilder.create().text(String.valueOf(version)).font(Fonts.TOP_TEXT)
+				.stroke(Color.WHITE).strokeType(StrokeType.OUTSIDE).strokeWidth(2).build();
 		text.xProperty().bind(getVisual().endXProperty().divide(2.0));
 		text.yProperty().bind(getVisual().endYProperty().divide(2.0));
 

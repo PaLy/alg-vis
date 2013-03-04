@@ -52,7 +52,7 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 
 	public VisPane(DataStructure dataStructure) {
 		this.dataStructure = dataStructure;
-		
+
 		children.set(new HashSet<VisElem>());
 		pane.setId(ID);
 		AnchorPane.setLeftAnchor(wrappingPane, 0.0);
@@ -87,52 +87,53 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 			}
 		});
 
-		FlowPane.setMargin(dataStructure.getVisual(), new Insets(25 + algvis2.scene.viselem.Node.RADIUS * 2.5, 0, 0, 0));
+		FlowPane.setMargin(dataStructure.getVisual(), new Insets(
+				25 + algvis2.scene.viselem.Node.RADIUS * 2.5, 0, 0, 0));
 		add(dataStructure);
 	}
-	
+
 	public Pane getPane() {
 		return pane;
 	}
-	
+
 	public Pane getWrappingPane() {
 		return wrappingPane;
 	}
-	
+
 	public void setDsElements(List<VisElem> elements) {
 		dsElements = elements;
 	}
-	
-	public void refresh() {		
+
+	public void refresh() {
 		List<Node> paneChildren = pane.getChildren();
 		dataStructure.getVisual().getChildren().clear();
 		for (VisElem elem : dsElements) {
-//			if (elem instanceof GroupOfBSTNodes) {
-//				// TODO namiesto tohto radsej moze byt hashmapa, v ktorej sa budu aktualizovat prvky hned pocas 
-//				// algoritmu...?
-//				ArrayList<Node> toAdd = new ArrayList<>();
-//				for (BSTNode node : ((GroupOfBSTNodes) elem).getNodes()) {
-//					if (!((GroupOfBSTNodes) elem).getVisual().getChildren().contains(node.getVisual())) {
-//						toAdd.add(node.getVisual());
-//						node.getVisual().setManaged(true);// TODO pozor na setManage
-//					}
-//				}
-//				ArrayList<Node> toRemove = new ArrayList<>();
-//				for (Node node : ((GroupOfBSTNodes) elem).getVisual().getChildren()) {
-//					boolean found = false;
-//					for (BSTNode node2 : ((GroupOfBSTNodes) elem).getNodes()) {
-//						if (node2.getVisual().equals(node)) {
-//							found = true;
-//							break;
-//						}
-//					}
-//					if (!found) {
-//						toRemove.add(node);
-//					}
-//				}
-//				((GroupOfBSTNodes) elem).getVisual().getChildren().removeAll(toRemove);
-//				((GroupOfBSTNodes) elem).getVisual().getChildren().addAll(toAdd);
-//			}
+			//			if (elem instanceof GroupOfBSTNodes) {
+			//				// TODO namiesto tohto radsej moze byt hashmapa, v ktorej sa budu aktualizovat prvky hned pocas 
+			//				// algoritmu...?
+			//				ArrayList<Node> toAdd = new ArrayList<>();
+			//				for (BSTNode node : ((GroupOfBSTNodes) elem).getNodes()) {
+			//					if (!((GroupOfBSTNodes) elem).getVisual().getChildren().contains(node.getVisual())) {
+			//						toAdd.add(node.getVisual());
+			//						node.getVisual().setManaged(true);// TODO pozor na setManage
+			//					}
+			//				}
+			//				ArrayList<Node> toRemove = new ArrayList<>();
+			//				for (Node node : ((GroupOfBSTNodes) elem).getVisual().getChildren()) {
+			//					boolean found = false;
+			//					for (BSTNode node2 : ((GroupOfBSTNodes) elem).getNodes()) {
+			//						if (node2.getVisual().equals(node)) {
+			//							found = true;
+			//							break;
+			//						}
+			//					}
+			//					if (!found) {
+			//						toRemove.add(node);
+			//					}
+			//				}
+			//				((GroupOfBSTNodes) elem).getVisual().getChildren().removeAll(toRemove);
+			//				((GroupOfBSTNodes) elem).getVisual().getChildren().addAll(toAdd);
+			//			}
 			dataStructure.getVisual().getChildren().add(elem.getVisual());
 			elem.getVisual().setManaged(true);
 		}
@@ -140,7 +141,7 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 		ArrayList<VisElem> allChildren = new ArrayList<>(children.get());
 		allChildren.addAll(notStorableChildren);
 		Collections.sort(allChildren, VisElem.ZDEPTH_COMPARATOR);
-		
+
 		paneChildren.clear();
 		for (VisElem elem : allChildren) {
 			if (!doNotShow.contains(elem.getZDepth())) {
@@ -153,10 +154,10 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 			elem.allowRefresh(true);
 		}
 		dataStructure.getVisual().setManaged(true);
-		
+
 		recalcAbsPosition();
 	}
-	
+
 	public void disableVisualsRefresh() {
 		for (VisElem elem : children.get()) {
 			if (!doNotShow.contains(elem.getZDepth())) {
@@ -175,7 +176,7 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 	public void remove(VisElem elem) {
 		children.get().remove(elem);
 	}
-	
+
 	public void hideLayer(ZDepth zDepth) {
 		doNotShow.add(zDepth);
 	}
@@ -209,7 +210,7 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 	@Override
 	public void storeState(HashMap<Object, Object> state) {
 		state.put(children, children.get().toArray());
-		
+
 		for (VisElem elem : children.get()) {
 			if (elem instanceof PropertyStateEditable) {
 				((PropertyStateEditable) elem).storeState(state);

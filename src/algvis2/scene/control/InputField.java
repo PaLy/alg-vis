@@ -32,16 +32,16 @@ public class InputField {
 	}
 
 	/**
-	 * Returns an integer in the range 1..MAX. If no input is given, a default
-	 * value def is returned.
+	 * Returns an integer in the range 1..MAX. If no input is given, a default value def is
+	 * returned.
 	 */
 	public int getInt(int def) {
 		return getInt(def, 1, MAX_VALUE);
 	}
 
 	/**
-	 * Returns an integer in the range min..max. If no input is given, a default
-	 * value def is returned.
+	 * Returns an integer in the range min..max. If no input is given, a default value def is
+	 * returned.
 	 */
 	public int getInt(int def, int min, int max) {
 		int n = def;
@@ -70,22 +70,21 @@ public class InputField {
 	}
 
 	/**
-	 * Returns a vector of integers in the range <1..MAX). Numbers in the input
-	 * may be delimited by whitespaces and/or commas.
+	 * Returns a vector of integers in the range <1..MAX). Numbers in the input may be delimited by
+	 * whitespaces and/or commas.
 	 */
 	public Vector<Integer> getVI() {
 		return getVI(1, MAX_VALUE);
 	}
 
 	/**
-	 * Returns a vector of integers in the range <min..max). Numbers in the input
-	 * may be delimited by whitespaces and/or commas.
+	 * Returns a vector of integers in the range <min..max). Numbers in the input may be delimited
+	 * by whitespaces and/or commas.
 	 */
 	public Vector<Integer> getVI(int min, int max) {
 		boolean range = false;
 		Vector<Integer> args = new Vector<>();
-		String[] tokens = textField.getText().replaceAll("\\.{2,}", " .. ")
-				.split("(\\s|,)+");
+		String[] tokens = textField.getText().replaceAll("\\.{2,}", " .. ").split("(\\s|,)+");
 		for (String t : tokens) {
 			if ("..".equals(t)) {
 				range = true;
@@ -125,18 +124,18 @@ public class InputField {
 	}
 
 	/**
-	 * Returns a non-empty vector of integers in the range <1..MAX). Numbers in
-	 * the input may be delimited by whitespaces and/or commas. If no input is
-	 * given, a vector with 1 random value in the range <1..MAX) is returned.
+	 * Returns a non-empty vector of integers in the range <1..MAX). Numbers in the input may be
+	 * delimited by whitespaces and/or commas. If no input is given, a vector with 1 random value in
+	 * the range <1..MAX) is returned.
 	 */
 	public Vector<Integer> getNonEmptyVI() {
 		return getNonEmptyVI(1, MAX_VALUE);
 	}
 
 	/**
-	 * Returns a non-empty vector of integers in the range <min..max). Numbers in
-	 * the input may be delimited by whitespaces and/or commas. If no input is
-	 * given, a vector with 1 random value in the range <min..max) is returned.
+	 * Returns a non-empty vector of integers in the range <min..max). Numbers in the input may be
+	 * delimited by whitespaces and/or commas. If no input is given, a vector with 1 random value in
+	 * the range <min..max) is returned.
 	 */
 	public Vector<Integer> getNonEmptyVI(int min, int max) {
 		Vector<Integer> args = getVI();
@@ -149,8 +148,8 @@ public class InputField {
 	}
 
 	/**
-	 * Returns a vector of strings parsed from input line delimited by spaces.
-	 * [a-z] -> [A-Z], All chars except [A-Z] are lost.
+	 * Returns a vector of strings parsed from input line delimited by spaces. [a-z] -> [A-Z], All
+	 * chars except [A-Z] are lost.
 	 */
 	public Vector<String> getVS() {
 		String ss = textField.getText();

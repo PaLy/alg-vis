@@ -63,9 +63,9 @@ class BSTInsert extends Algorithm {
 		}
 
 		removeVisElem(newNode);
-		
+
 		addAnimation(AnimationFactory.scaleInOut(newNode));
-		
+
 		newNode.setPaint(NodePaint.NORMAL);
 	}
 }

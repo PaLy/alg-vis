@@ -35,11 +35,11 @@ import java.util.*;
 
 public abstract class Visualization implements PropertyStateEditable {
 	public final VisPane visPane;
-	
+
 	private ButtonsController buttonsController;
 	private final URL buttonsFile;
 	private ButtonsState buttonsState;
-	
+
 	private final DataStructure dataStructure;
 	public final AnimationManager animManager = new AnimationManager(this);
 
@@ -53,15 +53,14 @@ public abstract class Visualization implements PropertyStateEditable {
 	public Pane getVisPaneWrapper() {
 		return visPane.getWrappingPane();
 	}
-	
+
 	public VisPane getVisPane() {
 		return visPane;
 	}
 
 	public Pane loadButtons(String lang) {
 		FXMLLoader fxmlLoader = new FXMLLoader();
-		fxmlLoader.setResources(ResourceBundle.getBundle("Messages",
-				new Locale(lang)));
+		fxmlLoader.setResources(ResourceBundle.getBundle("Messages", new Locale(lang)));
 		Pane parent = null;
 		try {
 			parent = (Pane) fxmlLoader.load(buttonsFile.openStream());
@@ -74,10 +73,10 @@ public abstract class Visualization implements PropertyStateEditable {
 			buttonsState = new ButtonsState();
 		}
 		buttonsState.updateButtons();
-		
+
 		return parent;
 	}
-	
+
 	public ButtonsController getButtonsController() {
 		return buttonsController;
 	}
@@ -85,7 +84,7 @@ public abstract class Visualization implements PropertyStateEditable {
 	public DataStructure getDataStructure() {
 		return dataStructure;
 	}
-	
+
 	public void random(int x) {
 		Animation animation = dataStructure.random(this, x);
 		animation.setOnFinished(new EventHandler<ActionEvent>() {
@@ -103,7 +102,7 @@ public abstract class Visualization implements PropertyStateEditable {
 		visPane.refresh();
 		reLayout();
 	}
-	
+
 	public void clear() {
 		dataStructure.clear();
 		visPane.clearPane();
@@ -111,7 +110,7 @@ public abstract class Visualization implements PropertyStateEditable {
 		animManager.clear();
 		visPane.setTranslatePos(0, 0);
 	}
-	
+
 	public abstract void reLayout();
 
 	@Override
@@ -136,7 +135,6 @@ public abstract class Visualization implements PropertyStateEditable {
 		back.play();
 	}
 
-	
 	private final class ButtonsState {
 		private BooleanProperty disableOperations = new SimpleBooleanProperty();
 		private BooleanProperty disablePrevious = new SimpleBooleanProperty();
@@ -152,10 +150,10 @@ public abstract class Visualization implements PropertyStateEditable {
 			buttonsController.disableNext(disableNext.getValue());
 			buttonsController.disablePrevious(disablePrevious.getValue());
 			buttonsController.setPausesSelected(pauseSelected.getValue());
-			
+
 			bindButtons();
 		}
-		
+
 		private void bindButtons() {
 			disableOperations.bind(buttonsController.operationsButtons.disableProperty());
 			disablePrevious.bind(buttonsController.buttonPrevious.disableProperty());
@@ -163,15 +161,10 @@ public abstract class Visualization implements PropertyStateEditable {
 			pauseSelected.bind(buttonsController.buttonPause.selectedProperty());
 		}
 	}
-	
-	
-	public enum Type {
-		BST,
-		AVL,
-		RB,
 
-		FN_PBST,
-		PC_PBST,
-		PSTACK
+	public enum Type {
+		BST, AVL, RB,
+
+		FN_PBST, PC_PBST, PSTACK
 	}
 }

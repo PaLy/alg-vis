@@ -38,8 +38,7 @@ public abstract class PartiallyPersistentDictionary extends DataStructure {
 
 	abstract public Algorithm insert(Visualization visualization, int x);
 
-	abstract public Algorithm find(Visualization visualization, int version,
-			int x);
+	abstract public Algorithm find(Visualization visualization, int version, int x);
 
 	abstract public Algorithm delete(Visualization visualization, int x);
 
@@ -47,8 +46,7 @@ public abstract class PartiallyPersistentDictionary extends DataStructure {
 	public Animation random(Visualization visualization, int n) {// TODO random creates one version?
 		SequentialTransition st = new SequentialTransition();
 		for (int i = 0; i < n; i++) {
-			Animation animation = insert(visualization,
-					MyRandom.Int(InputField.MAX_VALUE + 1))
+			Animation animation = insert(visualization, MyRandom.Int(InputField.MAX_VALUE + 1))
 					.startEndTransition();
 			st.getChildren().add(animation);
 		}

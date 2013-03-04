@@ -22,8 +22,8 @@ import algvis2.core.Visualization;
 
 public class StackVisualization extends Visualization {
 	public StackVisualization() {
-		super(StackVisualization.class
-				.getResource("/algvis2/ds/stack/StackButtons.fxml"), new Stack());
+		super(StackVisualization.class.getResource("/algvis2/ds/stack/StackButtons.fxml"),
+				new Stack());
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class StackVisualization extends Visualization {
 	public Stack getDataStructure() {
 		return (Stack) super.getDataStructure();
 	}
-	
+
 	public void push(int x, int version) {
 		visPane.disableVisualsRefresh();
 		Algorithm algorithm = getDataStructure().push(this, x, version);

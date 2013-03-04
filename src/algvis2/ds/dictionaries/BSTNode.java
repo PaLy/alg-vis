@@ -32,7 +32,7 @@ class BSTNode extends Node {
 	public final ObjectProperty<BSTNode> leftProperty = new SimpleObjectProperty<>();
 	public final ObjectProperty<BSTNode> rightProperty = new SimpleObjectProperty<>();
 	public final ObjectProperty<BSTNode> parentProperty = new SimpleObjectProperty<>();
-	
+
 	private Edge leftEdge = new Edge(Node.RADIUS);
 	private Edge rightEdge = new Edge(Node.RADIUS);
 
@@ -54,32 +54,40 @@ class BSTNode extends Node {
 	private void init() {
 		leftProperty.addListener(new ChangeListener<BSTNode>() {
 			@Override
-			public void changed(ObservableValue<? extends BSTNode> observableValue, BSTNode bstNode, BSTNode bstNode2) {
-				if (bstNode2 != null) leftEdge.bindNodes(BSTNode.this, bstNode2);
+			public void changed(ObservableValue<? extends BSTNode> observableValue,
+					BSTNode bstNode, BSTNode bstNode2) {
+				if (bstNode2 != null)
+					leftEdge.bindNodes(BSTNode.this, bstNode2);
 			}
 		});
 		rightProperty.addListener(new ChangeListener<BSTNode>() {
 			@Override
-			public void changed(ObservableValue<? extends BSTNode> observableValue, BSTNode bstNode, BSTNode bstNode2) {
-				if (bstNode2 != null) rightEdge.bindNodes(BSTNode.this, bstNode2);
+			public void changed(ObservableValue<? extends BSTNode> observableValue,
+					BSTNode bstNode, BSTNode bstNode2) {
+				if (bstNode2 != null)
+					rightEdge.bindNodes(BSTNode.this, bstNode2);
 			}
 		});
 	}
-	
+
 	public ArrayList<Edge> getEdges() {
 		ArrayList<Edge> res = new ArrayList<>();
-		if (getLeft() != null) res.add(leftEdge);
-		if (getRight() != null) res.add(rightEdge);
+		if (getLeft() != null)
+			res.add(leftEdge);
+		if (getRight() != null)
+			res.add(rightEdge);
 		return res;
 	}
 
 	public void setLeft(BSTNode left) {
-		if (left != null && left.getVisual().layoutXProperty().isBound()) left.removePosBinding();
+		if (left != null && left.getVisual().layoutXProperty().isBound())
+			left.removePosBinding();
 		leftProperty.set(left);
 	}
 
 	public void setRight(BSTNode right) {
-		if (right != null && right.getVisual().layoutXProperty().isBound()) right.removePosBinding();
+		if (right != null && right.getVisual().layoutXProperty().isBound())
+			right.removePosBinding();
 		rightProperty.set(right);
 	}
 
@@ -102,7 +110,7 @@ class BSTNode extends Node {
 	public boolean isRoot() {
 		return getParent() == null;
 	}
-	
+
 	public boolean isLeaf() {
 		return getLeft() == null && getRight() == null;
 	}
@@ -116,8 +124,8 @@ class BSTNode extends Node {
 	}
 
 	/**
-	 * removes edge between this and left; removes edge between newLeft and its
-	 * parent; creates new edge between this and newLeft
+	 * removes edge between this and left; removes edge between newLeft and its parent; creates new
+	 * edge between this and newLeft
 	 */
 	public void linkLeft(BSTNode newLeft) {
 		if (getLeft() != newLeft) {
@@ -146,8 +154,8 @@ class BSTNode extends Node {
 	}
 
 	/**
-	 * removes edge between this and right; removes edge between newRight and
-	 * its parent; creates new edge between this and newRight
+	 * removes edge between this and right; removes edge between newRight and its parent; creates
+	 * new edge between this and newRight
 	 */
 	public void linkRight(BSTNode newRight) {
 		if (getRight() != newRight) {
@@ -201,11 +209,11 @@ class BSTNode extends Node {
 		clone.setLeft(getLeft());
 		clone.setRight(getRight());
 		clone.setParent(getParent());
-		
+
 		clone.removeAutoTranslations();
 		clone.goTo(this);
 		clone.addAutoTranslations();
-		
+
 		return clone;
 	}
 }

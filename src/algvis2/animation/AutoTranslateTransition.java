@@ -17,8 +17,8 @@
 
 package algvis2.animation;
 
-import algvis2.ui.AlgVis;
 import algvis2.scene.Axis;
+import algvis2.ui.AlgVis;
 import javafx.animation.TranslateTransition;
 import javafx.animation.TranslateTransitionBuilder;
 import javafx.beans.value.ChangeListener;
@@ -28,8 +28,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.util.Duration;
 
-public class AutoTranslateTransition implements AutoAnimation,
-		ChangeListener<Number> {
+public class AutoTranslateTransition implements AutoAnimation, ChangeListener<Number> {
 	private final Node node;
 	private final Axis axis;
 	private TranslateTransition currentTransition;
@@ -53,22 +52,20 @@ public class AutoTranslateTransition implements AutoAnimation,
 	 * @param newValue
 	 */
 	@Override
-	public synchronized void changed(
-			ObservableValue<? extends Number> observableValue, Number oldValue,
-			Number newValue) {
+	public synchronized void changed(ObservableValue<? extends Number> observableValue,
+			Number oldValue, Number newValue) {
 		double d = (Double) newValue - (Double) oldValue;
-		
-//		if (node instanceof algvis2.scene.viselem.Node && axis == Axis.X && ((algvis2.scene.viselem.Node) node)
-//				.getKey() == 42) {
-//			System.out.println(((algvis2.scene.viselem.Node) node).visPaneX + " " + d);
-//		}
+
+		//		if (node instanceof algvis2.scene.viselem.Node && axis == Axis.X && ((algvis2.scene.viselem.Node) node)
+		//				.getKey() == 42) {
+		//			System.out.println(((algvis2.scene.viselem.Node) node).visPaneX + " " + d);
+		//		}
 
 		final TranslateTransition tt = TranslateTransitionBuilder.create().node(node)
-				.duration(Duration.seconds(1))
-				.build();
+				.duration(Duration.seconds(1)).build();
 
 		if (currentTransition != null) {// && currentTransition.getCurrentTime() != currentTransition.getTotalDuration()
-		// ) {
+			// ) {
 			currentTransition.setRate(0); // asi lepsie ako pauza, lebo pauza nezastavi este nespustenu animaciu
 			AlgVis.autoAnimsManager.remove(currentTransition);
 		}
@@ -76,12 +73,12 @@ public class AutoTranslateTransition implements AutoAnimation,
 		if (axis == Axis.X)
 			node.setTranslateX(node.getTranslateX() - d);
 		else if (axis == Axis.Y) {
-//			if (node instanceof algvis2.scene.viselem.Node) System.out.println(((algvis2.scene.viselem.Node) node).getKey() + " ano som tu");
+			//			if (node instanceof algvis2.scene.viselem.Node) System.out.println(((algvis2.scene.viselem.Node) node).getKey() + " ano som tu");
 			node.setTranslateY(node.getTranslateY() - d);
 		}
 
 		if (currentTransition != null) {// && currentTransition.getCurrentTime() != currentTransition.getTotalDuration()
-		// ) {
+			// ) {
 			if (axis == Axis.X)
 				tt.setToX(currentTransition.getToX());
 			else if (axis == Axis.Y)
@@ -105,18 +102,16 @@ public class AutoTranslateTransition implements AutoAnimation,
 
 	public synchronized void translate(double d) {
 		if (currentTransition != null) {// && currentTransition.getCurrentTime() != currentTransition.getTotalDuration()
-		// ) {
+			// ) {
 			currentTransition.setRate(0);
 			AlgVis.autoAnimsManager.remove(currentTransition);
 
 			final TranslateTransition tt = TranslateTransitionBuilder.create().node(node)
-					.duration(Duration.seconds(1))
-					.build();
+					.duration(Duration.seconds(1)).build();
 			tt.setOnFinished(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					AlgVis.autoAnimsManager
-							.remove(tt);
+					AlgVis.autoAnimsManager.remove(tt);
 					currentTransition = null;
 				}
 			});
@@ -133,7 +128,7 @@ public class AutoTranslateTransition implements AutoAnimation,
 
 			currentTransition = tt;
 			AlgVis.autoAnimsManager.add(tt);
-			tt.play();	
+			tt.play();
 		} else {
 			if (axis == Axis.X) {
 				node.setTranslateX(node.getTranslateX() + d);

@@ -31,11 +31,11 @@ public class AnimationManager {
 	private final Visualization visualization;
 	private int operationPos = -1; // position of last played operation (in forward direction)
 	private int stepPos = -1; // position of last played step (in forward direction)
-	
+
 	public AnimationManager(Visualization visualization) {
 		this.visualization = visualization;
 	}
-	
+
 	public void add(List<Animation> operation, boolean isDone) {
 		if (operationPos + 1 < operations.size()) {
 			operations.subList(operationPos + 1, operations.size()).clear();
@@ -60,18 +60,18 @@ public class AnimationManager {
 				}
 			});
 		}
-		
+
 		operations.add(operation);
 		if (isDone) {
 			operationPos++;
 			stepPos = operation.size() - 1;
 		}
 	}
-	
+
 	public void playNext() {
 		if (operationPos == -1)
 			operationPos++;
-		
+
 		List<Animation> curOp = operations.get(operationPos);
 		if (stepPos + 1 == curOp.size()) {
 			if (hasNext()) {
@@ -82,7 +82,8 @@ public class AnimationManager {
 		} else {
 			stepPos++;
 			Animation curStep = curOp.get(stepPos);
-			if (curStep.getRate() < 0) curStep.setRate(-curStep.getRate());
+			if (curStep.getRate() < 0)
+				curStep.setRate(-curStep.getRate());
 			curStep.play();
 		}
 	}
@@ -97,36 +98,36 @@ public class AnimationManager {
 			}
 		} else {
 			Animation curStep = curOp.get(stepPos);
-			if (curStep.getRate() > 0) curStep.setRate(-curStep.getRate());
+			if (curStep.getRate() > 0)
+				curStep.setRate(-curStep.getRate());
 			stepPos--;
 			if (stepPos == -1) {
 				operationPos--;
-				if (operationPos > - 1)
+				if (operationPos > -1)
 					stepPos = operations.get(operationPos).size() - 1;
 			}
 			curStep.play();
 		}
 	}
-	
+
 	public boolean hasNext() {
-		return operationPos < operations.size() - 1 || stepPos < operations.get(operationPos).size() - 1;
+		return operationPos < operations.size() - 1
+				|| stepPos < operations.get(operationPos).size() - 1;
 	}
-	
+
 	public boolean hasPrevious() {
 		return operationPos >= 0;
 	}
-	
+
 	public void clear() {
 		operations.clear();
 		operationPos = -1;
 		stepPos = -1;
 	}
-	
+
 	private class NextStepHandler implements EventHandler<ActionEvent> {
 		/**
-		 * 0 = first step
-		 * 1 = middle step
-		 * 2 = last step
+		 * 0 = first step 1 = middle step 2 = last step
 		 */
 		private final int pos;
 		private final Animation step;
@@ -141,33 +142,26 @@ public class AnimationManager {
 			visualization.visPane.refresh();
 			if (step.getRate() > 0 && pos < 2) {
 				if (!visualization.getButtonsController().isPauseSelected()) {
-					PauseTransitionBuilder.create()
-							.duration(Duration.seconds(2))
+					PauseTransitionBuilder.create().duration(Duration.seconds(2))
 							.onFinished(new EventHandler<ActionEvent>() {
 								@Override
 								public void handle(ActionEvent actionEvent) {
 									playNext();
 								}
-							})
-							.build()
-							.play();
+							}).build().play();
 				} else {
 					visualization.getButtonsController().disableNext(!hasNext());
 					visualization.getButtonsController().disablePrevious(!hasPrevious());
 				}
-			}
-			else if (step.getRate() < 0 && pos > 0) {
+			} else if (step.getRate() < 0 && pos > 0) {
 				if (!visualization.getButtonsController().isPauseSelected()) {
-					PauseTransitionBuilder.create()
-							.duration(Duration.seconds(2))
+					PauseTransitionBuilder.create().duration(Duration.seconds(2))
 							.onFinished(new EventHandler<ActionEvent>() {
 								@Override
 								public void handle(ActionEvent actionEvent) {
 									playPrevious();
 								}
-							})
-							.build()
-							.play();
+							}).build().play();
 				} else {
 					visualization.getButtonsController().disableNext(!hasNext());
 					visualization.getButtonsController().disablePrevious(!hasPrevious());

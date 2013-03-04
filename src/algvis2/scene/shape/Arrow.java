@@ -31,23 +31,19 @@ public class Arrow extends Group {
 
 	public Arrow(double nodeRadius) {
 		Polygon top = new Polygon();
-		top.getPoints().addAll(0.0, 0.0,
-				-4.0, -6.0,
-				4.0, -6.0);
+		top.getPoints().addAll(0.0, 0.0, -4.0, -6.0, 4.0, -6.0);
 
 		Rotate rotate = new Rotate();
 		rotate.angleProperty().bind(new AngleBinding(line.endYProperty(), line.endXProperty()));
 		top.getTransforms().add(rotate);
-		
+
 		top.layoutXProperty().bind(
 				line.endXProperty()
-				.add(new CosBinding(rotate.angleProperty())
-						.multiply(nodeRadius)));
+						.add(new CosBinding(rotate.angleProperty()).multiply(nodeRadius)));
 		top.layoutYProperty().bind(
 				line.endYProperty()
-				.add(new SinBinding(rotate.angleProperty())
-						.multiply(nodeRadius)));
-		
+						.add(new SinBinding(rotate.angleProperty()).multiply(nodeRadius)));
+
 		getChildren().addAll(line, top);
 	}
 
@@ -58,7 +54,7 @@ public class Arrow extends Group {
 	public DoubleProperty startYProperty() {
 		return layoutYProperty();
 	}
-	
+
 	public DoubleProperty endXProperty() {
 		return line.endXProperty();
 	}

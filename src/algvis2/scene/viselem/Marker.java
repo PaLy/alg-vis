@@ -33,7 +33,7 @@ import java.util.HashMap;
 public class Marker extends VisElem implements PropertyStateEditable {
 	private final ScaleChange scaleChange = new ScaleChange();
 	public final ObjectProperty<algvis2.scene.viselem.Node> elem = new SimpleObjectProperty<>();
-	
+
 	public Marker() {
 		super(new Circle());
 		setZDepth(ZDepth.TOP);
@@ -42,10 +42,12 @@ public class Marker extends VisElem implements PropertyStateEditable {
 
 		getVisual().layoutXProperty().addListener(new AutoTranslateTransition(getVisual(), Axis.X));
 		getVisual().layoutYProperty().addListener(new AutoTranslateTransition(getVisual(), Axis.Y));
-		
+
 		this.elem.addListener(new ChangeListener<algvis2.scene.viselem.Node>() {
 			@Override
-			public void changed(ObservableValue<? extends algvis2.scene.viselem.Node> observableValue, algvis2.scene.viselem.Node node, algvis2.scene.viselem.Node node2) {
+			public void changed(
+					ObservableValue<? extends algvis2.scene.viselem.Node> observableValue,
+					algvis2.scene.viselem.Node node, algvis2.scene.viselem.Node node2) {
 				if (node != null) {
 					node.getVisual().scaleXProperty().removeListener(scaleChange);
 					node.getVisual().scaleYProperty().removeListener(scaleChange);
@@ -60,7 +62,7 @@ public class Marker extends VisElem implements PropertyStateEditable {
 					getVisual().layoutYProperty().bind(node2.visPaneY);
 
 					getVisual().setVisible(true);
-				}else{
+				} else {
 					getVisual().setVisible(false);
 				}
 			}
@@ -79,9 +81,11 @@ public class Marker extends VisElem implements PropertyStateEditable {
 
 	private final class ScaleChange implements ChangeListener<Number> {
 		@Override
-		public void changed(ObservableValue<? extends Number> observableValue, Number number, Number number2) {
-			getVisual().setRadius(Math.max(elem.get().getVisual().getBoundsInParent().getWidth(),
-					elem.get().getVisual().getBoundsInParent().getHeight()) * 0.5);
+		public void changed(ObservableValue<? extends Number> observableValue, Number number,
+				Number number2) {
+			getVisual().setRadius(
+					Math.max(elem.get().getVisual().getBoundsInParent().getWidth(), elem.get()
+							.getVisual().getBoundsInParent().getHeight()) * 0.5);
 		}
 	}
 }

@@ -25,11 +25,11 @@ public class AutoAnimsManager {
 	private final HashSet<Transition> animations = new HashSet<>(); // TODO pozor na memory leak
 
 	public synchronized void add(Transition animation) {
-//		animations.add(animation);
+		//		animations.add(animation);
 	}
 
 	public synchronized void remove(Transition animation) {
-//		animations.remove(animation);
+		//		animations.remove(animation);
 	}
 
 	@Deprecated

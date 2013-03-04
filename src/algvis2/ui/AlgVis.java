@@ -21,8 +21,8 @@ import algvis2.animation.AutoAnimsManager;
 import algvis2.core.Visualization;
 import algvis2.ds.dictionaries.AVLVisualization;
 import algvis2.ds.dictionaries.BSTVisualization;
-import algvis2.ds.dictionaries.RBVisualization;
 import algvis2.ds.dictionaries.PCBSTVisualization;
+import algvis2.ds.dictionaries.RBVisualization;
 import algvis2.ds.persistent.FN_PBSTVisualization;
 import algvis2.ds.stack.StackVisualization;
 import javafx.application.Application;
@@ -32,7 +32,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 public class AlgVis extends Application {
 	private Stage stage;
@@ -76,9 +79,9 @@ public class AlgVis extends Application {
 		if (!lang.equals(language)) {
 			language = lang;
 			scene.setRoot(createRoot());
-			
+
 			Visualization.Type curVis = currentVisualization;
-			
+
 			currentVisualization = null;
 			showVisualization(curVis);
 		}
@@ -86,10 +89,8 @@ public class AlgVis extends Application {
 
 	private Parent createRoot() {
 		FXMLLoader fxmlLoader = new FXMLLoader();
-		fxmlLoader.setResources(ResourceBundle.getBundle("Messages",
-				new Locale(language)));
-		fxmlLoader.setLocation(getClass().getResource(
-				"/algvis2/ui/AlgVis.fxml"));
+		fxmlLoader.setResources(ResourceBundle.getBundle("Messages", new Locale(language)));
+		fxmlLoader.setLocation(getClass().getResource("/algvis2/ui/AlgVis.fxml"));
 		Parent parent = null;
 		try {
 			parent = (Parent) fxmlLoader.load();
@@ -98,7 +99,7 @@ public class AlgVis extends Application {
 		}
 		controller = fxmlLoader.getController();
 		controller.setAlgvis(this);
-		
+
 		return parent;
 		// possible static way:
 		// parent = FXMLLoader.load(getClass().getResource(
@@ -131,7 +132,7 @@ public class AlgVis extends Application {
 		}
 		return VISUALIZATIONS.get(x);
 	}
-	
+
 	public Stage getStage() {
 		return stage;
 	}

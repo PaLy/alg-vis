@@ -35,13 +35,14 @@ class StackPop extends Algorithm {
 	protected void runAlgorithm() {
 		StackNode oldVersionTop = stack.versions.get(version).nextNode;
 		int nextVersion = stack.versions.size();
-		StackNode.NullNode newVerPointer = new StackNode.NullNode(nextVersion, oldVersionTop.nextNode);
-		
+		StackNode.NullNode newVerPointer = new StackNode.NullNode(nextVersion,
+				oldVersionTop.nextNode);
+
 		saveChangedProperties();
 		newVerPointer.removePosBinding();
-		
+
 		stack.versions.add(newVerPointer);
-		
+
 		addAnimation(AnimationFactory.scaleInOut(newVerPointer));
 	}
 }

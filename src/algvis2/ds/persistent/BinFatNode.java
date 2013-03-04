@@ -42,8 +42,7 @@ public class BinFatNode extends Node {
 		super(key);
 	}
 
-	private void addChild(BinFatNode child, int version,
-			Map<Integer, BinFatNode> children) {
+	private void addChild(BinFatNode child, int version, Map<Integer, BinFatNode> children) {
 		if (child.getVisual().layoutXProperty().isBound()) {
 			child.removePosBinding();
 		}
@@ -69,10 +68,8 @@ public class BinFatNode extends Node {
 	@Override
 	public void storeState(HashMap<Object, Object> state) {
 		super.storeState(state);
-		state.put(leftChildrenProperty, leftChildrenProperty.getValue()
-				.entrySet().toArray());
-		state.put(rightChildrenProperty, rightChildrenProperty.getValue()
-				.entrySet().toArray());
+		state.put(leftChildrenProperty, leftChildrenProperty.getValue().entrySet().toArray());
+		state.put(rightChildrenProperty, rightChildrenProperty.getValue().entrySet().toArray());
 		state.put(parentProperty, parentProperty.getValue());
 		for (BinFatNode child : leftChildrenProperty.get().values()) {
 			child.storeState(state);
@@ -84,8 +81,7 @@ public class BinFatNode extends Node {
 
 	@Override
 	public String toString() {
-		return getKey() + ": "
-				+ Arrays.toString(getLeftChildren().values().toArray()) + " & "
+		return getKey() + ": " + Arrays.toString(getLeftChildren().values().toArray()) + " & "
 				+ Arrays.toString(getRightChildren().values().toArray());
 	}
 
@@ -118,8 +114,7 @@ public class BinFatNode extends Node {
 	public static final class Null extends BinFatNode {
 		public Null() {
 			super(-1);
-			getVisual().getChildren().set(0,
-					new Line(-Node.RADIUS / 2, 0, Node.RADIUS / 2, 0));
+			getVisual().getChildren().set(0, new Line(-Node.RADIUS / 2, 0, Node.RADIUS / 2, 0));
 			getVisual().getChildren().get(1).setVisible(false);
 		}
 

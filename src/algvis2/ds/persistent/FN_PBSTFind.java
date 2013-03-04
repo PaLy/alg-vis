@@ -27,8 +27,7 @@ public class FN_PBSTFind extends Algorithm {
 	private final int version, x;
 	protected BinFatNode found = null;
 
-	public FN_PBSTFind(Visualization visualization, FN_PBST bst, int version,
-			int x) {
+	public FN_PBSTFind(Visualization visualization, FN_PBST bst, int version, int x) {
 		super(visualization);
 		this.bst = bst;
 		this.version = version;

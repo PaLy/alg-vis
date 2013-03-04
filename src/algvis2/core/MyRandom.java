@@ -42,4 +42,3 @@ public class MyRandom {
 		return G.nextInt(max - min) + min;
 	}
 }
-

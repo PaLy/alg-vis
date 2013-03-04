@@ -67,12 +67,13 @@ public class AlgVisFXMLController implements Initializable {
 	public MenuItem menu_pstack;
 	public MenuItem menu_fn_pbst;
 	public Button fullscreenButton;
-	
+
 	private Visualization visualization;
 	private AlgVis algvis;
 	private ChangeListener<Boolean> fullScreenChangeListener = new ChangeListener<Boolean>() {
 		@Override
-		public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+		public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
+				Boolean newValue) {
 			if (newValue) {
 				fullscreenButton.setGraphic(new ImageView("algvis2/ui/fullscreen_off.png"));
 			} else {
@@ -88,7 +89,7 @@ public class AlgVisFXMLController implements Initializable {
 	public void handleTitledPaneMouseEntered(MouseEvent event) {
 		((TitledPane) event.getSource()).setExpanded(true);
 	}
-	
+
 	public void handleTitlePaneMouseExited(MouseEvent event) {
 		((TitledPane) event.getSource()).setExpanded(false);
 	}
@@ -96,7 +97,7 @@ public class AlgVisFXMLController implements Initializable {
 	public void selectLanguageEN(ActionEvent event) {
 		algvis.selectLanguage("en");
 	}
-	
+
 	public void selectLanguageSK(ActionEvent event) {
 		algvis.selectLanguage("sk");
 	}
@@ -114,48 +115,43 @@ public class AlgVisFXMLController implements Initializable {
 		} else if (source == menu_pstack) {
 			algvis.showVisualization(Visualization.Type.PSTACK);
 		} else if (source == menu_fn_pbst) {
-		    algvis.showVisualization(Visualization.Type.FN_PBST);
+			algvis.showVisualization(Visualization.Type.FN_PBST);
 		}
 	}
-	
+
 	public void centerPressed(ActionEvent event) {
 		visualization.reLayout();
 		visualization.getVisPane().setTranslatePos(0, 0);
 	}
-	
-	public void snapshotPressed(ActionEvent event) {		
+
+	public void snapshotPressed(ActionEvent event) {
 		Node node = visualization.getVisPane().getPane();
 		WritableImage image = node.snapshot(new SnapshotParameters(), null);
-	
+
 		openStage(image);
 	}
-	
-	private void openStage(final Image image){
+
+	private void openStage(final Image image) {
 		StackPane sp = new StackPane();
 
-		final Stage stage = StageBuilder.create()
-				.title("Snapshot")
-				.scene(new Scene(sp))
-				.build();
-		
-		Button saveButton = ButtonBuilder.create()
-				.text("Save")
+		final Stage stage = StageBuilder.create().title("Snapshot").scene(new Scene(sp)).build();
+
+		Button saveButton = ButtonBuilder.create().text("Save")
 				.onMouseClicked(new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent event) {
 						showFileChooser(stage, image);
 					}
-				})
-				.build();
-		
+				}).build();
+
 		StackPane.setAlignment(saveButton, Pos.TOP_LEFT);
 		StackPane.setMargin(saveButton, new Insets(10));
-		
-		sp.getChildren().addAll(new ImageView(image), saveButton);		
-		
+
+		sp.getChildren().addAll(new ImageView(image), saveButton);
+
 		stage.show();
 	}
-	
+
 	private void showFileChooser(Stage stage, Image image) {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Save as");
@@ -172,35 +168,33 @@ public class AlgVisFXMLController implements Initializable {
 			HashSet<String> writerFormatNames = new HashSet<>();
 			Collections.addAll(writerFormatNames, ImageIO.getWriterFormatNames());
 
-			if (writerFormatNames.contains(extension) && (extension.toLowerCase().equals("png") || extension
-					.toLowerCase().equals("gif"))) {				
+			if (writerFormatNames.contains(extension)
+					&& (extension.toLowerCase().equals("png") || extension.toLowerCase().equals(
+							"gif"))) {
 				try {
 					ImageIO.write(SwingFXUtils.fromFXImage(image, null), extension, file);
-					DialogFX dialog = DialogFXBuilder.create()
-							.type(DialogFX.Type.INFO)
-							.titleText("Success")
-							.message("Image saved successfully.")
-							.build();
+					DialogFX dialog = DialogFXBuilder.create().type(DialogFX.Type.INFO)
+							.titleText("Success").message("Image saved successfully.").build();
 					dialog.showDialog();
 				} catch (Exception e) {
 					StringWriter error = new StringWriter();
 					e.printStackTrace(new PrintWriter(error));
-					
-					DialogFX dialog = DialogFXBuilder.create()
+
+					DialogFX dialog = DialogFXBuilder
+							.create()
 							.type(DialogFX.Type.ERROR)
 							.titleText("Something went wrong :(")
-							.message("An unexpected error has occurred. Image cannot be saved.\n\n" + e.toString())
-							.build();
-					
+							.message(
+									"An unexpected error has occurred. Image cannot be saved.\n\n"
+											+ e.toString()).build();
+
 					dialog.showDialog();
 				}
 			} else {
-				DialogFX dialog = DialogFXBuilder.create()
-						.type(DialogFX.Type.ERROR)
+				DialogFX dialog = DialogFXBuilder.create().type(DialogFX.Type.ERROR)
 						.titleText("Error")
-						.message("Bad file format. Use .png or .gif file format.")
-						.build();
-				
+						.message("Bad file format. Use .png or .gif file format.").build();
+
 				dialog.showDialog();
 				showFileChooser(stage, image);
 			}
@@ -220,8 +214,9 @@ public class AlgVisFXMLController implements Initializable {
 		if (algvis.getStage().isFullScreen()) {
 			fullscreenButton.setGraphic(new ImageView("algvis2/ui/fullscreen_off.png"));
 		}
-		
-		algvis.getStage().fullScreenProperty().addListener(new WeakChangeListener<>(fullScreenChangeListener));
+
+		algvis.getStage().fullScreenProperty()
+				.addListener(new WeakChangeListener<>(fullScreenChangeListener));
 	}
 
 	public void fullscreenPressed(ActionEvent event) {

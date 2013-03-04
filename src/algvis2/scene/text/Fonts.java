@@ -25,5 +25,6 @@ public class Fonts {
 	public static final Font NODE_FONT = new Font(Node.RADIUS - 3);
 	public static final Font VER_NO_FONT = new Font(Node.RADIUS - 5);
 	public static final Font TOP_TEXT = Font.font("Arial", FontWeight.BOLD, 15);
-	public static final Font PURISA_BOLD_30 = Font.loadFont(Fonts.class.getResourceAsStream("Purisa-Bold.ttf"), 30.0);
+	public static final Font PURISA_BOLD_30 = Font.loadFont(
+			Fonts.class.getResourceAsStream("Purisa-Bold.ttf"), 30.0);
 }
