@@ -119,14 +119,4 @@ abstract public class AbstractTreeForTreeLayout<TreeNode> implements
 	public TreeNode getLastChild(TreeNode parentNode) {
 		return ListUtil.getLast(getChildrenList(parentNode));
 	}
-
-	@Override
-	public boolean isLeft(TreeNode treeNode) {
-		return false;
-	}
-
-	@Override
-	public boolean isBinaryTree() {
-		return false;
-	}
 }

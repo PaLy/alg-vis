@@ -18,12 +18,13 @@
 package algvis2.ds.dictionaries;
 
 import algvis2.core.MyNodeExtentProvider;
+import algvis2.scene.layout.AbstractBinTreeForTreeLayout;
+import algvis2.scene.layout.BinTreeLayout;
 import algvis2.scene.layout.VisPane;
 import algvis2.scene.layout.ZDepth;
 import algvis2.scene.viselem.Node;
 import org.abego.treelayout.Configuration;
 import org.abego.treelayout.TreeLayout;
-import org.abego.treelayout.util.AbstractTreeForTreeLayout;
 import org.abego.treelayout.util.DefaultConfiguration;
 
 import java.awt.geom.Rectangle2D;
@@ -31,10 +32,10 @@ import java.util.Map;
 
 class BSTCompactLayout {
 	public static void layout(BST bst, VisPane visPane) {
-		AbstractTreeForTreeLayout<BSTNode> tree = bst.treeForTreeLayout;
+		AbstractBinTreeForTreeLayout<BSTNode> tree = bst.treeForTreeLayout;
 
 		if (tree.getRoot() != null) {
-			TreeLayout<BSTNode> layout = new TreeLayout<>(tree,
+			TreeLayout<BSTNode> layout = new BinTreeLayout<>(tree,
 					new MyNodeExtentProvider<BSTNode>(), new DefaultConfiguration<BSTNode>(0,
 							Node.RADIUS, Configuration.Location.Top,
 							Configuration.AlignmentInLevel.AwayFromRoot));

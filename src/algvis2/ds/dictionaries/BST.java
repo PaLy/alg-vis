@@ -19,11 +19,11 @@ package algvis2.ds.dictionaries;
 
 import algvis2.core.Algorithm;
 import algvis2.core.Visualization;
+import algvis2.scene.layout.AbstractBinTreeForTreeLayout;
 import algvis2.scene.paint.NodePaint;
 import algvis2.scene.viselem.VisElem;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import org.abego.treelayout.util.AbstractTreeForTreeLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -168,7 +168,7 @@ class BST extends Dictionary {
 			recalcAbsPositionR(node.getRight());
 	}
 
-	public final AbstractTreeForTreeLayout<BSTNode> treeForTreeLayout = new AbstractTreeForTreeLayout<BSTNode>(
+	public final AbstractBinTreeForTreeLayout<BSTNode> treeForTreeLayout = new AbstractBinTreeForTreeLayout<BSTNode>(
 			null) {
 		@Override
 		public BSTNode getRoot() {
@@ -192,13 +192,13 @@ class BST extends Dictionary {
 		}
 
 		@Override
-		public boolean isBinaryTree() {
-			return true;
+		public BSTNode getLastLeftChild(BSTNode parentNode) {
+			return parentNode.getLeft();
 		}
 
 		@Override
-		public boolean isLeft(BSTNode node) {
-			return node.isLeft();
+		public BSTNode getFirstRightChild(BSTNode parentNode) {
+			return parentNode.getRight();
 		}
 	};
 }

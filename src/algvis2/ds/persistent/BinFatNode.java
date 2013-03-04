@@ -26,12 +26,13 @@ import javafx.scene.shape.Line;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class BinFatNode extends Node {
-	private final ObjectProperty<HashMap<Integer, BinFatNode>> leftChildrenProperty = new SimpleObjectProperty<>(
-			new HashMap<Integer, BinFatNode>());
-	private final ObjectProperty<HashMap<Integer, BinFatNode>> rightChildrenProperty = new SimpleObjectProperty<>(
-			new HashMap<Integer, BinFatNode>());
+	private final ObjectProperty<TreeMap<Integer, BinFatNode>> leftChildrenProperty = new SimpleObjectProperty<>(
+			new TreeMap<Integer, BinFatNode>());
+	private final ObjectProperty<TreeMap<Integer, BinFatNode>> rightChildrenProperty = new SimpleObjectProperty<>(
+			new TreeMap<Integer, BinFatNode>());
 	private final ObjectProperty<BinFatNode> parentProperty = new SimpleObjectProperty<>();
 
 	public BinFatNode(int key, NodePaint paint) {
@@ -57,12 +58,20 @@ public class BinFatNode extends Node {
 		addChild(child, version, rightChildrenProperty.get());
 	}
 
-	public HashMap<Integer, BinFatNode> getLeftChildren() {
+	public TreeMap<Integer, BinFatNode> getLeftChildren() {
 		return leftChildrenProperty.get();
 	}
 
-	public HashMap<Integer, BinFatNode> getRightChildren() {
+	public BinFatNode getLastLeftChild() {
+		return getLeftChildren().lastEntry().getValue();
+	}
+
+	public TreeMap<Integer, BinFatNode> getRightChildren() {
 		return rightChildrenProperty.get();
+	}
+	
+	public BinFatNode getFirstRightChild() {
+		return getRightChildren().firstEntry().getValue();
 	}
 
 	@Override

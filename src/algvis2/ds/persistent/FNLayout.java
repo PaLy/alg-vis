@@ -18,6 +18,8 @@
 package algvis2.ds.persistent;
 
 import algvis2.core.MyNodeExtentProvider;
+import algvis2.scene.layout.BinTreeForTreeLayout;
+import algvis2.scene.layout.BinTreeLayout;
 import algvis2.scene.layout.VisPane;
 import algvis2.scene.layout.ZDepth;
 import algvis2.scene.viselem.AnnotatedEdge;
@@ -25,7 +27,6 @@ import algvis2.scene.viselem.Edge;
 import algvis2.scene.viselem.Node;
 import org.abego.treelayout.Configuration;
 import org.abego.treelayout.TreeLayout;
-import org.abego.treelayout.util.AbstractTreeForTreeLayout;
 import org.abego.treelayout.util.DefaultConfiguration;
 
 import java.awt.geom.Rectangle2D;
@@ -34,13 +35,13 @@ import java.util.Set;
 
 public class FNLayout {
 	public static void layout(FN_PBST bst, VisPane visPane) {
-		AbstractTreeForTreeLayout<BinFatNode> tree = bst.treeForTreeLayout;
+		BinTreeForTreeLayout<BinFatNode> tree = bst.treeForTreeLayout;
 
 		if (tree.getRoot() != null) {
-			TreeLayout<BinFatNode> layout = new TreeLayout<>(tree,
+			TreeLayout<BinFatNode> layout = new BinTreeLayout<>(tree,
 					new MyNodeExtentProvider<BinFatNode>(), new DefaultConfiguration<BinFatNode>(
 							Node.RADIUS, Node.RADIUS, Configuration.Location.Top,
-							Configuration.AlignmentInLevel.TowardsRoot));
+							Configuration.AlignmentInLevel.Center));
 			Map<BinFatNode, Rectangle2D.Double> nodeBounds = layout.getNodeBounds();
 			for (Map.Entry<BinFatNode, Rectangle2D.Double> entry : nodeBounds.entrySet()) {
 				if (entry.getKey().getVisual().layoutXProperty().isBound()) {

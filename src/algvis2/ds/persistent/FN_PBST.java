@@ -19,10 +19,11 @@ package algvis2.ds.persistent;
 
 import algvis2.core.Algorithm;
 import algvis2.core.Visualization;
+import algvis2.scene.layout.AbstractBinTreeForTreeLayout;
+import algvis2.scene.layout.BinTreeForTreeLayout;
 import algvis2.scene.viselem.VisElem;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import org.abego.treelayout.util.AbstractTreeForTreeLayout;
 
 import java.util.*;
 
@@ -127,7 +128,7 @@ public class FN_PBST extends PartiallyPersistentDictionary {
 		return getRoot().toString();
 	}
 
-	public final AbstractTreeForTreeLayout<BinFatNode> treeForTreeLayout = new AbstractTreeForTreeLayout<BinFatNode>(
+	public final BinTreeForTreeLayout<BinFatNode> treeForTreeLayout = new AbstractBinTreeForTreeLayout<BinFatNode>(
 			null) {
 		@Override
 		public BinFatNode getRoot() {
@@ -149,6 +150,16 @@ public class FN_PBST extends PartiallyPersistentDictionary {
 				res.add(child);
 			}
 			return res;
+		}
+
+		@Override
+		public BinFatNode getLastLeftChild(BinFatNode parentNode) {
+			return parentNode.getLastLeftChild();
+		}
+
+		@Override
+		public BinFatNode getFirstRightChild(BinFatNode parentNode) {
+			return parentNode.getFirstRightChild();
 		}
 	};
 }

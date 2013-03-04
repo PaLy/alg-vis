@@ -122,18 +122,4 @@ public interface TreeForTreeLayout<TreeNode> {
 	 * @return the last child of the parentNode
 	 */
 	TreeNode getLastChild(TreeNode parentNode);
-
-	// !!! Following lines are not included in original
-	/**
-	 * Tells if a node is left child in the binary tree.
-	 * <p>
-	 *
-	 * Time Complexity: O(1)
-	 *
-	 * @param node
-	 * @return true iff the node is left child in the tree
-	 */
-	boolean isLeft(TreeNode node);
-	
-	boolean isBinaryTree();
 }

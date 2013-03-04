@@ -144,7 +144,7 @@ public class TreeLayout<TreeNode> {
 	 * @param treeNode
 	 * @return
 	 */
-	private double getNodeSize(TreeNode treeNode) {
+	protected double getNodeSize(TreeNode treeNode) {
 		return getWidthOrHeightOfNode(treeNode, isLevelChangeInYAxis());
 	}
 
@@ -348,7 +348,7 @@ public class TreeLayout<TreeNode> {
 		this.ancestor.put(node, ancestor);
 	}
 
-	private double getPrelim(TreeNode node) {
+	protected double getPrelim(TreeNode node) {
 		Double d = prelim.get(node);
 		return d != null ? d.doubleValue() : 0;
 	}
@@ -608,27 +608,7 @@ public class TreeLayout<TreeNode> {
 				previousChild = w;
 			}
 			executeShifts(v);
-			
-			// !!! These lines are different to original abego tree layout 
-			
-			double midpoint;
-			
-			TreeNode first = tree.getFirstChild(v);
-			TreeNode last = tree.getLastChild(v);
-			if (tree.isBinaryTree() && first.equals(last)) {
-				if (tree.isLeft(first))
-					midpoint = getPrelim(tree.getFirstChild(v)) + (getNodeSize(v) +
-							configuration.getGapBetweenNodes(null, null)) / 2; // TODO pozor, 
-							// toto nemusi fungovat pre lubovolnu konfiguraciu
-				else
-					midpoint = getPrelim(tree.getFirstChild(v)) - (getNodeSize(v) +
-							configuration.getGapBetweenNodes(null, null)) / 2;
-			} else {
-				 midpoint = (getPrelim(first) + getPrelim(last)) / 2.0;
-			}
-			
-			// different lines end here
-			
+			double midpoint = centerBetweenChildren(v);
 			TreeNode w = leftSibling;
 			if (w != null) {
 				// v has left sibling
@@ -642,6 +622,11 @@ public class TreeLayout<TreeNode> {
 				setPrelim(v, midpoint);
 			}
 		}
+	}
+	
+	protected double centerBetweenChildren(TreeNode v) {
+		return (getPrelim(tree.getFirstChild(v)) + getPrelim(tree
+				.getLastChild(v))) / 2.0;
 	}
 
 	/**

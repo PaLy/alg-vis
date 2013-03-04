@@ -23,8 +23,8 @@ import algvis2.scene.layout.ZDepth;
 import algvis2.scene.viselem.Edge;
 import algvis2.scene.viselem.Node;
 import org.abego.treelayout.Configuration;
+import org.abego.treelayout.TreeForTreeLayout;
 import org.abego.treelayout.TreeLayout;
-import org.abego.treelayout.util.AbstractTreeForTreeLayout;
 import org.abego.treelayout.util.DefaultConfiguration;
 
 import java.awt.geom.Rectangle2D;
@@ -32,7 +32,7 @@ import java.util.Map;
 
 public class CompactLayout {
 	public static void layout(Stack stack, VisPane visPane) {
-		AbstractTreeForTreeLayout<StackNode> stackTree = stack.stackTree;
+		TreeForTreeLayout<StackNode> stackTree = stack.stackTree;
 
 		if (stackTree.getRoot() != null) {
 			TreeLayout<StackNode> layout = new TreeLayout<>(stackTree,
