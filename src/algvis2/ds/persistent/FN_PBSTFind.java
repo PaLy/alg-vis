@@ -55,9 +55,9 @@ public class FN_PBSTFind extends Algorithm {
 					break;
 				} else {
 					if (cur.getKey() < x)
-						cur = FN_PBSTAlgorithmUtil.getRightChild(cur, version);
+						cur = cur.getRightChild(version);
 					else
-						cur = FN_PBSTAlgorithmUtil.getLeftChild(cur, version);
+						cur = cur.getLeftChild(version);
 				}
 			}
 

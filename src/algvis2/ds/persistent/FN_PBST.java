@@ -21,11 +21,13 @@ import algvis2.core.Algorithm;
 import algvis2.core.Visualization;
 import algvis2.scene.layout.AbstractBinTreeForTreeLayout;
 import algvis2.scene.layout.BinTreeForTreeLayout;
+import algvis2.scene.viselem.Node;
 import algvis2.scene.viselem.VisElem;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
 import java.util.*;
+import java.util.Stack;
 
 public class FN_PBST extends PartiallyPersistentDictionary {
 	private final ObjectProperty<BinFatNode> rootProperty = new SimpleObjectProperty<>();
@@ -79,7 +81,7 @@ public class FN_PBST extends PartiallyPersistentDictionary {
 		Set<VisElem> elements = new HashSet<>();
 
 		if (getRoot() != null) {
-			Stack<BinFatNode> todo = new Stack<>();
+			java.util.Stack<BinFatNode> todo = new java.util.Stack<>();
 			todo.push(getRoot());
 			elements.add(getRoot());
 
@@ -96,6 +98,33 @@ public class FN_PBST extends PartiallyPersistentDictionary {
 			}
 		}
 		return new ArrayList<>(elements);
+	}
+
+	@Override
+	public List<Node> dumpVersion(int version) {
+		List<Node> elements = new ArrayList<>();
+
+		if (getRoot() != null) { // TODO root sa moze zmenit?? ak povolime delete
+			java.util.Stack<BinFatNode> todo = new Stack<>();
+			todo.push(getRoot());
+
+			while (!todo.empty()) {
+				BinFatNode elem = todo.pop();
+				BinFatNode leftChild = elem.getLeftChild(version, true);
+				if (leftChild != null) {
+					todo.add(leftChild);
+					elements.add(elem);
+					elements.add(leftChild);
+				}
+				BinFatNode rightChild = elem.getRightChild(version, true);
+				if (rightChild != null) {
+					todo.add(rightChild);
+					elements.add(elem);
+					elements.add(rightChild);
+				}
+			}
+		}
+		return elements;
 	}
 
 	@Override

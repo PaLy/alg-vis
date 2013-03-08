@@ -19,6 +19,9 @@ package algvis2.scene.viselem;
 
 import algvis2.scene.layout.ZDepth;
 import algvis2.scene.shape.Arrow;
+import javafx.event.EventHandler;
+import javafx.scene.Cursor;
+import javafx.scene.input.MouseEvent;
 
 public class Edge extends VisElem {
 	public Edge() {
@@ -46,5 +49,10 @@ public class Edge extends VisElem {
 		getVisual().endYProperty().bind(
 				endNode.visPaneY.add(endNode.visPaneTranslateY).subtract(
 						getVisual().layoutYProperty()));
+	}
+
+	public void setOnMouseClicked(EventHandler<MouseEvent> eventHandler) {
+		getVisual().setOnMouseClicked(eventHandler);
+		getVisual().setCursor(Cursor.HAND);
 	}
 }

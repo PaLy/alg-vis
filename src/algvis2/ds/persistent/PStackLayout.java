@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.ds.stack;
+package algvis2.ds.persistent;
 
 import algvis2.core.MyNodeExtentProvider;
 import algvis2.scene.layout.VisPane;
@@ -30,17 +30,17 @@ import org.abego.treelayout.util.DefaultConfiguration;
 import java.awt.geom.Rectangle2D;
 import java.util.Map;
 
-public class CompactLayout {
-	public static void layout(Stack stack, VisPane visPane) {
-		TreeForTreeLayout<StackNode> stackTree = stack.stackTree;
+public class PStackLayout {
+	public static void layout(PStack stack, VisPane visPane) {
+		TreeForTreeLayout<PStackNode> stackTree = stack.stackTree;
 
 		if (stackTree.getRoot() != null) {
-			TreeLayout<StackNode> layout = new TreeLayout<>(stackTree,
-					new MyNodeExtentProvider<StackNode>(), new DefaultConfiguration<StackNode>(
+			TreeLayout<PStackNode> layout = new TreeLayout<>(stackTree,
+					new MyNodeExtentProvider<PStackNode>(), new DefaultConfiguration<PStackNode>(
 							Node.RADIUS / 2, Node.RADIUS, Configuration.Location.Bottom,
 							Configuration.AlignmentInLevel.Center));
-			Map<StackNode, Rectangle2D.Double> nodeBounds = layout.getNodeBounds();
-			for (Map.Entry<StackNode, Rectangle2D.Double> entry : nodeBounds.entrySet()) {
+			Map<PStackNode, Rectangle2D.Double> nodeBounds = layout.getNodeBounds();
+			for (Map.Entry<PStackNode, Rectangle2D.Double> entry : nodeBounds.entrySet()) {
 				if (entry.getKey().getVisual().layoutXProperty().isBound()) {
 					// entry.getKey().removePosBinding();
 				} else {
@@ -55,11 +55,11 @@ public class CompactLayout {
 		visPane.setDsElements(stack.dump());
 	}
 
-	private static void rebuildEdges(StackNode node, VisPane visPane) {
-		for (Map.Entry<StackNode, Boolean> entry : node.parentNodes().entrySet()) {
+	private static void rebuildEdges(PStackNode node, VisPane visPane) {
+		for (Map.Entry<PStackNode, Boolean> entry : node.parentNodes().entrySet()) {
 			if (entry.getValue()) {
 				Edge edge;
-				if (node instanceof StackNode.NullNode) {
+				if (node instanceof PStackNode.NullNode) {
 					edge = new Edge();
 				} else {
 					edge = new Edge(Node.RADIUS);

@@ -34,7 +34,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class FNLayout {
-	public static void layout(FN_PBST bst, VisPane visPane) {
+	public static void layout(FN_PBST bst, FN_PBSTVisualization visualization) {
+		VisPane visPane = visualization.getVisPane();
 		BinTreeForTreeLayout<BinFatNode> tree = bst.treeForTreeLayout;
 
 		if (tree.getRoot() != null) {
@@ -57,28 +58,31 @@ public class FNLayout {
 
 		visPane.clearLayer(ZDepth.EDGES);
 		if (tree.getRoot() != null) {
-			rebuildEdges(tree.getRoot(), visPane);
+			rebuildEdges(tree.getRoot(), visualization);
 		}
 		visPane.setDsElements(bst.dump());
 	}
 
-	private static void rebuildEdges(BinFatNode parentNode, VisPane visPane) {
-		rebuildChildren(parentNode.getLeftChildren().entrySet(), parentNode, visPane);
-		rebuildChildren(parentNode.getRightChildren().entrySet(), parentNode, visPane);
+	private static void rebuildEdges(BinFatNode parentNode, FN_PBSTVisualization visualization) {
+		rebuildChildren(parentNode.getLeftChildren().entrySet(), parentNode, visualization);
+		rebuildChildren(parentNode.getRightChildren().entrySet(), parentNode, visualization);
 	}
 
 	private static void rebuildChildren(Set<Map.Entry<Integer, BinFatNode>> children,
-			BinFatNode parentNode, VisPane visPane) {
+			BinFatNode parentNode, FN_PBSTVisualization visualization) {
 		for (Map.Entry<Integer, BinFatNode> child : children) {
+			int version = child.getKey();
 			Edge edge;
 			if (child.getValue() instanceof BinFatNode.Null) {
-				edge = new AnnotatedEdge(child.getKey());
+				edge = new AnnotatedEdge(version);
 			} else {
-				edge = new AnnotatedEdge(child.getKey(), Node.RADIUS);
+				edge = new AnnotatedEdge(version, Node.RADIUS);
 			}
+			edge.setOnMouseClicked(new PersistentVisualization.VersionHighlight(visualization, version));
+			
 			edge.bindNodes(parentNode, child.getValue());
-			visPane.addNotStorableVisElem(edge);
-			rebuildEdges(child.getValue(), visPane);
+			visualization.getVisPane().addNotStorableVisElem(edge);
+			rebuildEdges(child.getValue(), visualization);
 		}
 	}
 }

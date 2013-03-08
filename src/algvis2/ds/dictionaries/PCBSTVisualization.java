@@ -17,13 +17,16 @@
 
 package algvis2.ds.dictionaries;
 
-public class PCBSTVisualization extends BSTVisualization {
-	public PCBSTVisualization() {
-		super(new PCBST());
-	}
+import algvis2.core.DataStructure;
 
+public class PCBSTVisualization extends BSTVisualization {
 	@Override
 	public String getTitle() {
 		return "BST with path copying"; // partially persistent
+	}
+
+	@Override
+	protected DataStructure initDS() {
+		return new PCBST();
 	}
 }

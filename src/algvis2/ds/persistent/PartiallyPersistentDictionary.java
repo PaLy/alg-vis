@@ -19,19 +19,12 @@ package algvis2.ds.persistent;
 
 import algvis.core.MyRandom;
 import algvis2.core.Algorithm;
-import algvis2.core.DataStructure;
 import algvis2.core.Visualization;
 import algvis2.scene.control.InputField;
 import javafx.animation.Animation;
 import javafx.animation.SequentialTransition;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 
-import java.util.HashMap;
-
-public abstract class PartiallyPersistentDictionary extends DataStructure {
-	final IntegerProperty versionsCountProperty = new SimpleIntegerProperty(0);
-
+public abstract class PartiallyPersistentDictionary extends PersistentDS {
 	protected PartiallyPersistentDictionary() {
 		super();
 	}
@@ -51,18 +44,5 @@ public abstract class PartiallyPersistentDictionary extends DataStructure {
 			st.getChildren().add(animation);
 		}
 		return st;
-	}
-
-	int getVersionsCount() {
-		return versionsCountProperty.get();
-	}
-
-	void incVersionsCount() {
-		versionsCountProperty.set(versionsCountProperty.get() + 1);
-	}
-
-	@Override
-	public void storeState(HashMap<Object, Object> state) {
-		state.put(versionsCountProperty, versionsCountProperty.getValue());
 	}
 }

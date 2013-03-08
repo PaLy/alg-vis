@@ -43,12 +43,13 @@ public abstract class Visualization implements PropertyStateEditable {
 	private final DataStructure dataStructure;
 	public final AnimationManager animManager = new AnimationManager(this);
 
-	public Visualization(URL buttonsFile, DataStructure dataStructure) {
+	public Visualization(URL buttonsFile) {
 		this.buttonsFile = buttonsFile;
-		this.dataStructure = dataStructure;
-		visPane = new VisPane(dataStructure);
-		reLayout();
+		this.dataStructure = initDS();
+		visPane = new VisPane(this.dataStructure);
 	}
+	
+	abstract protected DataStructure initDS();
 
 	public Pane getVisPaneWrapper() {
 		return visPane.getWrappingPane();

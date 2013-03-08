@@ -17,13 +17,16 @@
 
 package algvis2.ds.dictionaries;
 
-public class RBVisualization extends BSTVisualization {
-	public RBVisualization() {
-		super(new RB());
-	}
+import algvis2.core.DataStructure;
 
+public class RBVisualization extends BSTVisualization {
 	@Override
 	public String getTitle() {
 		return "Red-black tree";
+	}
+
+	@Override
+	protected DataStructure initDS() {
+		return new RB();
 	}
 }

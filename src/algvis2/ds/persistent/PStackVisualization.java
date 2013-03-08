@@ -15,18 +15,51 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.ds.dictionaries;
+package algvis2.ds.persistent;
 
+import algvis2.core.Algorithm;
 import algvis2.core.DataStructure;
 
-public class AVLVisualization extends BSTVisualization {
+public class PStackVisualization extends PersistentVisualization {
+	public PStackVisualization() {
+		super(PStackVisualization.class.getResource("/algvis2/ds/persistent/PStackButtons.fxml"));
+	}
+
 	@Override
 	public String getTitle() {
-		return "AVL tree";
+		return "Fully Persistent Stack";
 	}
 
 	@Override
 	protected DataStructure initDS() {
-		return new AVL();
+		return new PStack(this);
+	}
+
+	@Override
+	public void reLayout() {
+		PStackLayout.layout(getDataStructure(), visPane);
+		visPane.refresh();
+	}
+
+	@Override
+	public PStack getDataStructure() {
+		return (PStack) super.getDataStructure();
+	}
+
+	public void push(int x, int version) {
+		visPane.disableVisualsRefresh();
+		Algorithm algorithm = getDataStructure().push(x, version);
+		addAndPlay(algorithm);
+	}
+
+	public boolean pop(int version) {
+		visPane.disableVisualsRefresh();
+		Algorithm algorithm = getDataStructure().pop(version);
+		if (algorithm != null) {
+			addAndPlay(algorithm);
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

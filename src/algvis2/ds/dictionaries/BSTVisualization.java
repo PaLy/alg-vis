@@ -17,14 +17,12 @@
 
 package algvis2.ds.dictionaries;
 
+import algvis2.core.DataStructure;
+
 public class BSTVisualization extends DictVisualization {
-
-	public BSTVisualization() {
-		super(new BST());
-	}
-
-	BSTVisualization(BST bst) {
-		super(bst);
+	@Override
+	protected DataStructure initDS() {
+		return new BST();
 	}
 
 	@Override

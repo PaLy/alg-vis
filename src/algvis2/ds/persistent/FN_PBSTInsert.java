@@ -48,7 +48,7 @@ public class FN_PBSTInsert extends Algorithm {
 				newNode.goAbove(cur);
 				pause(false);
 				if (newNode.getKey() > cur.getKey()) {
-					BinFatNode rightChild = FN_PBSTAlgorithmUtil.getRightChild(cur, lastVersion);
+					BinFatNode rightChild = cur.getRightChild(lastVersion);
 					if (rightChild == null) {
 						cur.addRightChild(newNode, newVersion);
 						newNode.setParent(cur);
@@ -57,7 +57,7 @@ public class FN_PBSTInsert extends Algorithm {
 						cur = rightChild;
 					}
 				} else {
-					BinFatNode leftChild = FN_PBSTAlgorithmUtil.getLeftChild(cur, lastVersion);
+					BinFatNode leftChild = cur.getLeftChild(lastVersion);
 					if (leftChild == null) {
 						cur.addLeftChild(newNode, newVersion);
 						newNode.setParent(cur);

@@ -15,47 +15,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.ds.stack;
+package algvis2.ds.persistent;
 
+import algvis2.animation.AnimationFactory;
 import algvis2.core.Algorithm;
-import algvis2.core.Visualization;
 
-public class StackVisualization extends Visualization {
-	public StackVisualization() {
-		super(StackVisualization.class.getResource("/algvis2/ds/stack/StackButtons.fxml"),
-				new Stack());
+class PStackPop extends Algorithm {
+	private final PStack stack;
+	private final int version;
+
+	protected PStackPop(PersistentVisualization visualization, PStack stack, int version) {
+		super(visualization);
+		this.version = version;
+		this.stack = stack;
 	}
 
 	@Override
-	public String getTitle() {
-		return "Fully Persistent Stack";
+	protected void runAlgorithm() {
+		PStackNode oldVersionTop = stack.versions.get(version).nextNode;
+		int nextVersion = stack.versions.size();
+		PStackNode.NullNode newVerPointer = new PStackNode.NullNode(nextVersion,
+				oldVersionTop.nextNode, getVisualization());
+
+		saveChangedProperties();
+		newVerPointer.removePosBinding();
+
+		stack.versions.add(newVerPointer);
+
+		addAnimation(AnimationFactory.scaleInOut(newVerPointer));
 	}
 
 	@Override
-	public void reLayout() {
-		CompactLayout.layout(getDataStructure(), visPane);
-		visPane.refresh();
-	}
-
-	@Override
-	public Stack getDataStructure() {
-		return (Stack) super.getDataStructure();
-	}
-
-	public void push(int x, int version) {
-		visPane.disableVisualsRefresh();
-		Algorithm algorithm = getDataStructure().push(this, x, version);
-		addAndPlay(algorithm);
-	}
-
-	public boolean pop(int version) {
-		visPane.disableVisualsRefresh();
-		Algorithm algorithm = getDataStructure().pop(this, version);
-		if (algorithm != null) {
-			addAndPlay(algorithm);
-			return true;
-		} else {
-			return false;
-		}
+	public PersistentVisualization getVisualization() {
+		return (PersistentVisualization) super.getVisualization();
 	}
 }

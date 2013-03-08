@@ -23,10 +23,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.shape.Line;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class BinFatNode extends Node {
 	private final ObjectProperty<TreeMap<Integer, BinFatNode>> leftChildrenProperty = new SimpleObjectProperty<>(
@@ -69,9 +66,45 @@ public class BinFatNode extends Node {
 	public TreeMap<Integer, BinFatNode> getRightChildren() {
 		return rightChildrenProperty.get();
 	}
-	
+
 	public BinFatNode getFirstRightChild() {
 		return getRightChildren().firstEntry().getValue();
+	}
+
+	BinFatNode getLeftChild(int version) {
+		return getLeftChild(version, false);
+	}
+
+	BinFatNode getLeftChild(int version, boolean returnNullNodes) {
+		return getChild(version, getLeftChildren().entrySet(), returnNullNodes);
+	}
+
+	BinFatNode getRightChild(int version) {
+		return getRightChild(version, false);
+	}
+
+	BinFatNode getRightChild(int version, boolean returnNullNodes) {
+		return getChild(version, getRightChildren().entrySet(), returnNullNodes);
+	}
+
+	private BinFatNode getChild(int version, Set<Map.Entry<Integer, BinFatNode>> children,
+			boolean returnNullNodes) {
+		int latestVersion = 0; // TODO ked bude spraveny delete, tak to bude musiet byt asi -1
+		BinFatNode res = null;
+		for (Map.Entry<Integer, BinFatNode> entry : children) {
+			if (entry.getKey() > latestVersion && entry.getKey() <= version) {
+				latestVersion = entry.getKey();
+				res = entry.getValue();
+			}
+		}
+		if (res instanceof BinFatNode.Null && !returnNullNodes) {
+			res = null;
+		}
+		return res;
+	}
+
+	boolean isLeaf(int version) {
+		return getLeftChild(version) == null && getRightChild(version) == null;
 	}
 
 	@Override

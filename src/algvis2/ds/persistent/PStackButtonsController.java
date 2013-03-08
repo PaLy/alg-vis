@@ -15,20 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.ds.stack;
+package algvis2.ds.persistent;
 
 import algvis2.scene.control.InputField;
 import algvis2.ui.ButtonsController;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
 
-public class StackButtonsController extends ButtonsController {
+public class PStackButtonsController extends ButtonsController {
 	public TextField versionPushField;
 	public TextField versionPopField;
 
 	@Override
-	protected StackVisualization getVisualization() {
-		return (StackVisualization) super.getVisualization();
+	protected PStackVisualization getVisualization() {
+		return (PStackVisualization) super.getVisualization();
 	}
 
 	public void pushPressed(ActionEvent event) {

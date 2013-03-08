@@ -41,7 +41,7 @@ public class FN_PBSTDelete extends FN_PBSTFind {
 			Backlight foundBacklight = new Backlight(found, Backlight.RED);
 			addVisElem(foundBacklight);
 
-			if (FN_PBSTAlgorithmUtil.isLeaf(found, lastVersion)) { // case I - leaf
+			if (found.isLeaf(lastVersion)) { // case I - leaf
 				if (found.isRoot()) {
 					bst.setRoot(null);
 				} else if (found.isLeft()) {
@@ -50,8 +50,8 @@ public class FN_PBSTDelete extends FN_PBSTFind {
 					found.getParent().addRightChild(new BinFatNode.Null(), newVersion);
 				}
 			} else {
-				BinFatNode leftChild = FN_PBSTAlgorithmUtil.getLeftChild(found, lastVersion);
-				BinFatNode rightChild = FN_PBSTAlgorithmUtil.getRightChild(found, lastVersion);
+				BinFatNode leftChild = found.getLeftChild(lastVersion);
+				BinFatNode rightChild = found.getRightChild(lastVersion);
 				if (leftChild == null || rightChild == null) {
 					// case II - 1 child
 					BinFatNode son;
@@ -90,16 +90,15 @@ public class FN_PBSTDelete extends FN_PBSTFind {
 					addVisElem(v, ZDepth.TOP);
 					v.goAbove(son);
 					pause(false);
-					BinFatNode sonsLeft = FN_PBSTAlgorithmUtil.getLeftChild(son, lastVersion);
+					BinFatNode sonsLeft = son.getLeftChild(lastVersion);
 					while (sonsLeft != null) {
 						son = sonsLeft;
-						sonsLeft = FN_PBSTAlgorithmUtil.getLeftChild(son, lastVersion);
+						sonsLeft = son.getLeftChild(lastVersion);
 						v.goAbove(son);
 						pause(false);
 					}
 					v.goTo(son);
-					BinFatNode sonsParent = son.getParent(), sonsRight = FN_PBSTAlgorithmUtil
-							.getRightChild(son, lastVersion);
+					BinFatNode sonsParent = son.getParent(), sonsRight = son.getRightChild(lastVersion);
 					v.setPaint(NodePaint.FOUND);
 					//				if (sonsRight == null) {
 					//					addStep("bst-delete-succ-unlink");

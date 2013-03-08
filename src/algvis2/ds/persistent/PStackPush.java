@@ -15,19 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.ds.stack;
+package algvis2.ds.persistent;
 
 import algvis2.animation.AnimationFactory;
 import algvis2.core.Algorithm;
-import algvis2.core.Visualization;
 import algvis2.scene.paint.NodePaint;
 
-class StackPush extends Algorithm {
+class PStackPush extends Algorithm {
 	private final int x;
 	private final int version;
-	private final Stack stack;
+	private final PStack stack;
 
-	public StackPush(Visualization visualization, Stack stack, int x, int version) {
+	public PStackPush(PersistentVisualization visualization, PStack stack, int x, int version) {
 		super(visualization);
 		this.x = x;
 		this.version = version;
@@ -36,12 +35,12 @@ class StackPush extends Algorithm {
 
 	@Override
 	protected void runAlgorithm() {
-		StackNode node;
-		StackNode oldVersionTop = stack.versions.get(version).nextNode;
-		node = new StackNode(x, oldVersionTop, NodePaint.INSERT);
+		PStackNode node;
+		PStackNode oldVersionTop = stack.versions.get(version).nextNode;
+		node = new PStackNode(x, oldVersionTop, NodePaint.INSERT);
 
 		int newVerID = stack.versions.size();
-		StackNode.NullNode newVerPointer = new StackNode.NullNode(newVerID, node);
+		PStackNode.NullNode newVerPointer = new PStackNode.NullNode(newVerID, node, getVisualization());
 
 		saveChangedProperties();
 		node.removePosBinding();
@@ -53,5 +52,10 @@ class StackPush extends Algorithm {
 		addAnimation(AnimationFactory.scaleInOut(newVerPointer));
 
 		node.setPaint(NodePaint.NORMAL);
+	}
+
+	@Override
+	protected PersistentVisualization getVisualization() {
+		return (PersistentVisualization) super.getVisualization();
 	}
 }

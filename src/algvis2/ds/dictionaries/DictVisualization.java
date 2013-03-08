@@ -21,9 +21,8 @@ import algvis2.core.Algorithm;
 import algvis2.core.Visualization;
 
 abstract class DictVisualization extends Visualization {
-	public DictVisualization(Dictionary dataStructure) {
-		super(DictVisualization.class.getResource("/algvis2/ds/dictionaries/DictButtons.fxml"),
-				dataStructure);
+	public DictVisualization() {
+		super(DictVisualization.class.getResource("/algvis2/ds/dictionaries/DictButtons.fxml"));
 	}
 
 	@Override

@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public abstract class Algorithm implements Runnable {
-	protected final Visualization visualization;
+	private final Visualization visualization;
 
 	private PropertiesState startState;
 	private Timeline startEndTransition;
@@ -41,6 +41,10 @@ public abstract class Algorithm implements Runnable {
 
 	protected Algorithm(Visualization visualization) {
 		this.visualization = visualization;
+	}
+	
+	protected Visualization getVisualization() {
+		return visualization;
 	}
 
 	@Override

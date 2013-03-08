@@ -19,7 +19,7 @@ package algvis2.scene.layout;
 
 import algvis2.core.DataStructure;
 import algvis2.core.PropertyStateEditable;
-import algvis2.scene.viselem.Edge;
+import algvis2.ds.persistent.FN_PBST;
 import algvis2.scene.viselem.VisElem;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -88,7 +88,7 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 		});
 
 		FlowPane.setMargin(dataStructure.getVisual(), new Insets(
-				25 + algvis2.scene.viselem.Node.RADIUS * 2.5, 0, 0, 0));
+				75 + algvis2.scene.viselem.Node.RADIUS * 2.5, 0, 0, 0));
 		add(dataStructure);
 	}
 
@@ -154,6 +154,9 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 			elem.allowRefresh(true);
 		}
 		dataStructure.getVisual().setManaged(true);
+		if (dataStructure instanceof FN_PBST) {
+			dataStructure.getVisual().setMouseTransparent(true);
+		}
 
 		recalcAbsPosition();
 	}
@@ -186,17 +189,18 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 	}
 
 	public void clearLayer(ZDepth zDepth) {
-		if (zDepth == ZDepth.EDGES) {
-			notStorableChildren.clear();
-		} else {
-			ArrayList<VisElem> toRemove = new ArrayList<>();
-			for (VisElem elem : children.get()) {
-				if (elem.getZDepth() == zDepth) {
-					toRemove.add(elem);
-				}
+		clearLayer(zDepth, notStorableChildren);
+		clearLayer(zDepth, children.get());
+	}
+	
+	private void clearLayer(ZDepth zDepth, Set<VisElem> elems) {
+		ArrayList<VisElem> toRemove = new ArrayList<>();
+		for (VisElem elem : elems) {
+			if (elem.getZDepth() == zDepth) {
+				toRemove.add(elem);
 			}
-			children.get().removeAll(toRemove);
 		}
+		elems.removeAll(toRemove);
 	}
 
 	public void recalcAbsPosition() {
@@ -218,11 +222,11 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 		}
 	}
 
-	public void addNotStorableVisElem(Edge edge) {
-		notStorableChildren.add(edge);
+	public void addNotStorableVisElem(VisElem elem) {
+		notStorableChildren.add(elem);
 	}
 
-	public void addNotStorableVisElemAll(Collection<? extends Edge> c) {
+	public void addNotStorableVisElemAll(Collection<? extends VisElem> c) {
 		notStorableChildren.addAll(c);
 	}
 

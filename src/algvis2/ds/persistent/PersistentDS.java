@@ -15,34 +15,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.ds.stack;
+package algvis2.ds.persistent;
 
-import algvis2.animation.AnimationFactory;
-import algvis2.core.Algorithm;
-import algvis2.core.Visualization;
+import algvis2.core.DataStructure;
+import algvis2.scene.viselem.Node;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
-class StackPop extends Algorithm {
-	private final Stack stack;
-	private final int version;
+import java.util.HashMap;
+import java.util.List;
 
-	protected StackPop(Visualization visualization, Stack stack, int version) {
-		super(visualization);
-		this.version = version;
-		this.stack = stack;
+abstract public class PersistentDS extends DataStructure {
+	final IntegerProperty versionsCountProperty = new SimpleIntegerProperty(0);
+	
+	abstract List<Node> dumpVersion(int version);
+
+	int getVersionsCount() {
+		return versionsCountProperty.get();
+	}
+
+	void incVersionsCount() {
+		versionsCountProperty.set(versionsCountProperty.get() + 1);
 	}
 
 	@Override
-	protected void runAlgorithm() {
-		StackNode oldVersionTop = stack.versions.get(version).nextNode;
-		int nextVersion = stack.versions.size();
-		StackNode.NullNode newVerPointer = new StackNode.NullNode(nextVersion,
-				oldVersionTop.nextNode);
-
-		saveChangedProperties();
-		newVerPointer.removePosBinding();
-
-		stack.versions.add(newVerPointer);
-
-		addAnimation(AnimationFactory.scaleInOut(newVerPointer));
+	public void storeState(HashMap<Object, Object> state) {
+		state.put(versionsCountProperty, versionsCountProperty.getValue());
 	}
 }

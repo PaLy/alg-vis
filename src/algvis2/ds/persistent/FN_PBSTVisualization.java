@@ -18,23 +18,27 @@
 package algvis2.ds.persistent;
 
 import algvis2.core.Algorithm;
-import algvis2.core.Visualization;
+import algvis2.core.DataStructure;
 
-public class FN_PBSTVisualization extends Visualization {
+public class FN_PBSTVisualization extends PersistentVisualization {
 	public FN_PBSTVisualization() {
-		super(FN_PBSTVisualization.class.getResource("/algvis2/ds/persistent/PDictButtons.fxml"),
-				new FN_PBST());
+		super(FN_PBSTVisualization.class.getResource("/algvis2/ds/persistent/PDictButtons.fxml"));
 	}
 
 	@Override
 	public void reLayout() {
-		FNLayout.layout(getDataStructure(), visPane);
+		FNLayout.layout(getDataStructure(), this);
 		visPane.refresh();
 	}
 
 	@Override
 	public String getTitle() {
 		return "Partially Persistent BST - fat node method";
+	}
+
+	@Override
+	public DataStructure initDS() {
+		return new FN_PBST();
 	}
 
 	@Override
