@@ -109,7 +109,7 @@ public abstract class Visualization implements PropertyStateEditable {
 		visPane.clearPane();
 		reLayout();
 		animManager.clear();
-		visPane.setTranslatePos(0, 0);
+		visPane.clearPaneTransforms();
 	}
 
 	public abstract void reLayout();

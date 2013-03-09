@@ -121,7 +121,7 @@ public class AlgVisFXMLController implements Initializable {
 
 	public void centerPressed(ActionEvent event) {
 		visualization.reLayout();
-		visualization.getVisPane().setTranslatePos(0, 0);
+		visualization.getVisPane().clearPaneTransforms();
 	}
 
 	public void snapshotPressed(ActionEvent event) {

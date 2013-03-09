@@ -28,9 +28,12 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.transform.Scale;
+import javafx.scene.transform.Translate;
 
 import java.util.*;
 
@@ -79,11 +82,37 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
 				if (canTranslate) {
-					pane.setTranslateX(pane.getTranslateX() + mouseEvent.getSceneX() - mouseX);
+					pane.getTransforms().add(
+							0,
+							new Translate(mouseEvent.getSceneX() - mouseX, mouseEvent.getSceneY()
+									- mouseY));
 					mouseX = mouseEvent.getSceneX();
-					pane.setTranslateY(pane.getTranslateY() + mouseEvent.getSceneY() - mouseY);
 					mouseY = mouseEvent.getSceneY();
 				}
+			}
+		});
+
+		wrappingPane.setOnScroll(new EventHandler<ScrollEvent>() {
+			@Override
+			public void handle(ScrollEvent event) {
+				double scaleFactor = 1.1;
+				if (event.getDeltaY() < 0) {
+					scaleFactor = 1 / scaleFactor;
+				}
+
+				//double pivotX = wrappingPane.getWidth() / 2;
+				//double pivotY = wrappingPane.getHeight() / 2;
+				//double dx = (scaleFactor - 1) * (pivotX - event.getX());
+				//double dy = (scaleFactor - 1) * (pivotY - event.getY());
+				//pane.setTranslateX(pane.getTranslateX() + dx);
+				//pane.setTranslateY(pane.getTranslateY() + dy);
+				//pane.setScaleX(pane.getScaleX() * scaleFactor);
+				//pane.setScaleY(pane.getScaleY() * scaleFactor);
+
+				// TODO memory (and time?) inefficient
+				pane.getTransforms().add(0, new Translate(-event.getX(), -event.getY()));
+				pane.getTransforms().add(0, new Scale(scaleFactor, scaleFactor));
+				pane.getTransforms().add(0, new Translate(event.getX(), event.getY()));
 			}
 		});
 
@@ -192,7 +221,7 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 		clearLayer(zDepth, notStorableChildren);
 		clearLayer(zDepth, children.get());
 	}
-	
+
 	private void clearLayer(ZDepth zDepth, Set<VisElem> elems) {
 		ArrayList<VisElem> toRemove = new ArrayList<>();
 		for (VisElem elem : elems) {
@@ -234,8 +263,7 @@ public class VisPane implements PropertyStateEditable, AbsPosition {
 		pane.getChildren().clear();
 	}
 
-	public void setTranslatePos(int x, int y) {
-		pane.setTranslateX(x);
-		pane.setTranslateY(y);
+	public void clearPaneTransforms() {
+		pane.getTransforms().clear();
 	}
 }
