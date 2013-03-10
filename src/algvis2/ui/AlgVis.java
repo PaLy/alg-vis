@@ -29,6 +29,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -57,6 +58,7 @@ public class AlgVis extends Application {
 		stage.setTitle("Gnarley Trees");
 		scene = new Scene(createRoot());
 		showVisualization(Visualization.Type.FN_PBST);
+		stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/algvis2/ui/icon.png")));
 		stage.setScene(scene);
 
 		//		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();

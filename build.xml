@@ -51,7 +51,7 @@
   <target name="buildAll" depends="clean">
     <taskdef resource="com/sun/javafx/tools/ant/antlib.xml"
              uri="javafx:com.sun.javafx.tools.ant"
-             classpath="${jdkPath}/lib/ant-javafx.jar"/>
+             classpath=".:${jdkPath}/lib/ant-javafx.jar"/>
 
     <fx:application id="gtApp" name="Gnarley Trees" mainClass="algvis2.ui.AlgVis"/>
     <fx:resources id="appRes">
@@ -68,7 +68,7 @@
     </fx:jar>
 
     <fx:deploy embeddedwidth="100%" embeddedheight="100%" width="1024" height="576" outdir="dist"
-               outfile="GnarleyTrees" nativeBundles="all" embedjnlp="true">
+               outfile="GnarleyTrees" nativeBundles="all" embedjnlp="true" verbose="true">
       <fx:info title="Gnarley Trees"/>
       <fx:application refid="gtApp"/>
       <fx:resources refid="appRes"/>
