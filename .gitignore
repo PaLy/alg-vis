@@ -13,10 +13,6 @@ dist/
 *.bak
 #*.iml
 *.pdf
-
-*.png
-!src/algvis2/ui/*.png
-
 *.pyc
 
 *.xml
