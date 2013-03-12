@@ -43,10 +43,10 @@ public class TreeHighlighter extends VisElem {
 		getVisual().getChildren().clear();
 		ObservableList<javafx.scene.Node> visuals = getVisual().getChildren();
 
-		for (int i = 0; i < list.size(); i += 2) {
+		for (int i = 1; i < list.size(); i += 2) {
 			Line line = LineBuilder.create().stroke(color).strokeWidth(Node.RADIUS * 0.7).build();
-			Node firsNode = list.get(i);
-			Node secondNode = list.get(i + 1);
+			Node firsNode = list.get(i - 1);
+			Node secondNode = list.get(i);
 			line.startXProperty().bind(firsNode.visPaneX.add(firsNode.visPaneTranslateX));
 			line.startYProperty().bind(firsNode.visPaneY.add(firsNode.visPaneTranslateY));
 			line.endXProperty().bind(secondNode.visPaneX.add(secondNode.visPaneTranslateX));
@@ -55,6 +55,9 @@ public class TreeHighlighter extends VisElem {
 			visuals.add(line);
 			visuals.add(newShape(firsNode));
 			visuals.add(newShape(secondNode));
+		}
+		if (list.size() % 2 == 1) {
+			visuals.add(newShape(list.get(list.size() - 1)));
 		}
 	}
 

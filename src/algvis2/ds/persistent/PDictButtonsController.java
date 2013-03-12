@@ -28,8 +28,8 @@ public class PDictButtonsController extends ButtonsController {
 	public TextField findVersion;
 
 	@Override
-	protected FN_PBSTVisualization getVisualization() {
-		return (FN_PBSTVisualization) super.getVisualization();
+	protected PersistentDictVisualization getVisualization() {
+		return (PersistentDictVisualization) super.getVisualization();
 	}
 
 	public void insertPressed(ActionEvent event) {

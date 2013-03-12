@@ -18,10 +18,18 @@ abstract public class PersistentVisualization extends Visualization {
 		visPane.addNotStorableVisElem(versionHighlighter);
 	}
 
+	void highlightVersion(int version) {
+		versionHighlighter.update(getDataStructure().dumpVersion(version));
+	}
+	
+	void highlightOff() {
+		versionHighlighter.update(Collections.<Node>emptyList());
+	}
+
 	@Override
 	public void clear() {
 		super.clear();
-		versionHighlighter.update(Collections.<Node>emptyList());
+		highlightOff();
 	}
 
 	@Override

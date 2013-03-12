@@ -17,32 +17,49 @@
 
 package algvis2.ds.persistent;
 
-import algvis.core.MyRandom;
 import algvis2.core.Algorithm;
-import algvis2.core.Visualization;
-import algvis2.scene.control.InputField;
-import javafx.animation.Animation;
-import javafx.animation.SequentialTransition;
+import algvis2.scene.layout.ZDepth;
+import algvis2.scene.paint.NodePaint;
 
-public abstract class PartiallyPersistentDictionary extends PersistentDS {
-	protected PartiallyPersistentDictionary() {
-		super();
+public class PC_PBSTFind extends Algorithm {
+	private final int x, version;
+	private final PC_PBST bst;
+
+	protected PC_PBSTFind(PersistentVisualization visualization, PC_PBST bst, int version, int x) {
+		super(visualization);
+		this.x = x;
+		this.version = version;
+		this.bst = bst;
 	}
 
-	abstract public Algorithm insert(PersistentVisualization visualization, int x);
-
-	abstract public Algorithm find(PersistentVisualization visualization, int version, int x);
-
-	abstract public Algorithm delete(PersistentVisualization visualization, int x);
-
 	@Override
-	public Animation random(Visualization visualization, int n) {// TODO random creates one version?
-		SequentialTransition st = new SequentialTransition();
-		for (int i = 0; i < n; i++) {
-			Animation animation = insert((PersistentVisualization) visualization, MyRandom.Int(InputField.MAX_VALUE + 1))
-					.startEndTransition();
-			st.getChildren().add(animation);
+	protected void runAlgorithm() {
+		if (version == 0) {
+			// TODO nic, prazdny strom neobsahuje ziadny vrchol
+		} else {
+			PC_PBSTNode newNode = new PC_PBSTNode(x, NodePaint.FIND);
+			addVisElem(newNode, ZDepth.TOP);
+
+			PC_PBSTNode cur = bst.getRoot(version);
+			while (cur != null) {
+				newNode.goAbove(cur);
+				pause(false);
+				if (cur.getKey() == x) {
+					newNode.goTo(cur);
+					newNode.setPaint(NodePaint.GREEN);
+					pause(false);
+					newNode.setPaint(NodePaint.NORMAL);
+					break;
+				} else {
+					if (x > cur.getKey())
+						cur = cur.getRight();
+					else
+						cur = cur.getLeft();
+				}
+			}
+
+			removeVisElem(newNode);
 		}
-		return st;
+
 	}
 }

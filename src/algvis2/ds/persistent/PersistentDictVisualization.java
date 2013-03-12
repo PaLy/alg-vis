@@ -15,53 +15,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package algvis2.ds.dictionaries;
+package algvis2.ds.persistent;
 
 import algvis2.core.Algorithm;
-import algvis2.core.Visualization;
-import algvis2.scene.paint.NodePaint;
 
-/**
- * Partially persistent binary search tree with path copying
- */
-class PCBST extends BST {
-	int time = -1;
+import java.net.URL;
 
-	PCBST() {
-		super();
+abstract public class PersistentDictVisualization extends PersistentVisualization {
+	public PersistentDictVisualization(URL buttonsFile) {
+		super(buttonsFile);
 	}
 
 	@Override
-	public void clear() {
-		super.clear();
-		time = -1;
+	public PartiallyPersistentDictionary getDataStructure() {
+		return (PartiallyPersistentDictionary) super.getDataStructure();
 	}
 
-	@Override
-	public GroupOfBSTNodes getRoot() {
-		return (GroupOfBSTNodes) super.getRoot();
+	public void insert(int x) {
+		visPane.disableVisualsRefresh();
+		Algorithm algorithm = getDataStructure().insert(this, x);
+		addAndPlay(algorithm);
 	}
 
-	@Override
-	public void setRoot(BSTNode root) {
-		if (rootProperty.get() == null) {
-			if (root != null) {
-				rootProperty.set(new GroupOfBSTNodes(root, 0));
-				root.removePosBinding();
-			}
-		} else {
-			if (root == null) {
-				rootProperty.set(null);
-			} else {
-				// TODO
-			}
-		}
+	public void delete(int x) {
+		visPane.disableVisualsRefresh();
+		Algorithm algorithm = getDataStructure().delete(this, x);
+		addAndPlay(algorithm);
 	}
 
-	@Override
-	public Algorithm insert(Visualization visualization, int x) {
-		PCBSTInsert insert = new PCBSTInsert(visualization, this, new BSTNode(x, NodePaint.INSERT));
-		insert.run();
-		return insert;
+	public void find(int x, int version) {
+		visPane.disableVisualsRefresh();
+		Algorithm algorithm = getDataStructure().find(this, version, x);
+		addAndPlay(algorithm);
 	}
 }

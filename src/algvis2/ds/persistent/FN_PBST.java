@@ -44,14 +44,14 @@ public class FN_PBST extends PartiallyPersistentDictionary {
 	}
 
 	@Override
-	public Algorithm insert(Visualization visualization, int x) {
+	public Algorithm insert(PersistentVisualization visualization, int x) {
 		FN_PBSTInsert bstInsert = new FN_PBSTInsert(visualization, this, x);
 		bstInsert.run();
 		return bstInsert;
 	}
 
 	@Override
-	public Algorithm find(Visualization visualization, int x, int version) {
+	public Algorithm find(PersistentVisualization visualization, int version, int x) {
 		if (getRoot() != null && version == 0) {
 			version = 1;
 		}
@@ -64,7 +64,7 @@ public class FN_PBST extends PartiallyPersistentDictionary {
 	}
 
 	@Override
-	public Algorithm delete(Visualization visualization, int x) {
+	public Algorithm delete(PersistentVisualization visualization, int x) {
 		FN_PBSTDelete bstDelete = new FN_PBSTDelete(visualization, this, x);
 		bstDelete.run();
 		return bstDelete;

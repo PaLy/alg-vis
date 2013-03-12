@@ -17,10 +17,9 @@
 
 package algvis2.ds.persistent;
 
-import algvis2.core.Algorithm;
 import algvis2.core.DataStructure;
 
-public class FN_PBSTVisualization extends PersistentVisualization {
+public class FN_PBSTVisualization extends PersistentDictVisualization {
 	public FN_PBSTVisualization() {
 		super(FN_PBSTVisualization.class.getResource("/algvis2/ds/persistent/PDictButtons.fxml"));
 	}
@@ -44,23 +43,5 @@ public class FN_PBSTVisualization extends PersistentVisualization {
 	@Override
 	public FN_PBST getDataStructure() {
 		return (FN_PBST) super.getDataStructure();
-	}
-
-	public void insert(int x) {
-		visPane.disableVisualsRefresh();
-		Algorithm algorithm = getDataStructure().insert(this, x);
-		addAndPlay(algorithm);
-	}
-
-	public void delete(int x) {
-		visPane.disableVisualsRefresh();
-		Algorithm algorithm = getDataStructure().delete(this, x);
-		addAndPlay(algorithm);
-	}
-
-	public void find(int x, int version) {
-		visPane.disableVisualsRefresh();
-		Algorithm algorithm = getDataStructure().find(this, x, version);
-		addAndPlay(algorithm);
 	}
 }

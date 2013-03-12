@@ -21,7 +21,7 @@ import algvis2.animation.AutoAnimsManager;
 import algvis2.core.Visualization;
 import algvis2.ds.dictionaries.AVLVisualization;
 import algvis2.ds.dictionaries.BSTVisualization;
-import algvis2.ds.dictionaries.PCBSTVisualization;
+import algvis2.ds.persistent.PC_PBSTVisualization;
 import algvis2.ds.dictionaries.RBVisualization;
 import algvis2.ds.persistent.FN_PBSTVisualization;
 import algvis2.ds.persistent.PStackVisualization;
@@ -57,7 +57,7 @@ public class AlgVis extends Application {
 		this.stage = stage;
 		stage.setTitle("Gnarley Trees");
 		scene = new Scene(createRoot());
-		showVisualization(Visualization.Type.FN_PBST);
+		showVisualization(Visualization.Type.PC_PBST);
 		stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/algvis2/ui/icon.png")));
 		stage.setScene(scene);
 
@@ -122,7 +122,7 @@ public class AlgVis extends Application {
 				VISUALIZATIONS.put(x, new RBVisualization());
 				break;
 			case PC_PBST:
-				VISUALIZATIONS.put(x, new PCBSTVisualization());
+				VISUALIZATIONS.put(x, new PC_PBSTVisualization());
 				break;
 			case PSTACK:
 				VISUALIZATIONS.put(x, new PStackVisualization());
