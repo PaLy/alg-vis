@@ -20,16 +20,19 @@ package algvis2.ds.persistent;
 import algvis2.core.Algorithm;
 import algvis2.scene.layout.ZDepth;
 import algvis2.scene.paint.NodePaint;
+import algvis2.scene.viselem.TreeHighlighter;
 
 public class PC_PBSTFind extends Algorithm {
 	private final int x, version;
 	private final PC_PBST bst;
+	private final PersistentVisualization visualization;
 
 	protected PC_PBSTFind(PersistentVisualization visualization, PC_PBST bst, int version, int x) {
 		super(visualization);
 		this.x = x;
 		this.version = version;
 		this.bst = bst;
+		this.visualization = visualization;
 	}
 
 	@Override
@@ -37,6 +40,9 @@ public class PC_PBSTFind extends Algorithm {
 		if (version == 0) {
 			// TODO nic, prazdny strom neobsahuje ziadny vrchol
 		} else {
+			TreeHighlighter treeHighlighter = visualization.getAlgorithmHighlighter(version);
+			addVisElem(treeHighlighter);
+			
 			PC_PBSTNode newNode = new PC_PBSTNode(x, NodePaint.FIND);
 			addVisElem(newNode, ZDepth.TOP);
 
@@ -59,7 +65,8 @@ public class PC_PBSTFind extends Algorithm {
 			}
 
 			removeVisElem(newNode);
+			removeVisElem(treeHighlighter);
+			visualization.highlightOff();
 		}
-
 	}
 }

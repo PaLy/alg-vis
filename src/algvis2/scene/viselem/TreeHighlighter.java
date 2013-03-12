@@ -34,6 +34,12 @@ public class TreeHighlighter extends VisElem {
 		setZDepth(ZDepth.SHADES);
 	}
 
+	public TreeHighlighter(List<Node> tree) {
+		super(new Group());
+		setZDepth(ZDepth.SHADES);
+		update(tree);
+	}
+
 	@Override
 	public Group getVisual() {
 		return (Group) super.getVisual();

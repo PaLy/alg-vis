@@ -17,7 +17,6 @@
 
 package algvis2.ds.persistent;
 
-import algvis2.core.Visualization;
 import algvis2.scene.layout.ZDepth;
 import algvis2.scene.paint.NodePaint;
 import algvis2.scene.viselem.Backlight;
@@ -26,7 +25,7 @@ import algvis2.scene.viselem.Node;
 public class FN_PBSTDelete extends FN_PBSTFind {
 	private final FN_PBST bst;
 
-	public FN_PBSTDelete(Visualization visualization, FN_PBST bst, int x) {
+	public FN_PBSTDelete(PersistentVisualization visualization, FN_PBST bst, int x) {
 		super(visualization, bst, bst.getVersionsCount(), x);
 		this.bst = bst;
 	}

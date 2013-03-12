@@ -20,6 +20,7 @@ package algvis2.ds.persistent;
 import algvis2.core.Algorithm;
 import algvis2.scene.layout.ZDepth;
 import algvis2.scene.paint.NodePaint;
+import algvis2.scene.viselem.TreeHighlighter;
 import javafx.animation.ScaleTransitionBuilder;
 import javafx.util.Duration;
 
@@ -42,9 +43,11 @@ class PC_PBSTInsert extends Algorithm {
 	protected void runAlgorithm() {
 		int oldVersion = D.getVersionsCount();
 		int newVersion = oldVersion + 1;
-		//if (oldVersion > 0) {
-		//	visualization.highlightVersion(oldVersion);
-		//}
+		TreeHighlighter treeHighlighter = null;
+		if (oldVersion > 0) {
+			treeHighlighter = visualization.getAlgorithmHighlighter(oldVersion);
+			addVisElem(treeHighlighter);
+		}
 		
 		PC_PBSTNode newNode = new PC_PBSTNode(x, NodePaint.INSERT);
 		addVisElem(newNode, ZDepth.TOP);
@@ -117,6 +120,14 @@ class PC_PBSTInsert extends Algorithm {
 		for (PC_PBSTNode node : path) {
 			node.setPaint(NodePaint.NORMAL);
 		}
-		//visualization.highlightOff();
+		if (oldVersion > 0 && treeHighlighter != null) {
+			removeVisElem(treeHighlighter);
+			visualization.highlightOff();
+		}
+		treeHighlighter = visualization.getAlgorithmHighlighter(newVersion);
+		addVisElem(treeHighlighter);
+		pause(false);
+		removeVisElem(treeHighlighter);
+		visualization.highlightOff();
 	}
 }

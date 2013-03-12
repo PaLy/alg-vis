@@ -19,19 +19,26 @@ package algvis2.ds.persistent;
 
 import algvis2.animation.AnimationFactory;
 import algvis2.core.Algorithm;
+import algvis2.scene.viselem.TreeHighlighter;
 
 class PStackPop extends Algorithm {
 	private final PStack stack;
 	private final int version;
+	private final PersistentVisualization visualization;
 
 	protected PStackPop(PersistentVisualization visualization, PStack stack, int version) {
 		super(visualization);
 		this.version = version;
 		this.stack = stack;
+		this.visualization = visualization;
 	}
 
 	@Override
 	protected void runAlgorithm() {
+		TreeHighlighter treeHighlighter = visualization.getAlgorithmHighlighter(version);
+		addVisElem(treeHighlighter);
+		pause(false);
+		
 		PStackNode oldVersionTop = stack.versions.get(version).nextNode;
 		int nextVersion = stack.versions.size();
 		PStackNode.NullNode newVerPointer = new PStackNode.NullNode(nextVersion,
@@ -43,6 +50,15 @@ class PStackPop extends Algorithm {
 		stack.versions.add(newVerPointer);
 
 		addAnimation(AnimationFactory.scaleInOut(newVerPointer));
+		
+		removeVisElem(treeHighlighter);
+		visualization.highlightOff();
+
+		treeHighlighter = visualization.getAlgorithmHighlighter(nextVersion);
+		addVisElem(treeHighlighter);
+		pause(false);
+		removeVisElem(treeHighlighter);
+		visualization.highlightOff();
 	}
 
 	@Override
