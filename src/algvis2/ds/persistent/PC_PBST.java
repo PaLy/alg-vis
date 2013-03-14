@@ -194,9 +194,16 @@ public class PC_PBST extends PartiallyPersistentDictionary {
 			fakeRoot) {
 
 		@Override
+		public PC_PBSTNode.FakeRoot getRoot() {
+			return (PC_PBSTNode.FakeRoot) super.getRoot();
+		}
+
+		@Override
 		public PC_PBSTNode getParent(PC_PBSTNode node) {
-			if (node.parentProperty.isEmpty()) {
+			if (node == getRoot()) {
 				return null;
+			} else if (node.parentProperty.isEmpty()) {
+				return getRoot();
 			} else if (node.getParent(0).getLeft() == node) {
 				return node.getParent(0);
 			} else {
@@ -206,8 +213,8 @@ public class PC_PBST extends PartiallyPersistentDictionary {
 
 		@Override
 		public List<PC_PBSTNode> getChildrenList(PC_PBSTNode node) {
-			if (node instanceof PC_PBSTNode.FakeRoot) {
-				return ((PC_PBSTNode.FakeRoot) node).getChildren();
+			if (node == getRoot()) {
+				return getRoot().getChildren();
 			} else {
 				List<PC_PBSTNode> list = new ArrayList<>();
 				if (node.getLeft() != null && node.getLeft().getParent(0) == node) {
@@ -223,9 +230,8 @@ public class PC_PBST extends PartiallyPersistentDictionary {
 		@Override
 		public PC_PBSTNode getLastLeftChild(PC_PBSTNode parentNode) {
 			PC_PBSTNode res = null;
-			if (parentNode instanceof PC_PBSTNode.FakeRoot) {
-				ObservableList<PC_PBSTNode> children = ((PC_PBSTNode.FakeRoot) parentNode)
-						.getChildren();
+			if (parentNode == getRoot()) {
+				ObservableList<PC_PBSTNode> children = getRoot().getChildren();
 				if (!children.isEmpty()) {
 					res = children.get(0);
 				}
@@ -241,9 +247,8 @@ public class PC_PBST extends PartiallyPersistentDictionary {
 		@Override
 		public PC_PBSTNode getFirstRightChild(PC_PBSTNode parentNode) {
 			PC_PBSTNode res = null;
-			if (parentNode instanceof PC_PBSTNode.FakeRoot) {
-				ObservableList<PC_PBSTNode> children = ((PC_PBSTNode.FakeRoot) parentNode)
-						.getChildren();
+			if (parentNode == getRoot()) {
+				ObservableList<PC_PBSTNode> children = getRoot().getChildren();
 				if (!children.isEmpty()) {
 					res = children.get(children.size() - 1);
 				}
