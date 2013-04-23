@@ -18,29 +18,28 @@
 package algvis2.ui;
 
 import algvis2.animation.AutoAnimsManager;
+import algvis2.core.Comment;
 import algvis2.core.Visualization;
 import algvis2.ds.dictionaries.AVLVisualization;
 import algvis2.ds.dictionaries.BSTVisualization;
-import algvis2.ds.persistent.PC_PBSTVisualization;
 import algvis2.ds.dictionaries.RBVisualization;
 import algvis2.ds.persistent.FN_PBSTVisualization;
+import algvis2.ds.persistent.PC_PBSTVisualization;
 import algvis2.ds.persistent.PStackVisualization;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class AlgVis extends Application {
 	private Stage stage;
-	private Scene scene;
+	private static Scene scene;
 	private AlgVisFXMLController controller;
 	private String language = "en";
 	private final Map<Visualization.Type, Visualization> VISUALIZATIONS = new HashMap<>();
@@ -57,7 +56,7 @@ public class AlgVis extends Application {
 		this.stage = stage;
 		stage.setTitle("Gnarley Trees");
 		scene = new Scene(createRoot());
-		showVisualization(Visualization.Type.PC_PBST);
+		showVisualization(Visualization.Type.FN_PBST);
 		stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/algvis2/ui/icon.png")));
 		stage.setScene(scene);
 
@@ -137,5 +136,14 @@ public class AlgVis extends Application {
 
 	public Stage getStage() {
 		return stage;
+	}
+
+	// TODO updatnut aj pri zmene jazyka
+	public static void updateCommentaries(List<Comment> commentaries) {
+		VBox steps = (VBox) (scene.getRoot().lookup("#stepsContent"));
+		steps.getChildren().clear();
+		for (Comment comment : commentaries) {
+			steps.getChildren().add(comment);
+		}
 	}
 }

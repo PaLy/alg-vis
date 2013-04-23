@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public abstract class Algorithm implements Runnable {
-	private final Visualization visualization;
+	protected final Visualization visualization;
 
 	private PropertiesState startState;
 	private Timeline startEndTransition;

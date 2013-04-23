@@ -48,7 +48,7 @@ class PC_PBSTInsert extends Algorithm {
 			treeHighlighter = visualization.getAlgorithmHighlighter(oldVersion);
 			addVisElem(treeHighlighter);
 		}
-		
+
 		PC_PBSTNode newNode = new PC_PBSTNode(x, NodePaint.INSERT);
 		addVisElem(newNode, ZDepth.TOP);
 
@@ -66,7 +66,7 @@ class PC_PBSTInsert extends Algorithm {
 			curNew.setPaint(pathColor);
 			path.add(curNew);
 			D.addNewRoot(curNew);
-			
+
 			boolean isLeft;
 			while (true) {
 				if (newNode.getKey() > curOld.getKey()) {
@@ -74,7 +74,7 @@ class PC_PBSTInsert extends Algorithm {
 					if (curNew.getLeft() != null) {
 						curNew.getLeft().addParent(curNew);
 					}
-					
+
 					if (curOld.getRight() == null) {
 						curNew.setRight(newNode);
 						break;
@@ -86,7 +86,7 @@ class PC_PBSTInsert extends Algorithm {
 					if (curNew.getRight() != null) {
 						curNew.getRight().addParent(curNew);
 					}
-					
+
 					if (curOld.getLeft() == null) {
 						curNew.setLeft(newNode);
 						break;

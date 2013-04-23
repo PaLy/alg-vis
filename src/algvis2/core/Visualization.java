@@ -18,12 +18,16 @@
 package algvis2.core;
 
 import algvis2.scene.layout.VisPane;
+import algvis2.ui.AlgVis;
 import algvis2.ui.ButtonsController;
 import javafx.animation.Animation;
 import javafx.animation.SequentialTransition;
 import javafx.animation.SequentialTransitionBuilder;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -35,6 +39,9 @@ import java.util.*;
 
 public abstract class Visualization implements PropertyStateEditable {
 	public final VisPane visPane;
+	public final ListProperty<Comment> commentaries = new SimpleListProperty<>(FXCollections.observableArrayList(new
+			ArrayList<Comment>()
+	));
 
 	private ButtonsController buttonsController;
 	private final URL buttonsFile;
@@ -47,8 +54,15 @@ public abstract class Visualization implements PropertyStateEditable {
 		this.buttonsFile = buttonsFile;
 		this.dataStructure = initDS();
 		visPane = new VisPane(this.dataStructure);
+
+		commentaries.addListener(new ChangeListener<ObservableList<Comment>>() {
+			@Override
+			public void changed(ObservableValue<? extends ObservableList<Comment>> observable, ObservableList<Comment> oldValue, ObservableList<Comment> newValue) {
+				AlgVis.updateCommentaries(newValue);
+			}
+		});
 	}
-	
+
 	abstract protected DataStructure initDS();
 
 	public Pane getVisPaneWrapper() {
@@ -117,6 +131,7 @@ public abstract class Visualization implements PropertyStateEditable {
 	@Override
 	public void storeState(HashMap<Object, Object> state) {
 		visPane.storeState(state);
+		state.put(commentaries, commentaries.getValue().toArray());
 	}
 
 	public abstract String getTitle();

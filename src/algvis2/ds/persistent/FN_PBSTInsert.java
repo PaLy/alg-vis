@@ -19,6 +19,7 @@ package algvis2.ds.persistent;
 
 import algvis2.animation.AnimationFactory;
 import algvis2.core.Algorithm;
+import algvis2.core.Comment;
 import algvis2.core.Visualization;
 import algvis2.scene.layout.ZDepth;
 import algvis2.scene.paint.NodePaint;
@@ -35,12 +36,18 @@ public class FN_PBSTInsert extends Algorithm {
 
 	@Override
 	protected void runAlgorithm() {
+		int krok = 1;
+		visualization.commentaries.clear();
+		visualization.commentaries.getValue().add(new Comment(krok++ + ". Vkladáme prvok " + x + "."));
+		
 		int lastVersion = bst.getVersionsCount();
 		int newVersion = lastVersion + 1;
 		BinFatNode newNode = new BinFatNode(x, NodePaint.INSERT);
 		addVisElem(newNode, ZDepth.TOP);
 
 		if (bst.getRoot() == null) {
+			visualization.commentaries.getValue().add(new Comment(krok++ + ". Keďže dátová štruktúra je prázdna, " +
+					"vtvoríme nový koreň."));
 			bst.setRoot(newNode);
 		} else {
 			BinFatNode cur = bst.getRoot();
@@ -52,8 +59,13 @@ public class FN_PBSTInsert extends Algorithm {
 					if (rightChild == null) {
 						cur.addRightChild(newNode, newVersion);
 						newNode.setParent(cur);
+						visualization.commentaries.getValue().add(new Comment(krok++ + ". " + x + " > " + cur.getKey()
+								+ ", " +
+								"prvok vložíme vpravo."));
 						break;
 					} else {
+						visualization.commentaries.getValue().add(new Comment(krok++ + ". " + x + " > " + cur.getKey()
+								+ ", ideme vpravo."));
 						cur = rightChild;
 					}
 				} else {
@@ -61,8 +73,13 @@ public class FN_PBSTInsert extends Algorithm {
 					if (leftChild == null) {
 						cur.addLeftChild(newNode, newVersion);
 						newNode.setParent(cur);
+						visualization.commentaries.getValue().add(new Comment(krok++ + ". " + x + " <= " + cur.getKey()
+								+ ", " +
+								"prvok vložíme vľavo."));
 						break;
 					} else {
+						visualization.commentaries.getValue().add(new Comment(krok++ + ". " + x + " <= " + cur.getKey()
+								+ ", ideme vľavo."));
 						cur = leftChild;
 					}
 				}
@@ -83,5 +100,6 @@ public class FN_PBSTInsert extends Algorithm {
 		newNode.addRightChild(rightNull, newVersion);
 
 		bst.incVersionsCount();
+		visualization.commentaries.getValue().add(new Comment(krok + ". Hura!"));
 	}
 }

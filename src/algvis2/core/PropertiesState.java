@@ -85,9 +85,9 @@ public class PropertiesState {
 						Collection collection = (Collection) writableValue.getValue();
 
 						collection.clear();
-						if (timeline.getRate() > 0)
+						if (timeline.getRate() > 0) {
 							Collections.addAll(collection, postElements.get(writableValue));
-						else if (timeline.getRate() < 0) {
+						} else if (timeline.getRate() < 0) {
 							Collections.addAll(collection, preElements.get(writableValue));
 						} else {
 							System.out.println("WTF");

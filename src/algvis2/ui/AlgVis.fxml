@@ -19,14 +19,14 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<?import algvis2.scene.text.Fonts?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="576.0" prefWidth="1024.0" xmlns:fx="http://javafx.com/fxml" fx:controller="algvis2.ui.AlgVisFXMLController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns:fx="http://javafx.com/fxml" fx:controller="algvis2.ui.AlgVisFXMLController">
   <children>
     <Pane />
     <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -96,32 +96,32 @@
     </MenuBar>
     <Text fx:id="visTitle" text="Pointer Machine" underline="true" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="26.0">
       <font>
-        <Fonts fx:constant="PURISA_BOLD_30" />
+        <Font name="Sans-serif" size="30" />
       </font>
     </Text>
-    <TitledPane fx:id="buttonsTitledPane" alignment="TOP_LEFT" animated="true" collapsible="true" contentDisplay="LEFT" disable="false" expanded="true" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" text="%operations" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="0.0">
+    <TitledPane fx:id="buttonsTitledPane" alignment="TOP_LEFT" animated="true" collapsible="true" 
+                contentDisplay="LEFT" disable="false" expanded="true" maxHeight="-1.0" maxWidth="-1.0" 
+                prefHeight="-1.0" prefWidth="-1.0" text="%operations" AnchorPane.bottomAnchor="0.0"
+                AnchorPane.leftAnchor="0.0">
       <content>
         <!--<fx:include source="DictButtons.fxml" />-->
       </content>
     </TitledPane>
-    <TitledPane alignment="TOP_LEFT" animated="true" ellipsisString="..." expanded="false" prefHeight="-1.0" prefWidth="-1.0" text="%steps" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="24.0">
+    <TitledPane alignment="TOP_LEFT" animated="true" ellipsisString="..." expanded="true" prefHeight="400.0" prefWidth="-1.0" text="%steps" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="24.0">
       <content>
-        <ScrollPane fitToHeight="true" maxHeight="-1.0" prefHeight="-1.0" prefViewportHeight="0.0" prefWidth="300.0">
+        <ScrollPane fitToHeight="true" maxHeight="-1.0" prefHeight="-1.0" prefViewportHeight="0.0" prefWidth="300.0" vbarPolicy="ALWAYS">
           <content>
-            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+            <VBox id="stepsContent" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+              <padding>
+                <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
+              </padding>
+            </VBox>
           </content>
         </ScrollPane>
       </content>
     </TitledPane>
-    <AnchorPane prefHeight="-1.0" prefWidth="-1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-      <children>
-        <Label alignment="CENTER" text="Stats" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      </children>
-      <padding>
-        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-      </padding>
-    </AnchorPane>
-    <FlowPane hgap="10.0" orientation="VERTICAL" prefWrapLength="0.0" AnchorPane.bottomAnchor="25.0" AnchorPane.rightAnchor="0.0">
+    <FlowPane hgap="10.0" orientation="VERTICAL" prefWrapLength="0.0" AnchorPane.bottomAnchor="0.0"
+              AnchorPane.rightAnchor="0.0">
       <Button onAction="#centerPressed">
         <graphic>
           <ImageView>
@@ -131,6 +131,7 @@
           </ImageView>
         </graphic>
       </Button>
+      <!--
       <Button onAction="#snapshotPressed">
         <graphic>
           <ImageView>
@@ -140,6 +141,7 @@
           </ImageView>
         </graphic>
       </Button>
+      -->
       <Button fx:id="fullscreenButton" onAction="#fullscreenPressed">
         <graphic>
           <ImageView>

@@ -154,7 +154,7 @@ public class FN_PBST extends PartiallyPersistentDictionary {
 
 	@Override
 	public String toString() {
-		return getRoot().toString();
+		return getRoot() != null ? getRoot().toString() : "null";
 	}
 
 	public final BinTreeForTreeLayout<BinFatNode> treeForTreeLayout = new AbstractBinTreeForTreeLayout<BinFatNode>(
