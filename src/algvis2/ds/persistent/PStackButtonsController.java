@@ -17,15 +17,12 @@
 
 package algvis2.ds.persistent;
 
+import algvis2.core.MyRandom;
 import algvis2.scene.control.InputField;
 import algvis2.ui.ButtonsController;
 import javafx.event.ActionEvent;
-import javafx.scene.control.TextField;
 
 public class PStackButtonsController extends ButtonsController {
-	public TextField versionPushField;
-	public TextField versionPopField;
-
 	@Override
 	protected PStackVisualization getVisualization() {
 		return (PStackVisualization) super.getVisualization();
@@ -33,16 +30,23 @@ public class PStackButtonsController extends ButtonsController {
 
 	public void pushPressed(ActionEvent event) {
 		disableAllButtons(true);
-		int versionsCount = getVisualization().getDataStructure().getVersionsCount();
+		int version = getVisualization().getCurVersion();
+		if (version == -1) {
+			int versionsCount = getVisualization().getDataStructure().getVersionsCount();
+			version = MyRandom.Int(0, versionsCount);
+		}
 		getVisualization().push(new InputField(insertField).getNonEmptyVI().get(0),
-				new InputField(versionPushField).getNonEmptyVI(0, versionsCount).get(0));
+				version);
 	}
 
 	public void popPressed(ActionEvent event) {
 		disableAllButtons(true);
-		int versionsCount = getVisualization().getDataStructure().getVersionsCount();
-		boolean ok = getVisualization().pop(
-				new InputField(versionPopField).getNonEmptyVI(0, versionsCount).get(0));
+		int version = getVisualization().getCurVersion();
+		if (version == -1) {
+			int versionsCount = getVisualization().getDataStructure().getVersionsCount();
+			version = MyRandom.Int(0, versionsCount);
+		}
+		boolean ok = getVisualization().pop(version);
 		if (!ok) {
 			disableOperations(false);
 			disableNext(!getVisualization().animManager.hasNext());

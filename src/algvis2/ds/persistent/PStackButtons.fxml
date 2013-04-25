@@ -33,7 +33,6 @@
           <children>
             <HBox alignment="TOP_RIGHT" prefHeight="-1.0" prefWidth="-1.0" spacing="5.0">
               <children>
-                <TextField fx:id="versionPushField" prefWidth="60.0" promptText="version" />
                 <TextField fx:id="insertField" prefHeight="-1.0" prefWidth="60.0" promptText="number" />
                 <Button mnemonicParsing="false" onAction="#pushPressed" text="%button-push" />
                 <Button mnemonicParsing="false" onAction="#randomPressed" text="%button-random" />
@@ -41,7 +40,6 @@
             </HBox>
             <HBox alignment="TOP_RIGHT" prefHeight="-1.0" prefWidth="-1.0" spacing="5.0">
               <children>
-                <TextField fx:id="versionPopField" prefWidth="60.0" promptText="version" />
                 <Button mnemonicParsing="false" onAction="#popPressed" text="%button-pop" />
               </children>
             </HBox>

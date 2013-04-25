@@ -17,6 +17,7 @@
 
 package algvis2.ds.persistent;
 
+import algvis2.core.MyRandom;
 import algvis2.scene.control.InputField;
 import algvis2.ui.ButtonsController;
 import javafx.event.ActionEvent;
@@ -25,7 +26,6 @@ import javafx.scene.control.TextField;
 public class PDictButtonsController extends ButtonsController {
 	public TextField findField;
 	public TextField deleteField;
-	public TextField findVersion;
 
 	@Override
 	protected PersistentDictVisualization getVisualization() {
@@ -52,8 +52,11 @@ public class PDictButtonsController extends ButtonsController {
 		disablePrevious(true);
 		int versionsCount = getVisualization().getDataStructure().getVersionsCount();
 		if (versionsCount > 0) {
-			getVisualization().find(new InputField(findField).getNonEmptyVI().get(0),
-					new InputField(findVersion).getNonEmptyVI(0, versionsCount).get(0));
+			int version = getVisualization().getCurVersion();
+			if (version == -1) {
+				version = MyRandom.Int(0, versionsCount);
+			}
+			getVisualization().find(new InputField(findField).getNonEmptyVI().get(0), version);
 		}
 
 	}

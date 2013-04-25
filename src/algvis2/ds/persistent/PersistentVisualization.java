@@ -74,6 +74,15 @@ abstract public class PersistentVisualization extends Visualization {
 		versionSlider.maxProperty().bind(getDataStructure().versionsCountProperty.subtract(1));
 		versionSlider.valueProperty().bindBidirectional(curVersionProperty);
 	}
+	
+	public void unbindVersionSlider(Slider versionSlider) {
+		versionSlider.maxProperty().unbind();
+		versionSlider.valueProperty().unbindBidirectional(curVersionProperty);
+	}
+
+	public int getCurVersion() {
+		return curVersionProperty.get();
+	}
 
 	public static class VersionHighlight implements EventHandler<MouseEvent> {
 		private final int version;

@@ -46,7 +46,6 @@
             </HBox>
             <HBox alignment="TOP_RIGHT" prefHeight="-1.0" prefWidth="-1.0" spacing="5.0">
               <children>
-                <TextField fx:id="findVersion" prefHeight="-1.0" prefWidth="60.0" promptText="version" />
                 <TextField fx:id="findField" prefHeight="-1.0" prefWidth="60.0" promptText="number" />
                 <Button fx:id="buttonFind" mnemonicParsing="false" onAction="#findPressed" text="%button-find" />
               </children>

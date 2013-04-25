@@ -204,6 +204,9 @@ public class AlgVisFXMLController implements Initializable {
 	}
 
 	public void setVis(Visualization visualization, String language) {
+		if (this.visualization instanceof PersistentVisualization) {
+			((PersistentVisualization) this.visualization).unbindVersionSlider(versionSlider);
+		}
 		this.visualization = visualization;
 		rootPane.getChildren().set(0, visualization.getVisPaneWrapper());
 		visTitle.setText(visualization.getTitle());
