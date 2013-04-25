@@ -33,16 +33,16 @@ public class PStackButtonsController extends ButtonsController {
 
 	public void pushPressed(ActionEvent event) {
 		disableAllButtons(true);
-		int versionsSize = getVisualization().getDataStructure().versions.size();
+		int versionsCount = getVisualization().getDataStructure().getVersionsCount();
 		getVisualization().push(new InputField(insertField).getNonEmptyVI().get(0),
-				new InputField(versionPushField).getNonEmptyVI(0, versionsSize).get(0));
+				new InputField(versionPushField).getNonEmptyVI(0, versionsCount).get(0));
 	}
 
 	public void popPressed(ActionEvent event) {
 		disableAllButtons(true);
-		int versionsSize = getVisualization().getDataStructure().versions.size();
+		int versionsCount = getVisualization().getDataStructure().getVersionsCount();
 		boolean ok = getVisualization().pop(
-				new InputField(versionPopField).getNonEmptyVI(0, versionsSize).get(0));
+				new InputField(versionPopField).getNonEmptyVI(0, versionsCount).get(0));
 		if (!ok) {
 			disableOperations(false);
 			disableNext(!getVisualization().animManager.hasNext());

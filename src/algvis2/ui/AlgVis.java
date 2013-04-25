@@ -56,7 +56,7 @@ public class AlgVis extends Application {
 		this.stage = stage;
 		stage.setTitle("Gnarley Trees");
 		scene = new Scene(createRoot());
-		showVisualization(Visualization.Type.FN_PBST);
+		showVisualization(Visualization.Type.PC_PBST);
 		stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/algvis2/ui/icon.png")));
 		stage.setScene(scene);
 

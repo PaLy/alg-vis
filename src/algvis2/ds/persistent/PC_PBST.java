@@ -26,8 +26,8 @@ public class PC_PBST extends PartiallyPersistentDictionary {
 	void addNewRoot(PC_PBSTNode node) {
 		node.removePosBinding();
 		fakeRoot.addChild(node);
+		int version = getVersionsCount();
 		incVersionsCount();
-		int version = versionsCountProperty.get();
 
 		Text verNo = new Text("v" + String.valueOf(version));
 		verNo.setFont(Fonts.VER_NO_FONT);
@@ -38,7 +38,7 @@ public class PC_PBST extends PartiallyPersistentDictionary {
 	}
 
 	PC_PBSTNode getRoot(int version) {
-		return fakeRoot.getChildren().get(version - 1);
+		return fakeRoot.getChildren().get(version);
 	}
 
 	PC_PBSTNode.FakeRoot getFakeRoot() {
@@ -67,7 +67,7 @@ public class PC_PBST extends PartiallyPersistentDictionary {
 	@Override
 	List<Node> dumpVersion(int version) {
 		List<Node> res = new ArrayList<>();
-		PC_PBSTNode root = fakeRoot.getChildren().get(version - 1);
+		PC_PBSTNode root = fakeRoot.getChildren().get(version);
 		Stack<PC_PBSTNode> todo = new Stack<>();
 		todo.push(root);
 		while (!todo.empty()) {

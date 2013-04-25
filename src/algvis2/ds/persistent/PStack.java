@@ -32,7 +32,7 @@ import org.abego.treelayout.util.AbstractTreeForTreeLayout;
 import java.util.*;
 
 class PStack extends PersistentDS {
-	final SimpleListProperty<PStackNode.NullNode> versions = new SimpleListProperty<>(
+	private final SimpleListProperty<PStackNode.NullNode> versions = new SimpleListProperty<>(
 			FXCollections.<PStackNode.NullNode> observableArrayList());
 	private final PStackNode bottom;
 	private final PersistentVisualization visualization;
@@ -45,12 +45,21 @@ class PStack extends PersistentDS {
 		bottom.removePosBinding();
 		emptyVersion.removePosBinding();
 
-		versions.add(emptyVersion);
+		addVersion(emptyVersion);
+	}
+	
+	void addVersion(PStackNode.NullNode versionNode) {
+		versions.add(versionNode);
+		incVersionsCount();
+	}
+	
+	PStackNode.NullNode getVersion(int version) {
+		return versions.get(version);
 	}
 
 	public Algorithm push(int x, int version) {
-		if (version < 0 || version >= versions.size()) {
-			version = versions.size() - 1;
+		if (version < 0 || version >= getVersionsCount()) {
+			version = getVersionsCount() - 1;
 		}
 		PStackPush stackPush = new PStackPush(visualization, this, x, version);
 		stackPush.run();
@@ -58,7 +67,7 @@ class PStack extends PersistentDS {
 	}
 
 	public Algorithm push(int x) {
-		return push(x, versions.size() - 1); // last version
+		return push(x, getVersionsCount() - 1); // last version
 	}
 
 	@Override
@@ -67,7 +76,7 @@ class PStack extends PersistentDS {
 		for (int i = 0; i < n; i++) {
 			st.getChildren().add(
 					push(MyRandom.Int(InputField.MAX_VALUE + 1),
-							MyRandom.Int(versions.size())).startEndTransition());
+							MyRandom.Int(getVersionsCount())).startEndTransition());
 		}
 		return st;
 	}
@@ -97,14 +106,15 @@ class PStack extends PersistentDS {
 
 	@Override
 	public void clear() {
-		versions.remove(1, versions.size());
+		versions.remove(1, getVersionsCount());
+		versionsCountProperty.setValue(1);
 		bottom.parentNodes().clear();
 		bottom.parentNodes().put(versions.get(0), true);
 	}
 
 	public Algorithm pop(int version) {
-		if (version < 0 || version >= versions.size()) {
-			version = versions.size() - 1; // last version
+		if (version < 0 || version >= getVersionsCount()) {
+			version = getVersionsCount() - 1; // last version
 		}
 		if (versions.get(version).nextNode.nextNode != null) {
 			PStackPop stackPop = new PStackPop(visualization, this, version);
@@ -149,6 +159,7 @@ class PStack extends PersistentDS {
 
 	@Override
 	public void storeState(HashMap<Object, Object> state) {
+		super.storeState(state);
 		if (versions.getValue() == null) {
 			state.put(versions, null);
 		} else {

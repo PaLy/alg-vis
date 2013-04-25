@@ -3,11 +3,12 @@ package algvis2.ds.persistent;
 import algvis2.core.Visualization;
 import algvis2.scene.viselem.Node;
 import algvis2.scene.viselem.TreeHighlighter;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
+import javafx.scene.control.Slider;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
@@ -16,38 +17,46 @@ import java.util.Collections;
 import java.util.HashMap;
 
 abstract public class PersistentVisualization extends Visualization {
+	private final IntegerProperty curVersionProperty = new SimpleIntegerProperty(-1);
+	private final IntegerProperty curAlgVersionProperty = new SimpleIntegerProperty(-1);
 	private final TreeHighlighter versionHighlighter = new TreeHighlighter();
-	private final ObjectProperty<TreeHighlighter> algorithmHighligther = new SimpleObjectProperty<>(new 
-			TreeHighlighter());
 
 	public PersistentVisualization(URL buttonsFile) {
 		super(buttonsFile);
 		visPane.addNotStorableVisElem(versionHighlighter);
-		algorithmHighligther.addListener(new ChangeListener<TreeHighlighter>() {
+		curAlgVersionProperty.addListener(new ChangeListener<Number>() {
 			@Override
-			public void changed(ObservableValue<? extends TreeHighlighter> observable, TreeHighlighter oldValue, TreeHighlighter newValue) {
-				if (newValue == null) {
-					versionHighlighter.getVisual().setVisible(true);
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue,
+					Number newValue) {
+				if (newValue == -1) {
+					curVersionProperty.setValue(oldValue);
 				} else {
-					versionHighlighter.getVisual().setVisible(false);
+					curVersionProperty.setValue(newValue);
+				}
+			}
+		});
+		curVersionProperty.addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				if (!newValue.equals(oldValue)) {
+					if (newValue == -1) {
+						versionHighlighter.update(Collections.<Node> emptyList());
+					} else {
+						versionHighlighter.update(getDataStructure().dumpVersion((Integer) newValue));
+					}
 				}
 			}
 		});
 	}
 	
-	TreeHighlighter getAlgorithmHighlighter(int version) {
-		algorithmHighligther.setValue(new TreeHighlighter(getDataStructure().dumpVersion(version)));
-		return algorithmHighligther.getValue();
-	}
-	
-	void highlightOff() {
-		algorithmHighligther.setValue(null);
+	void setCurAlgVersion(int version) {
+		curAlgVersionProperty.setValue(version);
 	}
 
 	@Override
 	public void clear() {
 		super.clear();
-		versionHighlighter.update(Collections.<Node>emptyList());
+		curVersionProperty.setValue(-1);
 	}
 
 	@Override
@@ -58,7 +67,12 @@ abstract public class PersistentVisualization extends Visualization {
 	@Override
 	public void storeState(HashMap<Object, Object> state) {
 		super.storeState(state);
-		state.put(algorithmHighligther, algorithmHighligther.getValue());
+		state.put(curAlgVersionProperty, curAlgVersionProperty.getValue());
+	}
+
+	public void bindVersionSlider(final Slider versionSlider) {
+		versionSlider.maxProperty().bind(getDataStructure().versionsCountProperty.subtract(1));
+		versionSlider.valueProperty().bindBidirectional(curVersionProperty);
 	}
 
 	public static class VersionHighlight implements EventHandler<MouseEvent> {
@@ -73,9 +87,9 @@ abstract public class PersistentVisualization extends Visualization {
 		@Override
 		public void handle(MouseEvent event) {
 			if (event.getButton() == MouseButton.PRIMARY) {
-				visualization.versionHighlighter.update(visualization.getDataStructure().dumpVersion(version));
+				visualization.curVersionProperty.setValue(version);
 			} else if (event.getButton() == MouseButton.SECONDARY) {
-				visualization.versionHighlighter.update(Collections.<Node>emptyList());
+				visualization.curVersionProperty.setValue(-1);
 			}
 		}
 	}

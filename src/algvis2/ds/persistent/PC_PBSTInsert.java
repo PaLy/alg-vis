@@ -41,12 +41,10 @@ class PC_PBSTInsert extends Algorithm {
 
 	@Override
 	protected void runAlgorithm() {
-		int oldVersion = D.getVersionsCount();
+		int oldVersion = D.getVersionsCount() - 1;
 		int newVersion = oldVersion + 1;
-		TreeHighlighter treeHighlighter = null;
-		if (oldVersion > 0) {
-			treeHighlighter = visualization.getAlgorithmHighlighter(oldVersion);
-			addVisElem(treeHighlighter);
+		if (oldVersion >= 0) {
+			visualization.setCurAlgVersion(oldVersion);
 		}
 
 		PC_PBSTNode newNode = new PC_PBSTNode(x, NodePaint.INSERT);
@@ -55,7 +53,7 @@ class PC_PBSTInsert extends Algorithm {
 		List<PC_PBSTNode> path = new ArrayList<>();
 		NodePaint pathColor = NodePaint.GREEN;
 
-		if (newVersion == 1) {
+		if (newVersion == 0) {
 			D.addNewRoot(newNode);
 		} else {
 			PC_PBSTNode curOld = D.getRoot(oldVersion);
@@ -120,14 +118,8 @@ class PC_PBSTInsert extends Algorithm {
 		for (PC_PBSTNode node : path) {
 			node.setPaint(NodePaint.NORMAL);
 		}
-		if (oldVersion > 0 && treeHighlighter != null) {
-			removeVisElem(treeHighlighter);
-			visualization.highlightOff();
-		}
-		treeHighlighter = visualization.getAlgorithmHighlighter(newVersion);
-		addVisElem(treeHighlighter);
+		visualization.setCurAlgVersion(newVersion);
 		pause(false);
-		removeVisElem(treeHighlighter);
-		visualization.highlightOff();
+		visualization.setCurAlgVersion(-1);
 	}
 }

@@ -20,7 +20,6 @@ package algvis2.ds.persistent;
 import algvis2.core.Algorithm;
 import algvis2.scene.layout.ZDepth;
 import algvis2.scene.paint.NodePaint;
-import algvis2.scene.viselem.TreeHighlighter;
 
 public class PC_PBSTFind extends Algorithm {
 	private final int x, version;
@@ -37,36 +36,30 @@ public class PC_PBSTFind extends Algorithm {
 
 	@Override
 	protected void runAlgorithm() {
-		if (version == 0) {
-			// TODO nic, prazdny strom neobsahuje ziadny vrchol
-		} else {
-			TreeHighlighter treeHighlighter = visualization.getAlgorithmHighlighter(version);
-			addVisElem(treeHighlighter);
-			
-			PC_PBSTNode newNode = new PC_PBSTNode(x, NodePaint.FIND);
-			addVisElem(newNode, ZDepth.TOP);
+		visualization.setCurAlgVersion(version);
 
-			PC_PBSTNode cur = bst.getRoot(version);
-			while (cur != null) {
-				newNode.goAbove(cur);
+		PC_PBSTNode newNode = new PC_PBSTNode(x, NodePaint.FIND);
+		addVisElem(newNode, ZDepth.TOP);
+
+		PC_PBSTNode cur = bst.getRoot(version);
+		while (cur != null) {
+			newNode.goAbove(cur);
+			pause(false);
+			if (cur.getKey() == x) {
+				newNode.goTo(cur);
+				newNode.setPaint(NodePaint.GREEN);
 				pause(false);
-				if (cur.getKey() == x) {
-					newNode.goTo(cur);
-					newNode.setPaint(NodePaint.GREEN);
-					pause(false);
-					newNode.setPaint(NodePaint.NORMAL);
-					break;
-				} else {
-					if (x > cur.getKey())
-						cur = cur.getRight();
-					else
-						cur = cur.getLeft();
-				}
+				newNode.setPaint(NodePaint.NORMAL);
+				break;
+			} else {
+				if (x > cur.getKey())
+					cur = cur.getRight();
+				else
+					cur = cur.getLeft();
 			}
-
-			removeVisElem(newNode);
-			removeVisElem(treeHighlighter);
-			visualization.highlightOff();
 		}
+
+		removeVisElem(newNode);
+		visualization.setCurAlgVersion(-1);
 	}
 }

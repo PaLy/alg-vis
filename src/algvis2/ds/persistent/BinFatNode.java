@@ -89,7 +89,7 @@ public class BinFatNode extends Node {
 
 	private BinFatNode getChild(int version, Set<Map.Entry<Integer, BinFatNode>> children,
 			boolean returnNullNodes) {
-		int latestVersion = 0; // TODO ked bude spraveny delete, tak to bude musiet byt asi -1
+		int latestVersion = -1;
 		BinFatNode res = null;
 		for (Map.Entry<Integer, BinFatNode> entry : children) {
 			if (entry.getKey() > latestVersion && entry.getKey() <= version) {

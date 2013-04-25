@@ -18,6 +18,7 @@
 package algvis2.ui;
 
 import algvis2.core.Visualization;
+import algvis2.ds.persistent.PersistentVisualization;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.WeakChangeListener;
@@ -30,16 +31,14 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBuilder;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -67,6 +66,8 @@ public class AlgVisFXMLController implements Initializable {
 	public MenuItem menu_pstack;
 	public MenuItem menu_fn_pbst;
 	public Button fullscreenButton;
+	public Slider versionSlider;
+	public VBox sliderWrapper;
 
 	private Visualization visualization;
 	private AlgVis algvis;
@@ -207,6 +208,12 @@ public class AlgVisFXMLController implements Initializable {
 		rootPane.getChildren().set(0, visualization.getVisPaneWrapper());
 		visTitle.setText(visualization.getTitle());
 		buttonsTitledPane.setContent(visualization.loadButtons(language));
+		if (visualization instanceof PersistentVisualization) {
+			sliderWrapper.setVisible(true);
+			((PersistentVisualization) visualization).bindVersionSlider(versionSlider);
+		} else {
+			sliderWrapper.setVisible(false);
+		}
 	}
 
 	public void setAlgvis(AlgVis algvis) {

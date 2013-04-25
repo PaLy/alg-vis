@@ -20,18 +20,19 @@ package algvis2.ds.persistent;
 import algvis2.animation.AnimationFactory;
 import algvis2.core.Algorithm;
 import algvis2.core.Comment;
-import algvis2.core.Visualization;
 import algvis2.scene.layout.ZDepth;
 import algvis2.scene.paint.NodePaint;
 
 public class FN_PBSTInsert extends Algorithm {
 	private final int x;
 	private final FN_PBST bst;
+	private final PersistentVisualization visualization;
 
-	protected FN_PBSTInsert(Visualization visualization, FN_PBST D, int x) {
+	protected FN_PBSTInsert(PersistentVisualization visualization, FN_PBST D, int x) {
 		super(visualization);
 		this.x = x;
 		this.bst = D;
+		this.visualization = visualization;
 	}
 
 	@Override
@@ -40,16 +41,17 @@ public class FN_PBSTInsert extends Algorithm {
 		visualization.commentaries.clear();
 		visualization.commentaries.getValue().add(new Comment(krok++ + ". Vkladáme prvok " + x + "."));
 		
-		int lastVersion = bst.getVersionsCount();
+		int lastVersion = bst.getVersionsCount() - 1;
 		int newVersion = lastVersion + 1;
 		BinFatNode newNode = new BinFatNode(x, NodePaint.INSERT);
 		addVisElem(newNode, ZDepth.TOP);
 
-		if (bst.getRoot() == null) {
+		if (bst.getRoot() == null) { // teda lastVersion == -1
 			visualization.commentaries.getValue().add(new Comment(krok++ + ". Keďže dátová štruktúra je prázdna, " +
 					"vtvoríme nový koreň."));
 			bst.setRoot(newNode);
 		} else {
+			visualization.setCurAlgVersion(lastVersion);
 			BinFatNode cur = bst.getRoot();
 			while (true) {
 				newNode.goAbove(cur);
@@ -101,5 +103,10 @@ public class FN_PBSTInsert extends Algorithm {
 
 		bst.incVersionsCount();
 		visualization.commentaries.getValue().add(new Comment(krok + ". Hura!"));
+		
+		saveChangedProperties();
+		visualization.setCurAlgVersion(newVersion);
+		saveChangedProperties();
+		visualization.setCurAlgVersion(-1);
 	}
 }

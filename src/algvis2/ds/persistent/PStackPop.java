@@ -35,30 +35,24 @@ class PStackPop extends Algorithm {
 
 	@Override
 	protected void runAlgorithm() {
-		TreeHighlighter treeHighlighter = visualization.getAlgorithmHighlighter(version);
-		addVisElem(treeHighlighter);
+		visualization.setCurAlgVersion(version);
 		pause(false);
 		
-		PStackNode oldVersionTop = stack.versions.get(version).nextNode;
-		int nextVersion = stack.versions.size();
+		PStackNode oldVersionTop = stack.getVersion(version).nextNode;
+		int nextVersion = stack.getVersionsCount();
 		PStackNode.NullNode newVerPointer = new PStackNode.NullNode(nextVersion,
 				oldVersionTop.nextNode, getVisualization());
 
 		saveChangedProperties();
 		newVerPointer.removePosBinding();
 
-		stack.versions.add(newVerPointer);
+		stack.addVersion(newVerPointer);
 
 		addAnimation(AnimationFactory.scaleInOut(newVerPointer));
 		
-		removeVisElem(treeHighlighter);
-		visualization.highlightOff();
-
-		treeHighlighter = visualization.getAlgorithmHighlighter(nextVersion);
-		addVisElem(treeHighlighter);
+		visualization.setCurAlgVersion(nextVersion);
 		pause(false);
-		removeVisElem(treeHighlighter);
-		visualization.highlightOff();
+		visualization.setCurAlgVersion(-1);
 	}
 
 	@Override

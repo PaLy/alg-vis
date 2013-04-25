@@ -38,36 +38,30 @@ class PStackPush extends Algorithm {
 
 	@Override
 	protected void runAlgorithm() {
-		TreeHighlighter treeHighlighter = visualization.getAlgorithmHighlighter(version);
-		addVisElem(treeHighlighter);
+		visualization.setCurAlgVersion(version);
 		pause(false);
 		
 		PStackNode node;
-		PStackNode oldVersionTop = stack.versions.get(version).nextNode;
+		PStackNode oldVersionTop = stack.getVersion(version).nextNode;
 		node = new PStackNode(x, oldVersionTop, NodePaint.INSERT);
 
-		int newVerID = stack.versions.size();
+		int newVerID = stack.getVersionsCount();
 		PStackNode.NullNode newVerPointer = new PStackNode.NullNode(newVerID, node, getVisualization());
 
 		saveChangedProperties();
 		node.removePosBinding();
 		newVerPointer.removePosBinding();
 
-		stack.versions.add(newVerPointer);
+		stack.addVersion(newVerPointer);
 
 		addAnimation(AnimationFactory.scaleInOut(node));
 		addAnimation(AnimationFactory.scaleInOut(newVerPointer));
 
 		node.setPaint(NodePaint.NORMAL);
 		
-		removeVisElem(treeHighlighter);
-		visualization.highlightOff();
-		
-		treeHighlighter = visualization.getAlgorithmHighlighter(newVerID);
-		addVisElem(treeHighlighter);
+		visualization.setCurAlgVersion(newVerID);
 		pause(false);
-		removeVisElem(treeHighlighter);
-		visualization.highlightOff();
+		visualization.setCurAlgVersion(-1);
 	}
 
 	@Override
